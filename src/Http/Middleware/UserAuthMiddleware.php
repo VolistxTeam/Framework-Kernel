@@ -9,6 +9,7 @@ use VolistxTeam\VSkeletonKernel\ValidationRules\IPValidationRule;
 use VolistxTeam\VSkeletonKernel\ValidationRules\KeyExpiryValidationRule;
 use VolistxTeam\VSkeletonKernel\ValidationRules\RateLimitValidationRule;
 use VolistxTeam\VSkeletonKernel\ValidationRules\RequestsCountValidationRule;
+use VolistxTeam\VSkeletonKernel\ValidationRules\ValidationRuleBase;
 use VolistxTeam\VSkeletonKernel\ValidationRules\ValidKeyValidationRule;
 
 class UserAuthMiddleware
@@ -32,15 +33,16 @@ class UserAuthMiddleware
             'plan' => $plan
         ];
 
+
+        $getValidators = config('volistx.validators');
         //add extra validators in the required order.
         //To be refactored to detect all classes with a base of ValidationRuleBase and create instance of them passing parameters, and ordering them by id
-        $validators = [
-            new ValidKeyValidationRule($inputs),
-            new KeyExpiryValidationRule($inputs),
-            new IPValidationRule($inputs),
-            new RequestsCountValidationRule($inputs),
-            new RateLimitValidationRule($inputs)
-        ];
+
+        $validators = [];
+
+        foreach ($getValidators as $item) {
+            $validators[] = new $item($inputs);
+        }
 
         foreach ($validators as $validator) {
             $result = $validator->validate();

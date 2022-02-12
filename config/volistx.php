@@ -13,5 +13,12 @@ return [
         'userLogMode' => env('LOG_AUTH_USER_CHANNEL', 'local'),
         'userLogHttpUrl' => env('LOG_AUTH_USER_HTTP_URL'),
         'userLogHttpToken' => env('LOG_AUTH_USER_HTTP_TOKEN'),
+    ],
+    'validators' => [
+        \VolistxTeam\VSkeletonKernel\ValidationRules\ValidKeyValidationRule::class,
+        \VolistxTeam\VSkeletonKernel\ValidationRules\KeyExpiryValidationRule::class,
+        \VolistxTeam\VSkeletonKernel\ValidationRules\IPValidationRule::class,
+        \VolistxTeam\VSkeletonKernel\ValidationRules\RequestsCountValidationRule::class,
+        \VolistxTeam\VSkeletonKernel\ValidationRules\RateLimitValidationRule::class
     ]
 ];
