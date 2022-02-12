@@ -1,5 +1,6 @@
 {
     "name": "volistxteam/vskeleton-kernel",
+    "type": "library",
     "description": "The Volistx Framework (Kernel)",
     "authors": [
         {
@@ -43,10 +44,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VolistxTeam\\VSkeletonKernel\\VolistxServiceProvider",
-                "VolistxTeam\\VSkeletonKernel\\Providers\\AdminLoggingRepositoryServiceProvider",
-                "VolistxTeam\\VSkeletonKernel\\Providers\\MessagesServiceProvider",
-                "VolistxTeam\\VSkeletonKernel\\Providers\\PermissionsServiceProvider"
+                "VolistxTeam\\VSkeletonKernel\\VolistxServiceProvider"
             ]
         }
     }
