@@ -5,8 +5,9 @@ namespace VolistxTeam\VSkeletonKernel\Repositories;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use VolistxTeam\VSkeletonKernel\Models\UserLog;
+use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
 
-class LocalUserLogRepository
+class LocalUserLogRepository implements IUserLogRepository
 {
     public function Create(array $inputs)
     {
