@@ -6,13 +6,16 @@
     {
       "name": "Cryental",
       "email": "contact@cryental.dev"
+    },
+    {
+      "name": "Mostama Samy",
+      "email": "mostafa.samy203@gmail.com"
     }
   ],
   "require": {
     "php": ">=8.1",
     "chuckrincon/lumen-config-discover": "^1.0",
     "fakerphp/faker": "^1.19",
-    "fideloper/proxy": "^4.4",
     "laravel/lumen-framework": "^8.0",
     "rogervila/lumen-rate-limiting": "^1.0",
     "wikimedia/ip-set": "^3.0",
