@@ -91,7 +91,6 @@ class PersonalTokenControllerTest extends BaseTestCase
         ], [
             'Authorization' => "Bearer $key",
         ]);
-        ray($request);
 
         self::assertResponseStatus(201);
         self::assertSame($sub->id, json_decode($request->response->getContent())->subscription->id);
