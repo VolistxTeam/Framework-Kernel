@@ -2,11 +2,11 @@
 
 namespace VolistxTeam\VSkeletonKernel\Tests;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
+use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
 use VolistxTeam\VSkeletonKernel\Models\AccessToken;
 use VolistxTeam\VSkeletonKernel\Models\AdminLog;
 
@@ -39,7 +39,7 @@ class AdminLogControllerTest extends BaseTestCase
         $salt = Str::random(16);
         $token = AccessToken::factory()
             ->create(['key' => substr($key, 0, 32),
-                'secret' => Hash::make(substr($key, 32), ['salt' => $salt]),
+                'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
                 'secret_salt' => $salt,
                 'permissions' => array('logs:*')]);
 
@@ -67,11 +67,10 @@ class AdminLogControllerTest extends BaseTestCase
     /** @test */
     public function GetLog()
     {
-        $x  = config('log.adminLogMode');
+        $x = config('volistx.logging.adminLogMode');
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 1);
         $log = AdminLog::query()->first();
-
 
 
         $request = $this->json('GET', "/sys-bin/admin/logs/{$log->id}", [], [

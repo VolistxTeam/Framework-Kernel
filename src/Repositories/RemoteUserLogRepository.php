@@ -2,9 +2,8 @@
 
 namespace VolistxTeam\VSkeletonKernel\Repositories;
 
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Schema;
+use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
 
 class RemoteUserLogRepository implements IUserLogRepository
 {
@@ -15,8 +14,8 @@ class RemoteUserLogRepository implements IUserLogRepository
     public function __construct()
     {
         $this->client = new Client();
-        $this->httpBaseUrl = config('log.userLogHttpUrl');
-        $this->remoteToken = config('log.userLogHttpToken');
+        $this->httpBaseUrl = config('volistx.logging.userLogHttpUrl');
+        $this->remoteToken = config('volistx.logging.userLogHttpToken');
     }
 
     public function Create(array $inputs)

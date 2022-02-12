@@ -16,7 +16,7 @@ class UserLoggingRepositoryServiceProvider extends ServiceProvider
 
     public function register()
     {
-        if (config('log.userLogMode') === 'local') {
+        if (config('volistx.logging.userLogMode') === 'local') {
             $this->app->bind(IUserLogRepository::class, LocalUserLogRepository::class);
         } else {
             $this->app->bind(IUserLogRepository::class, RemoteUserLogRepository::class);

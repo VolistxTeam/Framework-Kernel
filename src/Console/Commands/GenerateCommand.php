@@ -3,8 +3,8 @@
 namespace VolistxTeam\VSkeletonKernel\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
 use VolistxTeam\VSkeletonKernel\Models\AccessToken;
 
 class GenerateCommand extends Command
@@ -20,7 +20,7 @@ class GenerateCommand extends Command
 
         AccessToken::query()->create(array(
             'key' => substr($key, 0, 32),
-            'secret' => Hash::make(substr($key, 32), ['salt' => $salt]),
+            'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
             'secret_salt' => $salt,
             'permissions' => array('*'),
             'whitelist_range' => array()

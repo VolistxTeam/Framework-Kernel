@@ -1,51 +1,42 @@
 {
-    "name": "volistxteam/vskeleton-kernel",
-    "type": "library",
-    "description": "The Volistx Framework (Kernel)",
-    "authors": [
-        {
-            "name": "Cryental",
-            "email": "contact@cryental.dev"
-        }
-    ],
-    "require": {
-        "php": ">=8.1",
-        "chuckrincon/lumen-config-discover": "^1.0",
-        "cryental/laravel-hashing-sha256": "^1.0",
-        "fakerphp/faker": "^1.19",
-        "fideloper/proxy": "^4.4",
-        "flipbox/lumen-generator": "^8.2",
-        "geoip2/geoip2": "^2.12",
-        "illuminate/redis": "^8.83",
-        "irazasyed/larasupport": "^1.7",
-        "jdavidbakr/cloudfront-proxies": "^1.6",
-        "laravel/lumen-framework": "^8.0",
-        "monicahq/laravel-cloudflare": "^2.0",
-        "rogervila/lumen-rate-limiting": "^1.0",
-        "spatie/laravel-responsecache": "^7.2",
-        "swooletw/laravel-swoole": "^2.11",
-        "torann/geoip": "^3.0",
-        "wikimedia/ip-set": "^3.0"
-    },
-    "require-dev": {
-        "mockery/mockery": "^1.5",
-        "phpunit/phpunit": "^9.5"
-    },
-    "autoload": {
-        "psr-4": {
-            "VolistxTeam\\VSkeletonKernel\\": "src",
-            "Volistxteam\\VSkeletonKernel\\Database\\Factories\\": "database/factories",
-            "Volistxteam\\VSkeletonKernel\\Database\\Seeders\\": "database/seeders"
-        },
-        "classmap": [
-            "src/Classes"
-        ]
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "VolistxTeam\\VSkeletonKernel\\VolistxServiceProvider"
-            ]
-        }
+  "name": "volistxteam/vskeleton-kernel",
+  "type": "library",
+  "description": "The Volistx Framework (Kernel)",
+  "authors": [
+    {
+      "name": "Cryental",
+      "email": "contact@cryental.dev"
     }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "chuckrincon/lumen-config-discover": "^1.0",
+    "fakerphp/faker": "^1.19",
+    "fideloper/proxy": "^4.4",
+    "laravel/lumen-framework": "^8.0",
+    "rogervila/lumen-rate-limiting": "^1.0",
+    "wikimedia/ip-set": "^3.0",
+    "guzzlehttp/guzzle": "^7.4"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.5",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "VolistxTeam\\VSkeletonKernel\\": "src",
+      "Volistxteam\\VSkeletonKernel\\Database\\Factories\\": "database/factories",
+      "Volistxteam\\VSkeletonKernel\\Database\\Seeders\\": "database/seeders"
+    },
+    "classmap": [
+      "src/Classes"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "VolistxTeam\\VSkeletonKernel\\VolistxServiceProvider"
+      ]
+    }
+  }
 }

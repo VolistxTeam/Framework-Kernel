@@ -2,11 +2,11 @@
 
 namespace VolistxTeam\VSkeletonKernel\Tests;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
+use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
 use VolistxTeam\VSkeletonKernel\Models\AccessToken;
 use VolistxTeam\VSkeletonKernel\Models\Plan;
 use VolistxTeam\VSkeletonKernel\Models\Subscription;
@@ -56,7 +56,7 @@ class PlanControllerTest extends BaseTestCase
         $salt = Str::random(16);
         return AccessToken::factory()
             ->create(['key' => substr($key, 0, 32),
-                'secret' => Hash::make(substr($key, 32), ['salt' => $salt]),
+                'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
                 'secret_salt' => $salt,
                 'permissions' => array('plans:*')]);
     }

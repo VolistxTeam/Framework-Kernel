@@ -2,8 +2,8 @@
 
 namespace VolistxTeam\VSkeletonKernel\Repositories;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
 use VolistxTeam\VSkeletonKernel\Models\AccessToken;
 
 class AccessTokenRepository
@@ -12,7 +12,7 @@ class AccessTokenRepository
     {
         return AccessToken::query()->create([
             'key' => substr($inputs['key'], 0, 32),
-            'secret' => Hash::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
             'secret_salt' => $inputs['salt'],
             'permissions' => $inputs['permissions'],
             'whitelist_range' => $inputs['whitelist_range']
@@ -58,7 +58,7 @@ class AccessTokenRepository
         }
 
         $token->key = substr($inputs['key'], 0, 32);
-        $token->secret = Hash::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]);
+        $token->secret = SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]);
         $token->secret_salt = $inputs['salt'];
         $token->save();
 
@@ -95,7 +95,7 @@ class AccessTokenRepository
     {
         return AccessToken::query()->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {
-                return Hash::check(substr($token, 32), $v->secret, ['salt' => $v->secret_salt]);
+                return SHA256Hasher::check(substr($token, 32), $v->secret, ['salt' => $v->secret_salt]);
             })->first();
     }
 }

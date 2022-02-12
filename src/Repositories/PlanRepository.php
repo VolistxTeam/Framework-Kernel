@@ -60,7 +60,7 @@ class PlanRepository
             return [
                 'result' => 'true'
             ];
-        } catch (\Exception $ex){
+        } catch (\Exception $ex) {
             return false;
         }
     }

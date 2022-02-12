@@ -23,7 +23,7 @@ class PlanFactory extends Factory
 
     public function definition()
     {
-        $n = $this->faker->numberBetween(1,50000000);
+        $n = $this->faker->numberBetween(1, 50000000);
         return [
             'name' => "plan$n",
             'description' => $this->faker->text(),

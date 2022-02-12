@@ -3,7 +3,6 @@
 namespace VolistxTeam\VSkeletonKernel\Repositories;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Schema;
 use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IAdminLogRepository;
 
 class RemoteAdminLogRepository implements IAdminLogRepository
@@ -15,13 +14,13 @@ class RemoteAdminLogRepository implements IAdminLogRepository
     public function __construct()
     {
         $this->client = new Client();
-        $this->httpBaseUrl = config('log.adminLogHttpUrl');
-        $this->remoteToken = config('log.adminLogHttpToken');
+        $this->httpBaseUrl = config('volistx.logging.adminLogHttpUrl');
+        $this->remoteToken = config('volistx.logging.adminLogHttpToken');
     }
 
     public function Create(array $inputs)
     {
-       $this->client->post($this->httpBaseUrl, [
+        $this->client->post($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type' => "application/json"

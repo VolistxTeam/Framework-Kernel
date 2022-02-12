@@ -3,11 +3,9 @@
 namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
 
 use Closure;
-use Exception;
 use Illuminate\Http\Request;
 use Wikimedia\IPSet;
 use function config;
-use function geoip;
 use function response;
 
 class FirewallMiddleware
@@ -16,20 +14,10 @@ class FirewallMiddleware
     {
         $clientIP = $request->getClientIp();
 
-        $ipSet = new IPSet(config('firewall.ipBlacklist', []));
+        $ipSet = new IPSet(config('volistx.firewall.ipBlacklist', []));
 
         if ($ipSet->match($clientIP)) {
             return response('', 403);
-        }
-
-        try {
-            $geoIPLookup = geoip()->getLocation($clientIP);
-
-            if (in_array($geoIPLookup->iso_code, config('firewall.countryBlacklist', []))) {
-                return response('', 403);
-            }
-        } catch (Exception $ex) {
-            // continue
         }
 
         $response = $next($request);

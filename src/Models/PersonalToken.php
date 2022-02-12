@@ -2,11 +2,10 @@
 
 namespace VolistxTeam\VSkeletonKernel\Models;
 
-use VolistxTeam\VSkeletonKernel\Classes\UuidForKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use VolistxTeam\VSkeletonKernel\Classes\UuidForKey;
 
 class PersonalToken extends Model
 {

@@ -3,13 +3,11 @@
 namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
 
 use Closure;
-use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IAdminLogRepository;
 use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
-use function config;
 
 class RequestLoggingMiddleware
 {

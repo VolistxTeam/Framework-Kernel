@@ -3,11 +3,11 @@
 namespace VolistxTeam\VSkeletonKernel\Tests;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
+use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
 use VolistxTeam\VSkeletonKernel\Models\AccessToken;
 use VolistxTeam\VSkeletonKernel\Models\PersonalToken;
 use VolistxTeam\VSkeletonKernel\Models\Plan;
@@ -46,7 +46,7 @@ class SubscriptionControllerTest extends BaseTestCase
         $salt = Str::random(16);
         return AccessToken::factory()
             ->create(['key' => substr($key, 0, 32),
-                'secret' => Hash::make(substr($key, 32), ['salt' => $salt]),
+                'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
                 'secret_salt' => $salt,
                 'permissions' => array('subscriptions:*')]);
     }
@@ -107,9 +107,9 @@ class SubscriptionControllerTest extends BaseTestCase
             ->has(PersonalToken::factory()->count($tokenCount))
             ->create(['user_id' => $userID, 'plan_id' => Plan::query()->first()->id]);
 
-            UserLog::factory()->count($logs)->create([
-                'subscription_id' => $sub->id
-            ]);
+        UserLog::factory()->count($logs)->create([
+            'subscription_id' => $sub->id
+        ]);
 
         return $sub;
     }

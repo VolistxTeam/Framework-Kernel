@@ -3,9 +3,8 @@
 namespace VolistxTeam\VSkeletonKernel\Repositories;
 
 use Carbon\Carbon;
-use Faker\Provider\Person;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
 use VolistxTeam\VSkeletonKernel\Models\PersonalToken;
 
 class PersonalTokenRepository
@@ -15,7 +14,7 @@ class PersonalTokenRepository
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
             'key' => substr($inputs['key'], 0, 32),
-            'secret' => Hash::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
             'secret_salt' => $inputs['salt'],
             'permissions' => $inputs['permissions'],
             'whitelist_range' => $inputs['whitelist_range'],
@@ -65,7 +64,7 @@ class PersonalTokenRepository
         }
 
         $token->key = substr($inputs['key'], 0, 32);
-        $token->secret = Hash::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]);
+        $token->secret = SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]);
         $token->secret_salt = $inputs['salt'];
         $token->save();
 
@@ -91,7 +90,7 @@ class PersonalTokenRepository
     {
         $columns = Schema::getColumnListing('personal_tokens');
 
-        return PersonalToken::where('subscription_id', $subscription_id)->where(function($query) use($columns, $needle){
+        return PersonalToken::where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
             foreach ($columns as $column) {
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
@@ -102,7 +101,7 @@ class PersonalTokenRepository
     {
         return PersonalToken::query()->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {
-                return Hash::check(substr($token, 32), $v->secret, ['salt' => $v->secret_salt]);
+                return SHA256Hasher::check(substr($token, 32), $v->secret, ['salt' => $v->secret_salt]);
             })->first();
     }
 }
