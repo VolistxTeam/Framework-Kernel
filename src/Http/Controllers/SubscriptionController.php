@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Validator;
 use VolistxTeam\VSkeletonKernel\DataTransferObjects\SubscriptionDTO;
 use VolistxTeam\VSkeletonKernel\Facades\Messages;
 use VolistxTeam\VSkeletonKernel\Facades\Permissions;
+use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
 use VolistxTeam\VSkeletonKernel\Repositories\SubscriptionRepository;
-use VolistxTeam\VSkeletonKernel\Repositories\UserLogRepository;
 
 class SubscriptionController extends Controller
 {
     private SubscriptionRepository $subscriptionRepository;
-    private UserLogRepository $logRepository;
+    private IUserLogRepository $logRepository;
 
-    public function __construct(SubscriptionRepository $subscriptionRepository, UserLogRepository $logRepository)
+    public function __construct(SubscriptionRepository $subscriptionRepository, IUserLogRepository $logRepository)
     {
         $this->module = "subscriptions";
         $this->subscriptionRepository = $subscriptionRepository;
@@ -209,20 +209,10 @@ class SubscriptionController extends Controller
 
         try {
             $logs = $this->logRepository->FindLogsBySubscription($subscription_id, $search, $page, $limit);
-
-            $items = [];
-            foreach ($logs->items() as $item) {
-                $items[] = UserLogDTO::fromModel($item)->GetDTO();
+            if (!$logs) {
+                return response()->json(Messages::E500(), 500);
             }
-
-            return response()->json([
-                'pagination' => [
-                    'per_page' => $logs->perPage(),
-                    'current' => $logs->currentPage(),
-                    'total' => $logs->lastPage(),
-                ],
-                'items' => $items
-            ]);
+            return response()->json($logs);
         } catch (Exception $exception) {
             return response()->json(Messages::E500(), 500);
         }

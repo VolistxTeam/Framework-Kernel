@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use VolistxTeam\VSkeletonKernel\Models\UserLog;
 
-class UserLogRepository
+class LocalUserLogRepository
 {
     public function Create(array $inputs)
     {
@@ -24,11 +24,11 @@ class UserLogRepository
         return UserLog::query()->where('id', $log_id)->first();
     }
 
-    public function FindLogsBySubscription($subscription_id, $needle, $page, $limit)
+    public function FindAll($needle, $page, $limit)
     {
         $columns = Schema::getColumnListing('user_logs');
 
-        $logs = UserLog::where('subscription_id', $subscription_id)->where(function($query) use($columns, $needle){
+        $logs = UserLog::where(function ($query) use ($columns, $needle) {
             foreach ($columns as $column) {
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
@@ -36,14 +36,36 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
 
 
-        return response()->json([
+        return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
                 'current' => $logs->currentPage(),
                 'total' => $logs->lastPage(),
             ],
             'items' => $logs->items
-        ]);
+        ];
+    }
+
+    public function FindLogsBySubscription($subscription_id, $needle, $page, $limit)
+    {
+        $columns = Schema::getColumnListing('user_logs');
+
+        $logs = UserLog::where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
+            foreach ($columns as $column) {
+                $query->orWhere("$column", 'LIKE', "%$needle%");
+            }
+        })->orderBy('created_at', 'DESC')
+            ->paginate($limit, ['*'], 'page', $page);
+
+
+        return [
+            'pagination' => [
+                'per_page' => $logs->perPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
+            ],
+            'items' => $logs->items
+        ];
     }
 
     public function FindLogsBySubscriptionCount($subscription_id, $date): int

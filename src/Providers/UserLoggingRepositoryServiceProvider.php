@@ -1,0 +1,25 @@
+<?php
+
+namespace VolistxTeam\VSkeletonKernel\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
+use VolistxTeam\VSkeletonKernel\Repositories\LocalUserLogRepository;
+use VolistxTeam\VSkeletonKernel\Repositories\RemoteUserLogRepository;
+
+class UserLoggingRepositoryServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+
+    }
+
+    public function register()
+    {
+        if (config('log.userLogMode') === 'local') {
+            $this->app->bind(IUserLogRepository::class, LocalUserLogRepository::class);
+        } else {
+            $this->app->bind(IUserLogRepository::class, RemoteUserLogRepository::class);
+        }
+    }
+}

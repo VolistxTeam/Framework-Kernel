@@ -79,7 +79,7 @@ class AdminLogControllerTest extends BaseTestCase
         ]);
 
         self::assertResponseStatus(200);
-        self::assertSame($token->id, json_decode($request->response->getContent())->access_token->id);
+        self::assertSame($token->id, json_decode($request->response->getContent())->access_token_id);
     }
 
     /** @test */

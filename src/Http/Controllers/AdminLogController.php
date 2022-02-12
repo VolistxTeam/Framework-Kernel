@@ -42,7 +42,7 @@ class AdminLogController extends Controller
             if (!$log) {
                 return response()->json(Messages::E404(), 404);
             }
-            return response()->json(AdminLogDTO::fromModel($log)->GetDTO());
+            return response()->json($log->toArray());
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
@@ -75,7 +75,6 @@ class AdminLogController extends Controller
             if (!$logs) {
                 return response()->json(Messages::E500(), 500);
             }
-
             return response()->json($logs);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);

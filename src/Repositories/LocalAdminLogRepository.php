@@ -35,13 +35,13 @@ class LocalAdminLogRepository implements IAdminLogRepository
         $logs = $query->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
 
-        return response()->json([
+        return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
                 'current' => $logs->currentPage(),
                 'total' => $logs->lastPage(),
             ],
             'items' => $logs->items()
-        ]);
+        ];
     }
 }

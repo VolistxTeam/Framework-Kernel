@@ -8,15 +8,15 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IAdminLogRepository;
-use VolistxTeam\VSkeletonKernel\Repositories\UserLogRepository;
+use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
 use function config;
 
 class RequestLoggingMiddleware
 {
     private IAdminLogRepository $adminLogRepository;
-    private UserLogRepository $userLogRepository;
+    private IUserLogRepository $userLogRepository;
 
-    public function __construct(IAdminLogRepository $adminLogRepository, UserLogRepository $userLogRepository)
+    public function __construct(IAdminLogRepository $adminLogRepository, IUserLogRepository $userLogRepository)
     {
         $this->adminLogRepository = $adminLogRepository;
         $this->userLogRepository = $userLogRepository;
