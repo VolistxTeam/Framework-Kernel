@@ -19,17 +19,14 @@ $router->group(['prefix' => 'sys-bin'], function () use ($router) {
                 $router->post('/', 'VolistxTeam\VSkeletonKernel\Http\Controllers\SubscriptionController@CreateSubscription');
                 $router->put('/{subscription_id}', 'VolistxTeam\VSkeletonKernel\Http\Controllers\SubscriptionController@UpdateSubscription');
 
-
                 $router->post('/{subscription_id}/personal-tokens', 'VolistxTeam\VSkeletonKernel\Http\Controllers\PersonalTokenController@CreatePersonalToken');
                 $router->put('/{subscription_id}/personal-tokens/{token_id}', 'VolistxTeam\VSkeletonKernel\Http\Controllers\PersonalTokenController@UpdatePersonalToken');
-
             });
 
             $router->delete('/{subscription_id}', 'VolistxTeam\VSkeletonKernel\Http\Controllers\SubscriptionController@DeleteSubscription');
             $router->get('/', 'VolistxTeam\VSkeletonKernel\Http\Controllers\SubscriptionController@GetSubscriptions');
             $router->get('/{subscription_id}', 'VolistxTeam\VSkeletonKernel\Http\Controllers\SubscriptionController@GetSubscription');
             $router->get('/{subscription_id}/logs', 'VolistxTeam\VSkeletonKernel\Http\Controllers\SubscriptionController@GetSubscriptionLogs');
-
 
             $router->delete('/{subscription_id}/personal-tokens/{token_id}', 'VolistxTeam\VSkeletonKernel\Http\Controllers\PersonalTokenController@DeletePersonalToken');
             $router->put('/{subscription_id}/personal-tokens/{token_id}/reset', 'VolistxTeam\VSkeletonKernel\Http\Controllers\PersonalTokenController@ResetPersonalToken');

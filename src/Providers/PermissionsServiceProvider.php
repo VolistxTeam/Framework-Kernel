@@ -14,7 +14,6 @@ class PermissionsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
     }
 
     /**

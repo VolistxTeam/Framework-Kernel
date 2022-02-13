@@ -13,13 +13,13 @@ class PersonalTokenRepository
     {
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
-            'key' => substr($inputs['key'], 0, 32),
-            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt' => $inputs['salt'],
-            'permissions' => $inputs['permissions'],
+            'key'             => substr($inputs['key'], 0, 32),
+            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt'     => $inputs['salt'],
+            'permissions'     => $inputs['permissions'],
             'whitelist_range' => $inputs['whitelist_range'],
-            'activated_at' => Carbon::now(),
-            'expires_at' => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null
+            'activated_at'    => Carbon::now(),
+            'expires_at'      => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
         ]);
     }
 
@@ -39,11 +39,17 @@ class PersonalTokenRepository
             return $token;
         }
 
-        if ($permissions) $token->permissions = $permissions;
+        if ($permissions) {
+            $token->permissions = $permissions;
+        }
 
-        if ($whitelistRange) $token->whitelist_range = $whitelistRange;
+        if ($whitelistRange) {
+            $token->whitelist_range = $whitelistRange;
+        }
 
-        if ($hours_to_expire) $token->expires_at = $hours_to_expire != -1 ? Carbon::createFromTimeString($token->activated_at)->addHours($hours_to_expire) : null;
+        if ($hours_to_expire) {
+            $token->expires_at = $hours_to_expire != -1 ? Carbon::createFromTimeString($token->activated_at)->addHours($hours_to_expire) : null;
+        }
 
         $token->save();
 
@@ -82,7 +88,7 @@ class PersonalTokenRepository
         $toBeDeletedToken->delete();
 
         return [
-            'result' => 'true'
+            'result' => 'true',
         ];
     }
 

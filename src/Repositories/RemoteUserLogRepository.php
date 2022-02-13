@@ -23,9 +23,9 @@ class RemoteUserLogRepository implements IUserLogRepository
         $response = $this->client->post($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => "application/json"
+                'Content-Type'  => 'application/json',
             ],
-            'body' => json_encode($inputs)
+            'body' => json_encode($inputs),
         ]);
 
         return json_decode($response->getBody()->getContents());
@@ -36,7 +36,7 @@ class RemoteUserLogRepository implements IUserLogRepository
         $response = $this->client->get("$this->httpBaseUrl/{$log_id}", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => "application/json"
+                'Content-Type'  => 'application/json',
             ],
         ]);
 
@@ -48,15 +48,15 @@ class RemoteUserLogRepository implements IUserLogRepository
         $response = $this->client->get("$this->httpBaseUrl", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => "application/json"
+                'Content-Type'  => 'application/json',
             ],
             [
                 'query' => [
                     'search' => $needle,
-                    'page' => $page,
-                    'limit' => $limit
-                ]
-            ]
+                    'page'   => $page,
+                    'limit'  => $limit,
+                ],
+            ],
         ]);
 
         return json_decode($response->getBody()->getContents());
@@ -67,15 +67,15 @@ class RemoteUserLogRepository implements IUserLogRepository
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => "application/json"
+                'Content-Type'  => 'application/json',
             ],
             [
                 'query' => [
                     'search' => $needle,
-                    'page' => $page,
-                    'limit' => $limit
-                ]
-            ]
+                    'page'   => $page,
+                    'limit'  => $limit,
+                ],
+            ],
         ]);
 
         return json_decode($response->getBody()->getContents());
@@ -86,13 +86,13 @@ class RemoteUserLogRepository implements IUserLogRepository
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id/count", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => "application/json"
+                'Content-Type'  => 'application/json',
             ],
             [
                 'query' => [
                     'date' => $date,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         return json_decode($response->getBody()->getContents());

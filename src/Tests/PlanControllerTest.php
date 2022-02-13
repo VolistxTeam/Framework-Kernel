@@ -17,7 +17,7 @@ class PlanControllerTest extends BaseTestCase
 
     public function createApplication(): Application
     {
-        return require __DIR__ . '/../bootstrap/app.php';
+        return require __DIR__.'/../bootstrap/app.php';
     }
 
     /** @test */
@@ -29,43 +29,44 @@ class PlanControllerTest extends BaseTestCase
         $this->TestPermissions($token, $key, 'POST', '/sys-bin/admin/plans/', [
             'plans:*' => 201,
         ], [
-            "name" => "name1",
-            "description" => "description",
-            "data" => array('requests' => 50)
+            'name'        => 'name1',
+            'description' => 'description',
+            'data'        => ['requests' => 50],
         ]);
 
         $this->TestPermissions($token, $key, 'POST', '/sys-bin/admin/plans/', [
             '' => 401,
         ], [
-            "name" => "name",
-            "description" => "description",
-            "data" => array('requests' => 50)
+            'name'        => 'name',
+            'description' => 'description',
+            'data'        => ['requests' => 50],
         ]);
 
         $this->TestPermissions($token, $key, 'POST', '/sys-bin/admin/plans/', [
-            'plans:create' => 201
+            'plans:create' => 201,
         ], [
-            "name" => "name2",
-            "description" => "description",
-            "data" => array('requests' => 50)
+            'name'        => 'name2',
+            'description' => 'description',
+            'data'        => ['requests' => 50],
         ]);
     }
 
     private function GenerateAccessToken($key)
     {
         $salt = Str::random(16);
+
         return AccessToken::factory()
-            ->create(['key' => substr($key, 0, 32),
-                'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            ->create(['key'   => substr($key, 0, 32),
+                'secret'      => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
                 'secret_salt' => $salt,
-                'permissions' => array('plans:*')]);
+                'permissions' => ['plans:*'], ]);
     }
 
     /** @test */
     private function TestPermissions($token, $key, $verb, $route, $permissions, $input = [])
     {
         foreach ($permissions as $permissionName => $permissionResult) {
-            $token->permissions = array($permissionName);
+            $token->permissions = [$permissionName];
             $token->save();
 
             $request = $this->json($verb, $route, $input, [
@@ -82,16 +83,16 @@ class PlanControllerTest extends BaseTestCase
         $this->GenerateAccessToken($key);
 
         $request = $this->json('POST', '/sys-bin/admin/plans/', [
-            "name" => "name",
-            "description" => "description",
-            "data" => array('requests' => 50)
+            'name'        => 'name',
+            'description' => 'description',
+            'data'        => ['requests' => 50],
         ], [
             'Authorization' => "Bearer $key",
         ]);
 
         self::assertResponseStatus(201);
-        self::assertSame("name", json_decode($request->response->getContent())->name);
-        self::assertSame("description", json_decode($request->response->getContent())->description);
+        self::assertSame('name', json_decode($request->response->getContent())->name);
+        self::assertSame('description', json_decode($request->response->getContent())->description);
         self::assertSame(50, json_decode($request->response->getContent())->data->requests);
     }
 
@@ -102,11 +103,17 @@ class PlanControllerTest extends BaseTestCase
         $token = $this->GenerateAccessToken($key);
         $plan = $this->GeneratePlan();
 
-        $this->TestPermissions($token, $key, 'PUT', "/sys-bin/admin/plans/{$plan->id}", [
-            'plans:*' => 200,
-            'plans:update' => 200,
-            '' => 401
-        ], [
+        $this->TestPermissions(
+            $token,
+            $key,
+            'PUT',
+            "/sys-bin/admin/plans/{$plan->id}",
+            [
+                'plans:*'      => 200,
+                'plans:update' => 200,
+                ''             => 401,
+            ],
+            [
             ]
         );
     }
@@ -124,13 +131,13 @@ class PlanControllerTest extends BaseTestCase
         $plan = $this->GeneratePlan();
 
         $request = $this->json('PUT', "/sys-bin/admin/plans/{$plan->id}", [
-            'name' => "UpdatedName"
+            'name' => 'UpdatedName',
         ], [
             'Authorization' => "Bearer $key",
         ]);
 
         self::assertResponseStatus(200);
-        self::assertSame("UpdatedName", json_decode($request->response->getContent())->name);
+        self::assertSame('UpdatedName', json_decode($request->response->getContent())->name);
     }
 
     /** @test */
@@ -151,7 +158,7 @@ class PlanControllerTest extends BaseTestCase
 
         $plan = $this->GeneratePlan();
         $this->TestPermissions($token, $key, 'DELETE', "/sys-bin/admin/plans/{$plan->id}", [
-            '' => 401
+            '' => 401,
         ]);
     }
 
@@ -189,9 +196,9 @@ class PlanControllerTest extends BaseTestCase
         $plan = $this->GeneratePlan();
 
         $this->TestPermissions($token, $key, 'GET', "/sys-bin/admin/plans/{$plan->id}", [
-            'plans:*' => 200,
-            '' => 401,
-            'plans:view' => 200
+            'plans:*'    => 200,
+            ''           => 401,
+            'plans:view' => 200,
         ]);
     }
 
@@ -217,10 +224,10 @@ class PlanControllerTest extends BaseTestCase
         $token = $this->GenerateAccessToken($key);
         $sub = $this->GeneratePlan();
 
-        $this->TestPermissions($token, $key, 'GET', "/sys-bin/admin/plans/", [
-            'plans:*' => 200,
-            '' => 401,
-            'plans:view-all' => 200
+        $this->TestPermissions($token, $key, 'GET', '/sys-bin/admin/plans/', [
+            'plans:*'        => 200,
+            ''               => 401,
+            'plans:view-all' => 200,
         ]);
     }
 
@@ -232,14 +239,14 @@ class PlanControllerTest extends BaseTestCase
         $this->GeneratePlan();
         $this->GeneratePlan();
 
-        $request = $this->json('GET', "/sys-bin/admin/plans/", [], [
+        $request = $this->json('GET', '/sys-bin/admin/plans/', [], [
             'Authorization' => "Bearer $key",
         ]);
 
         self::assertResponseStatus(200);
         self::assertCount(2, json_decode($request->response->getContent())->items);
 
-        $request = $this->json('GET', "/sys-bin/admin/plans/?limit=1", [], [
+        $request = $this->json('GET', '/sys-bin/admin/plans/?limit=1', [], [
             'Authorization' => "Bearer $key",
         ]);
 

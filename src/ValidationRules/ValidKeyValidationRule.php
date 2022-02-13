@@ -13,9 +13,10 @@ class ValidKeyValidationRule extends ValidationRuleBase
         if (!$token) {
             return [
                 'message' => Messages::E403(),
-                'code' => 403
+                'code'    => 403,
             ];
         }
+
         return true;
     }
 }

@@ -16,9 +16,8 @@ class AdminLogControllerTest extends BaseTestCase
 
     public function createApplication(): Application
     {
-        return require __DIR__ . '/../bootstrap/app.php';
+        return require __DIR__.'/../bootstrap/app.php';
     }
-
 
     /** @test */
     public function AuthorizeGetLogPermissions()
@@ -28,9 +27,9 @@ class AdminLogControllerTest extends BaseTestCase
         $log = AdminLog::query()->first();
 
         $this->TestPermissions($token, $key, 'GET', "/sys-bin/admin/logs/{$log->id}", [
-            'logs:*' => 200,
-            '' => 401,
-            'logs:view' => 200
+            'logs:*'    => 200,
+            ''          => 401,
+            'logs:view' => 200,
         ]);
     }
 
@@ -38,13 +37,13 @@ class AdminLogControllerTest extends BaseTestCase
     {
         $salt = Str::random(16);
         $token = AccessToken::factory()
-            ->create(['key' => substr($key, 0, 32),
-                'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            ->create(['key'   => substr($key, 0, 32),
+                'secret'      => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
                 'secret_salt' => $salt,
-                'permissions' => array('logs:*')]);
+                'permissions' => ['logs:*'], ]);
 
         AdminLog::factory()->count($logsCount)->create([
-            'access_token_id' => $token->id
+            'access_token_id' => $token->id,
         ]);
 
         return $token;
@@ -54,7 +53,7 @@ class AdminLogControllerTest extends BaseTestCase
     private function TestPermissions($token, $key, $verb, $route, $permissions, $input = [])
     {
         foreach ($permissions as $permissionName => $permissionResult) {
-            $token->permissions = array($permissionName);
+            $token->permissions = [$permissionName];
             $token->save();
 
             $request = $this->json($verb, $route, $input, [
@@ -72,9 +71,8 @@ class AdminLogControllerTest extends BaseTestCase
         $token = $this->GenerateAccessToken($key, 1);
         $log = AdminLog::query()->first();
 
-
         $request = $this->json('GET', "/sys-bin/admin/logs/{$log->id}", [], [
-            'Authorization' => "Bearer $key"
+            'Authorization' => "Bearer $key",
         ]);
 
         self::assertResponseStatus(200);
@@ -87,10 +85,10 @@ class AdminLogControllerTest extends BaseTestCase
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 5);
 
-        $this->TestPermissions($token, $key, 'GET', "/sys-bin/admin/logs/", [
-            'logs:*' => 200,
-            '' => 401,
-            'logs:view-all' => 200
+        $this->TestPermissions($token, $key, 'GET', '/sys-bin/admin/logs/', [
+            'logs:*'        => 200,
+            ''              => 401,
+            'logs:view-all' => 200,
         ]);
     }
 
@@ -100,20 +98,18 @@ class AdminLogControllerTest extends BaseTestCase
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 50);
 
-
-        $request = $this->json('GET', "/sys-bin/admin/logs/", [], [
+        $request = $this->json('GET', '/sys-bin/admin/logs/', [], [
             'Authorization' => "Bearer $key",
         ]);
 
         self::assertResponseStatus(200);
         self::assertCount(50, json_decode($request->response->getContent())->items);
 
-        $request = $this->json('GET', "/sys-bin/admin/logs/?limit=1", [], [
+        $request = $this->json('GET', '/sys-bin/admin/logs/?limit=1', [], [
             'Authorization' => "Bearer $key",
         ]);
 
         self::assertResponseStatus(200);
         self::assertCount(1, json_decode($request->response->getContent())->items);
     }
-
 }

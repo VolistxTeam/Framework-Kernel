@@ -32,10 +32,12 @@ class ParametersSanitizerMiddleware
                     $value = null;
                 }
             } else {
-                if ($this->trim)
+                if ($this->trim) {
                     $value = trim($value);
-                if ($this->lowerCase)
+                }
+                if ($this->lowerCase) {
                     $value = strtolower($value);
+                }
             }
         });
     }

@@ -6,12 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use VolistxTeam\VSkeletonKernel\Facades\Messages;
 use VolistxTeam\VSkeletonKernel\Repositories\PersonalTokenRepository;
-use VolistxTeam\VSkeletonKernel\ValidationRules\IPValidationRule;
-use VolistxTeam\VSkeletonKernel\ValidationRules\KeyExpiryValidationRule;
-use VolistxTeam\VSkeletonKernel\ValidationRules\RateLimitValidationRule;
-use VolistxTeam\VSkeletonKernel\ValidationRules\RequestsCountValidationRule;
-use VolistxTeam\VSkeletonKernel\ValidationRules\ValidationRuleBase;
-use VolistxTeam\VSkeletonKernel\ValidationRules\ValidKeyValidationRule;
 
 class UserAuthMiddleware
 {
@@ -21,7 +15,6 @@ class UserAuthMiddleware
     {
         $this->personalTokenRepository = $personalTokenRepository;
     }
-
 
     public function handle(Request $request, Closure $next)
     {
@@ -40,8 +33,8 @@ class UserAuthMiddleware
         //prepare inputs array
         $inputs = [
             'request' => $request,
-            'token' => $token,
-            'plan' => $plan
+            'token'   => $token,
+            'plan'    => $plan,
         ];
 
         $getValidators = config('volistx.validators');
@@ -61,7 +54,7 @@ class UserAuthMiddleware
 
         $request->merge([
             'X_PERSONAL_TOKEN' => $token,
-            'PLAN' => $plan
+            'PLAN'             => $plan,
         ]);
 
         return $next($request);

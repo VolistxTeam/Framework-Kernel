@@ -11,11 +11,11 @@ class AccessTokenRepository
     public function Create($subscription_id, array $inputs)
     {
         return AccessToken::query()->create([
-            'key' => substr($inputs['key'], 0, 32),
-            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt' => $inputs['salt'],
-            'permissions' => $inputs['permissions'],
-            'whitelist_range' => $inputs['whitelist_range']
+            'key'             => substr($inputs['key'], 0, 32),
+            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt'     => $inputs['salt'],
+            'permissions'     => $inputs['permissions'],
+            'whitelist_range' => $inputs['whitelist_range'],
         ]);
     }
 
@@ -34,10 +34,13 @@ class AccessTokenRepository
             return $token;
         }
 
+        if ($permissions) {
+            $token->permissions = json_encode($permissions);
+        }
 
-        if ($permissions) $token->permissions = json_encode($permissions);
-
-        if ($whitelistRange) $token->whitelist_range = json_encode($whitelistRange);
+        if ($whitelistRange) {
+            $token->whitelist_range = json_encode($whitelistRange);
+        }
 
         $token->save();
 
@@ -76,7 +79,7 @@ class AccessTokenRepository
         $toBeDeletedToken->delete();
 
         return [
-            'result' => 'true'
+            'result' => 'true',
         ];
     }
 
@@ -88,6 +91,7 @@ class AccessTokenRepository
         foreach ($columns as $column) {
             $query->orWhere("$column", 'LIKE', "%$needle%");
         }
+
         return $query->paginate($limit, ['*'], 'page', $page);
     }
 

@@ -23,9 +23,9 @@ class SubscriptionFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->randomNumber(),
+            'user_id'           => $this->faker->randomNumber(),
             'plan_activated_at' => Carbon::now(),
-            'plan_expires_at' => Carbon::now()->addHours($this->faker->numberBetween(24, 720))
+            'plan_expires_at'   => Carbon::now()->addHours($this->faker->numberBetween(24, 720)),
         ];
     }
 }

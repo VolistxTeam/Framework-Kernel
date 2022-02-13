@@ -10,10 +10,10 @@ class SubscriptionRepository
     public function Create(array $inputs)
     {
         return Subscription::query()->create([
-            'user_id' => $inputs['user_id'],
-            'plan_id' => $inputs['plan_id'],
+            'user_id'           => $inputs['user_id'],
+            'plan_id'           => $inputs['plan_id'],
             'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at' => $inputs['plan_expires_at'],
+            'plan_expires_at'   => $inputs['plan_expires_at'],
         ]);
     }
 
@@ -29,14 +29,19 @@ class SubscriptionRepository
         $plan_activated_at = $inputs['plan_activated_at'] ?? null;
         $plan_id = $inputs['plan_id'] ?? null;
 
-
         if (!$plan_expires_at && !$plan_id && !$plan_activated_at) {
             return $subscription;
         }
 
-        if ($plan_id) $subscription->plan_id = $plan_id;
-        if ($plan_activated_at) $subscription->plan_activated_at = $plan_activated_at;
-        if ($plan_expires_at) $subscription->plan_expires_at = $plan_expires_at;
+        if ($plan_id) {
+            $subscription->plan_id = $plan_id;
+        }
+        if ($plan_activated_at) {
+            $subscription->plan_activated_at = $plan_activated_at;
+        }
+        if ($plan_expires_at) {
+            $subscription->plan_expires_at = $plan_expires_at;
+        }
 
         $subscription->save();
 
@@ -59,7 +64,7 @@ class SubscriptionRepository
         $toBeDeletedSub->delete();
 
         return [
-            'result' => 'true'
+            'result' => 'true',
         ];
     }
 

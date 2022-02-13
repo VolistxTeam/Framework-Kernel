@@ -7,9 +7,9 @@ use VolistxTeam\VSkeletonKernel\Repositories\AccessTokenRepository;
 
 class DeleteCommand extends Command
 {
-    protected $signature = "access-key:delete {--key=}";
+    protected $signature = 'access-key:delete {--key=}';
 
-    protected $description = "Delete an access key";
+    protected $description = 'Delete an access key';
 
     public function handle()
     {
@@ -17,6 +17,7 @@ class DeleteCommand extends Command
 
         if (empty($token)) {
             $this->error('Please specify your access key to delete.');
+
             return;
         }
 
@@ -25,11 +26,12 @@ class DeleteCommand extends Command
 
         if (!$accessToken) {
             $this->error('The specified access key is invalid.');
+
             return;
         }
 
         $accessToken->delete();
 
-        $this->info('Your access key is deleted: ' . $token);
+        $this->info('Your access key is deleted: '.$token);
     }
 }

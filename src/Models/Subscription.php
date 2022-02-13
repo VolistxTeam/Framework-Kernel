@@ -34,14 +34,13 @@ class Subscription extends Model
         'user_id',
         'plan_id',
         'plan_activated_at',
-        'plan_expires_at'
+        'plan_expires_at',
     ];
 
     protected $casts = [
         'plan_activated_at' => 'date:Y-m-d H:i:s',
-        'plan_expires_at' => 'date:Y-m-d H:i:s',
+        'plan_expires_at'   => 'date:Y-m-d H:i:s',
     ];
-
 
     public function personalTokens(): HasMany
     {
@@ -52,5 +51,4 @@ class Subscription extends Model
     {
         return $this->belongsTo(Plan::class);
     }
-
 }
