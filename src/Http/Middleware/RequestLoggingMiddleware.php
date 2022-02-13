@@ -24,7 +24,7 @@ class RequestLoggingMiddleware
         return $next($request);
     }
 
-    public function terminate(Request $request, Response $response)
+    public function terminate(Request $request, Response $response): void
     {
         if ($request->X_PERSONAL_TOKEN) {
             $inputs = [

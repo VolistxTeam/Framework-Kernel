@@ -9,7 +9,7 @@ use VolistxTeam\VSkeletonKernel\Models\PersonalToken;
 
 class PersonalTokenRepository
 {
-    public function Create($subscription_id, array $inputs)
+    public function Create($subscription_id, array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
     {
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
@@ -56,12 +56,17 @@ class PersonalTokenRepository
         return $token;
     }
 
-    public function Find($subscription_id, $token_id)
+    public function Find($subscription_id, $token_id): object|null
     {
         return PersonalToken::query()->where('id', $token_id)->where('subscription_id', $subscription_id)->first();
     }
 
-    public function Reset($subscription_id, $token_id, $inputs)
+    /**
+     * @param (mixed|string)[] $inputs
+     *
+     * @psalm-param array{key: mixed, salt: string} $inputs
+     */
+    public function Reset($subscription_id, $token_id, array $inputs)
     {
         $token = $this->Find($subscription_id, $token_id);
 
@@ -77,7 +82,12 @@ class PersonalTokenRepository
         return $token;
     }
 
-    public function Delete($subscription_id, $token_id)
+    /**
+     * @return null|string[]
+     *
+     * @psalm-return array{result: 'true'}|null
+     */
+    public function Delete($subscription_id, $token_id): array|null
     {
         $toBeDeletedToken = $this->Find($subscription_id, $token_id);
 
@@ -103,7 +113,10 @@ class PersonalTokenRepository
         })->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function AuthPersonalToken($token)
+    /**
+     * @param null|string $token
+     */
+    public function AuthPersonalToken(string|null $token)
     {
         return PersonalToken::query()->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {

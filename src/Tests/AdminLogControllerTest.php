@@ -19,8 +19,10 @@ class AdminLogControllerTest extends BaseTestCase
         return require __DIR__.'/../bootstrap/app.php';
     }
 
-    /** @test */
-    public function AuthorizeGetLogPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetLogPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 1);
@@ -33,7 +35,7 @@ class AdminLogControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken($key, $logsCount)
+    private function GenerateAccessToken(string $key, int $logsCount): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
     {
         $salt = Str::random(16);
         $token = AccessToken::factory()
@@ -49,8 +51,15 @@ class AdminLogControllerTest extends BaseTestCase
         return $token;
     }
 
-    /** @test */
-    private function TestPermissions($token, $key, $verb, $route, $permissions, $input = [])
+    /**
+     * @test
+     *
+     * @param int[] $permissions
+     *
+     * @psalm-param 'GET' $verb
+     * @psalm-param array{'logs:*': 200, '': 401, 'logs:view'?: 200, 'logs:view-all'?: 200} $permissions
+     */
+    private function TestPermissions($token, string $key, string $verb, string $route, array $permissions, $input = []): void
     {
         foreach ($permissions as $permissionName => $permissionResult) {
             $token->permissions = [$permissionName];
@@ -63,8 +72,10 @@ class AdminLogControllerTest extends BaseTestCase
         }
     }
 
-    /** @test */
-    public function GetLog()
+    /**
+     * @test
+     */
+    public function GetLog(): void
     {
         $x = config('volistx.logging.adminLogMode');
         $key = Str::random(64);
@@ -79,8 +90,10 @@ class AdminLogControllerTest extends BaseTestCase
         self::assertSame($token->id, json_decode($request->response->getContent())->access_token_id);
     }
 
-    /** @test */
-    public function AuthorizeGetLogsPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetLogsPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 5);
@@ -92,8 +105,10 @@ class AdminLogControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetLogs()
+    /**
+     * @test
+     */
+    public function GetLogs(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 50);

@@ -2,12 +2,13 @@
 
 namespace VolistxTeam\VSkeletonKernel\Repositories;
 
+use Exception;
 use Illuminate\Support\Facades\Schema;
 use VolistxTeam\VSkeletonKernel\Models\Plan;
 
 class PlanRepository
 {
-    public function Create(array $inputs)
+    public function Create(array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
     {
         return Plan::query()->create([
             'name'        => $inputs['name'],
@@ -47,12 +48,17 @@ class PlanRepository
         return $plan;
     }
 
-    public function Find($plan_id)
+    public function Find($plan_id): object|null
     {
         return Plan::query()->where('id', $plan_id)->first();
     }
 
-    public function Delete($plan_id)
+    /**
+     * @return false|null|string[]
+     *
+     * @psalm-return array{result: 'true'}|false|null
+     */
+    public function Delete($plan_id): array|false|null
     {
         $toBeDeletedPlan = $this->Find($plan_id);
 
@@ -66,12 +72,12 @@ class PlanRepository
             return [
                 'result' => 'true',
             ];
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return false;
         }
     }
 
-    public function FindAll($needle, $page, $limit)
+    public function FindAll($needle, int $page, int $limit): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('plans');
 

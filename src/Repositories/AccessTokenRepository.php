@@ -8,7 +8,7 @@ use VolistxTeam\VSkeletonKernel\Models\AccessToken;
 
 class AccessTokenRepository
 {
-    public function Create($subscription_id, array $inputs)
+    public function Create($subscription_id, array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
     {
         return AccessToken::query()->create([
             'key'             => substr($inputs['key'], 0, 32),
@@ -47,7 +47,7 @@ class AccessTokenRepository
         return $token;
     }
 
-    public function Find($token_id)
+    public function Find($token_id): object|null
     {
         return AccessToken::query()->where('id', $token_id)->first();
     }
@@ -68,7 +68,12 @@ class AccessTokenRepository
         return $token;
     }
 
-    public function Delete($token_id)
+    /**
+     * @return null|string[]
+     *
+     * @psalm-return array{result: 'true'}|null
+     */
+    public function Delete($token_id): array|null
     {
         $toBeDeletedToken = $this->Find($token_id);
 
@@ -83,7 +88,7 @@ class AccessTokenRepository
         ];
     }
 
-    public function FindAll($needle, $page, $limit)
+    public function FindAll($needle, $page, $limit): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('access_tokens');
         $query = AccessToken::query();
@@ -95,7 +100,10 @@ class AccessTokenRepository
         return $query->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function AuthAccessToken($token)
+    /**
+     * @param array|null|string|true $token
+     */
+    public function AuthAccessToken(array|bool|string|null $token)
     {
         return AccessToken::query()->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {

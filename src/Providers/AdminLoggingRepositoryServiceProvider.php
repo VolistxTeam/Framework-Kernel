@@ -9,7 +9,7 @@ use VolistxTeam\VSkeletonKernel\Repositories\RemoteAdminLogRepository;
 
 class AdminLoggingRepositoryServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
     }
 

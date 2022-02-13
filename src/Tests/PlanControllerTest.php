@@ -20,8 +20,10 @@ class PlanControllerTest extends BaseTestCase
         return require __DIR__.'/../bootstrap/app.php';
     }
 
-    /** @test */
-    public function AuthorizeCreatePlanPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeCreatePlanPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -51,7 +53,7 @@ class PlanControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken($key)
+    private function GenerateAccessToken(string $key): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
     {
         $salt = Str::random(16);
 
@@ -62,8 +64,16 @@ class PlanControllerTest extends BaseTestCase
                 'permissions' => ['plans:*'], ]);
     }
 
-    /** @test */
-    private function TestPermissions($token, $key, $verb, $route, $permissions, $input = [])
+    /**
+     * @test
+     *
+     * @param int[] $permissions
+     * @param (int[]|string)[] $input
+     *
+     * @psalm-param array{'plans:*'?: 200|201|204, ''?: 401, 'plans:create'?: 201, 'plans:update'?: 200, 'plans:delete'?: 204, 'plans:view'?: 200, 'plans:view-all'?: 200} $permissions
+     * @psalm-param array{name?: 'name'|'name1'|'name2', description?: 'description', data?: array{requests: 50}} $input
+     */
+    private function TestPermissions($token, string $key, string $verb, string $route, array $permissions, array $input = []): void
     {
         foreach ($permissions as $permissionName => $permissionResult) {
             $token->permissions = [$permissionName];
@@ -76,8 +86,10 @@ class PlanControllerTest extends BaseTestCase
         }
     }
 
-    /** @test */
-    public function CreatePlan()
+    /**
+     * @test
+     */
+    public function CreatePlan(): void
     {
         $key = Str::random(64);
         $this->GenerateAccessToken($key);
@@ -96,8 +108,10 @@ class PlanControllerTest extends BaseTestCase
         self::assertSame(50, json_decode($request->response->getContent())->data->requests);
     }
 
-    /** @test */
-    public function AuthorizeUpdatePlanPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeUpdatePlanPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -118,13 +132,15 @@ class PlanControllerTest extends BaseTestCase
         );
     }
 
-    private function GeneratePlan($subCount = 0)
+    private function GeneratePlan(int $subCount = 0): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
     {
         return Plan::factory()->has(Subscription::factory()->count($subCount))->create();
     }
 
-    /** @test */
-    public function UpdatePlan()
+    /**
+     * @test
+     */
+    public function UpdatePlan(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -140,8 +156,10 @@ class PlanControllerTest extends BaseTestCase
         self::assertSame('UpdatedName', json_decode($request->response->getContent())->name);
     }
 
-    /** @test */
-    public function AuthorizeDeletePlanPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeDeletePlanPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -162,8 +180,10 @@ class PlanControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function DeleteNonDependantPlan()
+    /**
+     * @test
+     */
+    public function DeleteNonDependantPlan(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -175,8 +195,10 @@ class PlanControllerTest extends BaseTestCase
         self::assertResponseStatus(204);
     }
 
-    /** @test */
-    public function PreventDeleteDependantPlan()
+    /**
+     * @test
+     */
+    public function PreventDeleteDependantPlan(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -188,8 +210,10 @@ class PlanControllerTest extends BaseTestCase
         self::assertResponseStatus(409);
     }
 
-    /** @test */
-    public function AuthorizeGetPlanPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetPlanPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -202,8 +226,10 @@ class PlanControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetPlan()
+    /**
+     * @test
+     */
+    public function GetPlan(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -217,8 +243,10 @@ class PlanControllerTest extends BaseTestCase
         self::assertNotEmpty(json_decode($request->response->getContent())->name);
     }
 
-    /** @test */
-    public function AuthorizeGetPlansPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetPlansPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -231,8 +259,10 @@ class PlanControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetPlans()
+    /**
+     * @test
+     */
+    public function GetPlans(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);

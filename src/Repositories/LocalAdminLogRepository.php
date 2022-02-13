@@ -8,6 +8,9 @@ use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IAdminLogRepository;
 
 class LocalAdminLogRepository implements IAdminLogRepository
 {
+    /**
+     * @return void
+     */
     public function Create(array $inputs)
     {
         AdminLog::query()->create([
@@ -19,11 +22,19 @@ class LocalAdminLogRepository implements IAdminLogRepository
         ]);
     }
 
+    /**
+     * @return null|object
+     */
     public function Find($log_id)
     {
         return AdminLog::query()->where('id', $log_id)->first();
     }
 
+    /**
+     * @return array[]
+     *
+     * @psalm-return array{pagination: array{per_page: int, current: int, total: int}, items: array}
+     */
     public function FindAll($needle, $page, $limit)
     {
         $columns = Schema::getColumnListing('admin_logs');

@@ -7,7 +7,7 @@ use VolistxTeam\VSkeletonKernel\Models\Subscription;
 
 class SubscriptionRepository
 {
-    public function Create(array $inputs)
+    public function Create(array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
     {
         return Subscription::query()->create([
             'user_id'           => $inputs['user_id'],
@@ -48,12 +48,17 @@ class SubscriptionRepository
         return $subscription;
     }
 
-    public function Find($subscriptionID)
+    public function Find($subscriptionID): object|null
     {
         return Subscription::query()->where('id', $subscriptionID)->first();
     }
 
-    public function Delete($subscriptionID)
+    /**
+     * @return null|string[]
+     *
+     * @psalm-return array{result: 'true'}|null
+     */
+    public function Delete($subscriptionID): array|null
     {
         $toBeDeletedSub = $this->Find($subscriptionID);
 
@@ -68,7 +73,7 @@ class SubscriptionRepository
         ];
     }
 
-    public function FindAll($needle, $page, $limit)
+    public function FindAll($needle, $page, $limit): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('subscriptions');
 

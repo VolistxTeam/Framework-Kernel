@@ -24,7 +24,7 @@ class ParametersSanitizerMiddleware
         return $next($request);
     }
 
-    private function Sanitize(&$inputs)
+    private function Sanitize(array &$inputs): void
     {
         array_walk_recursive($inputs, function (&$value) {
             if ($value === '') {

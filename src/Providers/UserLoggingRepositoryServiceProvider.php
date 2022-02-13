@@ -9,7 +9,7 @@ use VolistxTeam\VSkeletonKernel\Repositories\RemoteUserLogRepository;
 
 class UserLoggingRepositoryServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
     }
 

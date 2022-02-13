@@ -8,6 +8,9 @@ use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
 
 class LocalUserLogRepository implements IUserLogRepository
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     */
     public function Create(array $inputs)
     {
         return UserLog::query()->create([
@@ -19,11 +22,19 @@ class LocalUserLogRepository implements IUserLogRepository
         ]);
     }
 
+    /**
+     * @return null|object
+     */
     public function FindById($log_id)
     {
         return UserLog::query()->where('id', $log_id)->first();
     }
 
+    /**
+     * @return (array|mixed)[]
+     *
+     * @psalm-return array{pagination: array{per_page: mixed, current: mixed, total: mixed}, items: mixed}
+     */
     public function FindAll($needle, $page, $limit)
     {
         $columns = Schema::getColumnListing('user_logs');
@@ -45,6 +56,11 @@ class LocalUserLogRepository implements IUserLogRepository
         ];
     }
 
+    /**
+     * @return (array|mixed)[]
+     *
+     * @psalm-return array{pagination: array{per_page: mixed, current: mixed, total: mixed}, items: mixed}
+     */
     public function FindLogsBySubscription($subscription_id, $needle, $page, $limit)
     {
         $columns = Schema::getColumnListing('user_logs');

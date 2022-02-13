@@ -23,8 +23,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         return require __DIR__.'/../bootstrap/app.php';
     }
 
-    /** @test */
-    public function AuthorizeCreateTokenPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeCreateTokenPermissions(): void
     {
         $key = Str::random(64);
         $accessToken = $this->GenerateAccessToken($key);
@@ -41,7 +43,7 @@ class PersonalTokenControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken($key)
+    private function GenerateAccessToken(string $key): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
     {
         $salt = Str::random(16);
 
@@ -52,7 +54,7 @@ class PersonalTokenControllerTest extends BaseTestCase
                 'permissions' => ['personal-tokens:*'], ]);
     }
 
-    private function GenerateSub($userID, $tokenCount, $logs = 50)
+    private function GenerateSub(int $userID, int $tokenCount, $logs = 50): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
     {
         $sub = Subscription::factory()
             ->has(PersonalToken::factory()->count($tokenCount))
@@ -65,7 +67,7 @@ class PersonalTokenControllerTest extends BaseTestCase
         return $sub;
     }
 
-    private function TestPermissions($token, $key, $verb, $route, $permissions, $input = [])
+    private function TestPermissions($token, string $key, string $verb, string $route, array $permissions, array $input = []): void
     {
         foreach ($permissions as $permissionName => $permissionResult) {
             $token->permissions = [$permissionName];
@@ -78,8 +80,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         }
     }
 
-    /** @test */
-    public function CreateToken()
+    /**
+     * @test
+     */
+    public function CreateToken(): void
     {
         $key = Str::random(64);
         $this->GenerateAccessToken($key);
@@ -100,8 +104,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         self::assertSame(Carbon::createFromTimeString((json_decode($request->response->getContent())->token_status->activated_at))->addHours(500)->format('Y-m-d H:i:s'), json_decode($request->response->getContent())->token_status->expires_at);
     }
 
-    /** @test */
-    public function AuthorizeUpdateTokenPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeUpdateTokenPermissions(): void
     {
         $key = Str::random(64);
         $accessToken = $this->GenerateAccessToken($key);
@@ -123,8 +129,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         );
     }
 
-    /** @test */
-    public function UpdateToken()
+    /**
+     * @test
+     */
+    public function UpdateToken(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -148,8 +156,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         self::assertSame(Carbon::createFromTimeString($activated_at)->addHours(1000)->timestamp, Carbon::createFromTimeString($expires_at)->timestamp);
     }
 
-    /** @test */
-    public function AuthorizeResetTokenPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeResetTokenPermissions(): void
     {
         $key = Str::random(64);
         $accessToken = $this->GenerateAccessToken($key);
@@ -171,8 +181,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         );
     }
 
-    /** @test */
-    public function ResetToken()
+    /**
+     * @test
+     */
+    public function ResetToken(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -188,8 +200,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         self::assertNotSame($oldKey, json_decode($request->response->getContent())->key);
     }
 
-    /** @test */
-    public function AuthorizeDeleteTokenPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeDeleteTokenPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -211,8 +225,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function DeleteToken()
+    /**
+     * @test
+     */
+    public function DeleteToken(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -226,8 +242,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         self::assertResponseStatus(204);
     }
 
-    /** @test */
-    public function AuthorizeGetTokenPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetTokenPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -241,8 +259,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetToken()
+    /**
+     * @test
+     */
+    public function GetToken(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -257,8 +277,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         self::assertSame($personalToken->id, json_decode($request->response->getContent())->id);
     }
 
-    /** @test */
-    public function AuthorizeGetTokensPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetTokensPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -271,8 +293,10 @@ class PersonalTokenControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetTokens()
+    /**
+     * @test
+     */
+    public function GetTokens(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);

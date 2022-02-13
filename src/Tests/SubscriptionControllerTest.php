@@ -23,8 +23,10 @@ class SubscriptionControllerTest extends BaseTestCase
         return require __DIR__.'/../bootstrap/app.php';
     }
 
-    /** @test */
-    public function AuthorizeCreateSubPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeCreateSubPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -41,7 +43,7 @@ class SubscriptionControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken($key)
+    private function GenerateAccessToken(string $key): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
     {
         $salt = Str::random(16);
 
@@ -52,8 +54,16 @@ class SubscriptionControllerTest extends BaseTestCase
                 'permissions' => ['subscriptions:*'], ]);
     }
 
-    /** @test */
-    private function TestPermissions($token, $key, $verb, $route, $permissions, $input = [])
+    /**
+     * @test
+     *
+     * @param int[] $permissions
+     * @param (Carbon|int|mixed|null)[] $input
+     *
+     * @psalm-param array{'subscriptions:*'?: 200|201|204, 'subscriptions:create'?: 201, ''?: 401, 'subscriptions:update'?: 200, 'subscriptions:delete'?: 204, 'subscriptions:view'?: 200, 'subscriptions:view-all'?: 200, 'subscriptions:logs'?: 200} $permissions
+     * @psalm-param array{plan_id?: mixed|null, user_id?: 1, plan_activated_at?: Carbon, plan_expires_at?: Carbon} $input
+     */
+    private function TestPermissions($token, string $key, string $verb, string $route, array $permissions, array $input = []): void
     {
         foreach ($permissions as $permissionName => $permissionResult) {
             $token->permissions = [$permissionName];
@@ -66,8 +76,10 @@ class SubscriptionControllerTest extends BaseTestCase
         }
     }
 
-    /** @test */
-    public function CreateSub()
+    /**
+     * @test
+     */
+    public function CreateSub(): void
     {
         $key = Str::random(64);
         $this->GenerateAccessToken($key);
@@ -86,8 +98,10 @@ class SubscriptionControllerTest extends BaseTestCase
         self::assertSame(Plan::query()->first()->id, json_decode($request->response->getContent())->plan->id);
     }
 
-    /** @test */
-    public function AuthorizeUpdateSubPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeUpdateSubPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -108,7 +122,7 @@ class SubscriptionControllerTest extends BaseTestCase
         );
     }
 
-    private function GenerateSub($userID, $tokenCount = 5, $logs = 25)
+    private function GenerateSub(int $userID, $tokenCount = 5, $logs = 25): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
     {
         $sub = Subscription::factory()
             ->has(PersonalToken::factory()->count($tokenCount))
@@ -121,8 +135,10 @@ class SubscriptionControllerTest extends BaseTestCase
         return $sub;
     }
 
-    /** @test */
-    public function UpdateSub()
+    /**
+     * @test
+     */
+    public function UpdateSub(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -139,8 +155,10 @@ class SubscriptionControllerTest extends BaseTestCase
         self::assertSame(Plan::query()->skip(1)->first()->id, json_decode($request->response->getContent())->plan->id);
     }
 
-    /** @test */
-    public function AuthorizeDeleteSubPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeDeleteSubPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -161,8 +179,10 @@ class SubscriptionControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function DeleteSub()
+    /**
+     * @test
+     */
+    public function DeleteSub(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -175,8 +195,10 @@ class SubscriptionControllerTest extends BaseTestCase
         self::assertResponseStatus(204);
     }
 
-    /** @test */
-    public function AuthorizeGetSubPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetSubPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -189,8 +211,10 @@ class SubscriptionControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetSub()
+    /**
+     * @test
+     */
+    public function GetSub(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -204,8 +228,10 @@ class SubscriptionControllerTest extends BaseTestCase
         self::assertSame('0', json_decode($request->response->getContent())->user_id);
     }
 
-    /** @test */
-    public function AuthorizeGetSubsPermissions()
+    /**
+     * @test
+     */
+    public function AuthorizeGetSubsPermissions(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -218,8 +244,10 @@ class SubscriptionControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetSubs()
+    /**
+     * @test
+     */
+    public function GetSubs(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -241,8 +269,10 @@ class SubscriptionControllerTest extends BaseTestCase
         self::assertCount(1, json_decode($request->response->getContent())->items);
     }
 
-    /** @test */
-    public function AuthorizeGetSubLogs()
+    /**
+     * @test
+     */
+    public function AuthorizeGetSubLogs(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);
@@ -255,8 +285,10 @@ class SubscriptionControllerTest extends BaseTestCase
         ]);
     }
 
-    /** @test */
-    public function GetSubLogs()
+    /**
+     * @test
+     */
+    public function GetSubLogs(): void
     {
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key);

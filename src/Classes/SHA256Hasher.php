@@ -4,12 +4,15 @@ namespace VolistxTeam\VSkeletonKernel\Classes;
 
 class SHA256Hasher
 {
-    public static function info($hashedValue)
+    public static function info($hashedValue): array
     {
         return password_get_info($hashedValue);
     }
 
-    public static function make($value, array $options = [])
+    /**
+     * @return false|string
+     */
+    public static function make(string $value, array $options = []): string|false
     {
         $salt = $options['salt'] ?? '';
 
@@ -18,7 +21,7 @@ class SHA256Hasher
         return $hash;
     }
 
-    public static function check($value, $hashedValue, array $options = [])
+    public static function check(string $value, $hashedValue, array $options = []): bool
     {
         $salt = $options['salt'] ?? '';
 

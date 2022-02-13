@@ -10,7 +10,7 @@ use VolistxTeam\VSkeletonKernel\Console\Commands\GenerateCommand;
 
 class VolistxServiceProvider extends ServiceProvider
 {
-    public function boot(Router $router, GateContract $gate)
+    public function boot(Router $router, GateContract $gate): void
     {
         $this->publishes([
             __DIR__.'/../config/volistx.php' => config_path('volistx.php'),

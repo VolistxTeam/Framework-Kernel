@@ -67,7 +67,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    private function generateSubscriptionKey()
+    private function generateSubscriptionKey(): string
     {
         return Str::random(64);
     }

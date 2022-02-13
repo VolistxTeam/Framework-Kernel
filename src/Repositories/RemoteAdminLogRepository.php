@@ -18,6 +18,9 @@ class RemoteAdminLogRepository implements IAdminLogRepository
         $this->remoteToken = config('volistx.logging.adminLogHttpToken');
     }
 
+    /**
+     * @return void
+     */
     public function Create(array $inputs)
     {
         $this->client->post($this->httpBaseUrl, [

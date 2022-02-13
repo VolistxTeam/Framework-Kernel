@@ -13,7 +13,7 @@ class GenerateCommand extends Command
 
     protected $description = 'Create an access key';
 
-    public function handle()
+    public function handle(): void
     {
         $key = Str::random(64);
         $salt = Str::random(16);

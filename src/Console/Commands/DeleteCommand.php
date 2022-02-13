@@ -11,6 +11,9 @@ class DeleteCommand extends Command
 
     protected $description = 'Delete an access key';
 
+    /**
+     * @return void
+     */
     public function handle()
     {
         $token = $this->option('key');
