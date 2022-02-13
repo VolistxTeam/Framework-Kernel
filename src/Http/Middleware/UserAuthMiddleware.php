@@ -4,6 +4,7 @@ namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use VolistxTeam\VSkeletonKernel\Facades\Messages;
 use VolistxTeam\VSkeletonKernel\Repositories\PersonalTokenRepository;
 use VolistxTeam\VSkeletonKernel\ValidationRules\IPValidationRule;
 use VolistxTeam\VSkeletonKernel\ValidationRules\KeyExpiryValidationRule;
@@ -25,6 +26,10 @@ class UserAuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         $token = $this->personalTokenRepository->AuthPersonalToken($request->bearerToken());
+
+        if (!$token) {
+            return response()->json(Messages::E500());
+        }
         $plan = $token->subscription()->first()->plan()->first();
         //prepare inputs array
         $inputs = [
@@ -33,10 +38,7 @@ class UserAuthMiddleware
             'plan' => $plan
         ];
 
-
         $getValidators = config('volistx.validators');
-        //add extra validators in the required order.
-        //To be refactored to detect all classes with a base of ValidationRuleBase and create instance of them passing parameters, and ordering them by id
 
         $validators = [];
 
