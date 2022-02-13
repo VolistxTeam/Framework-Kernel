@@ -3,10 +3,10 @@
 namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Wikimedia\IPSet;
 use function config;
+use Illuminate\Http\Request;
 use function response;
+use Wikimedia\IPSet;
 
 class FirewallMiddleware
 {

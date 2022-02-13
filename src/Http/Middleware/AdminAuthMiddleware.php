@@ -4,10 +4,10 @@ namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use function response;
 use VolistxTeam\VSkeletonKernel\Repositories\AccessTokenRepository;
 use VolistxTeam\VSkeletonKernel\ValidationRules\IPValidationRule;
 use VolistxTeam\VSkeletonKernel\ValidationRules\ValidKeyValidationRule;
-use function response;
 
 class AdminAuthMiddleware
 {
@@ -25,7 +25,7 @@ class AdminAuthMiddleware
         //prepare inputs array
         $inputs = [
             'request' => $request,
-            'token' => $token,
+            'token'   => $token,
         ];
 
         //add extra validators in the required order.

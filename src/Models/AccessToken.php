@@ -28,11 +28,11 @@ class AccessToken extends Model
         'secret',
         'secret_salt',
         'permissions',
-        'whitelist_range'
+        'whitelist_range',
     ];
 
     protected $casts = [
-        'permissions' => 'array',
-        'whitelist_range' => 'array'
+        'permissions'     => 'array',
+        'whitelist_range' => 'array',
     ];
 }

@@ -32,11 +32,11 @@ class Plan extends Model
     protected $fillable = [
         'name',
         'description',
-        'data'
+        'data',
     ];
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
     ];
 
     public function subscriptions(): HasMany

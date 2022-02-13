@@ -20,15 +20,15 @@ class PlanFactory extends Factory
      *
      * @return array
      */
-
     public function definition()
     {
         $n = $this->faker->numberBetween(1, 50000000);
+
         return [
-            'name' => "plan$n",
+            'name'        => "plan$n",
             'description' => $this->faker->text(),
-            'data' => array('requests' => $this->faker->numberBetween(100, 5000)),
-            'created_at' => Carbon::now()
+            'data'        => ['requests' => $this->faker->numberBetween(100, 5000)],
+            'created_at'  => Carbon::now(),
         ];
     }
 }

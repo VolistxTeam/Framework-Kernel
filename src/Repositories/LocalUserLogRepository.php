@@ -12,10 +12,10 @@ class LocalUserLogRepository implements IUserLogRepository
     {
         return UserLog::query()->create([
             'subscription_id' => $inputs['subscription_id'],
-            'url' => $inputs['url'],
-            'ip' => $inputs['ip'],
-            'method' => $inputs['method'],
-            'user_agent' => $inputs['user_agent'],
+            'url'             => $inputs['url'],
+            'ip'              => $inputs['ip'],
+            'method'          => $inputs['method'],
+            'user_agent'      => $inputs['user_agent'],
         ]);
     }
 
@@ -35,14 +35,13 @@ class LocalUserLogRepository implements IUserLogRepository
         })->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
 
-
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
-            'items' => $logs->items
+            'items' => $logs->items,
         ];
     }
 
@@ -57,14 +56,13 @@ class LocalUserLogRepository implements IUserLogRepository
         })->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
 
-
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
-            'items' => $logs->items
+            'items' => $logs->items,
         ];
     }
 

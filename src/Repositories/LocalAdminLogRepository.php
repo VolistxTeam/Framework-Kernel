@@ -12,10 +12,10 @@ class LocalAdminLogRepository implements IAdminLogRepository
     {
         AdminLog::query()->create([
             'access_token_id' => $inputs['access_token_id'],
-            'url' => $inputs['url'],
-            'ip' => $inputs['ip'],
-            'method' => $inputs['method'],
-            'user_agent' => $inputs['user_agent'],
+            'url'             => $inputs['url'],
+            'ip'              => $inputs['ip'],
+            'method'          => $inputs['method'],
+            'user_agent'      => $inputs['user_agent'],
         ]);
     }
 
@@ -38,10 +38,10 @@ class LocalAdminLogRepository implements IAdminLogRepository
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
-            'items' => $logs->items()
+            'items' => $logs->items(),
         ];
     }
 }

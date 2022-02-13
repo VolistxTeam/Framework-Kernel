@@ -22,19 +22,18 @@ class AccessTokenFactory extends Factory
      *
      * @return array
      */
-
     public function definition()
     {
         $key = Str::random(64);
         $salt = Str::random(16);
 
         return [
-            'key' => substr($key, 0, 32),
-            'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
-            'secret_salt' => $salt,
-            'permissions' => array(),
-            'whitelist_range' => array(),
-            'created_at' => Carbon::now()
+            'key'             => substr($key, 0, 32),
+            'secret'          => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            'secret_salt'     => $salt,
+            'permissions'     => [],
+            'whitelist_range' => [],
+            'created_at'      => Carbon::now(),
         ];
     }
 }

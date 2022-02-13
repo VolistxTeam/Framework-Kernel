@@ -16,7 +16,7 @@ class AdminLogController extends Controller
 
     public function __construct(IAdminLogRepository $adminLogRepository)
     {
-        $this->module = "logs";
+        $this->module = 'logs';
         $this->adminLogRepository = $adminLogRepository;
     }
 
@@ -27,7 +27,7 @@ class AdminLogController extends Controller
         }
 
         $validator = Validator::make([
-            'log_id' => $log_id
+            'log_id' => $log_id,
         ], [
             'log_id' => ['bail', 'required', 'uuid', 'exists:admin_logs,id'],
         ]);
@@ -42,6 +42,7 @@ class AdminLogController extends Controller
             if (!$log) {
                 return response()->json(Messages::E404(), 404);
             }
+
             return response()->json($log->toArray());
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
@@ -54,13 +55,13 @@ class AdminLogController extends Controller
             return response()->json(Messages::E401(), 401);
         }
 
-        $search = $request->input('search', "");
+        $search = $request->input('search', '');
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 50);
 
         $validator = Validator::make([
-            'page' => $page,
-            'limit' => $limit
+            'page'  => $page,
+            'limit' => $limit,
         ], [
             '$page' => ['bail', 'sometimes', 'integer'],
             'limit' => ['bail', 'sometimes', 'integer'],
@@ -75,6 +76,7 @@ class AdminLogController extends Controller
             if (!$logs) {
                 return response()->json(Messages::E500(), 500);
             }
+
             return response()->json($logs);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);

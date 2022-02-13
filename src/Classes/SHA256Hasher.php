@@ -13,7 +13,8 @@ class SHA256Hasher
     {
         $salt = $options['salt'] ?? '';
 
-        $hash = hash('sha256', $value . $salt);
+        $hash = hash('sha256', $value.$salt);
+
         return $hash;
     }
 
@@ -25,6 +26,6 @@ class SHA256Hasher
             return false;
         }
 
-        return $hashedValue === hash('sha256', $value . $salt);
+        return $hashedValue === hash('sha256', $value.$salt);
     }
 }

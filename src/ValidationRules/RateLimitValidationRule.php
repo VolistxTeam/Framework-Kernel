@@ -14,7 +14,8 @@ class RateLimitValidationRule extends ValidationRuleBase
 
         if (isset($plan['data']['rate_limit'])) {
             $executed = RateLimiter::attempt(
-                $token->subscription_id, $plan['data']['rate_limit'],
+                $token->subscription_id,
+                $plan['data']['rate_limit'],
                 function () {
                 }
             );
@@ -22,10 +23,11 @@ class RateLimitValidationRule extends ValidationRuleBase
             if (!$executed) {
                 return [
                     'message' => Messages::E429(),
-                    'code' => 429
+                    'code'    => 429,
                 ];
             }
         }
+
         return true;
     }
 }

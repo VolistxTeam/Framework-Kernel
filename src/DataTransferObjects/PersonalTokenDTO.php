@@ -15,7 +15,6 @@ class PersonalTokenDTO extends DataTransferObjectBase
     public string $created_at;
     public string $updated_at;
 
-
     public static function fromModel($personal_token): self
     {
         return new self($personal_token);
@@ -24,15 +23,15 @@ class PersonalTokenDTO extends DataTransferObjectBase
     public function GetDTO($key = null): array
     {
         $result = [
-            'id' => $this->id,
-            'key' => $key,
-            'subscription' => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
-            'permissions' => $this->permissions,
+            'id'              => $this->id,
+            'key'             => $key,
+            'subscription'    => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
+            'permissions'     => $this->permissions,
             'whitelist_range' => $this->whitelist_range,
-            'token_status' => [
-                'is_expired' => $this->expires_at != null && Carbon::now()->greaterThan(Carbon::createFromTimeString($this->expires_at)),
+            'token_status'    => [
+                'is_expired'   => $this->expires_at != null && Carbon::now()->greaterThan(Carbon::createFromTimeString($this->expires_at)),
                 'activated_at' => $this->activated_at,
-                'expires_at' => $this->expires_at
+                'expires_at'   => $this->expires_at,
             ],
         ];
 

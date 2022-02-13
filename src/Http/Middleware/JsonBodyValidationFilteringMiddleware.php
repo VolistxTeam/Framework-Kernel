@@ -4,8 +4,8 @@ namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
 use function response;
+use VolistxTeam\VSkeletonKernel\Facades\Messages;
 
 class JsonBodyValidationFilteringMiddleware
 {

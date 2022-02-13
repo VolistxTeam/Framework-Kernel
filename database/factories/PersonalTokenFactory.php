@@ -22,20 +22,19 @@ class PersonalTokenFactory extends Factory
      *
      * @return array
      */
-
     public function definition()
     {
         $key = Str::random(64);
         $salt = Str::random(16);
 
         return [
-            'key' => substr($key, 0, 32),
-            'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
-            'secret_salt' => $salt,
-            'permissions' => array('*'),
-            'whitelist_range' => array('127.0.0.0'),
-            'created_at' => Carbon::now(),
-            'activated_at' => Carbon::now()
+            'key'             => substr($key, 0, 32),
+            'secret'          => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            'secret_salt'     => $salt,
+            'permissions'     => ['*'],
+            'whitelist_range' => ['127.0.0.0'],
+            'created_at'      => Carbon::now(),
+            'activated_at'    => Carbon::now(),
         ];
     }
 }

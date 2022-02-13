@@ -13,14 +13,14 @@ class VolistxServiceProvider extends ServiceProvider
     public function boot(Router $router, GateContract $gate)
     {
         $this->publishes([
-            __DIR__ . '/../config/volistx.php' => config_path('volistx.php'),
+            __DIR__.'/../config/volistx.php' => config_path('volistx.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/../database/migrations/' => database_path('migrations'),
+            __DIR__.'/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
 
-        require __DIR__ . '/../routes/system.php';
+        require __DIR__.'/../routes/system.php';
 
         if ($this->app->runningInConsole()) {
             $this->commands([

@@ -19,14 +19,13 @@ class UserLogFactory extends Factory
      *
      * @return array
      */
-
     public function definition()
     {
         return [
-            'url' => $this->faker->url(),
-            'method' => $this->faker->randomElement(["POST", "GET", "PUT", "DELETE", "PATCH"]),
-            'ip' => $this->faker->ipv4(),
-            'user_agent' => $this->faker->userAgent()
+            'url'        => $this->faker->url(),
+            'method'     => $this->faker->randomElement(['POST', 'GET', 'PUT', 'DELETE', 'PATCH']),
+            'ip'         => $this->faker->ipv4(),
+            'user_agent' => $this->faker->userAgent(),
         ];
     }
 }

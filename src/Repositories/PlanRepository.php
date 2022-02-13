@@ -10,9 +10,9 @@ class PlanRepository
     public function Create(array $inputs)
     {
         return Plan::query()->create([
-            'name' => $inputs['name'],
+            'name'        => $inputs['name'],
             'description' => $inputs['description'],
-            'data' => $inputs['data'],
+            'data'        => $inputs['data'],
         ]);
     }
 
@@ -28,14 +28,19 @@ class PlanRepository
         $description = $inputs['description'] ?? null;
         $data = $inputs['data'] ?? null;
 
-
         if (!$name && !$description && !$data) {
             return $plan;
         }
 
-        if ($name) $plan->name = $name;
-        if ($description) $plan->description = $description;
-        if ($data) $plan->data = $data;
+        if ($name) {
+            $plan->name = $name;
+        }
+        if ($description) {
+            $plan->description = $description;
+        }
+        if ($data) {
+            $plan->data = $data;
+        }
 
         $plan->save();
 
@@ -57,8 +62,9 @@ class PlanRepository
 
         try {
             $toBeDeletedPlan->delete();
+
             return [
-                'result' => 'true'
+                'result' => 'true',
             ];
         } catch (\Exception $ex) {
             return false;

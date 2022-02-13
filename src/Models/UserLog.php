@@ -24,7 +24,6 @@ class UserLog extends Model
      */
     public $timestamps = true;
 
-
     protected $fillable = [
         'subscription_id',
         'url',

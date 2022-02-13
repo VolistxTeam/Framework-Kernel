@@ -39,8 +39,6 @@ class PermissionsCenter
 
     public function check($key, $module, $operation): bool
     {
-        return in_array("$module:$operation", $key->permissions) || in_array("$module:*", $key->permissions) || in_array("*", $key->permissions);
+        return in_array("$module:$operation", $key->permissions) || in_array("$module:*", $key->permissions) || in_array('*', $key->permissions);
     }
 }
-
-

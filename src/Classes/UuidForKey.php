@@ -16,7 +16,7 @@ trait UuidForKey
         static::creating(function ($model) {
             $model->incrementing = false;
             $model->keyType = 'string';
-            $model->{$model->getKeyName()} = (string)Uuid::uuid4();
+            $model->{$model->getKeyName()} = (string) Uuid::uuid4();
         });
     }
 
