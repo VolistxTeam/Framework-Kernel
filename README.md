@@ -1,1 +1,1 @@
-# Volistx Skeleton Kernel
+# Volistx Framework Kernel
