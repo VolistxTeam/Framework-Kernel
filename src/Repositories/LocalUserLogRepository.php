@@ -78,7 +78,7 @@ class LocalUserLogRepository implements IUserLogRepository
                 'current'  => $logs->currentPage(),
                 'total'    => $logs->lastPage(),
             ],
-            'items' => $logs->items,
+            'items' => $logs->items(),
         ];
     }
 
