@@ -28,7 +28,7 @@ class PlanController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name'        => ['bail', 'required', 'string','unique:plans'],
+            'name'        => ['bail', 'required', 'string', 'unique:plans'],
             'description' => ['bail', 'required', 'string'],
             'data'        => ['bail', 'required', 'array'],
         ]);
