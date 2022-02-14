@@ -14,14 +14,14 @@ class FirewallMiddleware
     {
         $clientIP = $request->getClientIp();
 
-        $ipSet = new IPSet(config('volistx.firewall.ipBlacklist', []));
+        $ipSet = new IPSet(config('volistx.firewall.blacklist', []));
 
         if ($ipSet->match($clientIP)) {
             return response('', 403);
         }
 
         $response = $next($request);
-        $response->header('X-Protected-By', 'WebShield/3.16');
+        $response->header('X-Protected-By', 'WebShield/3.25d');
 
         return $response;
     }
