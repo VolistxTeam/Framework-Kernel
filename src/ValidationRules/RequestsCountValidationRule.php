@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\ValidationRules;
 
 use Carbon\Carbon;
+use Illuminate\Container\Container;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 
@@ -10,10 +11,10 @@ class RequestsCountValidationRule extends ValidationRuleBase
 {
     private IUserLogRepository $userLogRepository;
 
-    public function __construct(array $inputs, IUserLogRepository $userLogRepository)
+    public function __construct(array $inputs)
     {
         parent::__construct($inputs);
-        $this->userLogRepository = $userLogRepository;
+        $this->userLogRepository = Container::getInstance()->make(IUserLogRepository::class);
     }
 
     public function Validate(): bool|array
