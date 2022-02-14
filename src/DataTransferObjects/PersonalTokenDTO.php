@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\DataTransferObjects;
+namespace Volistx\FrameworkKernel\DataTransferObjects;
 
 use Carbon\Carbon;
 

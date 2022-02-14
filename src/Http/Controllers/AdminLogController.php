@@ -1,14 +1,14 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Http\Controllers;
+namespace Volistx\FrameworkKernel\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
-use VolistxTeam\VSkeletonKernel\Facades\Permissions;
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IAdminLogRepository;
+use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\Permissions;
+use Volistx\FrameworkKernel\Repositories\Interfaces\IAdminLogRepository;
 
 class AdminLogController extends Controller
 {

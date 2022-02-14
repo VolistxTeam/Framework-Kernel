@@ -1,15 +1,15 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Tests;
+namespace Volistx\FrameworkKernel\Tests;
 
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
-use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
-use VolistxTeam\VSkeletonKernel\Models\AccessToken;
-use VolistxTeam\VSkeletonKernel\Models\Plan;
-use VolistxTeam\VSkeletonKernel\Models\Subscription;
+use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Models\AccessToken;
+use Volistx\FrameworkKernel\Models\Plan;
+use Volistx\FrameworkKernel\Models\Subscription;
 
 class PlanControllerTest extends BaseTestCase
 {

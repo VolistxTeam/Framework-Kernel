@@ -1,9 +1,9 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Providers;
+namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use VolistxTeam\VSkeletonKernel\Classes\PermissionsCenter;
+use Volistx\FrameworkKernel\Classes\PermissionsCenter;
 
 class PermissionsServiceProvider extends ServiceProvider
 {

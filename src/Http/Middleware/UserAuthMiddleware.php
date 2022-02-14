@@ -1,11 +1,11 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
+namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
-use VolistxTeam\VSkeletonKernel\Repositories\PersonalTokenRepository;
+use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Repositories\PersonalTokenRepository;
 
 class UserAuthMiddleware
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories;
+namespace Volistx\FrameworkKernel\Repositories;
 
 use Illuminate\Support\Facades\Schema;
-use VolistxTeam\VSkeletonKernel\Models\AdminLog;
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IAdminLogRepository;
+use Volistx\FrameworkKernel\Models\AdminLog;
+use Volistx\FrameworkKernel\Repositories\Interfaces\IAdminLogRepository;
 
 class LocalAdminLogRepository implements IAdminLogRepository
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
+namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

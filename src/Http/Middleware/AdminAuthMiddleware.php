@@ -1,13 +1,13 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
+namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use function response;
-use VolistxTeam\VSkeletonKernel\Repositories\AccessTokenRepository;
-use VolistxTeam\VSkeletonKernel\ValidationRules\IPValidationRule;
-use VolistxTeam\VSkeletonKernel\ValidationRules\ValidKeyValidationRule;
+use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
+use Volistx\FrameworkKernel\ValidationRules\IPValidationRule;
+use Volistx\FrameworkKernel\ValidationRules\ValidKeyValidationRule;
 
 class AdminAuthMiddleware
 {

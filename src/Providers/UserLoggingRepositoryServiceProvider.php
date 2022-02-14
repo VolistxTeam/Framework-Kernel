@@ -1,11 +1,11 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Providers;
+namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
-use VolistxTeam\VSkeletonKernel\Repositories\LocalUserLogRepository;
-use VolistxTeam\VSkeletonKernel\Repositories\RemoteUserLogRepository;
+use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
+use Volistx\FrameworkKernel\Repositories\LocalUserLogRepository;
+use Volistx\FrameworkKernel\Repositories\RemoteUserLogRepository;
 
 class UserLoggingRepositoryServiceProvider extends ServiceProvider
 {

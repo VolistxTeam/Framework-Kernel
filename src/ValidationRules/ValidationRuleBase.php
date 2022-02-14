@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\ValidationRules;
 
 abstract class ValidationRuleBase
 {

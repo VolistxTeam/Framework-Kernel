@@ -1,11 +1,11 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Http\Middleware;
+namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use function response;
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\Messages;
 
 class JsonBodyValidationFilteringMiddleware
 {

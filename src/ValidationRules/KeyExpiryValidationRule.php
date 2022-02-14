@@ -1,9 +1,9 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\ValidationRules;
 
 use Carbon\Carbon;
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\Messages;
 
 class KeyExpiryValidationRule extends ValidationRuleBase
 {

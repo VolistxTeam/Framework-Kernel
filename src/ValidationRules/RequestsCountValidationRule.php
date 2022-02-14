@@ -1,10 +1,10 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\ValidationRules;
 
 use Carbon\Carbon;
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
+use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 
 class RequestsCountValidationRule extends ValidationRuleBase
 {

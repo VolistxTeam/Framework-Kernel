@@ -1,8 +1,8 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\ValidationRules;
 
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\Messages;
 use Wikimedia\IPSet;
 
 class IPValidationRule extends ValidationRuleBase

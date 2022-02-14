@@ -1,9 +1,9 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\ValidationRules;
 
 use Illuminate\Support\Facades\RateLimiter;
-use VolistxTeam\VSkeletonKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\Messages;
 
 class RateLimitValidationRule extends ValidationRuleBase
 {

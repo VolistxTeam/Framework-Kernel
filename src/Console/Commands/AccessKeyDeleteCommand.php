@@ -1,11 +1,11 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Console\Commands;
+namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Illuminate\Console\Command;
-use VolistxTeam\VSkeletonKernel\Repositories\AccessTokenRepository;
+use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
 
-class DeleteCommand extends Command
+class AccessKeyDeleteCommand extends Command
 {
     protected $signature = 'access-key:delete {--key=}';
 

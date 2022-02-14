@@ -1,10 +1,10 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Database\Factories;
+namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use VolistxTeam\VSkeletonKernel\Models\Plan;
+use Volistx\FrameworkKernel\Models\Plan;
 
 class PlanFactory extends Factory
 {

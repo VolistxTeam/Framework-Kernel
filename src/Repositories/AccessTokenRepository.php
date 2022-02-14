@@ -1,10 +1,10 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories;
+namespace Volistx\FrameworkKernel\Repositories;
 
 use Illuminate\Support\Facades\Schema;
-use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
-use VolistxTeam\VSkeletonKernel\Models\AccessToken;
+use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Models\AccessToken;
 
 class AccessTokenRepository
 {

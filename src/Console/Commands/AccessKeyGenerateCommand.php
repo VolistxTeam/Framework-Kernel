@@ -1,13 +1,13 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Console\Commands;
+namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
-use VolistxTeam\VSkeletonKernel\Models\AccessToken;
+use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Models\AccessToken;
 
-class GenerateCommand extends Command
+class AccessKeyGenerateCommand extends Command
 {
     protected $signature = 'access-key:generate';
 

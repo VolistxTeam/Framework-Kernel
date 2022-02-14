@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Facades;
+namespace Volistx\FrameworkKernel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

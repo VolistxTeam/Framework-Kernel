@@ -1,12 +1,12 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel;
+namespace Volistx\FrameworkKernel;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Routing\Router;
-use VolistxTeam\VSkeletonKernel\Console\Commands\DeleteCommand;
-use VolistxTeam\VSkeletonKernel\Console\Commands\GenerateCommand;
+use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
+use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
 
 class VolistxServiceProvider extends ServiceProvider
 {
@@ -24,8 +24,8 @@ class VolistxServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                DeleteCommand::class,
-                GenerateCommand::class,
+                AccessKeyDeleteCommand::class,
+                AccessKeyGenerateCommand::class,
             ]);
         }
     }

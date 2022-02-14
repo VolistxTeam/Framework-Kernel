@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Classes;
+namespace Volistx\FrameworkKernel\Classes;
 
 class SHA256Hasher
 {

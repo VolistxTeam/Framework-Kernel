@@ -1,10 +1,10 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories;
+namespace Volistx\FrameworkKernel\Repositories;
 
 use Illuminate\Support\Facades\Schema;
-use VolistxTeam\VSkeletonKernel\Models\UserLog;
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
+use Volistx\FrameworkKernel\Models\UserLog;
+use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 
 class LocalUserLogRepository implements IUserLogRepository
 {

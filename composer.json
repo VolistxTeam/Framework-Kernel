@@ -1,5 +1,5 @@
 {
-  "name": "volistxteam/vskeleton-kernel",
+  "name": "volistx/framework-kernel",
   "type": "library",
   "description": "The Volistx Framework (Kernel)",
   "authors": [
@@ -29,9 +29,9 @@
   },
   "autoload": {
     "psr-4": {
-      "VolistxTeam\\VSkeletonKernel\\": "src",
-      "Volistxteam\\VSkeletonKernel\\Database\\Factories\\": "database/factories",
-      "Volistxteam\\VSkeletonKernel\\Database\\Seeders\\": "database/seeders"
+      "Volistx\\FrameworkKernel\\": "src",
+      "Volistx\\FrameworkKernel\\Database\\Factories\\": "database/factories",
+      "Volistx\\FrameworkKernel\\Database\\Seeders\\": "database/seeders"
     },
     "classmap": [
       "src/Classes"
@@ -40,7 +40,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "VolistxTeam\\VSkeletonKernel\\VolistxServiceProvider"
+        "Volistx\\FrameworkKernel\\VolistxServiceProvider"
       ]
     }
   }

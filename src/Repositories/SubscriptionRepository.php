@@ -1,9 +1,9 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories;
+namespace Volistx\FrameworkKernel\Repositories;
 
 use Illuminate\Support\Facades\Schema;
-use VolistxTeam\VSkeletonKernel\Models\Subscription;
+use Volistx\FrameworkKernel\Models\Subscription;
 
 class SubscriptionRepository
 {

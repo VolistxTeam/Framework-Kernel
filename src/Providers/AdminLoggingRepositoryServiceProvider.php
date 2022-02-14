@@ -1,11 +1,11 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Providers;
+namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IAdminLogRepository;
-use VolistxTeam\VSkeletonKernel\Repositories\LocalAdminLogRepository;
-use VolistxTeam\VSkeletonKernel\Repositories\RemoteAdminLogRepository;
+use Volistx\FrameworkKernel\Repositories\Interfaces\IAdminLogRepository;
+use Volistx\FrameworkKernel\Repositories\LocalAdminLogRepository;
+use Volistx\FrameworkKernel\Repositories\RemoteAdminLogRepository;
 
 class AdminLoggingRepositoryServiceProvider extends ServiceProvider
 {

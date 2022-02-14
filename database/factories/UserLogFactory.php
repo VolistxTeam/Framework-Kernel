@@ -1,9 +1,9 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Database\Factories;
+namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use VolistxTeam\VSkeletonKernel\Models\UserLog;
+use Volistx\FrameworkKernel\Models\UserLog;
 
 class UserLogFactory extends Factory
 {

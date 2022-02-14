@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Http\Controllers;
+namespace Volistx\FrameworkKernel\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 

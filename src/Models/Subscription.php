@@ -1,12 +1,12 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Models;
+namespace Volistx\FrameworkKernel\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use VolistxTeam\VSkeletonKernel\Classes\UuidForKey;
+use Volistx\FrameworkKernel\Classes\UuidForKey;
 
 class Subscription extends Model
 {

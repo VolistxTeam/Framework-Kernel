@@ -1,11 +1,11 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories;
+namespace Volistx\FrameworkKernel\Repositories;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
-use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
-use VolistxTeam\VSkeletonKernel\Models\PersonalToken;
+use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Models\PersonalToken;
 
 class PersonalTokenRepository
 {

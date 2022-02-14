@@ -1,11 +1,11 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Database\Seeders;
+namespace Volistx\FrameworkKernel\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use VolistxTeam\VSkeletonKernel\Models\PersonalToken;
-use VolistxTeam\VSkeletonKernel\Models\Plan;
-use VolistxTeam\VSkeletonKernel\Models\Subscription;
+use Volistx\FrameworkKernel\Models\PersonalToken;
+use Volistx\FrameworkKernel\Models\Plan;
+use Volistx\FrameworkKernel\Models\Subscription;
 
 class DatabaseSeeder extends Seeder
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories\Interfaces;
+namespace Volistx\FrameworkKernel\Repositories\Interfaces;
 
 interface IAdminLogRepository
 {

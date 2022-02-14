@@ -1,10 +1,10 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories;
+namespace Volistx\FrameworkKernel\Repositories;
 
 use Exception;
 use Illuminate\Support\Facades\Schema;
-use VolistxTeam\VSkeletonKernel\Models\Plan;
+use Volistx\FrameworkKernel\Models\Plan;
 
 class PlanRepository
 {

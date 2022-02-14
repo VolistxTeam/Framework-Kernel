@@ -1,6 +1,6 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Classes;
+namespace Volistx\FrameworkKernel\Classes;
 
 use Ramsey\Uuid\Uuid;
 

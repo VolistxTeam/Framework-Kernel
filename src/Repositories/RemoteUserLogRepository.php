@@ -1,9 +1,9 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Repositories;
+namespace Volistx\FrameworkKernel\Repositories;
 
 use GuzzleHttp\Client;
-use VolistxTeam\VSkeletonKernel\Repositories\Interfaces\IUserLogRepository;
+use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 
 class RemoteUserLogRepository implements IUserLogRepository
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace VolistxTeam\VSkeletonKernel\Database\Factories;
+namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use VolistxTeam\VSkeletonKernel\Classes\SHA256Hasher;
-use VolistxTeam\VSkeletonKernel\Models\AccessToken;
+use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Models\AccessToken;
 
 class AccessTokenFactory extends Factory
 {
