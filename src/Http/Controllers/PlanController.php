@@ -61,7 +61,7 @@ class PlanController extends Controller
             'plan_id'     => ['bail', 'required', 'uuid', 'exists:plans,id'],
             'name'        => ['bail', 'sometimes', 'string'],
             'description' => ['bail', 'sometimes', 'string'],
-            'data'        => ['bail', 'sometimes', 'json'],
+            'data'        => ['bail', 'sometimes', 'array'],
         ]);
 
         if ($validator->fails()) {
