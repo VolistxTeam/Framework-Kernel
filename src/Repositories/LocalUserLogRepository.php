@@ -13,10 +13,10 @@ class LocalUserLogRepository implements IUserLogRepository
     {
         return UserLog::query()->create([
             'subscription_id' => $inputs['subscription_id'],
-            'url' => $inputs['url'],
-            'ip' => $inputs['ip'],
-            'method' => $inputs['method'],
-            'user_agent' => $inputs['user_agent'],
+            'url'             => $inputs['url'],
+            'ip'              => $inputs['ip'],
+            'method'          => $inputs['method'],
+            'user_agent'      => $inputs['user_agent'],
         ]);
     }
 
@@ -39,8 +39,8 @@ class LocalUserLogRepository implements IUserLogRepository
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logs->items(),
         ];
@@ -60,8 +60,8 @@ class LocalUserLogRepository implements IUserLogRepository
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logs->items(),
         ];
@@ -79,8 +79,7 @@ class LocalUserLogRepository implements IUserLogRepository
     {
         $specifiedDate = Carbon::parse($date);
         $thisDate = Carbon::now();
-        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int)$specifiedDate->format('t');
-
+        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
 
         $logMonth = UserLog::where('subscription_id', $subscription_id)
             ->whereYear('created_at', $specifiedDate->format('Y'))
@@ -99,8 +98,8 @@ class LocalUserLogRepository implements IUserLogRepository
 
         for ($i = 1; $i <= $lastDay; $i++) {
             $stats[] = [
-                'date' => $specifiedDate->format('Y-m-') . sprintf("%02d", $i),
-                'count' => isset($logMonth[$i]) ? count($logMonth[$i]) : 0
+                'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
+                'count' => isset($logMonth[$i]) ? count($logMonth[$i]) : 0,
             ];
         }
 
