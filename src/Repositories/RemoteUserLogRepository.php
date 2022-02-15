@@ -2,7 +2,9 @@
 
 namespace Volistx\FrameworkKernel\Repositories;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Volistx\FrameworkKernel\Models\UserLog;
 use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 
 class RemoteUserLogRepository implements IUserLogRepository
@@ -62,7 +64,7 @@ class RemoteUserLogRepository implements IUserLogRepository
         return json_decode($response->getBody()->getContents());
     }
 
-    public function FindLogsBySubscription($subscription_id, $needle, $page, $limit)
+    public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id", [
             'headers' => [
@@ -81,7 +83,7 @@ class RemoteUserLogRepository implements IUserLogRepository
         return json_decode($response->getBody()->getContents());
     }
 
-    public function FindLogsBySubscriptionCount($subscription_id, $date): int
+    public function FindSubscriptionLogsCount($subscription_id, $date): int
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id/count", [
             'headers' => [
@@ -97,4 +99,37 @@ class RemoteUserLogRepository implements IUserLogRepository
 
         return json_decode($response->getBody()->getContents());
     }
+
+    public function FindSubscriptionStats($subscription_id, $date)
+    {
+        $specifiedDate = Carbon::parse($date);
+        $thisDate = Carbon::now();
+        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int)$specifiedDate->format('t');
+
+
+        $logMonth = UserLog::where('subscription_id', $subscription_id)
+            ->whereYear('created_at', $specifiedDate->format('Y'))
+            ->whereMonth('created_at', $specifiedDate->format('m'))
+            ->get()
+            ->groupBy(function ($date) {
+                return Carbon::parse($date->created_at)->format('j'); // grouping by days
+            })->toArray();
+
+        $totalCount = UserLog::where('subscription_id', $subscription_id)
+            ->whereYear('created_at', $specifiedDate->format('Y'))
+            ->whereMonth('created_at', $specifiedDate->format('m'))
+            ->count();
+
+        $stats = [];
+
+        for ($i = 1; $i <= $lastDay; $i++) {
+            $stats[] = [
+                'date' => $specifiedDate->format('Y-m-') . sprintf("%02d", $i),
+                'count' => isset($logMonth[$i]) ? count($logMonth[$i]) : 0
+            ];
+        }
+
+        return $stats;
+    }
+
 }

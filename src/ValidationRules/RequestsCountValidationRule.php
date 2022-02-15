@@ -23,7 +23,7 @@ class RequestsCountValidationRule extends ValidationRuleBase
         $plan = $this->inputs['plan'];
         $planRequestsLimit = $plan['data']['requests'] ?? null;
 
-        $requestsMadeCount = $this->userLogRepository->FindLogsBySubscriptionCount($sub_id, Carbon::now());
+        $requestsMadeCount = $this->userLogRepository->FindSubscriptionLogsCount($sub_id, Carbon::now());
 
         if (!$planRequestsLimit || ($planRequestsLimit != -1 && $requestsMadeCount >= $planRequestsLimit)) {
             return [
