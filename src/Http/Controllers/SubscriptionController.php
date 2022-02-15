@@ -232,9 +232,11 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E401(), 401);
         }
 
+        $date = $request->input('date',Carbon::now()->format('Y-m'));
+
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
-            'date' => $request->input('date')
+            'date' => $date
         ], [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
             'date' => ['bail', 'sometimes' ,'date'],
@@ -245,7 +247,7 @@ class SubscriptionController extends Controller
         }
 
         try {
-            $stats = $this->logRepository->FindSubscriptionStats($subscription_id, $request->input('date', Carbon::now()->format('Y-m')));
+            $stats = $this->logRepository->FindSubscriptionStats($subscription_id, $date);
             if(!$stats){
                 return response()->json(Messages::E404(), 404);
             }
