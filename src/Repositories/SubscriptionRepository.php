@@ -53,11 +53,6 @@ class SubscriptionRepository
         return Subscription::query()->where('id', $subscriptionID)->first();
     }
 
-    /**
-     * @return null|string[]
-     *
-     * @psalm-return array{result: 'true'}|null
-     */
     public function Delete($subscriptionID): array|null
     {
         $toBeDeletedSub = $this->Find($subscriptionID);

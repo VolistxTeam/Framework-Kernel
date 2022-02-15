@@ -14,6 +14,7 @@ class PermissionsCenter
         'subscriptions:view',
         'subscriptions:view-all',
         'subscriptions:logs',
+        'subscriptions:stats',
 
         'personal-tokens:*',
         'personal-tokens:create',

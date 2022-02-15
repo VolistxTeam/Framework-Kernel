@@ -10,7 +10,9 @@ interface IUserLogRepository
 
     public function FindAll($needle, $page, $limit);
 
-    public function FindLogsBySubscription($subscription_id, $needle, $page, $limit);
+    public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit);
 
-    public function FindLogsBySubscriptionCount($subscription_id, $date);
+    public function FindSubscriptionLogsCount($subscription_id, $date);
+
+    public function FindSubscriptionStats($subscription_id, $date);
 }

@@ -27,6 +27,7 @@ $router->group(['prefix' => 'sys-bin'], function () use ($router) {
             $router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptions');
             $router->get('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscription');
             $router->get('/{subscription_id}/logs', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionLogs');
+            $router->get('/{subscription_id}/stats', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionStats');
 
             $router->delete('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@DeletePersonalToken');
             $router->put('/{subscription_id}/personal-tokens/{token_id}/reset', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@ResetPersonalToken');

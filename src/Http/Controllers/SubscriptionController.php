@@ -2,6 +2,7 @@
 
 namespace Volistx\FrameworkKernel\Http\Controllers;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -213,7 +214,7 @@ class SubscriptionController extends Controller
         }
 
         try {
-            $logs = $this->logRepository->FindLogsBySubscription($subscription_id, $search, $page, $limit);
+            $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $search, $page, $limit);
             if (!$logs) {
                 return response()->json(Messages::E500(), 500);
             }
@@ -223,4 +224,35 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E500(), 500);
         }
     }
+
+
+    public function GetSubscriptionStats(Request $request, $subscription_id): JsonResponse
+    {
+        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'stats')) {
+            return response()->json(Messages::E401(), 401);
+        }
+
+        $validator = Validator::make([
+            'subscription_id' => $subscription_id,
+            'date' => $request->input('date')
+        ], [
+            'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
+            'date' => ['bail', 'sometimes' ,'date'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Messages::E400($validator->errors()->first()), 400);
+        }
+
+        try {
+            $stats = $this->logRepository->FindSubscriptionStats($subscription_id, $request->input('date', Carbon::now()->format('Y-m')));
+            if(!$stats){
+                return response()->json(Messages::E404(), 404);
+            }
+            return response()->json($stats);
+        } catch (Exception) {
+            return response()->json(Messages::E500(), 500);
+        }
+    }
+
 }
