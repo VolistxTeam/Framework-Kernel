@@ -225,7 +225,6 @@ class SubscriptionController extends Controller
         }
     }
 
-
     public function GetSubscriptionStats(Request $request, $subscription_id): JsonResponse
     {
         if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'stats')) {
@@ -234,10 +233,10 @@ class SubscriptionController extends Controller
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
-            'date' => $request->input('date')
+            'date'            => $request->input('date'),
         ], [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
-            'date' => ['bail', 'sometimes' ,'date'],
+            'date'            => ['bail', 'sometimes', 'date'],
         ]);
 
         if ($validator->fails()) {
@@ -246,13 +245,13 @@ class SubscriptionController extends Controller
 
         try {
             $stats = $this->logRepository->FindSubscriptionStats($subscription_id, $request->input('date', Carbon::now()->format('Y-m')));
-            if(!$stats){
+            if (!$stats) {
                 return response()->json(Messages::E404(), 404);
             }
+
             return response()->json($stats);
         } catch (Exception) {
             return response()->json(Messages::E500(), 500);
         }
     }
-
 }
