@@ -259,7 +259,7 @@ class SubscriptionController extends Controller
                 $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
                 $totalCount += $groupedCount;
                 $stats[] = [
-                    'date'  => $specifiedDate->format('Y-m').sprintf('%02d', $i),
+                    'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
                     'count' => $groupedCount,
                 ];
             }
