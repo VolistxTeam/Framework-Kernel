@@ -265,15 +265,17 @@ class SubscriptionController extends Controller
                 ];
             }
 
+            $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan()->first()->data['requests'];
+
             return response()->json([
                 'usage' => [
                     'current' => $totalCount,
-                    'max' => $request->PLAN['requests'] ?? null,
-                    'percent' => isset($request->PLAN['requests']) ? (float)number_format(($totalCount * 100) / $request->PLAN['requests'], 2): null
+                    'max'     => $requestsCount,
+                    'percent' => $requestsCount? (float) number_format(($totalCount * 100) /$requestsCount, 2) : null,
                 ],
-                'details' => $stats
+                'details' => $stats,
             ]);
-        } catch (Exception) {
+        } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
     }
