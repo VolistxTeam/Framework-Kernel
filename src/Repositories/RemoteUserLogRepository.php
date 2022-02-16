@@ -2,9 +2,7 @@
 
 namespace Volistx\FrameworkKernel\Repositories;
 
-use Carbon\Carbon;
 use GuzzleHttp\Client;
-use Volistx\FrameworkKernel\Models\UserLog;
 use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 
 class RemoteUserLogRepository implements IUserLogRepository
