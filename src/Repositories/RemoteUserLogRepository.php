@@ -112,6 +112,6 @@ class RemoteUserLogRepository implements IUserLogRepository
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return get_object_vars(json_decode( $response->getBody()->getContents()));
     }
 }
