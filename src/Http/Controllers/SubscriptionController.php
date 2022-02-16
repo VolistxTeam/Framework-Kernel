@@ -32,10 +32,10 @@ class SubscriptionController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'user_id' => ['bail', 'required', 'integer'],
-            'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
+            'user_id'           => ['bail', 'required', 'integer'],
+            'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id'],
             'plan_activated_at' => ['bail', 'required', 'date'],
-            'plan_expires_at' => ['bail', 'required', 'date', 'after:plan_activated_at'],
+            'plan_expires_at'   => ['bail', 'required', 'date', 'after:plan_activated_at'],
         ]);
 
         if ($validator->fails()) {
@@ -63,10 +63,10 @@ class SubscriptionController extends Controller
         $validator = Validator::make(array_merge($request->all(), [
             'subscription_id' => $subscription_id,
         ]), [
-            'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+            'subscription_id'   => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             'plan_activated_at' => ['bail', 'sometimes', 'string'],
-            'plan_expires_at' => ['bail', 'sometimes', 'string'],
-            'plan_id' => ['bail', 'sometimes', 'exists:plans,id'],
+            'plan_expires_at'   => ['bail', 'sometimes', 'string'],
+            'plan_id'           => ['bail', 'sometimes', 'exists:plans,id'],
         ]);
 
         if ($validator->fails()) {
@@ -154,7 +154,7 @@ class SubscriptionController extends Controller
         $limit = $request->input('limit', 50);
 
         $validator = Validator::make([
-            'page' => $page,
+            'page'  => $page,
             'limit' => $limit,
         ], [
             '$page' => ['bail', 'sometimes', 'numeric'],
@@ -179,8 +179,8 @@ class SubscriptionController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $subs->perPage(),
-                    'current' => $subs->currentPage(),
-                    'total' => $subs->lastPage(),
+                    'current'  => $subs->currentPage(),
+                    'total'    => $subs->lastPage(),
                 ],
                 'items' => $items,
             ]);
@@ -201,12 +201,12 @@ class SubscriptionController extends Controller
 
         $validator = Validator::make(array_merge([
             'subscription_id' => $subscription_id,
-            'page' => $page,
-            'limit' => $limit,
+            'page'            => $page,
+            'limit'           => $limit,
         ]), [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
-            '$page' => ['bail', 'sometimes', 'integer'],
-            'limit' => ['bail', 'sometimes', 'integer'],
+            '$page'           => ['bail', 'sometimes', 'integer'],
+            'limit'           => ['bail', 'sometimes', 'integer'],
         ]);
 
         if ($validator->fails()) {
@@ -225,7 +225,6 @@ class SubscriptionController extends Controller
         }
     }
 
-
     public function GetSubscriptionStats(Request $request, $subscription_id): JsonResponse
     {
         if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'stats')) {
@@ -236,10 +235,10 @@ class SubscriptionController extends Controller
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
-            'date' => $date
+            'date'            => $date,
         ], [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
-            'date' => ['bail', 'sometimes', 'date'],
+            'date'            => ['bail', 'sometimes', 'date'],
         ]);
 
         if ($validator->fails()) {
@@ -251,7 +250,7 @@ class SubscriptionController extends Controller
 
             $specifiedDate = Carbon::parse($date);
             $thisDate = Carbon::now();
-            $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int)$specifiedDate->format('t');
+            $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
 
             $totalCount = 0;
 
@@ -260,8 +259,8 @@ class SubscriptionController extends Controller
                 $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
                 $totalCount += $groupedCount;
                 $stats[] = [
-                    'date' => $specifiedDate->format('Y-m') . sprintf('%02d', $i),
-                    'count' => $groupedCount
+                    'date'  => $specifiedDate->format('Y-m').sprintf('%02d', $i),
+                    'count' => $groupedCount,
                 ];
             }
 
@@ -271,7 +270,7 @@ class SubscriptionController extends Controller
                 'usage' => [
                     'current' => $totalCount,
                     'max'     => $requestsCount,
-                    'percent' => $requestsCount? (float) number_format(($totalCount * 100) /$requestsCount, 2) : null,
+                    'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
                 ],
                 'details' => $stats,
             ]);
@@ -279,5 +278,4 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E500(), 500);
         }
     }
-
 }
