@@ -75,34 +75,14 @@ class LocalUserLogRepository implements IUserLogRepository
             ->count();
     }
 
-    public function FindSubscriptionStats($subscription_id, $date)
+    public function FindSubscriptionLogsInMonth($subscription_id, $date)
     {
-        $specifiedDate = Carbon::parse($date);
-        $thisDate = Carbon::now();
-        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
-
-        $logMonth = UserLog::where('subscription_id', $subscription_id)
-            ->whereYear('created_at', $specifiedDate->format('Y'))
-            ->whereMonth('created_at', $specifiedDate->format('m'))
+        return UserLog::where('subscription_id', $subscription_id)
+            ->whereYear('created_at', Carbon::parse($date)->format('Y'))
+            ->whereMonth('created_at', Carbon::parse($date)->format('m'))
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->created_at)->format('j'); // grouping by days
             })->toArray();
-
-        $totalCount = UserLog::where('subscription_id', $subscription_id)
-            ->whereYear('created_at', $specifiedDate->format('Y'))
-            ->whereMonth('created_at', $specifiedDate->format('m'))
-            ->count();
-
-        $stats = [];
-
-        for ($i = 1; $i <= $lastDay; $i++) {
-            $stats[] = [
-                'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
-                'count' => isset($logMonth[$i]) ? count($logMonth[$i]) : 0,
-            ];
-        }
-
-        return $stats;
     }
 }

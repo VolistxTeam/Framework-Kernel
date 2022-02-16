@@ -14,5 +14,5 @@ interface IUserLogRepository
 
     public function FindSubscriptionLogsCount($subscription_id, $date);
 
-    public function FindSubscriptionStats($subscription_id, $date);
+    public function FindSubscriptionLogsInMonth($subscription_id, $date);
 }

@@ -100,34 +100,20 @@ class RemoteUserLogRepository implements IUserLogRepository
         return json_decode($response->getBody()->getContents());
     }
 
-    public function FindSubscriptionStats($subscription_id, $date)
+    public function FindSubscriptionLogsInMonth($subscription_id, $date)
     {
-        $specifiedDate = Carbon::parse($date);
-        $thisDate = Carbon::now();
-        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
+        $response = $this->client->get("$this->httpBaseUrl/$subscription_id/stats", [
+            'headers' => [
+                'Authorization' => "Bearer {$this->remoteToken}",
+                'Content-Type'  => 'application/json',
+            ],
+            [
+                'query' => [
+                    'date' => $date,
+                ],
+            ],
+        ]);
 
-        $logMonth = UserLog::where('subscription_id', $subscription_id)
-            ->whereYear('created_at', $specifiedDate->format('Y'))
-            ->whereMonth('created_at', $specifiedDate->format('m'))
-            ->get()
-            ->groupBy(function ($date) {
-                return Carbon::parse($date->created_at)->format('j'); // grouping by days
-            })->toArray();
-
-        $totalCount = UserLog::where('subscription_id', $subscription_id)
-            ->whereYear('created_at', $specifiedDate->format('Y'))
-            ->whereMonth('created_at', $specifiedDate->format('m'))
-            ->count();
-
-        $stats = [];
-
-        for ($i = 1; $i <= $lastDay; $i++) {
-            $stats[] = [
-                'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
-                'count' => isset($logMonth[$i]) ? count($logMonth[$i]) : 0,
-            ];
-        }
-
-        return $stats;
+        return json_decode($response->getBody()->getContents());
     }
 }
