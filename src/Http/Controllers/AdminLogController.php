@@ -61,7 +61,7 @@ class AdminLogController extends Controller
         $limit = $request->input('limit', 50);
 
         $validator = Validator::make([
-            'page' => $page,
+            'page'  => $page,
             'limit' => $limit,
         ], [
             '$page' => ['bail', 'sometimes', 'integer'],
@@ -86,12 +86,11 @@ class AdminLogController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $logs->perPage(),
-                    'current' => $logs->currentPage(),
-                    'total' => $logs->lastPage(),
+                    'current'  => $logs->currentPage(),
+                    'total'    => $logs->lastPage(),
                 ],
                 'items' => $logDTOs,
             ]);
-
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }

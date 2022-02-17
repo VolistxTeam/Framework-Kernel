@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\DataTransferObjects;
 
 class UserLogDTO extends DataTransferObjectBase
@@ -15,16 +16,17 @@ class UserLogDTO extends DataTransferObjectBase
     {
         return new self($userLog);
     }
+
     public function GetDTO(): array
     {
         return [
-            'id' => $this->id,
+            'id'           => $this->id,
             'subscription' => [
-                'id' => $this->subscription_id
+                'id' => $this->subscription_id,
             ],
-            'url' => $this->url,
-            'ip' => $this->ip,
-            'method' => $this->method,
+            'url'        => $this->url,
+            'ip'         => $this->ip,
+            'method'     => $this->method,
             'user_agent' => $this->user_agent,
         ];
     }
