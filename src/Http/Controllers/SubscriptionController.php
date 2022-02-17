@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Volistx\FrameworkKernel\DataTransferObjects\SubscriptionDTO;
 use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
 use Volistx\FrameworkKernel\Facades\Messages;
@@ -245,13 +246,16 @@ class SubscriptionController extends Controller
         }
 
         $date = $request->input('date', Carbon::now()->format('Y-m'));
+        $mode = $request->input('mode', "detailed");
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
-            'date'            => $date,
+            'date'            => strtolower($mode),
+            'mode' => $mode
         ], [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
             'date'            => ['bail', 'sometimes', 'date'],
+            'mode' => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
         ]);
 
         if ($validator->fails()) {
@@ -269,6 +273,7 @@ class SubscriptionController extends Controller
 
             $stats = [];
             for ($i = 1; $i <= $lastDay; $i++) {
+                if ($mode == 'focused' && count($groupedLogs[$i]) == 0) continue;
                 $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
                 $totalCount += $groupedCount;
                 $stats[] = [
