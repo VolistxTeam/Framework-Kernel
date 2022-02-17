@@ -37,11 +37,11 @@ class UserAuthMiddleware
             'plan'    => $plan,
         ];
 
-        $getValidators = config('volistx.validators');
+        $validatorClasses = config('volistx.validators');
 
         $validators = [];
 
-        foreach ($getValidators as $item) {
+        foreach ($validatorClasses as $item) {
             $validators[] = new $item($inputs);
         }
 

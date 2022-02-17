@@ -4,7 +4,7 @@ namespace Volistx\FrameworkKernel\Classes;
 
 class PermissionsCenter
 {
-    public array $permissions = [
+    public array $admin_permissions = [
         '*',
 
         'subscriptions:*',
@@ -37,6 +37,14 @@ class PermissionsCenter
         'logs:view',
         'logs:view-all',
     ];
+
+    public array $services_permissions;
+
+    public function __construct()
+    {
+        $this->services_permissions =  config('volistx.services_permissions');
+    }
+
 
     public function check($key, $module, $operation): bool
     {
