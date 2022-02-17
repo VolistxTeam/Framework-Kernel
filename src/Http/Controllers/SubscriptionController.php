@@ -287,7 +287,7 @@ class SubscriptionController extends Controller
             return response()->json([
                 'usage' => [
                     'current' => $totalCount,
-                    'max'     => (int)$requestsCount,
+                    'max'     => (int) $requestsCount,
                     'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
                 ],
                 'details' => $stats,
