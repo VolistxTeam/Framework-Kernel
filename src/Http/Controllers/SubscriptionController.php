@@ -273,7 +273,9 @@ class SubscriptionController extends Controller
             $stats = [];
             for ($i = 1; $i <= $lastDay; $i++) {
                 $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
-                if($mode === 'focused' &&$groupedCount ===0) continue;
+                if ($mode === 'focused' && $groupedCount === 0) {
+                    continue;
+                }
                 $totalCount += $groupedCount;
                 $stats[] = [
                     'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
