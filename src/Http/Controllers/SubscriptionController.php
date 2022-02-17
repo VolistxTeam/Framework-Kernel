@@ -250,8 +250,8 @@ class SubscriptionController extends Controller
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
-            'date'            => strtolower($mode),
-            'mode' => $mode
+            'date'            => $date,
+            'mode' => strtolower($mode)
         ], [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
             'date'            => ['bail', 'sometimes', 'date'],
