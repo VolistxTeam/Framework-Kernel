@@ -29,42 +29,24 @@ class LocalUserLogRepository implements IUserLogRepository
     {
         $columns = Schema::getColumnListing('user_logs');
 
-        $logs = UserLog::where(function ($query) use ($columns, $needle) {
+        return UserLog::where(function ($query) use ($columns, $needle) {
             foreach ($columns as $column) {
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
         })->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
-
-        return [
-            'pagination' => [
-                'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
-            ],
-            'items' => $logs->items(),
-        ];
     }
 
     public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit)
     {
         $columns = Schema::getColumnListing('user_logs');
 
-        $logs = UserLog::where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
+        return UserLog::where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
             foreach ($columns as $column) {
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
         })->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
-
-        return [
-            'pagination' => [
-                'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
-            ],
-            'items' => $logs->items(),
-        ];
     }
 
     public function FindSubscriptionLogsCount($subscription_id, $date): int

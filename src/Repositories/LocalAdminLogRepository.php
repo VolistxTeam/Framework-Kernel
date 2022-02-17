@@ -30,11 +30,6 @@ class LocalAdminLogRepository implements IAdminLogRepository
         return AdminLog::query()->where('id', $log_id)->first();
     }
 
-    /**
-     * @return array[]
-     *
-     * @psalm-return array{pagination: array{per_page: int, current: int, total: int}, items: array}
-     */
     public function FindAll($needle, $page, $limit)
     {
         $columns = Schema::getColumnListing('admin_logs');
@@ -43,16 +38,7 @@ class LocalAdminLogRepository implements IAdminLogRepository
         foreach ($columns as $column) {
             $query->orWhere("admin_logs.$column", 'LIKE', "%$needle%");
         }
-        $logs = $query->orderBy('created_at', 'DESC')
+        return $query->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
-
-        return [
-            'pagination' => [
-                'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
-            ],
-            'items' => $logs->items(),
-        ];
     }
 }
