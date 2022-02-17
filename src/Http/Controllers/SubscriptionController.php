@@ -221,15 +221,15 @@ class SubscriptionController extends Controller
             }
 
             $logDTOs = [];
-            foreach ($logs as $log) {
+            foreach ($logs['data'] as $log) {
                 $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
             }
 
             return response()->json([
                 'pagination' => [
-                    'per_page' => $logs->perPage(),
-                    'current'  => $logs->currentPage(),
-                    'total'    => $logs->lastPage(),
+                    'per_page' => $logs['per_page'],
+                    'current'  => $logs['current_page'],
+                    'total'    => $logs['last_page'],
                 ],
                 'items' => $logDTOs,
             ]);
