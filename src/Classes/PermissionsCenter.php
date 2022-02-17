@@ -55,7 +55,8 @@ class PermissionsCenter
         return $this->admin_permissions;
     }
 
-    public function getServicesPermissions() :array{
+    public function getServicesPermissions(): array
+    {
         return $this->services_permissions;
     }
 }
