@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Volistx\FrameworkKernel\DataTransferObjects\SubscriptionDTO;
+use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
@@ -219,7 +220,20 @@ class SubscriptionController extends Controller
                 return response()->json(Messages::E500(), 500);
             }
 
-            return response()->json($logs);
+            $logDTOs = [];
+            foreach ($logs as $log) {
+                $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
+            }
+
+            return response()->json([
+                'pagination' => [
+                    'per_page' => $logs->perPage(),
+                    'current' => $logs->currentPage(),
+                    'total' => $logs->lastPage(),
+                ],
+                'items' => $logDTOs,
+            ]);
+
         } catch (Exception $exception) {
             return response()->json(Messages::E500(), 500);
         }
