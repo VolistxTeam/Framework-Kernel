@@ -100,7 +100,7 @@ class RemoteUserLogRepository implements IUserLogRepository
 
     public function FindSubscriptionLogsInMonth($subscription_id, $date)
     {
-        $response = $this->client->get("$this->httpBaseUrl/$subscription_id/stats", [
+        $response = $this->client->get("$this->httpBaseUrl/$subscription_id/usages", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type'  => 'application/json',
