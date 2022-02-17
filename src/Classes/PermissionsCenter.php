@@ -42,9 +42,8 @@ class PermissionsCenter
 
     public function __construct()
     {
-        $this->services_permissions =  config('volistx.services_permissions');
+        $this->services_permissions = config('volistx.services_permissions');
     }
-
 
     public function check($key, $module, $operation): bool
     {
