@@ -50,4 +50,13 @@ class PermissionsCenter
     {
         return in_array("$module:$operation", $key->permissions) || in_array("$module:*", $key->permissions) || in_array('*', $key->permissions);
     }
+
+    public function getAdminPermissions(): array
+    {
+        return $this->admin_permissions;
+    }
+
+    public function getServicesPermissions() :array{
+        return $this->services_permissions;
+    }
 }
