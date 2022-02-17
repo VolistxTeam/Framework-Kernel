@@ -239,23 +239,23 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function GetSubscriptionStats(Request $request, $subscription_id): JsonResponse
+    public function GetSubscriptionUsages(Request $request, $subscription_id): JsonResponse
     {
         if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'stats')) {
             return response()->json(Messages::E401(), 401);
         }
 
         $date = $request->input('date', Carbon::now()->format('Y-m'));
-        $mode = $request->input('mode', "detailed");
+        $mode = $request->input('mode', 'detailed');
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
             'date'            => $date,
-            'mode' => strtolower($mode)
+            'mode'            => strtolower($mode),
         ], [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
             'date'            => ['bail', 'sometimes', 'date'],
-            'mode' => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
+            'mode'            => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
         ]);
 
         if ($validator->fails()) {
@@ -270,11 +270,10 @@ class SubscriptionController extends Controller
             $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
 
             $totalCount = 0;
-
             $stats = [];
             for ($i = 1; $i <= $lastDay; $i++) {
-                if ($mode == 'focused' && count($groupedLogs[$i]) == 0) continue;
                 $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
+                if($mode === 'focused' &&$groupedCount ===0) continue;
                 $totalCount += $groupedCount;
                 $stats[] = [
                     'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
