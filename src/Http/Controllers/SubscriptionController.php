@@ -284,7 +284,7 @@ class SubscriptionController extends Controller
             $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan()->first()->data['requests'];
 
             return response()->json([
-                'usage' => [
+                'usages' => [
                     'current' => $totalCount,
                     'max'     => (int) $requestsCount,
                     'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
