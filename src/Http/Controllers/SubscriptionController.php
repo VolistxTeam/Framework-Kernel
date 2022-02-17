@@ -228,12 +228,11 @@ class SubscriptionController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $logs->perPage(),
-                    'current' => $logs->currentPage(),
-                    'total' => $logs->lastPage(),
+                    'current'  => $logs->currentPage(),
+                    'total'    => $logs->lastPage(),
                 ],
                 'items' => $logDTOs,
             ]);
-
         } catch (Exception $exception) {
             return response()->json(Messages::E500(), 500);
         }
