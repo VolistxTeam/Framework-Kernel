@@ -246,16 +246,16 @@ class SubscriptionController extends Controller
         }
 
         $date = $request->input('date', Carbon::now()->format('Y-m'));
-        $mode = $request->input('mode', "detailed");
+        $mode = $request->input('mode', 'detailed');
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
             'date'            => strtolower($mode),
-            'mode' => $mode
+            'mode'            => $mode,
         ], [
             'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
             'date'            => ['bail', 'sometimes', 'date'],
-            'mode' => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
+            'mode'            => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
         ]);
 
         if ($validator->fails()) {
@@ -273,7 +273,9 @@ class SubscriptionController extends Controller
 
             $stats = [];
             for ($i = 1; $i <= $lastDay; $i++) {
-                if ($mode == 'focused' && count($groupedLogs[$i]) == 0) continue;
+                if ($mode == 'focused' && count($groupedLogs[$i]) == 0) {
+                    continue;
+                }
                 $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
                 $totalCount += $groupedCount;
                 $stats[] = [
