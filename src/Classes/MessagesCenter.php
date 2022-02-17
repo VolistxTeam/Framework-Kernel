@@ -39,7 +39,7 @@ class MessagesCenter
         return self::Error('conflict', $error);
     }
 
-    public function E429($error = 'User has reached subscription plan's rate limit.'): array
+    public function E429($error = 'User has reached subscription plan\'s rate limit.'): array
     {
         return self::Error('ratelimit_reached', $error);
     }
