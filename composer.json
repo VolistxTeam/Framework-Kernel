@@ -20,7 +20,6 @@
     "volistx/lumen-rate-limiting": "^1.0",
     "wikimedia/ip-set": "^3.0",
     "guzzlehttp/guzzle": "^7.4",
-    "volistx/larasupport": "^1.8"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",
@@ -32,6 +31,9 @@
       "Volistx\\FrameworkKernel\\Database\\Factories\\": "database/factories",
       "Volistx\\FrameworkKernel\\Database\\Seeders\\": "database/seeders"
     },
+    "files": [
+      "src/Classes/Helpers.php"
+    ],
     "classmap": [
       "src/Classes"
     ]
