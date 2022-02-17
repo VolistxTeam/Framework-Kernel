@@ -39,6 +39,6 @@ class LocalAdminLogRepository implements IAdminLogRepository
             $query->orWhere("admin_logs.$column", 'LIKE', "%$needle%");
         }
         return $query->orderBy('created_at', 'DESC')
-            ->paginate($limit, ['*'], 'page', $page);
+            ->paginate($limit, ['*'], 'page', $page)->toArray();
     }
 }

@@ -59,7 +59,7 @@ class RemoteUserLogRepository implements IUserLogRepository
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return get_object_vars(json_decode($response->getBody()->getContents()));
     }
 
     public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit)
@@ -78,7 +78,7 @@ class RemoteUserLogRepository implements IUserLogRepository
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return get_object_vars(json_decode($response->getBody()->getContents()));
     }
 
     public function FindSubscriptionLogsCount($subscription_id, $date): int
@@ -100,7 +100,7 @@ class RemoteUserLogRepository implements IUserLogRepository
 
     public function FindSubscriptionLogsInMonth($subscription_id, $date)
     {
-        $response = $this->client->get("$this->httpBaseUrl/$subscription_id/month", [
+        $response = $this->client->get("$this->httpBaseUrl/$subscription_id/stats", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type'  => 'application/json',

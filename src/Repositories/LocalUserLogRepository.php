@@ -34,7 +34,7 @@ class LocalUserLogRepository implements IUserLogRepository
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
         })->orderBy('created_at', 'DESC')
-            ->paginate($limit, ['*'], 'page', $page);
+            ->paginate($limit, ['*'], 'page', $page)->toArray();
     }
 
     public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit)
@@ -46,7 +46,7 @@ class LocalUserLogRepository implements IUserLogRepository
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
         })->orderBy('created_at', 'DESC')
-            ->paginate($limit, ['*'], 'page', $page);
+            ->paginate($limit, ['*'], 'page', $page)->toArray();
     }
 
     public function FindSubscriptionLogsCount($subscription_id, $date): int
