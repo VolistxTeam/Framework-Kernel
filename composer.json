@@ -1,6 +1,7 @@
 {
   "name": "volistx/framework-kernel",
   "type": "library",
+  "license": "MIT",
   "description": "The Volistx Framework (Kernel)",
   "authors": [
     {
