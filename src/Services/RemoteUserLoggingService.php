@@ -1,11 +1,11 @@
 <?php
 
-namespace Volistx\FrameworkKernel\Repositories;
+namespace Volistx\FrameworkKernel\Services;
 
 use GuzzleHttp\Client;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
+use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
-class RemoteUserLogRepository implements IUserLogRepository
+class RemoteUserLoggingService implements IUserLoggingService
 {
     private Client $client;
     private string $httpBaseUrl;
@@ -18,20 +18,18 @@ class RemoteUserLogRepository implements IUserLogRepository
         $this->remoteToken = config('volistx.logging.userLogHttpToken');
     }
 
-    public function Create(array $inputs)
+    public function CreateUserLog(array $inputs)
     {
-        $response = $this->client->post($this->httpBaseUrl, [
+        $this->client->post($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type'  => 'application/json',
             ],
             'body' => json_encode($inputs),
         ]);
-
-        return json_decode($response->getBody()->getContents());
     }
 
-    public function FindById($log_id)
+    public function GetLog($log_id)
     {
         $response = $this->client->get("$this->httpBaseUrl/{$log_id}", [
             'headers' => [
@@ -40,10 +38,10 @@ class RemoteUserLogRepository implements IUserLogRepository
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return $response->getStatusCode() == 200? json_decode($response->getBody()->getContents()) : null;
     }
 
-    public function FindAll($needle, $page, $limit)
+    public function GetLogs($needle, $page, $limit)
     {
         $response = $this->client->get("$this->httpBaseUrl", [
             'headers' => [
@@ -59,10 +57,10 @@ class RemoteUserLogRepository implements IUserLogRepository
             ],
         ]);
 
-        return get_object_vars(json_decode($response->getBody()->getContents()));
+        return $response->getStatusCode() == 200? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
-    public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit)
+    public function GetSubscriptionLogs($subscription_id, string $search, int $page, int $limit)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id", [
             'headers' => [
@@ -71,17 +69,17 @@ class RemoteUserLogRepository implements IUserLogRepository
             ],
             [
                 'query' => [
-                    'search' => $needle,
+                    'search' => $search,
                     'page'   => $page,
                     'limit'  => $limit,
                 ],
             ],
         ]);
 
-        return get_object_vars(json_decode($response->getBody()->getContents()));
+        return $response->getStatusCode() == 200? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
-    public function FindSubscriptionLogsCount($subscription_id, $date): int
+    public function GetSubscriptionLogsCount($subscription_id, $date)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id/count", [
             'headers' => [
@@ -95,10 +93,10 @@ class RemoteUserLogRepository implements IUserLogRepository
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return $response->getStatusCode() == 200? json_decode($response->getBody()->getContents()) : null;
     }
 
-    public function FindSubscriptionLogsInMonth($subscription_id, $date)
+    public function GetSubscriptionUsages($subscription_id, $date, $mode)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id/usages", [
             'headers' => [
@@ -108,10 +106,11 @@ class RemoteUserLogRepository implements IUserLogRepository
             [
                 'query' => [
                     'date' => $date,
+                    'mode' => $mode
                 ],
             ],
         ]);
 
-        return get_object_vars(json_decode($response->getBody()->getContents()));
+        return $response->getStatusCode() == 200?  get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 }

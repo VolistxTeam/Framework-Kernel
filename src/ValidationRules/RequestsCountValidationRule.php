@@ -5,16 +5,16 @@ namespace Volistx\FrameworkKernel\ValidationRules;
 use Carbon\Carbon;
 use Illuminate\Container\Container;
 use Volistx\FrameworkKernel\Facades\Messages;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
+use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class RequestsCountValidationRule extends ValidationRuleBase
 {
-    private IUserLogRepository $userLogRepository;
+    private IUserLoggingService $loggingService;
 
     public function __construct(array $inputs)
     {
         parent::__construct($inputs);
-        $this->userLogRepository = Container::getInstance()->make(IUserLogRepository::class);
+        $this->loggingService = Container::getInstance()->make(IUserLoggingService::class);
     }
 
     public function Validate(): bool|array
@@ -23,7 +23,13 @@ class RequestsCountValidationRule extends ValidationRuleBase
         $plan = $this->inputs['plan'];
         $planRequestsLimit = $plan['data']['requests'] ?? null;
 
-        $requestsMadeCount = $this->userLogRepository->FindSubscriptionLogsCount($sub_id, Carbon::now());
+        $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id, Carbon::now());
+        if(!$requestsMadeCount){
+            return [
+                'message' => Messages::E500(),
+                'code'    => 500,
+            ];
+        }
 
         if (!$planRequestsLimit || ($planRequestsLimit != -1 && $requestsMadeCount >= $planRequestsLimit)) {
             return [

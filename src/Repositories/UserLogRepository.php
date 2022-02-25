@@ -5,9 +5,8 @@ namespace Volistx\FrameworkKernel\Repositories;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Models\UserLog;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 
-class LocalUserLogRepository implements IUserLogRepository
+class UserLogRepository
 {
     public function Create(array $inputs)
     {
@@ -25,16 +24,16 @@ class LocalUserLogRepository implements IUserLogRepository
         return UserLog::query()->where('id', $log_id)->first();
     }
 
-    public function FindAll($needle, $page, $limit)
+    public function FindAll($search, $page, $limit)
     {
         $columns = Schema::getColumnListing('user_logs');
 
-        return UserLog::where(function ($query) use ($columns, $needle) {
+        return UserLog::where(function ($query) use ($columns, $search) {
             foreach ($columns as $column) {
-                $query->orWhere("$column", 'LIKE', "%$needle%");
+                $query->orWhere("$column", 'LIKE', "%$search%");
             }
         })->orderBy('created_at', 'DESC')
-            ->paginate($limit, ['*'], 'page', $page)->toArray();
+            ->paginate($limit, ['*'], 'page', $page);
     }
 
     public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit)
@@ -46,10 +45,10 @@ class LocalUserLogRepository implements IUserLogRepository
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
         })->orderBy('created_at', 'DESC')
-            ->paginate($limit, ['*'], 'page', $page)->toArray();
+            ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogsCount($subscription_id, $date): int
+    public function FindSubscriptionLogsCount($subscription_id, $date)
     {
         return UserLog::query()->where('subscription_id', $subscription_id)
             ->whereMonth('created_at', $date->format('m'))
@@ -57,7 +56,7 @@ class LocalUserLogRepository implements IUserLogRepository
             ->count();
     }
 
-    public function FindSubscriptionLogsInMonth($subscription_id, $date)
+    public function FindSubscriptionUsages($subscription_id, $date)
     {
         return UserLog::where('subscription_id', $subscription_id)
             ->whereYear('created_at', Carbon::parse($date)->format('Y'))
@@ -65,6 +64,6 @@ class LocalUserLogRepository implements IUserLogRepository
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->created_at)->format('j'); // grouping by days
-            })->toArray();
+            });
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Volistx\FrameworkKernel\Repositories;
+namespace Volistx\FrameworkKernel\Services;
 
 use GuzzleHttp\Client;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IAdminLogRepository;
+use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 
-class RemoteAdminLogRepository implements IAdminLogRepository
+class RemoteAdminLoggingService implements IAdminLoggingService
 {
     private Client $client;
     private string $httpBaseUrl;
@@ -18,48 +18,46 @@ class RemoteAdminLogRepository implements IAdminLogRepository
         $this->remoteToken = config('volistx.logging.adminLogHttpToken');
     }
 
-    /**
-     * @return void
-     */
-    public function Create(array $inputs)
+    public function CreateAdminLog(array $inputs)
     {
         $this->client->post($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             'body' => json_encode($inputs),
         ]);
     }
 
-    public function Find($log_id)
+    public function GetAdminLog($log_id)
     {
         $response = $this->client->get("$this->httpBaseUrl/{$log_id}", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return $response->getStatusCode() ==200?  json_decode($response->getBody()->getContents()) : null;
     }
 
-    public function FindAll($needle, $page, $limit)
+    public function GetAdminLogs(string $search, int $page, int $limit)
     {
         $response = $this->client->get("$this->httpBaseUrl", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             [
                 'query' => [
-                    'search' => $needle,
-                    'page'   => $page,
-                    'limit'  => $limit,
+                    'search' => $search,
+                    'page' => $page,
+                    'limit' => $limit,
                 ],
             ],
         ]);
 
-        return get_object_vars(json_decode($response->getBody()->getContents()));
+        return $response->getStatusCode() ==200?  get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
+
 }

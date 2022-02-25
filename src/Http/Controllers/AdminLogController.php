@@ -6,19 +6,18 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Volistx\FrameworkKernel\DataTransferObjects\AdminLogDTO;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IAdminLogRepository;
+use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 
 class AdminLogController extends Controller
 {
-    private IAdminLogRepository $adminLogRepository;
+    private IAdminLoggingService $adminLoggingService;
 
-    public function __construct(IAdminLogRepository $adminLogRepository)
+    public function __construct(IAdminLoggingService $adminLoggingService)
     {
         $this->module = 'logs';
-        $this->adminLogRepository = $adminLogRepository;
+        $this->adminLoggingService = $adminLoggingService;
     }
 
     public function GetAdminLog(Request $request, $log_id): JsonResponse
@@ -38,13 +37,13 @@ class AdminLogController extends Controller
         }
 
         try {
-            $log = $this->adminLogRepository->Find($log_id);
+            $log = $this->adminLoggingService->GetAdminLog($log_id);
 
             if (!$log) {
                 return response()->json(Messages::E404(), 404);
             }
 
-            return response()->json(AdminLogDTO::fromModel($log)->GetDTO());
+            return response()->json($log);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
@@ -73,24 +72,9 @@ class AdminLogController extends Controller
         }
 
         try {
-            $logs = $this->adminLogRepository->FindAll($search, $page, $limit);
-            if (!$logs) {
-                return response()->json(Messages::E500(), 500);
-            }
+            $logs = $this->adminLoggingService->GetAdminLogs($search, $page, $limit);
 
-            $logDTOs = [];
-            foreach ($logs['data'] as $log) {
-                $logDTOs[] = AdminLogDTO::fromModel($log)->GetDTO();
-            }
-
-            return response()->json([
-                'pagination' => [
-                    'per_page' => $logs['per_page'],
-                    'current'  => $logs['current_page'],
-                    'total'    => $logs['last_page'],
-                ],
-                'items' => $logDTOs,
-            ]);
+            return response()->json($logs);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }

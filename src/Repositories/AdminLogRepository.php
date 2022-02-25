@@ -4,13 +4,9 @@ namespace Volistx\FrameworkKernel\Repositories;
 
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Models\AdminLog;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IAdminLogRepository;
 
-class LocalAdminLogRepository implements IAdminLogRepository
+class AdminLogRepository
 {
-    /**
-     * @return void
-     */
     public function Create(array $inputs)
     {
         AdminLog::query()->create([
@@ -22,9 +18,6 @@ class LocalAdminLogRepository implements IAdminLogRepository
         ]);
     }
 
-    /**
-     * @return null|object
-     */
     public function Find($log_id)
     {
         return AdminLog::query()->where('id', $log_id)->first();
@@ -40,6 +33,6 @@ class LocalAdminLogRepository implements IAdminLogRepository
         }
 
         return $query->orderBy('created_at', 'DESC')
-            ->paginate($limit, ['*'], 'page', $page)->toArray();
+            ->paginate($limit, ['*'], 'page', $page);
     }
 }

@@ -5,18 +5,18 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IAdminLogRepository;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
+use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
+use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class RequestLoggingMiddleware
 {
-    private IAdminLogRepository $adminLogRepository;
-    private IUserLogRepository $userLogRepository;
+    private IAdminLoggingService $adminLoggingService;
+    private IUserLoggingService $userLoggingService;
 
-    public function __construct(IAdminLogRepository $adminLogRepository, IUserLogRepository $userLogRepository)
+    public function __construct(IAdminLoggingService $adminLoggingService, IUserLoggingService $userLoggingService)
     {
-        $this->adminLogRepository = $adminLogRepository;
-        $this->userLogRepository = $userLogRepository;
+        $this->adminLoggingService = $adminLoggingService;
+        $this->userLoggingService = $userLoggingService;
     }
 
     public function handle(Request $request, Closure $next)
@@ -34,7 +34,7 @@ class RequestLoggingMiddleware
                 'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
                 'subscription_id' => $request->X_PERSONAL_TOKEN->subscription()->first()->id,
             ];
-            $this->userLogRepository->Create($inputs);
+            $this->userLoggingService->CreateUserLog($inputs);
         } elseif ($request->X_ACCESS_TOKEN) {
             $inputs = [
                 'url'             => $request->fullUrl(),
@@ -43,7 +43,7 @@ class RequestLoggingMiddleware
                 'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
                 'access_token_id' => $request->X_ACCESS_TOKEN->id,
             ];
-            $this->adminLogRepository->Create($inputs);
+            $this->adminLoggingService->CreateAdminLog($inputs);
         }
     }
 }

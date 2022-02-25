@@ -28,6 +28,7 @@ class UserLogDTO extends DataTransferObjectBase
             'ip'         => $this->ip,
             'method'     => $this->method,
             'user_agent' => $this->user_agent,
+            'created_at' => $this->created_at
         ];
     }
 }

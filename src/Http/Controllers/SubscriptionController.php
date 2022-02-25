@@ -12,19 +12,19 @@ use Volistx\FrameworkKernel\DataTransferObjects\SubscriptionDTO;
 use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
-use Volistx\FrameworkKernel\Repositories\Interfaces\IUserLogRepository;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
+use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class SubscriptionController extends Controller
 {
     private SubscriptionRepository $subscriptionRepository;
-    private IUserLogRepository $logRepository;
+    private IUserLoggingService $loggingService;
 
-    public function __construct(SubscriptionRepository $subscriptionRepository, IUserLogRepository $logRepository)
+    public function __construct(SubscriptionRepository $subscriptionRepository, IUserLoggingService $loggingService)
     {
         $this->module = 'subscriptions';
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->logRepository = $logRepository;
+        $this->loggingService = $loggingService;
     }
 
     public function CreateSubscription(Request $request): JsonResponse
@@ -216,24 +216,11 @@ class SubscriptionController extends Controller
         }
 
         try {
-            $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $search, $page, $limit);
-            if (!$logs) {
+            $logs = $this->loggingService->GetSubscriptionLogs($subscription_id, $search, $page, $limit);
+            if(!$logs){
                 return response()->json(Messages::E500(), 500);
             }
-
-            $logDTOs = [];
-            foreach ($logs['data'] as $log) {
-                $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
-            }
-
-            return response()->json([
-                'pagination' => [
-                    'per_page' => $logs['per_page'],
-                    'current'  => $logs['current_page'],
-                    'total'    => $logs['last_page'],
-                ],
-                'items' => $logDTOs,
-            ]);
+            return response()->json($logs);
         } catch (Exception $exception) {
             return response()->json(Messages::E500(), 500);
         }
@@ -263,36 +250,11 @@ class SubscriptionController extends Controller
         }
 
         try {
-            $groupedLogs = $this->logRepository->FindSubscriptionLogsInMonth($subscription_id, $date);
-
-            $specifiedDate = Carbon::parse($date);
-            $thisDate = Carbon::now();
-            $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
-
-            $totalCount = 0;
-            $stats = [];
-            for ($i = 1; $i <= $lastDay; $i++) {
-                $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
-                if ($mode === 'focused' && $groupedCount === 0) {
-                    continue;
-                }
-                $totalCount += $groupedCount;
-                $stats[] = [
-                    'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
-                    'count' => $groupedCount,
-                ];
+            $usages = $this->loggingService->GetSubscriptionUsages($subscription_id, $date,$mode);
+            if(!$usages){
+                return response()->json(Messages::E500(), 500);
             }
-
-            $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan()->first()->data['requests'];
-
-            return response()->json([
-                'usages' => [
-                    'current' => $totalCount,
-                    'max'     => (int) $requestsCount,
-                    'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
-                ],
-                'details' => $stats,
-            ]);
+            return response()->json($usages);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
