@@ -24,7 +24,7 @@ class RequestsCountValidationRule extends ValidationRuleBase
         $planRequestsLimit = $plan['data']['requests'] ?? null;
 
         $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id, Carbon::now());
-        if (!$requestsMadeCount) {
+        if ($requestsMadeCount == null) {
             return [
                 'message' => Messages::E500(),
                 'code'    => 500,
