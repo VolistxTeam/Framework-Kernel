@@ -23,7 +23,7 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $this->client->post($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
+                'Content-Type'  => 'application/json',
             ],
             'body' => json_encode($inputs),
         ]);
@@ -34,11 +34,11 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $response = $this->client->get("$this->httpBaseUrl/{$log_id}", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
+                'Content-Type'  => 'application/json',
             ],
         ]);
 
-        return $response->getStatusCode() ==200?  json_decode($response->getBody()->getContents()) : null;
+        return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
     }
 
     public function GetAdminLogs(string $search, int $page, int $limit)
@@ -46,18 +46,17 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $response = $this->client->get("$this->httpBaseUrl", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
+                'Content-Type'  => 'application/json',
             ],
             [
                 'query' => [
                     'search' => $search,
-                    'page' => $page,
-                    'limit' => $limit,
+                    'page'   => $page,
+                    'limit'  => $limit,
                 ],
             ],
         ]);
 
-        return $response->getStatusCode() ==200?  get_object_vars(json_decode($response->getBody()->getContents())) : null;
+        return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
-
 }
