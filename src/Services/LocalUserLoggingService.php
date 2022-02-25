@@ -3,15 +3,7 @@
 namespace Volistx\FrameworkKernel\Services;
 
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Volistx\FrameworkKernel\DataTransferObjects\AdminLogDTO;
 use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
-
-use Volistx\FrameworkKernel\Facades\Messages;
-use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\UserLogRepository;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
