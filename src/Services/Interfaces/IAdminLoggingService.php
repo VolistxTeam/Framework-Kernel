@@ -8,5 +8,5 @@ interface IAdminLoggingService
 
     public function GetAdminLog($log_id);
 
-    public function GetAdminLogs(string $search,int $page, int $limit);
+    public function GetAdminLogs(string $search, int $page, int $limit);
 }

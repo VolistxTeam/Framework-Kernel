@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Volistx\FrameworkKernel\DataTransferObjects\SubscriptionDTO;
-use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
@@ -217,9 +216,10 @@ class SubscriptionController extends Controller
 
         try {
             $logs = $this->loggingService->GetSubscriptionLogs($subscription_id, $search, $page, $limit);
-            if(!$logs){
+            if (!$logs) {
                 return response()->json(Messages::E500(), 500);
             }
+
             return response()->json($logs);
         } catch (Exception $exception) {
             return response()->json(Messages::E500(), 500);
@@ -250,10 +250,11 @@ class SubscriptionController extends Controller
         }
 
         try {
-            $usages = $this->loggingService->GetSubscriptionUsages($subscription_id, $date,$mode);
-            if(!$usages){
+            $usages = $this->loggingService->GetSubscriptionUsages($subscription_id, $date, $mode);
+            if (!$usages) {
                 return response()->json(Messages::E500(), 500);
             }
+
             return response()->json($usages);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);

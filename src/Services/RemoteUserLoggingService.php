@@ -38,7 +38,7 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
         ]);
 
-        return $response->getStatusCode() == 200? json_decode($response->getBody()->getContents()) : null;
+        return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
     }
 
     public function GetLogs($needle, $page, $limit)
@@ -57,7 +57,7 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
         ]);
 
-        return $response->getStatusCode() == 200? get_object_vars(json_decode($response->getBody()->getContents())) : null;
+        return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
     public function GetSubscriptionLogs($subscription_id, string $search, int $page, int $limit)
@@ -76,7 +76,7 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
         ]);
 
-        return $response->getStatusCode() == 200? get_object_vars(json_decode($response->getBody()->getContents())) : null;
+        return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
     public function GetSubscriptionLogsCount($subscription_id, $date)
@@ -93,7 +93,7 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
         ]);
 
-        return $response->getStatusCode() == 200? json_decode($response->getBody()->getContents()) : null;
+        return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
     }
 
     public function GetSubscriptionUsages($subscription_id, $date, $mode)
@@ -106,11 +106,11 @@ class RemoteUserLoggingService implements IUserLoggingService
             [
                 'query' => [
                     'date' => $date,
-                    'mode' => $mode
+                    'mode' => $mode,
                 ],
             ],
         ]);
 
-        return $response->getStatusCode() == 200?  get_object_vars(json_decode($response->getBody()->getContents())) : null;
+        return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 }
