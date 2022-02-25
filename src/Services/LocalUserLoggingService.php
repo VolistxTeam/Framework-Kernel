@@ -4,8 +4,8 @@ namespace Volistx\FrameworkKernel\Services;
 
 use Carbon\Carbon;
 use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
-use Volistx\FrameworkKernel\Repositories\UserLogRepository;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
+use Volistx\FrameworkKernel\Repositories\UserLogRepository;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class LocalUserLoggingService implements IUserLoggingService
@@ -27,6 +27,7 @@ class LocalUserLoggingService implements IUserLoggingService
     public function GetLog($log_id)
     {
         $log = $this->logRepository->FindById($log_id);
+
         return $log ?? UserLogDTO::fromModel($log)->GetDTO();
     }
 
@@ -42,13 +43,12 @@ class LocalUserLoggingService implements IUserLoggingService
         return response()->json([
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ]);
     }
-
 
     public function GetSubscriptionLogs($subscription_id, string $search, int $page, int $limit)
     {
@@ -62,8 +62,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return response()->json([
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ]);
@@ -80,7 +80,7 @@ class LocalUserLoggingService implements IUserLoggingService
 
         $specifiedDate = Carbon::parse($date);
         $thisDate = Carbon::now();
-        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int)$specifiedDate->format('t');
+        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
 
         $totalCount = 0;
         $stats = [];
@@ -91,7 +91,7 @@ class LocalUserLoggingService implements IUserLoggingService
             }
             $totalCount += $groupedCount;
             $stats[] = [
-                'date' => $specifiedDate->format('Y-m-') . sprintf('%02d', $i),
+                'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
                 'count' => $groupedCount,
             ];
         }
@@ -101,8 +101,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return response()->json([
             'usages' => [
                 'current' => $totalCount,
-                'max' => (int)$requestsCount,
-                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
+                'max'     => (int) $requestsCount,
+                'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
             'details' => $stats,
         ]);

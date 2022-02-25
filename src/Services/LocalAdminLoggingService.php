@@ -2,7 +2,6 @@
 
 namespace Volistx\FrameworkKernel\Services;
 
-
 use Volistx\FrameworkKernel\DataTransferObjects\AdminLogDTO;
 use Volistx\FrameworkKernel\Repositories\AdminLogRepository;
 use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
@@ -25,7 +24,7 @@ class LocalAdminLoggingService implements IAdminLoggingService
     {
         $log = $this->logRepository->Find($log_id);
 
-        return $log?? AdminLogDTO::fromModel($log)->GetDTO();
+        return $log ?? AdminLogDTO::fromModel($log)->GetDTO();
     }
 
     public function GetAdminLogs(string $search, int $page, int $limit)
@@ -40,11 +39,10 @@ class LocalAdminLoggingService implements IAdminLoggingService
         return response()->json([
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ]);
     }
-
 }
