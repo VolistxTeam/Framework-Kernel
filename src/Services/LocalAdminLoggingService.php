@@ -37,14 +37,14 @@ class LocalAdminLoggingService implements IAdminLoggingService
             $logDTOs[] = AdminLogDTO::fromModel($log)->GetDTO();
         }
 
-        return response()->json([
+        return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
                 'current' => $logs->currentPage(),
                 'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
-        ]);
+        ];
     }
 
 }

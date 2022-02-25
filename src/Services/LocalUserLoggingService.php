@@ -39,14 +39,14 @@ class LocalUserLoggingService implements IUserLoggingService
             $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
         }
 
-        return response()->json([
+        return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
                 'current' => $logs->currentPage(),
                 'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
-        ]);
+        ];
     }
 
 
@@ -59,14 +59,14 @@ class LocalUserLoggingService implements IUserLoggingService
             $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
         }
 
-        return response()->json([
+        return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
                 'current' => $logs->currentPage(),
                 'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
-        ]);
+        ];
     }
 
     public function GetSubscriptionLogsCount($subscription_id, $date)
@@ -98,13 +98,13 @@ class LocalUserLoggingService implements IUserLoggingService
 
         $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan()->first()->data['requests'];
 
-        return response()->json([
+        return [
             'usages' => [
                 'current' => $totalCount,
                 'max' => (int)$requestsCount,
                 'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
             'details' => $stats,
-        ]);
+        ];
     }
 }
