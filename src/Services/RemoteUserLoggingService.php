@@ -103,11 +103,9 @@ class RemoteUserLoggingService implements IUserLoggingService
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type'  => 'application/json',
             ],
-            [
-                'query' => [
-                    'date' => $date,
-                    'mode' => $mode,
-                ],
+            'query' => [
+                'date' => $date,
+                'mode' => $mode,
             ],
         ]);
 
