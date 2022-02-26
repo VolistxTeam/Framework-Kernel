@@ -107,9 +107,9 @@ class RemoteUserLoggingService implements IUserLoggingService
                 'Content-Type'  => 'application/json',
             ],
             'query' => [
-                'date' => $date,
-                'mode' => $mode,
-                'count' =>  $subscriptionRepo->Find($subscription_id)->plan()->first()->data['requests']
+                'date'  => $date,
+                'mode'  => $mode,
+                'count' => $subscriptionRepo->Find($subscription_id)->plan()->first()->data['requests'],
             ],
         ]);
 
