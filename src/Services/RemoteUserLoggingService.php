@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\Services;
 
 use GuzzleHttp\Client;
+use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class RemoteUserLoggingService implements IUserLoggingService
@@ -98,6 +99,8 @@ class RemoteUserLoggingService implements IUserLoggingService
 
     public function GetSubscriptionUsages($subscription_id, $date, $mode)
     {
+        $subscriptionRepo = new SubscriptionRepository();
+
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id/usages", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
@@ -106,6 +109,7 @@ class RemoteUserLoggingService implements IUserLoggingService
             'query' => [
                 'date' => $date,
                 'mode' => $mode,
+                'count' =>  $subscriptionRepo->Find($subscription_id)->plan()->first()->data['requests']
             ],
         ]);
 
