@@ -20,12 +20,12 @@
     "laravel/lumen-framework": "^9.0",
     "volistx/lumen-rate-limiting": "^1.0",
     "wikimedia/ip-set": "^3.0",
-    "guzzlehttp/guzzle": "^7.4"
+    "guzzlehttp/guzzle": "^7.4",
+    "cryental/larasupport": "^1.7"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",
-    "phpunit/phpunit": "^9.5",
-    "spatie/ray": "^1.33"
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {
@@ -33,9 +33,6 @@
       "Volistx\\FrameworkKernel\\Database\\Factories\\": "database/factories",
       "Volistx\\FrameworkKernel\\Database\\Seeders\\": "database/seeders"
     },
-    "files": [
-      "src/Classes/Helpers.php"
-    ],
     "classmap": [
       "src/Classes"
     ]
