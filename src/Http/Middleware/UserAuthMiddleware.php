@@ -21,13 +21,13 @@ class UserAuthMiddleware
         $token = $this->personalTokenRepository->AuthPersonalToken($request->bearerToken());
 
         if (!$token) {
-            return response()->json(Messages::E401(),401);
+            return response()->json(Messages::E401(), 401);
         }
 
         $plan = $token->subscription()->first()->plan()->first();
 
         if (!$plan) {
-            return response()->json(Messages::E401(),401);
+            return response()->json(Messages::E401(), 401);
         }
 
         //prepare inputs array
