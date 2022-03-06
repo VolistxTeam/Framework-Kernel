@@ -34,9 +34,9 @@ class PersonalTokenController extends Controller
         ]), [
             'subscription_id'   => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
             'hours_to_expire'   => ['bail', 'required', 'integer'],
-            'permissions'       => ['bail', 'required', 'array'],
+            'permissions'       => ['bail', 'sometimes', 'array'],
             'permissions.*'     => ['bail', 'required_if:permissions,array', 'string'],
-            'whitelist_range'   => ['bail', 'required', 'array'],
+            'whitelist_range'   => ['bail', 'sometimes', 'array'],
             'whitelist_range.*' => ['bail', 'required_if:whitelist_range,array', 'ip'],
         ]);
 
