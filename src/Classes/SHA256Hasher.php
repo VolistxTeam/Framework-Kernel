@@ -9,9 +9,6 @@ class SHA256Hasher
         return password_get_info($hashedValue);
     }
 
-    /**
-     * @return false|string
-     */
     public static function make(string $value, array $options = []): string|false
     {
         $salt = $options['salt'] ?? '';
