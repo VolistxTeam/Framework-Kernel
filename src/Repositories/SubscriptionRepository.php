@@ -2,18 +2,21 @@
 
 namespace Volistx\FrameworkKernel\Repositories;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Models\Subscription;
 
 class SubscriptionRepository
 {
-    public function Create(array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
+    public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
             'user_id'           => $inputs['user_id'],
             'plan_id'           => $inputs['plan_id'],
             'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at'   => $inputs['plan_expires_at'],
+            'plan_expires_at'   => $inputs['plan_expires_at'] != -1 ? $inputs['plan_expires_at'] : null
         ]);
     }
 
@@ -25,8 +28,8 @@ class SubscriptionRepository
             return null;
         }
 
-        $plan_expires_at = $inputs['plan_expires_at'] ?? null;
         $plan_activated_at = $inputs['plan_activated_at'] ?? null;
+        $plan_expires_at = $inputs['plan_expires_at'] ?? null;
         $plan_id = $inputs['plan_id'] ?? null;
 
         if (!$plan_expires_at && !$plan_id && !$plan_activated_at) {
@@ -39,8 +42,9 @@ class SubscriptionRepository
         if ($plan_activated_at) {
             $subscription->plan_activated_at = $plan_activated_at;
         }
+
         if ($plan_expires_at) {
-            $subscription->plan_expires_at = $plan_expires_at;
+            $subscription->plan_expires_at = $plan_expires_at != -1 ? $plan_expires_at : null;
         }
 
         $subscription->save();
@@ -68,7 +72,7 @@ class SubscriptionRepository
         ];
     }
 
-    public function FindAll($needle, $page, $limit): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function FindAll($needle, $page, $limit): LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('subscriptions');
 
