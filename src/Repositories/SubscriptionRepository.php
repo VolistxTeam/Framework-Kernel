@@ -16,7 +16,7 @@ class SubscriptionRepository
             'user_id'           => $inputs['user_id'],
             'plan_id'           => $inputs['plan_id'],
             'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at'   => $inputs['plan_expires_at'] != -1 ? $inputs['plan_expires_at'] : null,
+            'plan_expires_at'   => $inputs['plan_expires_at']
         ]);
     }
 
@@ -43,9 +43,7 @@ class SubscriptionRepository
             $subscription->plan_activated_at = $plan_activated_at;
         }
 
-        if ($plan_expires_at) {
-            $subscription->plan_expires_at = $plan_expires_at != -1 ? $plan_expires_at : null;
-        }
+        $subscription->plan_expires_at = $plan_expires_at;
 
         $subscription->save();
 
