@@ -5,6 +5,9 @@ namespace Volistx\FrameworkKernel\Classes;
 class PermissionsCenter
 {
     public array $admin_permissions = [
+        '*',
+
+        'subscriptions:*',
         'subscriptions:create',
         'subscriptions:update',
         'subscriptions:delete',
@@ -13,6 +16,7 @@ class PermissionsCenter
         'subscriptions:logs',
         'subscriptions:stats',
 
+        'personal-tokens:*',
         'personal-tokens:create',
         'personal-tokens:update',
         'personal-tokens:delete',
@@ -21,6 +25,7 @@ class PermissionsCenter
         'personal-tokens:view-all',
         'personal-tokens:logs',
 
+        'plans:*',
         'plans:create',
         'plans:update',
         'plans:delete',
@@ -28,6 +33,7 @@ class PermissionsCenter
         'plans:view-all',
         'plans:logs',
 
+        'logs:*',
         'logs:view',
         'logs:view-all',
     ];
