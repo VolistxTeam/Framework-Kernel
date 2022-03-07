@@ -44,12 +44,11 @@ class SubscriptionController extends Controller
         }
 
         try {
-
             $newSubscription = $this->subscriptionRepository->Create([
                 'user_id'           => $request->input('user_id'),
                 'plan_id'           => $request->input('plan_id'),
-                'plan_activated_at' =>  $request->input('plan_activated_at'),
-                'plan_expires_at'   => $request->input('plan_expires_at')
+                'plan_activated_at' => $request->input('plan_activated_at'),
+                'plan_expires_at'   => $request->input('plan_expires_at'),
             ]);
             if (!$newSubscription) {
                 return response()->json(Messages::E500(), 500);
@@ -73,7 +72,7 @@ class SubscriptionController extends Controller
             'subscription_id'   => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             'plan_activated_at' => ['bail', 'sometimes', 'date'],
             'plan_expires_at'   => ['bail', 'sometimes', 'date'],
-            'plan_id'           => ['bail', 'sometimes', 'uuid','exists:plans,id'],
+            'plan_id'           => ['bail', 'sometimes', 'uuid', 'exists:plans,id'],
         ]);
 
         if ($validator->fails()) {

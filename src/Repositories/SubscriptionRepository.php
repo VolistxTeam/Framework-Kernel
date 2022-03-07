@@ -16,7 +16,7 @@ class SubscriptionRepository
             'user_id'           => $inputs['user_id'],
             'plan_id'           => $inputs['plan_id'],
             'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at'   => $inputs['plan_expires_at']
+            'plan_expires_at'   => $inputs['plan_expires_at'],
         ]);
     }
 
