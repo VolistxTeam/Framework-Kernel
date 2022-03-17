@@ -20,9 +20,6 @@ class FirewallMiddleware
             return response('', 403);
         }
 
-        $response = $next($request);
-        $response->header('X-Protected-By', 'WebShield/3.25d');
-
-        return $response;
+        return $next($request);
     }
 }
