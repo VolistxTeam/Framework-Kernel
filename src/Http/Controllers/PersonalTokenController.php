@@ -32,11 +32,11 @@ class PersonalTokenController extends Controller
         $validator = Validator::make(array_merge($request->all(), [
             'subscription_id' => $subscription_id,
         ]), [
-            'subscription_id'   => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-            'hours_to_expire'   => ['bail', 'required', 'integer'],
-            'permissions'       => ['bail', 'sometimes', 'array'],
-            'permissions.*'     => ['bail', 'required_if:permissions,array', 'string'],
-            'whitelist_range'   => ['bail', 'sometimes', 'array'],
+            'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
+            'hours_to_expire' => ['bail', 'required', 'integer'],
+            'permissions' => ['bail', 'sometimes', 'array'],
+            'permissions.*' => ['bail', 'required_if:permissions,array', 'string'],
+            'whitelist_range' => ['bail', 'sometimes', 'array'],
             'whitelist_range.*' => ['bail', 'required_if:whitelist_range,array', 'ip'],
         ]);
 
@@ -49,12 +49,13 @@ class PersonalTokenController extends Controller
             $salt = Str::random(16);
 
             $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
-                'key'             => $key,
-                'salt'            => $salt,
-                'permissions'     => $request->input('permissions'),
+                'key' => $key,
+                'salt' => $salt,
+                'permissions' => $request->input('permissions'),
                 'whitelist_range' => $request->input('whitelist_range'),
-                'activated_at'    => Carbon::now(),
+                'activated_at' => Carbon::now(),
                 'hours_to_expire' => $request->input('hours_to_expire'),
+                'hidden' => false
             ]);
 
             if (!$newPersonalToken) {
@@ -80,14 +81,14 @@ class PersonalTokenController extends Controller
 
         $validator = Validator::make(array_merge($request->all(), [
             'subscription_id' => $subscription_id,
-            'token_id'        => $token_id,
+            'token_id' => $token_id,
         ]), [
-            'subscription_id'   => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-            'token_id'          => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
-            'hours_to_expire'   => ['bail', 'sometimes', 'integer'],
-            'permissions'       => ['bail', 'sometimes', 'array'],
-            'permissions.*'     => ['bail', 'required_if:permissions,array', 'string'],
-            'whitelist_range'   => ['bail', 'sometimes', 'array'],
+            'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
+            'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+            'hours_to_expire' => ['bail', 'sometimes', 'integer'],
+            'permissions' => ['bail', 'sometimes', 'array'],
+            'permissions.*' => ['bail', 'required_if:permissions,array', 'string'],
+            'whitelist_range' => ['bail', 'sometimes', 'array'],
             'whitelist_range.*' => ['bail', 'required_if:whitelist_range,array', 'ip'],
         ]);
 
@@ -115,10 +116,10 @@ class PersonalTokenController extends Controller
 
         $validator = Validator::make(array_merge($request->all(), [
             'subscription_id' => $subscription_id,
-            'token_id'        => $token_id,
+            'token_id' => $token_id,
         ]), [
             'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-            'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+            'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
         ]);
 
         if ($validator->fails()) {
@@ -133,7 +134,7 @@ class PersonalTokenController extends Controller
                 $subscription_id,
                 $token_id,
                 [
-                    'key'  => $newKey,
+                    'key' => $newKey,
                     'salt' => $newSalt,
                 ]
             );
@@ -155,10 +156,10 @@ class PersonalTokenController extends Controller
         }
         $validator = Validator::make(array_merge($request->all(), [
             'subscription_id' => $subscription_id,
-            'token_id'        => $token_id,
+            'token_id' => $token_id,
         ]), [
             'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-            'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+            'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
         ]);
 
         if ($validator->fails()) {
@@ -185,11 +186,15 @@ class PersonalTokenController extends Controller
 
         $validator = Validator::make(array_merge($request->all(), [
             'subscription_id' => $subscription_id,
-            'token_id'        => $token_id,
+            'token_id' => $token_id,
         ]), [
             'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-            'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+            'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(Messages::E400($validator->errors()->first()), 400);
+        }
 
         try {
             $token = $this->personalTokenRepository->Find($subscription_id, $token_id);
@@ -215,10 +220,10 @@ class PersonalTokenController extends Controller
         $limit = $request->input('limit', 50);
 
         $validator = Validator::make([
-            'page'  => $page,
+            'page' => $page,
             'limit' => $limit,
         ], [
-            'page'  => ['bail', 'sometimes', 'integer'],
+            'page' => ['bail', 'sometimes', 'integer'],
             'limit' => ['bail', 'sometimes', 'integer'],
         ]);
 
@@ -237,8 +242,8 @@ class PersonalTokenController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $tokens->perPage(),
-                    'current'  => $tokens->currentPage(),
-                    'total'    => $tokens->lastPage(),
+                    'current' => $tokens->currentPage(),
+                    'total' => $tokens->lastPage(),
                 ],
                 'items' => $userTokens,
             ]);
@@ -246,4 +251,43 @@ class PersonalTokenController extends Controller
             return response()->json(Messages::E500(), 500);
         }
     }
+
+    public function Sync(Request $request, $subscription_id): JsonResponse
+    {
+        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'sync')) {
+            return response()->json(Messages::E401(), 401);
+        }
+
+        $validator = Validator::make(array_merge($request->all(), [
+            'subscription_id' => $subscription_id,
+        ]), [
+            'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Messages::E400($validator->errors()->first()), 400);
+        }
+
+
+        try {
+            $this->personalTokenRepository->DeleteHiddenTokens($subscription_id);
+
+            $key = $this->generateSubscriptionKey();
+            $salt = Str::random(16);
+
+            $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
+                'key' => $key,
+                'salt' => $salt,
+                'permissions' => ["*"],
+                'whitelist_range' => [],
+                'activated_at' => Carbon::now(),
+                'hours_to_expire' => -1,
+                'hidden' => true
+            ]);
+            return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO(), 201);
+        } catch (Exception $ex) {
+            return response()->json(Messages::E500(), 500);
+        }
+    }
+
 }

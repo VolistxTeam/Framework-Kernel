@@ -3,32 +3,35 @@
 namespace Volistx\FrameworkKernel\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Models\UserLog;
 
 class UserLogRepository
 {
-    public function Create(array $inputs)
+    public function Create(array $inputs): Model|Builder
     {
         return UserLog::query()->create([
             'subscription_id' => $inputs['subscription_id'],
-            'url'             => $inputs['url'],
-            'ip'              => $inputs['ip'],
-            'method'          => $inputs['method'],
-            'user_agent'      => $inputs['user_agent'],
+            'url' => $inputs['url'],
+            'ip' => $inputs['ip'],
+            'method' => $inputs['method'],
+            'user_agent' => $inputs['user_agent'],
         ]);
     }
 
-    public function FindById($log_id)
+    public function FindById($log_id): Model|null
     {
         return UserLog::query()->where('id', $log_id)->first();
     }
 
-    public function FindAll($search, $page, $limit)
+    public function FindAll($search, $page, $limit): LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('user_logs');
 
-        return UserLog::where(function ($query) use ($columns, $search) {
+        return UserLog::query()->where(function ($query) use ($columns, $search) {
             foreach ($columns as $column) {
                 $query->orWhere("$column", 'LIKE', "%$search%");
             }
@@ -36,11 +39,11 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit)
+    public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit): LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('user_logs');
 
-        return UserLog::where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
+        return UserLog::query()->where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
             foreach ($columns as $column) {
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
@@ -48,7 +51,7 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogsCount($subscription_id, $date)
+    public function FindSubscriptionLogsCount($subscription_id, $date): int
     {
         return UserLog::query()->where('subscription_id', $subscription_id)
             ->whereMonth('created_at', $date->format('m'))
@@ -56,9 +59,9 @@ class UserLogRepository
             ->count();
     }
 
-    public function FindSubscriptionUsages($subscription_id, $date)
+    public function FindSubscriptionUsages($subscription_id, $date): ?object
     {
-        return UserLog::where('subscription_id', $subscription_id)
+        return UserLog::query()->where('subscription_id', $subscription_id)
             ->whereYear('created_at', Carbon::parse($date)->format('Y'))
             ->whereMonth('created_at', Carbon::parse($date)->format('m'))
             ->get()

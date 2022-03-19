@@ -2,24 +2,27 @@
 
 namespace Volistx\FrameworkKernel\Repositories;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Classes\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\AccessToken;
 
 class AccessTokenRepository
 {
-    public function Create($subscription_id, array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
+    public function Create($subscription_id, array $inputs): Model|Builder
     {
         return AccessToken::query()->create([
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
             'whitelist_range' => $inputs['whitelist_range'],
         ]);
     }
 
-    public function Update($token_id, array $inputs)
+    public function Update($token_id, array $inputs): ?object
     {
         $token = $this->Find($token_id);
 
@@ -52,7 +55,7 @@ class AccessTokenRepository
         return AccessToken::query()->where('id', $token_id)->first();
     }
 
-    public function Reset($token_id, $inputs)
+    public function Reset($token_id, $inputs): ?object
     {
         $token = $this->Find($token_id);
 
@@ -68,12 +71,7 @@ class AccessTokenRepository
         return $token;
     }
 
-    /**
-     * @return null|string[]
-     *
-     * @psalm-return array{result: 'true'}|null
-     */
-    public function Delete($token_id): array|null
+    public function Delete($token_id): ?bool
     {
         $toBeDeletedToken = $this->Find($token_id);
 
@@ -83,12 +81,10 @@ class AccessTokenRepository
 
         $toBeDeletedToken->delete();
 
-        return [
-            'result' => 'true',
-        ];
+        return true;
     }
 
-    public function FindAll($needle, $page, $limit): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function FindAll($needle, $page, $limit): LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('access_tokens');
         $query = AccessToken::query();
@@ -100,10 +96,7 @@ class AccessTokenRepository
         return $query->paginate($limit, ['*'], 'page', $page);
     }
 
-    /**
-     * @param array|null|string|true $token
-     */
-    public function AuthAccessToken(array|bool|string|null $token)
+    public function AuthAccessToken($token): ?object
     {
         return AccessToken::query()->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {

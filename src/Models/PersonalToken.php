@@ -28,13 +28,15 @@ class PersonalToken extends Model
         'whitelist_range',
         'activated_at',
         'expires_at',
+        'hidden'
     ];
 
     protected $casts = [
-        'permissions'     => 'array',
+        'permissions' => 'array',
         'whitelist_range' => 'array',
-        'activated_at'    => 'date:Y-m-d H:i:s',
-        'expires_at'      => 'date:Y-m-d H:i:s',
+        'activated_at' => 'date:Y-m-d H:i:s',
+        'expires_at' => 'date:Y-m-d H:i:s',
+        'hidden' => 'boolean'
     ];
 
     public function subscription(): BelongsTo

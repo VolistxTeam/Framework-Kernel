@@ -3,21 +3,24 @@
 namespace Volistx\FrameworkKernel\Repositories;
 
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Models\Plan;
 
 class PlanRepository
 {
-    public function Create(array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
+    public function Create(array $inputs): Model|Builder
     {
         return Plan::query()->create([
-            'name'        => $inputs['name'],
+            'name' => $inputs['name'],
             'description' => $inputs['description'],
-            'data'        => $inputs['data'],
+            'data' => $inputs['data'],
         ]);
     }
 
-    public function Update($plan_id, array $inputs)
+    public function Update($plan_id, array $inputs): ?object
     {
         $plan = $this->Find($plan_id);
 
@@ -48,17 +51,12 @@ class PlanRepository
         return $plan;
     }
 
-    public function Find($plan_id): object|null
+    public function Find($plan_id): ?object
     {
         return Plan::query()->where('id', $plan_id)->first();
     }
 
-    /**
-     * @return false|null|string[]
-     *
-     * @psalm-return array{result: 'true'}|false|null
-     */
-    public function Delete($plan_id): array|false|null
+    public function Delete($plan_id): ?bool
     {
         $toBeDeletedPlan = $this->Find($plan_id);
 
@@ -68,16 +66,13 @@ class PlanRepository
 
         try {
             $toBeDeletedPlan->delete();
-
-            return [
-                'result' => 'true',
-            ];
+            return true;
         } catch (Exception $ex) {
             return false;
         }
     }
 
-    public function FindAll($needle, int $page, int $limit): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function FindAll($needle, int $page, int $limit): LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('plans');
 

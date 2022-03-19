@@ -13,14 +13,14 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'           => $inputs['user_id'],
-            'plan_id'           => $inputs['plan_id'],
+            'user_id' => $inputs['user_id'],
+            'plan_id' => $inputs['plan_id'],
             'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at'   => $inputs['plan_expires_at'],
+            'plan_expires_at' => $inputs['plan_expires_at'],
         ]);
     }
 
-    public function Update($subscriptionID, array $inputs)
+    public function Update($subscriptionID, array $inputs): ?object
     {
         $subscription = $this->Find($subscriptionID);
 
@@ -50,12 +50,12 @@ class SubscriptionRepository
         return $subscription;
     }
 
-    public function Find($subscriptionID): object|null
+    public function Find($subscriptionID): ?object
     {
         return Subscription::query()->where('id', $subscriptionID)->first();
     }
 
-    public function Delete($subscriptionID): array|null
+    public function Delete($subscriptionID): ?bool
     {
         $toBeDeletedSub = $this->Find($subscriptionID);
 
@@ -65,9 +65,7 @@ class SubscriptionRepository
 
         $toBeDeletedSub->delete();
 
-        return [
-            'result' => 'true',
-        ];
+        return true;
     }
 
     public function FindAll($needle, $page, $limit): LengthAwarePaginator

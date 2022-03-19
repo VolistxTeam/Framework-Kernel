@@ -3,27 +3,31 @@
 namespace Volistx\FrameworkKernel\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Classes\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\PersonalToken;
 
 class PersonalTokenRepository
 {
-    public function Create($subscription_id, array $inputs): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
+    public function Create($subscription_id, array $inputs): Model|Builder
     {
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
             'whitelist_range' => $inputs['whitelist_range'],
-            'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
+            'activated_at' => Carbon::now(),
+            'expires_at' => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
+            'hidden' => $inputs['hidden']
         ]);
     }
 
-    public function Update($subscription_id, $token_id, array $inputs)
+    public function Update($subscription_id, $token_id, array $inputs): ?object
     {
         $token = $this->Find($subscription_id, $token_id);
 
@@ -56,17 +60,12 @@ class PersonalTokenRepository
         return $token;
     }
 
-    public function Find($subscription_id, $token_id): object|null
+    public function Find($subscription_id, $token_id): ?object
     {
         return PersonalToken::query()->where('id', $token_id)->where('subscription_id', $subscription_id)->first();
     }
 
-    /**
-     * @param (mixed|string)[] $inputs
-     *
-     * @psalm-param array{key: mixed, salt: string} $inputs
-     */
-    public function Reset($subscription_id, $token_id, array $inputs)
+    public function Reset($subscription_id, $token_id, array $inputs): ?object
     {
         $token = $this->Find($subscription_id, $token_id);
 
@@ -82,12 +81,7 @@ class PersonalTokenRepository
         return $token;
     }
 
-    /**
-     * @return null|string[]
-     *
-     * @psalm-return array{result: 'true'}|null
-     */
-    public function Delete($subscription_id, $token_id): array|null
+    public function Delete($subscription_id, $token_id): ?bool
     {
         $toBeDeletedToken = $this->Find($subscription_id, $token_id);
 
@@ -97,30 +91,32 @@ class PersonalTokenRepository
 
         $toBeDeletedToken->delete();
 
-        return [
-            'result' => 'true',
-        ];
+        return true;
     }
 
-    public function FindAll($subscription_id, $needle, $page, $limit)
+    public function FindAll($subscription_id, $needle, $page, $limit): LengthAwarePaginator
     {
         $columns = Schema::getColumnListing('personal_tokens');
 
-        return PersonalToken::where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
+        return PersonalToken::query()->where('subscription_id', $subscription_id)->where('hidden', false)->where(function ($query) use ($columns, $needle) {
             foreach ($columns as $column) {
                 $query->orWhere("$column", 'LIKE', "%$needle%");
             }
         })->paginate($limit, ['*'], 'page', $page);
     }
 
-    /**
-     * @param null|string $token
-     */
-    public function AuthPersonalToken(string|null $token)
+    public function AuthPersonalToken($token): ?object
     {
         return PersonalToken::query()->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {
                 return SHA256Hasher::check(substr($token, 32), $v->secret, ['salt' => $v->secret_salt]);
             })->first();
+    }
+
+    public function DeleteHiddenTokens($subscription_id): bool
+    {
+
+        PersonalToken::query()->where('subscription_id', $subscription_id)->where('hidden', true)->delete();
+        return true;
     }
 }
