@@ -59,7 +59,7 @@ class AuthMiddleware
 
         $inputs = [
             'request' => $request,
-            'token' => $token,
+            'token'   => $token,
         ];
 
         $validators = [
@@ -81,7 +81,6 @@ class AuthMiddleware
         return true;
     }
 
-
     private function AuthUser($request)
     {
         $token = $this->personalTokenRepository->AuthPersonalToken($request->bearerToken());
@@ -89,7 +88,7 @@ class AuthMiddleware
         if (!$token) {
             return [
                 'message' => Messages::E401(),
-                'code' => 401,
+                'code'    => 401,
             ];
         }
 
@@ -98,15 +97,15 @@ class AuthMiddleware
         if (!$plan) {
             return [
                 'message' => Messages::E401(),
-                'code' => 401,
+                'code'    => 401,
             ];
         }
 
         //prepare inputs array
         $inputs = [
             'request' => $request,
-            'token' => $token,
-            'plan' => $plan,
+            'token'   => $token,
+            'plan'    => $plan,
         ];
 
         $validatorClasses = config('volistx.validators');
@@ -126,7 +125,7 @@ class AuthMiddleware
 
         $request->merge([
             'X_PERSONAL_TOKEN' => $token,
-            'PLAN' => $plan,
+            'PLAN'             => $plan,
         ]);
 
         return true;
