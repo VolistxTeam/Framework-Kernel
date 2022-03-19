@@ -14,10 +14,10 @@ class AccessTokenRepository
     public function Create($subscription_id, array $inputs): Model|Builder
     {
         return AccessToken::query()->create([
-            'key' => substr($inputs['key'], 0, 32),
-            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt' => $inputs['salt'],
-            'permissions' => $inputs['permissions'],
+            'key'             => substr($inputs['key'], 0, 32),
+            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt'     => $inputs['salt'],
+            'permissions'     => $inputs['permissions'],
             'whitelist_range' => $inputs['whitelist_range'],
         ]);
     }
