@@ -14,9 +14,9 @@ class PlanRepository
     public function Create(array $inputs): Model|Builder
     {
         return Plan::query()->create([
-            'name' => $inputs['name'],
+            'name'        => $inputs['name'],
             'description' => $inputs['description'],
-            'data' => $inputs['data'],
+            'data'        => $inputs['data'],
         ]);
     }
 
@@ -66,6 +66,7 @@ class PlanRepository
 
         try {
             $toBeDeletedPlan->delete();
+
             return true;
         } catch (Exception $ex) {
             return false;

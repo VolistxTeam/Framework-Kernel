@@ -16,14 +16,14 @@ class PersonalTokenRepository
     {
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
-            'key' => substr($inputs['key'], 0, 32),
-            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt' => $inputs['salt'],
-            'permissions' => $inputs['permissions'],
+            'key'             => substr($inputs['key'], 0, 32),
+            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt'     => $inputs['salt'],
+            'permissions'     => $inputs['permissions'],
             'whitelist_range' => $inputs['whitelist_range'],
-            'activated_at' => Carbon::now(),
-            'expires_at' => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
-            'hidden' => $inputs['hidden']
+            'activated_at'    => Carbon::now(),
+            'expires_at'      => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
+            'hidden'          => $inputs['hidden'],
         ]);
     }
 
@@ -115,8 +115,8 @@ class PersonalTokenRepository
 
     public function DeleteHiddenTokens($subscription_id): bool
     {
-
         PersonalToken::query()->where('subscription_id', $subscription_id)->where('hidden', true)->delete();
+
         return true;
     }
 }
