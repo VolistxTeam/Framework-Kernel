@@ -24,4 +24,5 @@ return [
     'services_permissions'=> [
         '*',
     ],
+    'sf-connection-secret' => env('CONNECTION_SECRET', null)
 ];
