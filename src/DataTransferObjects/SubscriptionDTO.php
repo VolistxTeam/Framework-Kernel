@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class SubscriptionDTO extends DataTransferObjectBase
 {
     public string $id;
-    public string $user_id;
+    public int $user_id;
     public string $plan_id;
     public string $plan_activated_at;
     public ?string $plan_expires_at;
