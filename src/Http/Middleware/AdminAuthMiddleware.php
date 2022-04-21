@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use function response;
 use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
-use Volistx\FrameworkKernel\ValidationRules\IPValidationRule;
-use Volistx\FrameworkKernel\ValidationRules\ValidKeyValidationRule;
+use Volistx\FrameworkKernel\UserAuthValidationRules\IPValidationRule;
+use Volistx\FrameworkKernel\UserAuthValidationRules\ValidKeyValidationRule;
 
 class AdminAuthMiddleware
 {

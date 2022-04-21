@@ -1,6 +1,6 @@
 <?php
 
-namespace Volistx\FrameworkKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Illuminate\Support\Facades\RateLimiter;
 use Volistx\FrameworkKernel\Facades\Messages;

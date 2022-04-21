@@ -1,6 +1,6 @@
 <?php
 
-namespace Volistx\FrameworkKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 abstract class ValidationRuleBase
 {

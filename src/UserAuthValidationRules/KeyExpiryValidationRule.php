@@ -1,16 +1,17 @@
 <?php
 
-namespace Volistx\FrameworkKernel\ValidationRules;
+namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
+use Carbon\Carbon;
 use Volistx\FrameworkKernel\Facades\Messages;
 
-class ValidKeyValidationRule extends ValidationRuleBase
+class KeyExpiryValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {
         $token = $this->inputs['token'];
 
-        if (!$token) {
+        if ($token->expires_at && Carbon::now()->greaterThan(Carbon::createFromTimeString($token->expires_at))) {
             return [
                 'message' => Messages::E403(),
                 'code'    => 403,
