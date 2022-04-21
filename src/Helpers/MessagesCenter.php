@@ -1,6 +1,6 @@
 <?php
 
-namespace Volistx\FrameworkKernel\Classes;
+namespace Volistx\FrameworkKernel\Helpers;
 
 class MessagesCenter
 {

@@ -4,7 +4,7 @@ namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\AccessToken;
 
 class AccessKeyGenerateCommand extends Command

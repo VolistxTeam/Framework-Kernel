@@ -3,7 +3,7 @@
 namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Volistx\FrameworkKernel\Classes\PermissionsCenter;
+use Volistx\FrameworkKernel\Helpers\PermissionsCenter;
 
 class PermissionsServiceProvider extends ServiceProvider
 {

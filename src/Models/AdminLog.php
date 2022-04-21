@@ -4,7 +4,7 @@ namespace Volistx\FrameworkKernel\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Volistx\FrameworkKernel\Classes\UuidForKey;
+use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
 class AdminLog extends Model
 {

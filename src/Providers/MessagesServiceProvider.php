@@ -3,7 +3,7 @@
 namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Volistx\FrameworkKernel\Classes\MessagesCenter;
+use Volistx\FrameworkKernel\Helpers\MessagesCenter;
 
 class MessagesServiceProvider extends ServiceProvider
 {

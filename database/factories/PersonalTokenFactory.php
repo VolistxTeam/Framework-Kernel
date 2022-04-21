@@ -5,7 +5,7 @@ namespace Volistx\FrameworkKernel\Database\Factories;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\PersonalToken;
 
 class PersonalTokenFactory extends Factory

@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
-use Volistx\FrameworkKernel\Classes\SHA256Hasher;
+use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\AccessToken;
 use Volistx\FrameworkKernel\Models\AdminLog;
 

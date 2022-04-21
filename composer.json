@@ -35,7 +35,7 @@
       "Volistx\\FrameworkKernel\\Database\\Seeders\\": "database/seeders"
     },
     "classmap": [
-      "src/Classes"
+      "src/Helpers"
     ]
   },
   "extra": {
