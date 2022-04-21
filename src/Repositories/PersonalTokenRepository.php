@@ -16,14 +16,15 @@ class PersonalTokenRepository
     {
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
-            'whitelist_range' => $inputs['whitelist_range'],
-            'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
-            'hidden'          => $inputs['hidden'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
+            'ip_rule' => $inputs['ip_rule'],
+            'ip_range' => $inputs['ip_range'],
+            'activated_at' => Carbon::now(),
+            'expires_at' => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
+            'hidden' => $inputs['hidden'],
         ]);
     }
 
@@ -36,10 +37,11 @@ class PersonalTokenRepository
         }
 
         $permissions = $inputs['permissions'] ?? null;
-        $whitelistRange = $inputs['whitelist_range'] ?? null;
+        $ip_rule = $inputs['ip_rule'] ?? null;
+        $ip_range = $inputs['ip_range'] ?? null;
         $hours_to_expire = $inputs['hours_to_expire'] ?? null;
 
-        if (!$permissions && !$whitelistRange && !$hours_to_expire) {
+        if (!$permissions && !$ip_rule && !$ip_range  && !$hours_to_expire) {
             return $token;
         }
 
@@ -47,9 +49,14 @@ class PersonalTokenRepository
             $token->permissions = $permissions;
         }
 
-        if ($whitelistRange) {
-            $token->whitelist_range = $whitelistRange;
+        if ($ip_rule) {
+            $token->ip_rule = $ip_rule;
         }
+
+        if ($ip_range) {
+            $token->ip_range = $ip_range;
+        }
+
 
         if ($hours_to_expire) {
             $token->expires_at = $hours_to_expire != -1 ? Carbon::createFromTimeString($token->activated_at)->addHours($hours_to_expire) : null;

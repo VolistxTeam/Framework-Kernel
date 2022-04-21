@@ -5,6 +5,7 @@ namespace Volistx\FrameworkKernel\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
 class PersonalToken extends Model
@@ -25,18 +26,20 @@ class PersonalToken extends Model
         'secret',
         'secret_salt',
         'permissions',
-        'whitelist_range',
+        'ip_rule',
+        'ip_range',
         'activated_at',
         'expires_at',
         'hidden',
     ];
 
     protected $casts = [
-        'permissions'     => 'array',
-        'whitelist_range' => 'array',
-        'activated_at'    => 'date:Y-m-d H:i:s',
-        'expires_at'      => 'date:Y-m-d H:i:s',
-        'hidden'          => 'boolean',
+        'permissions' => 'array',
+        'ip_rule' => AccessRule::class,
+        'ip_range' => 'array',
+        'activated_at' => 'date:Y-m-d H:i:s',
+        'expires_at' => 'date:Y-m-d H:i:s',
+        'hidden' => 'boolean',
     ];
 
     public function subscription(): BelongsTo
