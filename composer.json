@@ -22,7 +22,8 @@
     "wikimedia/ip-set": "^3.0",
     "guzzlehttp/guzzle": "^7.4",
     "cryental/larasupport": "^1.7",
-    "nesbot/carbon": "^2.57"
+    "nesbot/carbon": "^2.57",
+    "torann/geoip": "^3.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",

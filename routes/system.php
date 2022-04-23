@@ -46,7 +46,6 @@ $router->group(['prefix' => 'sys-bin'], function () use ($router) {
             $router->get('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlan');
         });
 
-        //TO DISCUSS THE LOGS HASSLE
         $router->group(['prefix' => 'logs'], function () use ($router) {
             $router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLogs');
             $router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLog');
