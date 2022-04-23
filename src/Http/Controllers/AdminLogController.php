@@ -61,7 +61,7 @@ class AdminLogController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
-                'page' => $page,
+                'page'  => $page,
                 'limit' => $limit,
             ], [
                 '$page' => ['bail', 'sometimes', 'integer'],
