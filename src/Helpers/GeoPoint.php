@@ -4,16 +4,17 @@ namespace Volistx\FrameworkKernel\Helpers;
 
 class GeoPoint
 {
-    public static function Lookup($ip) {
-        $url = "https://geopoint.api.volistx.io/" . $ip;
+    public static function Lookup($ip)
+    {
+        $url = 'https://geopoint.api.volistx.io/'.$ip;
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-        $headers = array(
-            "Authorization: Bearer " . config('volistx.geopoint_api_key'),
-        );
+        $headers = [
+            'Authorization: Bearer '.config('volistx.geopoint_api_key'),
+        ];
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
         $resp = curl_exec($curl);
