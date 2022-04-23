@@ -22,8 +22,8 @@ class GeoPoint
 
         curl_close($curl);
 
-        if ($httpCode == 200) {
-            return json_decode($resp);
+        if ($httpCode == 200 && $resp != null) {
+            return json_decode($resp, true);
         } else {
             return null;
         }
