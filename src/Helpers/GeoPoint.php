@@ -11,6 +11,7 @@ class GeoPoint
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_FAILONERROR, true);
 
         $headers = [
             'Authorization: Bearer '.config('volistx.geopoint_api_key'),
@@ -18,11 +19,14 @@ class GeoPoint
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
         $resp = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+        }
 
         curl_close($curl);
 
-        if ($httpCode == 200 && $resp != null) {
+        if (!isset($error_msg) && $resp != null) {
             return json_decode($resp, true);
         } else {
             return null;
