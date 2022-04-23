@@ -21,16 +21,13 @@ class CreatePersonalTokensTable extends Migration
             $table->string('key', 32);
             $table->string('secret', 64);
             $table->string('secret_salt', 16);
-            $table->integer('ip_rule');
-            $table->json('ip_range');
-            $table->integer('country_rule');
-            $table->json('country_range');
+            $table->json('whitelist_range')->default('[]');
             $table->json('permissions')->default('[]');
             $table->boolean('hidden')->default(false);
             $table->dateTime('activated_at')->nullable();
             $table->dateTime('expires_at')->nullable();
             $table->dateTime('created_at')->useCurrent();
-            $table->dateTime('updated_at')->useCurrentOnUpdate();
+            $table->dateTime('updated_at')->useCurrent();
         });
     }
 
