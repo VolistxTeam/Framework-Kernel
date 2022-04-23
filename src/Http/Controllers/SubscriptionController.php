@@ -28,31 +28,28 @@ class SubscriptionController extends Controller
 
     public function CreateSubscription(Request $request): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'create')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'user_id'           => ['bail', 'required', 'integer'],
-            'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id'],
-            'plan_activated_at' => ['bail', 'required', 'date'],
-            'plan_expires_at'   => ['bail', 'sometimes', 'date', 'after:plan_activated_at'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
-            $newSubscription = $this->subscriptionRepository->Create([
-                'user_id'           => $request->input('user_id'),
-                'plan_id'           => $request->input('plan_id'),
-                'plan_activated_at' => $request->input('plan_activated_at'),
-                'plan_expires_at'   => $request->input('plan_expires_at'),
-            ]);
-            if (!$newSubscription) {
-                return response()->json(Messages::E500(), 500);
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'create')) {
+                return response()->json(Messages::E401(), 401);
             }
+
+            $validator = Validator::make($request->all(), [
+                'user_id' => ['bail', 'required', 'integer'],
+                'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
+                'plan_activated_at' => ['bail', 'required', 'date'],
+                'plan_expires_at' => ['bail', 'sometimes', 'date', 'after:plan_activated_at'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
+            $newSubscription = $this->subscriptionRepository->Create([
+                'user_id' => $request->input('user_id'),
+                'plan_id' => $request->input('plan_id'),
+                'plan_activated_at' => $request->input('plan_activated_at'),
+                'plan_expires_at' => $request->input('plan_expires_at'),
+            ]);
 
             return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
         } catch (Exception $ex) {
@@ -62,24 +59,24 @@ class SubscriptionController extends Controller
 
     public function UpdateSubscription(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'update')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $validator = Validator::make(array_merge($request->all(), [
-            'subscription_id' => $subscription_id,
-        ]), [
-            'subscription_id'   => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-            'plan_activated_at' => ['bail', 'sometimes', 'date'],
-            'plan_expires_at'   => ['bail', 'sometimes', 'date'],
-            'plan_id'           => ['bail', 'sometimes', 'uuid', 'exists:plans,id'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'update')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $validator = Validator::make(array_merge($request->all(), [
+                'subscription_id' => $subscription_id,
+            ]), [
+                'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+                'plan_activated_at' => ['bail', 'sometimes', 'date'],
+                'plan_expires_at' => ['bail', 'sometimes', 'date'],
+                'plan_id' => ['bail', 'sometimes', 'uuid', 'exists:plans,id'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $updatedSub = $this->subscriptionRepository->Update($subscription_id, $request->all());
 
             if (!$updatedSub) {
@@ -94,21 +91,21 @@ class SubscriptionController extends Controller
 
     public function DeleteSubscription(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'delete')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $validator = Validator::make([
-            'subscription_id' => $subscription_id,
-        ], [
-            'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'delete')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $validator = Validator::make([
+                'subscription_id' => $subscription_id,
+            ], [
+                'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $result = $this->subscriptionRepository->Delete($subscription_id);
             if (!$result) {
                 return response()->json(Messages::E404(), 404);
@@ -122,21 +119,21 @@ class SubscriptionController extends Controller
 
     public function GetSubscription(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $validator = Validator::make([
-            'subscription_id' => $subscription_id,
-        ], [
-            'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $validator = Validator::make([
+                'subscription_id' => $subscription_id,
+            ], [
+                'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $subscription = $this->subscriptionRepository->Find($subscription_id);
 
             if (!$subscription) {
@@ -151,27 +148,27 @@ class SubscriptionController extends Controller
 
     public function GetSubscriptions(Request $request): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view-all')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $search = $request->input('search', '');
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 50);
-
-        $validator = Validator::make([
-            'page'  => $page,
-            'limit' => $limit,
-        ], [
-            '$page' => ['bail', 'sometimes', 'numeric'],
-            'limit' => ['bail', 'sometimes', 'numeric'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view-all')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $search = $request->input('search', '');
+            $page = $request->input('page', 1);
+            $limit = $request->input('limit', 50);
+
+            $validator = Validator::make([
+                'page' => $page,
+                'limit' => $limit,
+            ], [
+                '$page' => ['bail', 'sometimes', 'numeric'],
+                'limit' => ['bail', 'sometimes', 'numeric'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $subs = $this->subscriptionRepository->FindAll($search, $page, $limit);
             if (!$subs) {
                 return response()->json(Messages::E500(), 500);
@@ -185,8 +182,8 @@ class SubscriptionController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $subs->perPage(),
-                    'current'  => $subs->currentPage(),
-                    'total'    => $subs->lastPage(),
+                    'current' => $subs->currentPage(),
+                    'total' => $subs->lastPage(),
                 ],
                 'items' => $items,
             ]);
@@ -197,29 +194,29 @@ class SubscriptionController extends Controller
 
     public function GetSubscriptionLogs(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'logs')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $search = $request->input('search', '');
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 50);
-
-        $validator = Validator::make(array_merge([
-            'subscription_id' => $subscription_id,
-            'page'            => $page,
-            'limit'           => $limit,
-        ]), [
-            'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
-            '$page'           => ['bail', 'sometimes', 'integer'],
-            'limit'           => ['bail', 'sometimes', 'integer'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'logs')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $search = $request->input('search', '');
+            $page = $request->input('page', 1);
+            $limit = $request->input('limit', 50);
+
+            $validator = Validator::make(array_merge([
+                'subscription_id' => $subscription_id,
+                'page' => $page,
+                'limit' => $limit,
+            ]), [
+                'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
+                '$page' => ['bail', 'sometimes', 'integer'],
+                'limit' => ['bail', 'sometimes', 'integer'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $logs = $this->loggingService->GetSubscriptionLogs($subscription_id, $search, $page, $limit);
             if (!$logs) {
                 return response()->json(Messages::E500(), 500);
@@ -233,28 +230,28 @@ class SubscriptionController extends Controller
 
     public function GetSubscriptionUsages(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'stats')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $date = $request->input('date', Carbon::now()->format('Y-m'));
-        $mode = $request->input('mode', 'detailed');
-
-        $validator = Validator::make([
-            'subscription_id' => $subscription_id,
-            'date'            => $date,
-            'mode'            => strtolower($mode),
-        ], [
-            'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
-            'date'            => ['bail', 'sometimes', 'date'],
-            'mode'            => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'stats')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $date = $request->input('date', Carbon::now()->format('Y-m'));
+            $mode = $request->input('mode', 'detailed');
+
+            $validator = Validator::make([
+                'subscription_id' => $subscription_id,
+                'date' => $date,
+                'mode' => strtolower($mode),
+            ], [
+                'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
+                'date' => ['bail', 'sometimes', 'date'],
+                'mode' => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $usages = $this->loggingService->GetSubscriptionUsages($subscription_id, $date, $mode);
             if (!$usages) {
                 return response()->json(Messages::E500(), 500);

@@ -248,21 +248,21 @@ class PersonalTokenController extends Controller
 
     public function Sync(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'sync')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $validator = Validator::make(array_merge($request->all(), [
-            'subscription_id' => $subscription_id,
-        ]), [
-            'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'sync')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $validator = Validator::make(array_merge($request->all(), [
+                'subscription_id' => $subscription_id,
+            ]), [
+                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $this->personalTokenRepository->DeleteHiddenTokens($subscription_id);
 
             $saltedKey = Keys::randomSaltedKey();

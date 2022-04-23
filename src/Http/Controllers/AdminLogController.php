@@ -22,21 +22,21 @@ class AdminLogController extends Controller
 
     public function GetAdminLog(Request $request, $log_id): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $validator = Validator::make([
-            'log_id' => $log_id,
-        ], [
-            'log_id' => ['bail', 'required', 'uuid', 'exists:admin_logs,id'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $validator = Validator::make([
+                'log_id' => $log_id,
+            ], [
+                'log_id' => ['bail', 'required', 'uuid', 'exists:admin_logs,id'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $log = $this->adminLoggingService->GetAdminLog($log_id);
 
             if (!$log) {
@@ -51,27 +51,27 @@ class AdminLogController extends Controller
 
     public function GetAdminLogs(Request $request): JsonResponse
     {
-        if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view-all')) {
-            return response()->json(Messages::E401(), 401);
-        }
-
-        $search = $request->input('search', '');
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 50);
-
-        $validator = Validator::make([
-            'page'  => $page,
-            'limit' => $limit,
-        ], [
-            '$page' => ['bail', 'sometimes', 'integer'],
-            'limit' => ['bail', 'sometimes', 'integer'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
         try {
+            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view-all')) {
+                return response()->json(Messages::E401(), 401);
+            }
+
+            $search = $request->input('search', '');
+            $page = $request->input('page', 1);
+            $limit = $request->input('limit', 50);
+
+            $validator = Validator::make([
+                'page' => $page,
+                'limit' => $limit,
+            ], [
+                '$page' => ['bail', 'sometimes', 'integer'],
+                'limit' => ['bail', 'sometimes', 'integer'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $logs = $this->adminLoggingService->GetAdminLogs($search, $page, $limit);
 
             return response()->json($logs);
