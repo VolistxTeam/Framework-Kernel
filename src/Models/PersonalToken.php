@@ -28,18 +28,22 @@ class PersonalToken extends Model
         'permissions',
         'ip_rule',
         'ip_range',
+        'country_rule',
+        'country_range',
         'activated_at',
         'expires_at',
         'hidden',
     ];
 
     protected $casts = [
-        'permissions'  => 'array',
-        'ip_rule'      => AccessRule::class,
-        'ip_range'     => 'array',
+        'permissions' => 'array',
+        'ip_rule' => AccessRule::class,
+        'ip_range' => 'array',
+        'country_rule' => AccessRule::class,
+        'country_range' => 'array',
         'activated_at' => 'date:Y-m-d H:i:s',
-        'expires_at'   => 'date:Y-m-d H:i:s',
-        'hidden'       => 'boolean',
+        'expires_at' => 'date:Y-m-d H:i:s',
+        'hidden' => 'boolean',
     ];
 
     public function subscription(): BelongsTo

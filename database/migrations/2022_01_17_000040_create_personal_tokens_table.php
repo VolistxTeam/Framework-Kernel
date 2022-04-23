@@ -23,6 +23,8 @@ class CreatePersonalTokensTable extends Migration
             $table->string('secret_salt', 16);
             $table->integer('ip_rule');
             $table->json('ip_range');
+            $table->integer('country_rule');
+            $table->json('country_range');
             $table->json('permissions')->default('[]');
             $table->boolean('hidden')->default(false);
             $table->dateTime('activated_at')->nullable();

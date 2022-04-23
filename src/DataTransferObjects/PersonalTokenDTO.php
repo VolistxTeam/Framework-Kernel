@@ -3,13 +3,17 @@
 namespace Volistx\FrameworkKernel\DataTransferObjects;
 
 use Carbon\Carbon;
+use Volistx\FrameworkKernel\Enums\AccessRule;
 
 class PersonalTokenDTO extends DataTransferObjectBase
 {
     public string $id;
     public string $subscription_id;
     public array $permissions;
-    public array $whitelist_range;
+    public int $ip_rule;
+    public array $ip_range;
+    public int $country_rule;
+    public array $country_range;
     public string $activated_at;
     public ?string $expires_at;
     public string $created_at;
@@ -23,15 +27,20 @@ class PersonalTokenDTO extends DataTransferObjectBase
     public function GetDTO($key = null): array
     {
         $result = [
-            'id'              => $this->id,
-            'key'             => $key,
-            'subscription'    => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
-            'permissions'     => $this->permissions,
-            'whitelist_range' => $this->whitelist_range,
-            'token_status'    => [
-                'is_expired'   => $this->expires_at != null && Carbon::now()->greaterThan(Carbon::createFromTimeString($this->expires_at)),
+            'id' => $this->id,
+            'key' => $key,
+            'subscription' => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
+            'permissions' => $this->permissions,
+            'geolocation' => [
+                'ip_rule' => AccessRule::from($this->ip_rule),
+                'ip_range' => $this->ip_range,
+                'country_rule' => AccessRule::from($this->country_rule),
+                'country_range' => $this->country_range
+            ],
+            'token_status' => [
+                'is_expired' => $this->expires_at != null && Carbon::now()->greaterThan(Carbon::createFromTimeString($this->expires_at)),
                 'activated_at' => $this->activated_at,
-                'expires_at'   => $this->expires_at,
+                'expires_at' => $this->expires_at,
             ],
         ];
 

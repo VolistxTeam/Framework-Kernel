@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
 class AccessToken extends Model
@@ -28,11 +29,17 @@ class AccessToken extends Model
         'secret',
         'secret_salt',
         'permissions',
-        'whitelist_range',
+        'ip_rule',
+        'ip_range',
+        'country_rule',
+        'country_range',
     ];
 
     protected $casts = [
-        'permissions'     => 'array',
-        'whitelist_range' => 'array',
+        'permissions' => 'array',
+        'ip_rule' => AccessRule::class,
+        'ip_range' => 'array',
+        'country_rule' => AccessRule::class,
+        'country_range' => 'array',
     ];
 }

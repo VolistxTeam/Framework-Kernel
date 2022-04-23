@@ -14,11 +14,14 @@ class AccessTokenRepository
     public function Create($subscription_id, array $inputs): Model|Builder
     {
         return AccessToken::query()->create([
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
-            'whitelist_range' => $inputs['whitelist_range'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
+            'ip_rule' => $inputs['ip_rule'],
+            'ip_range' => $inputs['ip_range'],
+            'country_rule' => $inputs['country_rule'],
+            'country_range' => $inputs['country_range'],
         ]);
     }
 
@@ -31,18 +34,33 @@ class AccessTokenRepository
         }
 
         $permissions = $inputs['permissions'] ?? null;
-        $whitelistRange = $inputs['whitelist_range'] ?? null;
+        $ip_rule = $inputs['ip_rule'] ?? null;
+        $ip_range = $inputs['ip_range'] ?? null;
+        $country_rule = $inputs['country_rule'] ?? null;
+        $country_range = $inputs['country_range'] ?? null;
 
-        if (!$permissions && !$whitelistRange) {
+        if (!$permissions && !$ip_rule && !$ip_range && !$country_rule && !$country_range) {
             return $token;
         }
 
         if ($permissions) {
-            $token->permissions = json_encode($permissions);
+            $token->permissions = $permissions;
         }
 
-        if ($whitelistRange) {
-            $token->whitelist_range = json_encode($whitelistRange);
+        if ($ip_rule) {
+            $token->ip_rule = $ip_rule;
+        }
+
+        if ($ip_range) {
+            $token->ip_range = $ip_range;
+        }
+
+        if ($country_rule) {
+            $token->country_rule = $country_rule;
+        }
+
+        if ($country_range) {
+            $token->country_range = $country_range;
         }
 
         $token->save();

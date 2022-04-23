@@ -37,11 +37,13 @@ class PersonalTokenController extends Controller
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
                 'hours_to_expire' => ['bail', 'required', 'integer'],
-                'permissions'     => ['bail', 'sometimes', 'array'],
-                'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
-                'ip_rule'         => ['bail', 'required', new Enum(AccessRule::class)],
-                'ip_range'        => ['bail', 'required_if:ip_rule,1,2', 'array'],
-                'ip_range.*'      => ['bail', 'required_if:ip_rule,1,2', 'ip'],
+                'permissions' => ['bail', 'sometimes', 'array'],
+                'permissions.*' => ['bail', 'required_if:permissions,array', 'string'],
+                'ip_rule' => ['bail', 'required', new Enum(AccessRule::class)],
+                'ip_range' => ['bail', 'required_if:ip_rule,1,2', 'array'],
+                'ip_range.*' => ['bail', 'required_if:ip_rule,1,2', 'ip'],
+                'country_rule' => ['bail', 'required', new Enum(AccessRule::class)],
+                'country_range' => ['bail', 'required_if:ip_rule,1,2', 'array'],
             ]);
 
             if ($validator->fails()) {
@@ -51,14 +53,16 @@ class PersonalTokenController extends Controller
             $saltedKey = Keys::randomSaltedKey();
 
             $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
-                'key'             => $saltedKey['key'],
-                'salt'            => $saltedKey['salt'],
-                'permissions'     => $request->input('permissions'),
-                'ip_rule'         => $request->input('ip_rule'),
-                'ip_range'        => $request->input('ip_range'),
-                'activated_at'    => Carbon::now(),
+                'key' => $saltedKey['key'],
+                'salt' => $saltedKey['salt'],
+                'permissions' => $request->input('permissions'),
+                'ip_rule' => $request->input('ip_rule'),
+                'ip_range' => $request->input('ip_range'),
+                'country_rule' => $request->input('country_rule'),
+                'country_range' => $request->input('country_range'),
+                'activated_at' => Carbon::now(),
                 'hours_to_expire' => $request->input('hours_to_expire'),
-                'hidden'          => false,
+                'hidden' => false,
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
@@ -76,16 +80,18 @@ class PersonalTokenController extends Controller
 
             $validator = Validator::make(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
-                'token_id'        => $token_id,
+                'token_id' => $token_id,
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-                'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
                 'hours_to_expire' => ['bail', 'sometimes', 'integer'],
-                'permissions'     => ['bail', 'sometimes', 'array'],
-                'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
-                'ip_rule'         => ['bail', 'sometimes', new Enum(AccessRule::class)],
-                'ip_range'        => ['bail', 'required_if:ip_rule,1,2', 'array'],
-                'ip_range.*'      => ['bail', 'required_if:ip_rule,1,2', 'ip'],
+                'permissions' => ['bail', 'sometimes', 'array'],
+                'permissions.*' => ['bail', 'required_if:permissions,array', 'string'],
+                'ip_rule' => ['bail', 'sometimes', new Enum(AccessRule::class)],
+                'ip_range' => ['bail', 'required_if:ip_rule,1,2', 'array'],
+                'ip_range.*' => ['bail', 'required_if:ip_rule,1,2', 'ip'],
+                'country_rule' => ['bail', 'sometimes', new Enum(AccessRule::class)],
+                'country_range' => ['bail', 'required_if:ip_rule,1,2', 'array'],
             ]);
 
             if ($validator->fails()) {
@@ -112,10 +118,10 @@ class PersonalTokenController extends Controller
 
             $validator = Validator::make(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
-                'token_id'        => $token_id,
+                'token_id' => $token_id,
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-                'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ]);
 
             if ($validator->fails()) {
@@ -148,10 +154,10 @@ class PersonalTokenController extends Controller
             }
             $validator = Validator::make(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
-                'token_id'        => $token_id,
+                'token_id' => $token_id,
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-                'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ]);
 
             if ($validator->fails()) {
@@ -178,10 +184,10 @@ class PersonalTokenController extends Controller
 
             $validator = Validator::make(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
-                'token_id'        => $token_id,
+                'token_id' => $token_id,
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-                'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ]);
 
             if ($validator->fails()) {
@@ -212,10 +218,10 @@ class PersonalTokenController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
-                'page'  => $page,
+                'page' => $page,
                 'limit' => $limit,
             ], [
-                'page'  => ['bail', 'sometimes', 'integer'],
+                'page' => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ]);
 
@@ -233,8 +239,8 @@ class PersonalTokenController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $tokens->perPage(),
-                    'current'  => $tokens->currentPage(),
-                    'total'    => $tokens->lastPage(),
+                    'current' => $tokens->currentPage(),
+                    'total' => $tokens->lastPage(),
                 ],
                 'items' => $userTokens,
             ]);
@@ -265,13 +271,13 @@ class PersonalTokenController extends Controller
             $saltedKey = Keys::randomSaltedKey();
 
             $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
-                'key'             => $saltedKey['key'],
-                'salt'            => $saltedKey['salt'],
-                'permissions'     => ['*'],
-                'ip_rule'         => AccessRule::NONE,
-                'activated_at'    => Carbon::now(),
+                'key' => $saltedKey['key'],
+                'salt' => $saltedKey['salt'],
+                'permissions' => ['*'],
+                'ip_rule' => AccessRule::NONE,
+                'activated_at' => Carbon::now(),
                 'hours_to_expire' => -1,
-                'hidden'          => true,
+                'hidden' => true,
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO(), 201);
