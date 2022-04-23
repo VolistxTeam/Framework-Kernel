@@ -7,14 +7,14 @@ use Torann\GeoIP\Services\AbstractService;
 use Torann\GeoIP\Support\HttpClient;
 
 /**
- * Class GeoIP
- * @package Torann\GeoIP\Services
+ * Class GeoIP.
  */
 class GeoPoint extends AbstractService
 {
     /**
      * Http client instance.
      *ß
+     *
      * @var HttpClient
      */
     protected $client;
@@ -28,15 +28,16 @@ class GeoPoint extends AbstractService
     {
         $this->client = new HttpClient([
             'base_uri' => 'https://geopoint.api.volistx.io/',
-            'headers' => [
-                'User-Agent' => 'Laravel-GeoIP-Torann',
-                'Authorization' => 'Bearer ' . config('key'),
-            ]
+            'headers'  => [
+                'User-Agent'    => 'Laravel-GeoIP-Torann',
+                'Authorization' => 'Bearer '.config('key'),
+            ],
         ]);
     }
 
     /**
      * {@inheritdoc}
+     *
      * @throws Exception
      */
     public function locate($ip)
@@ -46,7 +47,7 @@ class GeoPoint extends AbstractService
 
         // Verify server response
         if ($this->client->getErrors() !== null || empty($data[0])) {
-            throw new Exception('Request failed (' . $this->client->getErrors() . ')');
+            throw new Exception('Request failed ('.$this->client->getErrors().')');
         }
 
         $json = json_decode($data[0], true);
