@@ -23,7 +23,7 @@ class IPValidationRule extends ValidationRuleBase
             (AccessRule::from($request->ip_rule) === AccessRule::WHITELIST && !$ipSet->match($request->getClientIp()))) {
             return [
                 'message' => Messages::E403('Not allowed in your location'),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 

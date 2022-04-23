@@ -4,7 +4,6 @@ namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Volistx\FrameworkKernel\Helpers\KeysCenter;
-use Volistx\FrameworkKernel\Helpers\MessagesCenter;
 
 class KeysServiceProvider extends ServiceProvider
 {
