@@ -19,16 +19,16 @@ class AccessKeyGenerateCommand extends Command
         $salt = Str::random(16);
 
         AccessToken::query()->create([
-            'key' => substr($key, 0, 32),
-            'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
-            'secret_salt' => $salt,
-            'permissions' => ['*'],
-            'ip_rule' => 0,
-            'ip_range' => [],
-            'country_rule' => 0,
-            'country_range' => []
+            'key'           => substr($key, 0, 32),
+            'secret'        => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            'secret_salt'   => $salt,
+            'permissions'   => ['*'],
+            'ip_rule'       => 0,
+            'ip_range'      => [],
+            'country_rule'  => 0,
+            'country_range' => [],
         ]);
 
-        $this->info('Your access key is created: ' . $key);
+        $this->info('Your access key is created: '.$key);
     }
 }

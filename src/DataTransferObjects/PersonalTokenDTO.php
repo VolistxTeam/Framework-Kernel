@@ -27,20 +27,20 @@ class PersonalTokenDTO extends DataTransferObjectBase
     public function GetDTO($key = null): array
     {
         $result = [
-            'id' => $this->id,
-            'key' => $key,
+            'id'           => $this->id,
+            'key'          => $key,
             'subscription' => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
-            'permissions' => $this->permissions,
-            'geolocation' => [
-                'ip_rule' => AccessRule::from($this->ip_rule),
-                'ip_range' => $this->ip_range,
-                'country_rule' => AccessRule::from($this->country_rule),
-                'country_range' => $this->country_range
+            'permissions'  => $this->permissions,
+            'geolocation'  => [
+                'ip_rule'       => AccessRule::from($this->ip_rule),
+                'ip_range'      => $this->ip_range,
+                'country_rule'  => AccessRule::from($this->country_rule),
+                'country_range' => $this->country_range,
             ],
             'token_status' => [
-                'is_expired' => $this->expires_at != null && Carbon::now()->greaterThan(Carbon::createFromTimeString($this->expires_at)),
+                'is_expired'   => $this->expires_at != null && Carbon::now()->greaterThan(Carbon::createFromTimeString($this->expires_at)),
                 'activated_at' => $this->activated_at,
-                'expires_at' => $this->expires_at,
+                'expires_at'   => $this->expires_at,
             ],
         ];
 
