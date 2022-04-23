@@ -29,15 +29,16 @@ class PlanController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'name' => ['bail', 'required', 'string', 'unique:plans'],
+                'name'        => ['bail', 'required', 'string', 'unique:plans'],
                 'description' => ['bail', 'required', 'string'],
-                'data' => ['bail', 'required', 'array'],
+                'data'        => ['bail', 'required', 'array'],
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
             $newPlan = $this->planRepository->Create($request->all());
+
             return response()->json(PlanDTO::fromModel($newPlan)->GetDTO(), 201);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
@@ -54,10 +55,10 @@ class PlanController extends Controller
             $validator = Validator::make(array_merge($request->all(), [
                 'plan_id' => $plan_id,
             ]), [
-                'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
-                'name' => ['bail', 'sometimes', 'string', 'unique:plans'],
+                'plan_id'     => ['bail', 'required', 'uuid', 'exists:plans,id'],
+                'name'        => ['bail', 'sometimes', 'string', 'unique:plans'],
                 'description' => ['bail', 'sometimes', 'string'],
-                'data' => ['bail', 'sometimes', 'array'],
+                'data'        => ['bail', 'sometimes', 'array'],
             ]);
 
             if ($validator->fails()) {
@@ -148,10 +149,10 @@ class PlanController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
-                'page' => $page,
+                'page'  => $page,
                 'limit' => $limit,
             ], [
-                'page' => ['bail', 'sometimes', 'integer'],
+                'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ]);
 
@@ -159,7 +160,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $plans = $this->planRepository->FindAll($search, (int)$page, (int)$limit);
+            $plans = $this->planRepository->FindAll($search, (int) $page, (int) $limit);
             if (!$plans) {
                 return response()->json(Messages::E500(), 500);
             }
@@ -172,8 +173,8 @@ class PlanController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $plans->perPage(),
-                    'current' => $plans->currentPage(),
-                    'total' => $plans->lastPage(),
+                    'current'  => $plans->currentPage(),
+                    'total'    => $plans->lastPage(),
                 ],
                 'items' => $items,
             ]);
