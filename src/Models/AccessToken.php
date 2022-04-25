@@ -42,4 +42,9 @@ class AccessToken extends Model
         'country_rule'  => AccessRule::class,
         'country_range' => 'array',
     ];
+
+    public function setCountryRangeAttribute($value)
+    {
+        $this->attributes['country_range'] = array_map('strtoupper', $value);
+    }
 }
