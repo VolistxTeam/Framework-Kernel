@@ -23,7 +23,8 @@
     "guzzlehttp/guzzle": "^7.4",
     "cryental/larasupport": "^1.7",
     "nesbot/carbon": "^2.57",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "menarasolutions/geographer": "^0.3.13"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",
