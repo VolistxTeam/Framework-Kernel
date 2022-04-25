@@ -36,18 +36,24 @@ class PersonalToken extends Model
     ];
 
     protected $casts = [
-        'permissions'   => 'array',
-        'ip_rule'       => AccessRule::class,
-        'ip_range'      => 'array',
-        'country_rule'  => AccessRule::class,
+        'permissions' => 'array',
+        'ip_rule' => AccessRule::class,
+        'ip_range' => 'array',
+        'country_rule' => AccessRule::class,
         'country_range' => 'array',
-        'activated_at'  => 'date:Y-m-d H:i:s',
-        'expires_at'    => 'date:Y-m-d H:i:s',
-        'hidden'        => 'boolean',
+        'activated_at' => 'date:Y-m-d H:i:s',
+        'expires_at' => 'date:Y-m-d H:i:s',
+        'hidden' => 'boolean',
     ];
 
     public function subscription(): BelongsTo
     {
         return $this->belongsTo(Subscription::class);
+    }
+
+    //mutator to set country range to upper
+    public function setCountryRangeAttribute($value)
+    {
+        $this->attributes['country_range'] = array_map('strtoupper', $value);
     }
 }
