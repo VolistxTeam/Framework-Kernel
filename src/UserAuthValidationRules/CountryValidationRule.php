@@ -23,7 +23,7 @@ class CountryValidationRule extends ValidationRuleBase
             ($token->country_rule === AccessRule::WHITELIST && !in_array($country, $token->country_range))) {
             return [
                 'message' => Messages::E403('Not allowed in your country'),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 

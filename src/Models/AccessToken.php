@@ -36,10 +36,10 @@ class AccessToken extends Model
     ];
 
     protected $casts = [
-        'permissions' => 'array',
-        'ip_rule' => AccessRule::class,
-        'ip_range' => 'array',
-        'country_rule' => AccessRule::class,
+        'permissions'   => 'array',
+        'ip_rule'       => AccessRule::class,
+        'ip_range'      => 'array',
+        'country_rule'  => AccessRule::class,
         'country_range' => 'array',
     ];
 
