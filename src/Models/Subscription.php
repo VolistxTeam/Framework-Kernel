@@ -33,6 +33,7 @@ class Subscription extends Model
     protected $fillable = [
         'user_id',
         'plan_id',
+        'hmac_token',
         'plan_activated_at',
         'plan_expires_at',
     ];
