@@ -11,7 +11,7 @@ class CountryRequestValidationRule implements Rule
 
     public function __construct()
     {
-        $this->countries = (new Earth())->getCountries()->useShortNames()->toArray();
+        $this->countries = array_column((new Earth())->getCountries()->useShortNames()->toArray(), 'code');
     }
 
     public function passes($attribute, $value): bool
