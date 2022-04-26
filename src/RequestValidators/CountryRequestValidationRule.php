@@ -5,7 +5,6 @@ namespace Volistx\FrameworkKernel\RequestValidators;
 use Illuminate\Contracts\Validation\Rule;
 use MenaraSolutions\Geographer\Earth;
 
-
 class CountryRequestValidationRule implements Rule
 {
     private array $countries;
@@ -22,6 +21,7 @@ class CountryRequestValidationRule implements Rule
                 return false;
             }
         }
+
         return true;
     }
 
