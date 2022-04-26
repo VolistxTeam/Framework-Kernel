@@ -13,17 +13,17 @@ class IPValidationRule extends ValidationRuleBase
         $token = $this->inputs['token'];
         $request = $this->inputs['request'];
 
-        if (AccessRule::from($token->ip_rule) === AccessRule::NONE) {
+        if ($token->ip_rule === AccessRule::NONE) {
             return true;
         }
 
         $ipSet = new IPSet($token->ip_range);
 
-        if ((AccessRule::from($token->ip_rule) === AccessRule::BLACKLIST && $ipSet->match($request->getClientIp())) ||
-            (AccessRule::from($token->ip_rule) === AccessRule::WHITELIST && !$ipSet->match($request->getClientIp()))) {
+        if ($token->ip_rule === AccessRule::BLACKLIST && $ipSet->match($request->getClientIp()) ||
+            ($token->ip_rule === AccessRule::WHITELIST && !$ipSet->match($request->getClientIp()))) {
             return [
                 'message' => Messages::E403('Not allowed in your location'),
-                'code'    => 403,
+                'code' => 403,
             ];
         }
 

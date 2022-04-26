@@ -54,6 +54,6 @@ class PersonalToken extends Model
     //mutator to set country range to upper
     public function setCountryRangeAttribute($value)
     {
-        $this->attributes['country_range'] = array_map('strtoupper', $value);
+        $this->attributes['country_range'] = json_encode(array_map('strtoupper', $value));
     }
 }
