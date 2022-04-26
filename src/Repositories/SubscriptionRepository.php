@@ -13,10 +13,11 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'           => $inputs['user_id'],
-            'plan_id'           => $inputs['plan_id'],
+            'user_id' => $inputs['user_id'],
+            'plan_id' => $inputs['plan_id'],
+            'hmac_token' => $inputs['hmac_token'],
             'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at'   => $inputs['plan_expires_at'],
+            'plan_expires_at' => $inputs['plan_expires_at'],
         ]);
     }
 
@@ -31,6 +32,7 @@ class SubscriptionRepository
         $plan_activated_at = $inputs['plan_activated_at'] ?? null;
         $plan_expires_at = $inputs['plan_expires_at'] ?? null;
         $plan_id = $inputs['plan_id'] ?? null;
+        $hmac_token = $inputs['hmac_token'] ?? null;
 
         if (!$plan_expires_at && !$plan_id && !$plan_activated_at) {
             return $subscription;
@@ -39,6 +41,11 @@ class SubscriptionRepository
         if ($plan_id) {
             $subscription->plan_id = $plan_id;
         }
+
+        if ($hmac_token) {
+            $subscription->hmac_token = $hmac_token;
+        }
+
         if ($plan_activated_at) {
             $subscription->plan_activated_at = $plan_activated_at;
         }
