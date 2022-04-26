@@ -19,9 +19,9 @@ class CreateAccessTokensTable extends Migration
             $table->string('key', 32)->index('access_token_key');
             $table->string('secret', 64);
             $table->string('secret_salt', 16);
-            $table->json(' ip_rule');
+            $table->integer(' ip_rule');
             $table->json('ip_range')->default('[]');
-            $table->json(' country_rule');
+            $table->integer(' country_rule');
             $table->json('country_range')->default('[]');
             $table->json('permissions')->default('[]');
             $table->dateTime('created_at')->useCurrent();
