@@ -16,17 +16,17 @@ class PersonalTokenRepository
     {
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
-            'ip_rule'         => $inputs['ip_rule'],
-            'ip_range'        => $inputs['ip_range'],
-            'country_rule'    => $inputs['country_rule'],
-            'country_range'   => $inputs['country_range'],
-            'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
-            'hidden'          => $inputs['hidden'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
+            'ip_rule' => $inputs['ip_rule'],
+            'ip_range' => $inputs['ip_range'],
+            'country_rule' => $inputs['country_rule'],
+            'country_range' => $inputs['country_range'],
+            'activated_at' => Carbon::now(),
+            'expires_at' => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
+            'hidden' => $inputs['hidden'],
         ]);
     }
 
@@ -45,8 +45,8 @@ class PersonalTokenRepository
         $country_range = $inputs['country_range'] ?? null;
         $hours_to_expire = $inputs['hours_to_expire'] ?? null;
 
-        if (!$permissions && !$ip_rule && !$ip_range
-            && !$country_rule && !$country_range && !$hours_to_expire) {
+        if (!$permissions && $ip_rule === null && !$ip_range
+            && $country_rule === null && !$country_range && !$hours_to_expire) {
             return $token;
         }
 
@@ -54,7 +54,7 @@ class PersonalTokenRepository
             $token->permissions = $permissions;
         }
 
-        if ($ip_rule) {
+        if ($ip_rule !== null) {
             $token->ip_rule = $ip_rule;
         }
 
@@ -62,7 +62,7 @@ class PersonalTokenRepository
             $token->ip_range = $ip_range;
         }
 
-        if ($country_rule) {
+        if ($country_rule !== null) {
             $token->country_rule = $country_rule;
         }
 

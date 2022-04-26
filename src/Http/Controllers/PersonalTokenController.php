@@ -92,7 +92,7 @@ class PersonalTokenController extends Controller
                 'ip_range'        => ['bail', 'required_if:ip_rule,1,2', 'array'],
                 'ip_range.*'      => ['bail', 'required_if:ip_rule,1,2', 'ip'],
                 'country_rule'    => ['bail', 'sometimes', new Enum(AccessRule::class)],
-                'country_range'   => ['bail', 'sometimes', 'array', new CountryRequestValidationRule()],
+                'country_range'   => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
             ]);
 
             if ($validator->fails()) {
