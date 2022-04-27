@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Volistx\FrameworkKernel\DataTransferObjects\SubscriptionDTO;
-use Volistx\FrameworkKernel\Facades\HMAC;
 use Volistx\FrameworkKernel\Facades\Keys;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
@@ -53,11 +52,8 @@ class SubscriptionController extends Controller
                 'plan_activated_at' => $request->input('plan_activated_at'),
                 'plan_expires_at'   => $request->input('plan_expires_at'),
             ]);
-            $content = SubscriptionDTO::fromModel($newSubscription)->GetDTO();
-            return response()->json($content, 201)->withHeaders([
-                'X-HMAC-Timestamp' => strtotime("now"),
-                'X-HMAC-Content-Hash'=> HMAC::sign($content,$newSubscription->hmac_token)
-            ]);
+
+            return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
