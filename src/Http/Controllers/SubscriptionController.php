@@ -54,9 +54,10 @@ class SubscriptionController extends Controller
                 'plan_expires_at'   => $request->input('plan_expires_at'),
             ]);
             $content = SubscriptionDTO::fromModel($newSubscription)->GetDTO();
+
             return response()->json($content, 201)->withHeaders([
-                'X-HMAC-Timestamp' => strtotime("now"),
-                'X-HMAC-Content-Hash'=> HMAC::sign($content,$newSubscription->hmac_token)
+                'X-HMAC-Timestamp'   => strtotime('now'),
+                'X-HMAC-Content-Hash'=> HMAC::sign($content, $newSubscription->hmac_token),
             ]);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);

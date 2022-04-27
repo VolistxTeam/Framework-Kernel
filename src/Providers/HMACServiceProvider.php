@@ -4,7 +4,6 @@ namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Volistx\FrameworkKernel\Helpers\HMACCenter;
-use Volistx\FrameworkKernel\Helpers\KeysCenter;
 
 class HMACServiceProvider extends ServiceProvider
 {
