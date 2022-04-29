@@ -11,21 +11,21 @@ class HMACCenter
     {
         $method = Request::method();
         $url = urlencode(URL::current());
-        $timestamp = strtotime("now");
+        $timestamp = strtotime('now');
         $contentString = json_encode($content);
 
         $valueToSign = $method
-            . $url
-            . $timestamp
-            . $contentString;
+            .$url
+            .$timestamp
+            .$contentString;
 
         $signedValue = hash_hmac('sha256', $valueToSign, $key, true);
 
         $signature = base64_encode($signedValue);
 
         return [
-            'X-HMAC-Timestamp' => $timestamp,
-            'X-HMAC-Content-Hash' => $signedValue
+            'X-HMAC-Timestamp'    => $timestamp,
+            'X-HMAC-Content-Hash' => $signedValue,
         ];
     }
 }
