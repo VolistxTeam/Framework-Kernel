@@ -13,8 +13,8 @@ class GeoLocationCenter
     public function __construct()
     {
         $this->client = new Client();
-        $this->httpBaseUrl = config('volistx.geoPoint.BaseUrl');
-        $this->remoteToken = config('volistx.geoPoint.APIToken');
+        $this->httpBaseUrl = config('volistx.geolocation.base_url');
+        $this->remoteToken = config('volistx.geolocation.token');
     }
 
     public function search(string $ip)

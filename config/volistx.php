@@ -14,9 +14,9 @@ return [
         'userLogHttpUrl'    => env('LOG_AUTH_USER_HTTP_URL'),
         'userLogHttpToken'  => env('LOG_AUTH_USER_HTTP_TOKEN'),
     ],
-    'geoPoint' => [
-        'APIToken' => env('GEOPOINT_API_KEY'),
-        'BaseUrl'  => env('GEOPOINT_API_URL'),
+    'geolocation' => [
+        'token' => env('GEOPOINT_API_KEY'),
+        'base_url'  => env('GEOPOINT_API_URL'),
     ],
     'validators' => [
         Volistx\FrameworkKernel\UserAuthValidationRules\ValidKeyValidationRule::class,
