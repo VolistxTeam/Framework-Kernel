@@ -20,7 +20,7 @@
     "chuckrincon/lumen-config-discover": "^1.0",
     "fakerphp/faker": "^1.19",
     "laravel/lumen-framework": "^9.0",
-    "volistx/lumen-rate-limiting": "^1.1",
+    "rogervila/lumen-rate-limiting": "^1.1",
     "wikimedia/ip-set": "^3.0",
     "guzzlehttp/guzzle": "^7.4",
     "cryental/larasupport": "^1.7",
