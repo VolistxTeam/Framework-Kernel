@@ -15,7 +15,7 @@ return [
         'userLogHttpToken'  => env('LOG_AUTH_USER_HTTP_TOKEN'),
     ],
     'geolocation' => [
-        'token' => env('GEOPOINT_API_KEY'),
+        'token'     => env('GEOPOINT_API_KEY'),
         'base_url'  => env('GEOPOINT_API_URL'),
     ],
     'validators' => [
