@@ -56,11 +56,11 @@ class PersonalTokenController extends Controller
             $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
-                'permissions'     => $request->input('permissions'),
-                'ip_rule'         => $request->input('ip_rule'),
-                'ip_range'        => $request->input('ip_range'),
-                'country_rule'    => $request->input('country_rule'),
-                'country_range'   => $request->input('country_range'),
+                'permissions'     => $request->input('permissions') ?? array(),
+                'ip_rule'         => $request->input('ip_rule') ?? AccessRule::NONE,
+                'ip_range'        => $request->input('ip_range') ?? array(),
+                'country_rule'    => $request->input('country_rule') ?? AccessRule::NONE,
+                'country_range'   => $request->input('country_range') ?? array(),
                 'activated_at'    => Carbon::now(),
                 'hours_to_expire' => $request->input('hours_to_expire'),
                 'hidden'          => false,
@@ -68,7 +68,7 @@ class PersonalTokenController extends Controller
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
         } catch (Exception $ex) {
-            return response()->json(Messages::E500(), 500);
+            return response()->json(Messages::E500($ex), 500);
         }
     }
 
@@ -210,8 +210,18 @@ class PersonalTokenController extends Controller
     public function GetPersonalTokens(Request $request, $subscription_id): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view-all')) {
+            if (!Permissions::check($request->toArray()['X_ACCESS_TOKEN'], $this->module, 'view-all')) {
                 return response()->json(Messages::E401(), 401);
+            }
+
+            $validator = Validator::make(array_merge($request->all(), [
+                'subscription_id' => $subscription_id
+            ]), [
+                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id']
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
             $search = $request->input('search', '');
