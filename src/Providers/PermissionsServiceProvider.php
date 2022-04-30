@@ -23,7 +23,7 @@ class PermissionsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('permissions', function () {
+        $this->app->bind('Permissions', function () {
             return new PermissionsCenter();
         });
     }

@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\AccessToken;
 
@@ -23,9 +24,9 @@ class AccessKeyGenerateCommand extends Command
             'secret'        => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
             'secret_salt'   => $salt,
             'permissions'   => ['*'],
-            'ip_rule'       => 0,
+            'ip_rule'       => AccessRule::NONE,
             'ip_range'      => [],
-            'country_rule'  => 0,
+            'country_rule'  => AccessRule::NONE,
             'country_range' => [],
         ]);
 

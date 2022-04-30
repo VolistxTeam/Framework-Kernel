@@ -23,7 +23,7 @@ class KeysServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('keys', function () {
+        $this->app->bind('Keys', function () {
             return new KeysCenter();
         });
     }

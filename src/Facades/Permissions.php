@@ -8,6 +8,6 @@ class Permissions extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'permissions';
+        return 'Permissions';
     }
 }

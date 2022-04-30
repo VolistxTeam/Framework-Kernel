@@ -8,6 +8,6 @@ class HMAC extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'hmac';
+        return 'HMAC';
     }
 }

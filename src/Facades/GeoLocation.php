@@ -4,10 +4,10 @@ namespace Volistx\FrameworkKernel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class GeoLocations extends Facade
+class GeoLocation extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'geoLocation';
+        return 'GeoLocation';
     }
 }

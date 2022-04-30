@@ -8,6 +8,6 @@ class Keys extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'keys';
+        return 'Keys';
     }
 }

@@ -23,7 +23,7 @@ class HMACServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('hmac', function () {
+        $this->app->bind('HMAC', function () {
             return new HMACCenter();
         });
     }

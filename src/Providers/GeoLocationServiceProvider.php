@@ -23,7 +23,7 @@ class GeoLocationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('geoLocation', function () {
+        $this->app->bind('GeoLocation', function () {
             return new GeoLocationCenter();
         });
     }

@@ -23,7 +23,7 @@ class MessagesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('messages', function () {
+        $this->app->bind('Messages', function () {
             return new MessagesCenter();
         });
     }

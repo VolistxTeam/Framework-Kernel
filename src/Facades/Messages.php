@@ -8,6 +8,6 @@ class Messages extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'messages';
+        return 'Messages';
     }
 }

@@ -26,14 +26,14 @@ class RequestsCountValidationRule extends ValidationRuleBase
         $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id, Carbon::now());
         if ($requestsMadeCount === null) {
             return [
-                'message' => Messages::E500(),
+                'message' => Messages::E500('The request count could not be retrieved.'),
                 'code'    => 500,
             ];
         }
 
         if (!$planRequestsLimit || ($planRequestsLimit != -1 && $requestsMadeCount >= $planRequestsLimit)) {
             return [
-                'message' => Messages::E429(),
+                'message' => Messages::E429('You have reached the limit of requests for this plan.'),
                 'code'    => 429,
             ];
         }
