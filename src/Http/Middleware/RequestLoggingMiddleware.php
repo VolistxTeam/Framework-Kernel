@@ -31,7 +31,7 @@ class RequestLoggingMiddleware
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
-                'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
+                'user_agent'      => $request->userAgent() ?? null,
                 'subscription_id' => $request->toArray()['X_PERSONAL_TOKEN']->subscription()->first()->id,
             ];
             $this->userLoggingService->CreateUserLog($inputs);
@@ -40,7 +40,7 @@ class RequestLoggingMiddleware
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
-                'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
+                'user_agent'      => $request->userAgent() ?? null,
                 'access_token_id' => $request->toArray()['X_ACCESS_TOKEN']['id'],
             ];
             $this->adminLoggingService->CreateAdminLog($inputs);
