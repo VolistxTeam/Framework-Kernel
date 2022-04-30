@@ -6,6 +6,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
+use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\AccessToken;
 
@@ -18,10 +19,10 @@ class AccessTokenRepository
             'secret'        => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
             'secret_salt'   => $inputs['salt'],
             'permissions'   => $inputs['permissions'],
-            'ip_rule'       => $inputs['ip_rule'],
-            'ip_range'      => $inputs['ip_range'],
-            'country_rule'  => $inputs['country_rule'],
-            'country_range' => $inputs['country_range'],
+            'ip_rule'       => $inputs['ip_rule'] ?? AccessRule::NONE,
+            'ip_range'      => $inputs['ip_range'] ?? array(),
+            'country_rule'  => $inputs['country_rule'] ?? AccessRule::NONE,
+            'country_range' => $inputs['country_range'] ?? array(),
         ]);
     }
 
