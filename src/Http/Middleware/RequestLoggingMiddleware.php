@@ -41,7 +41,7 @@ class RequestLoggingMiddleware
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
                 'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
-                'access_token_id' => $request->toArray()['X_PERSONAL_TOKEN']->id,
+                'access_token_id' => $request->toArray()['X_PERSONAL_TOKEN']['id'],
             ];
             $this->adminLoggingService->CreateAdminLog($inputs);
         }
