@@ -20,9 +20,9 @@ class AccessTokenRepository
             'secret_salt'   => $inputs['salt'],
             'permissions'   => $inputs['permissions'],
             'ip_rule'       => $inputs['ip_rule'] ?? AccessRule::NONE,
-            'ip_range'      => $inputs['ip_range'] ?? array(),
+            'ip_range'      => $inputs['ip_range'] ?? [],
             'country_rule'  => $inputs['country_rule'] ?? AccessRule::NONE,
-            'country_range' => $inputs['country_range'] ?? array(),
+            'country_range' => $inputs['country_range'] ?? [],
         ]);
     }
 
