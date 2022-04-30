@@ -56,11 +56,11 @@ class PersonalTokenController extends Controller
             $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
-                'permissions'     => $request->input('permissions') ?? array(),
+                'permissions'     => $request->input('permissions') ?? [],
                 'ip_rule'         => $request->input('ip_rule') ?? AccessRule::NONE,
-                'ip_range'        => $request->input('ip_range') ?? array(),
+                'ip_range'        => $request->input('ip_range') ?? [],
                 'country_rule'    => $request->input('country_rule') ?? AccessRule::NONE,
-                'country_range'   => $request->input('country_range') ?? array(),
+                'country_range'   => $request->input('country_range') ?? [],
                 'activated_at'    => Carbon::now(),
                 'hours_to_expire' => $request->input('hours_to_expire'),
                 'hidden'          => false,
@@ -215,9 +215,9 @@ class PersonalTokenController extends Controller
             }
 
             $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id
+                'subscription_id' => $subscription_id,
             ]), [
-                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id']
+                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
             ]);
 
             if ($validator->fails()) {
