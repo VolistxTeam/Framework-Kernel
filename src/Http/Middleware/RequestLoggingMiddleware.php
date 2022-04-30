@@ -26,22 +26,22 @@ class RequestLoggingMiddleware
 
     public function terminate(Request $request, Response $response): void
     {
-        if ($request->X_PERSONAL_TOKEN) {
+        if ($request->toArray()['X_PERSONAL_TOKEN'] ?? false) {
             $inputs = [
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
                 'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
-                'subscription_id' => $request->X_PERSONAL_TOKEN->subscription()->first()->id,
+                'subscription_id' => $request->toArray()['X_PERSONAL_TOKEN']->subscription()->first()->id,
             ];
             $this->userLoggingService->CreateUserLog($inputs);
-        } elseif ($request->X_ACCESS_TOKEN) {
+        } elseif ($request->toArray()['X_ACCESS_TOKEN'] ?? false) {
             $inputs = [
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
                 'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
-                'access_token_id' => $request->X_ACCESS_TOKEN->id,
+                'access_token_id' => $request->toArray()['X_PERSONAL_TOKEN']->id,
             ];
             $this->adminLoggingService->CreateAdminLog($inputs);
         }
