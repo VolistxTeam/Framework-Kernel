@@ -39,7 +39,7 @@ class PersonalTokenControllerTest extends BaseTestCase
         ], [
             'permissions'     => ['*'],
             'whitelist_range' => ['127.0.0.0'],
-            'hours_to_expire' => 500,
+            'duration' => 500,
         ]);
     }
 
@@ -92,7 +92,7 @@ class PersonalTokenControllerTest extends BaseTestCase
         $request = $this->json('POST', "/sys-bin/admin/subscriptions/{$sub->id}/personal-tokens/", [
             'permissions'     => ['*'],
             'whitelist_range' => ['127.0.0.0'],
-            'hours_to_expire' => 500,
+            'duration' => 500,
         ], [
             'Authorization' => "Bearer $key",
         ]);
@@ -142,7 +142,7 @@ class PersonalTokenControllerTest extends BaseTestCase
         $request = $this->json('PUT', "/sys-bin/admin/subscriptions/{$sub->id}/personal-tokens/{$personalToken->id}", [
             'permissions'     => ['1'],
             'whitelist_range' => ['128.0.0.0'],
-            'hours_to_expire' => 1000,
+            'duration' => 1000,
         ], [
             'Authorization' => "Bearer $key",
         ]);

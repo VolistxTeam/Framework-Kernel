@@ -25,7 +25,7 @@ class PersonalTokenRepository
             'country_rule'    => $inputs['country_rule'],
             'country_range'   => $inputs['country_range'],
             'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['hours_to_expire'] != -1 ? Carbon::now()->addHours($inputs['hours_to_expire']) : null,
+            'expires_at'      => $inputs['duration'] != -1 ? Carbon::now()->addHours($inputs['duration']) : null,
             'hidden'          => $inputs['hidden'],
         ]);
     }
@@ -43,10 +43,10 @@ class PersonalTokenRepository
         $ip_range = $inputs['ip_range'] ?? null;
         $country_rule = $inputs['country_rule'] ?? null;
         $country_range = $inputs['country_range'] ?? null;
-        $hours_to_expire = $inputs['hours_to_expire'] ?? null;
+        $duration = $inputs['duration'] ?? null;
 
         if (!$permissions && $ip_rule === null && !$ip_range
-            && $country_rule === null && !$country_range && !$hours_to_expire) {
+            && $country_rule === null && !$country_range && !$duration) {
             return $token;
         }
 
@@ -70,8 +70,8 @@ class PersonalTokenRepository
             $token->country_range = $country_range;
         }
 
-        if ($hours_to_expire) {
-            $token->expires_at = $hours_to_expire != -1 ? Carbon::createFromTimeString($token->activated_at)->addHours($hours_to_expire) : null;
+        if ($duration) {
+            $token->expires_at = $duration != -1 ? Carbon::createFromTimeString($token->activated_at)->addHours($duration) : null;
         }
 
         $token->save();
