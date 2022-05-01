@@ -7,6 +7,13 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
+use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
+use Volistx\FrameworkKernel\Providers\GeoLocationServiceProvider;
+use Volistx\FrameworkKernel\Providers\HMACServiceProvider;
+use Volistx\FrameworkKernel\Providers\KeysServiceProvider;
+use Volistx\FrameworkKernel\Providers\MessagesServiceProvider;
+use Volistx\FrameworkKernel\Providers\PermissionsServiceProvider;
+use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
 
 class VolistxServiceProvider extends ServiceProvider
 {
@@ -19,6 +26,14 @@ class VolistxServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
+
+        $this->app->register(AdminLoggingServiceProvider::class);
+        $this->app->register(GeoLocationServiceProvider::class);
+        $this->app->register(HMACServiceProvider::class);
+        $this->app->register(KeysServiceProvider::class);
+        $this->app->register(MessagesServiceProvider::class);
+        $this->app->register(PermissionsServiceProvider::class);
+        $this->app->register(UserLoggingServiceProvider::class);
 
         require __DIR__.'/../routes/system.php';
 
