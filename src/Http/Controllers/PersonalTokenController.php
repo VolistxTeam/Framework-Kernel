@@ -37,7 +37,7 @@ class PersonalTokenController extends Controller
                 'subscription_id' => $subscription_id,
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-                'duration' => ['bail', 'required', 'integer'],
+                'duration'        => ['bail', 'required', 'integer'],
                 'permissions'     => ['bail', 'sometimes', 'array'],
                 'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
                 'ip_rule'         => ['bail', 'required', new Enum(AccessRule::class)],
@@ -62,7 +62,7 @@ class PersonalTokenController extends Controller
                 'country_rule'    => $request->input('country_rule') ?? AccessRule::NONE,
                 'country_range'   => $request->input('country_range') ?? [],
                 'activated_at'    => Carbon::now(),
-                'duration' => $request->input('duration'),
+                'duration'        => $request->input('duration'),
                 'hidden'          => false,
             ]);
 
@@ -85,7 +85,7 @@ class PersonalTokenController extends Controller
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
                 'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
-                'duration' => ['bail', 'sometimes', 'integer'],
+                'duration'        => ['bail', 'sometimes', 'integer'],
                 'permissions'     => ['bail', 'sometimes', 'array'],
                 'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
                 'ip_rule'         => ['bail', 'sometimes', new Enum(AccessRule::class)],
@@ -287,7 +287,7 @@ class PersonalTokenController extends Controller
                 'permissions'     => ['*'],
                 'ip_rule'         => AccessRule::NONE,
                 'activated_at'    => Carbon::now(),
-                'duration' => -1,
+                'duration'        => -1,
                 'hidden'          => true,
             ]);
 
