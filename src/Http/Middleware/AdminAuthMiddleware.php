@@ -43,7 +43,7 @@ class AdminAuthMiddleware
             }
         }
 
-        AccessTokens::setAccessToken($token);
+        AccessTokens::setToken($token);
 
         return $next($request);
     }
