@@ -59,7 +59,7 @@ class SubscriptionRepository
 
     public function Find($subscriptionID): ?object
     {
-        return Subscription::query()->where('id', $subscriptionID)->first();
+        return Subscription::with('plan')->where('id', $subscriptionID)->first();
     }
 
     public function Delete($subscriptionID): ?bool

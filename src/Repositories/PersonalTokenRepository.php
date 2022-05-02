@@ -81,7 +81,7 @@ class PersonalTokenRepository
 
     public function Find($subscription_id, $token_id): ?object
     {
-        return PersonalToken::query()->where('id', $token_id)->where('subscription_id', $subscription_id)->first();
+        return PersonalToken::with('subscription')->where('id', $token_id)->where('subscription_id', $subscription_id)->first();
     }
 
     public function Reset($subscription_id, $token_id, array $inputs): ?object
@@ -126,7 +126,7 @@ class PersonalTokenRepository
 
     public function AuthPersonalToken($token): ?object
     {
-        return PersonalToken::query()->where('key', substr($token, 0, 32))
+        return PersonalToken::with('subscription')->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {
                 return SHA256Hasher::check(substr($token, 32), $v->secret, ['salt' => $v->secret_salt]);
             })->first();
