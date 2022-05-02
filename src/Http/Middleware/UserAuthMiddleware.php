@@ -4,8 +4,8 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Plans;
 use Volistx\FrameworkKernel\Repositories\PersonalTokenRepository;
 
@@ -54,7 +54,7 @@ class UserAuthMiddleware
             }
         }
 
-        AccessTokens::setToken($token);
+        PersonalTokens::setToken($token);
         Plans::setPlan($plan);
 
         return $next($request);
