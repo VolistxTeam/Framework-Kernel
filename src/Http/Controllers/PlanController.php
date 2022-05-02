@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Volistx\FrameworkKernel\DataTransferObjects\PlanDTO;
+use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\PlanRepository;
@@ -24,7 +25,7 @@ class PlanController extends Controller
     public function CreatePlan(Request $request): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'create')) {
+            if (!Permissions::check(AccessTokens::getToken(), $this->module, 'create')) {
                 return response()->json(Messages::E401(), 401);
             }
 
@@ -48,7 +49,7 @@ class PlanController extends Controller
     public function UpdatePlan(Request $request, $plan_id): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'update')) {
+            if (!Permissions::check(AccessTokens::getToken(), $this->module, 'update')) {
                 return response()->json(Messages::E401(), 401);
             }
 
@@ -80,7 +81,7 @@ class PlanController extends Controller
     public function DeletePlan(Request $request, $plan_id): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'delete')) {
+            if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
                 return response()->json(Messages::E401(), 401);
             }
 
@@ -111,7 +112,7 @@ class PlanController extends Controller
     public function GetPlan(Request $request, $plan_id): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view')) {
+            if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
@@ -140,7 +141,7 @@ class PlanController extends Controller
     public function GetPlans(Request $request): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view-all')) {
+            if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view-all')) {
                 return response()->json(Messages::E401(), 401);
             }
 

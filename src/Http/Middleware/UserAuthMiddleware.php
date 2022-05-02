@@ -4,7 +4,9 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\Plans;
 use Volistx\FrameworkKernel\Repositories\PersonalTokenRepository;
 
 class UserAuthMiddleware
@@ -33,8 +35,8 @@ class UserAuthMiddleware
         //prepare inputs array
         $inputs = [
             'request' => $request,
-            'token'   => $token,
-            'plan'    => $plan,
+            'token' => $token,
+            'plan' => $plan,
         ];
 
         $validatorClasses = config('volistx.validators');
@@ -52,10 +54,8 @@ class UserAuthMiddleware
             }
         }
 
-        $request->merge([
-            'X_PERSONAL_TOKEN' => $token,
-            'PLAN'             => $plan,
-        ]);
+        AccessTokens::setToken($token);
+        Plans::setPlan($plan);
 
         return $next($request);
     }

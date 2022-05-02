@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
@@ -23,7 +24,7 @@ class AdminLogController extends Controller
     public function GetAdminLog(Request $request, $log_id): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view')) {
+            if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
@@ -52,7 +53,7 @@ class AdminLogController extends Controller
     public function GetAdminLogs(Request $request): JsonResponse
     {
         try {
-            if (!Permissions::check($request->X_ACCESS_TOKEN, $this->module, 'view-all')) {
+            if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view-all')) {
                 return response()->json(Messages::E401(), 401);
             }
 

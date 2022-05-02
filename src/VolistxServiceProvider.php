@@ -7,12 +7,15 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
+use Volistx\FrameworkKernel\Providers\AccessTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
 use Volistx\FrameworkKernel\Providers\GeoLocationServiceProvider;
 use Volistx\FrameworkKernel\Providers\HMACServiceProvider;
 use Volistx\FrameworkKernel\Providers\KeysServiceProvider;
 use Volistx\FrameworkKernel\Providers\MessagesServiceProvider;
 use Volistx\FrameworkKernel\Providers\PermissionsServiceProvider;
+use Volistx\FrameworkKernel\Providers\PersonalTokenServiceProvider;
+use Volistx\FrameworkKernel\Providers\PlansServiceProvider;
 use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
 
 class VolistxServiceProvider extends ServiceProvider
@@ -34,6 +37,9 @@ class VolistxServiceProvider extends ServiceProvider
         $this->app->register(MessagesServiceProvider::class);
         $this->app->register(PermissionsServiceProvider::class);
         $this->app->register(UserLoggingServiceProvider::class);
+        $this->app->register(AccessTokenServiceProvider::class);
+        $this->app->register(PersonalTokenServiceProvider::class);
+        $this->app->register(PlansServiceProvider::class);
 
         require __DIR__.'/../routes/system.php';
 
