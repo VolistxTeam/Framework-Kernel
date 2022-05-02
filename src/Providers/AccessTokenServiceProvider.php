@@ -4,7 +4,6 @@ namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Volistx\FrameworkKernel\Helpers\AccessTokensCenter;
-use Volistx\FrameworkKernel\Helpers\PermissionsCenter;
 
 class AccessTokenServiceProvider extends ServiceProvider
 {

@@ -35,8 +35,8 @@ class UserAuthMiddleware
         //prepare inputs array
         $inputs = [
             'request' => $request,
-            'token' => $token,
-            'plan' => $plan,
+            'token'   => $token,
+            'plan'    => $plan,
         ];
 
         $validatorClasses = config('volistx.validators');
