@@ -43,7 +43,7 @@ class RequestLoggingMiddleware
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
                 'user_agent'      => $request->userAgent() ?? null,
-                'access_token_id' => AccessTokens::getToken()->id
+                'access_token_id' => AccessTokens::getToken()->id,
             ];
             $this->adminLoggingService->CreateAdminLog($inputs);
         }
