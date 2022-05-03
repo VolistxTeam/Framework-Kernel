@@ -19,18 +19,18 @@ class CountryValidationRule extends ValidationRuleBase
 
         $geolocation = GeoLocation::search($request->getClientIp());
 
-        if(!$geolocation){
+        if (!$geolocation) {
             return [
                 'message' => Messages::E403('The application is not allowed to access from your country.'),
                 'code'    => 403,
             ];
         }
 
-        if($geolocation->bogon === true){
+        if ($geolocation->bogon === true) {
             return true;
         }
 
-        $code =$geolocation->country->code;
+        $code = $geolocation->country->code;
 
         if (($token->country_rule === AccessRule::BLACKLIST && in_array($code, $token->country_range)) ||
             ($token->country_rule === AccessRule::WHITELIST && !in_array($code, $token->country_range))) {
