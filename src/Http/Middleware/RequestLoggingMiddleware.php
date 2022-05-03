@@ -5,6 +5,8 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Volistx\FrameworkKernel\Facades\AccessTokens;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
@@ -26,7 +28,7 @@ class RequestLoggingMiddleware
 
     public function terminate(Request $request, Response $response): void
     {
-        if ($request->toArray()['X_PERSONAL_TOKEN'] ?? false) {
+        if (PersonalTokens::getToken()) {
             $inputs = [
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
@@ -35,7 +37,7 @@ class RequestLoggingMiddleware
                 'subscription_id' => $request->toArray()['X_PERSONAL_TOKEN']->subscription()->first()->id,
             ];
             $this->userLoggingService->CreateUserLog($inputs);
-        } elseif ($request->toArray()['X_ACCESS_TOKEN'] ?? false) {
+        } elseif (AccessTokens::getToken()) {
             $inputs = [
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
