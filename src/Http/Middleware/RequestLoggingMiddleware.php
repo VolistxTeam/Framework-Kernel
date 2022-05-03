@@ -34,7 +34,7 @@ class RequestLoggingMiddleware
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
                 'user_agent'      => $request->userAgent() ?? null,
-                'subscription_id' => $request->toArray()['X_PERSONAL_TOKEN']->subscription()->first()->id,
+                'subscription_id' => PersonalTokens::getToken()->subscription()->first()->id,
             ];
             $this->userLoggingService->CreateUserLog($inputs);
         } elseif (AccessTokens::getToken()) {
@@ -43,7 +43,7 @@ class RequestLoggingMiddleware
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
                 'user_agent'      => $request->userAgent() ?? null,
-                'access_token_id' => $request->toArray()['X_ACCESS_TOKEN']['id'],
+                'access_token_id' => AccessTokens::getToken()->id
             ];
             $this->adminLoggingService->CreateAdminLog($inputs);
         }
