@@ -17,10 +17,23 @@ class CountryValidationRule extends ValidationRuleBase
             return true;
         }
 
-        $country = GeoLocation::search($request->getClientIp())->country;
+        $geolocation = GeoLocation::search($request->getClientIp());
 
-        if (($token->country_rule === AccessRule::BLACKLIST && in_array($country, $token->country_range)) ||
-            ($token->country_rule === AccessRule::WHITELIST && !in_array($country, $token->country_range))) {
+        if(!$geolocation){
+            return [
+                'message' => Messages::E403('The application is not allowed to access from your country.'),
+                'code'    => 403,
+            ];
+        }
+
+        if($geolocation->bogon === true){
+            return true;
+        }
+
+        $code =$geolocation->country->code;
+
+        if (($token->country_rule === AccessRule::BLACKLIST && in_array($code, $token->country_range)) ||
+            ($token->country_rule === AccessRule::WHITELIST && !in_array($code, $token->country_range))) {
             return [
                 'message' => Messages::E403('The application is not allowed to access from your country.'),
                 'code'    => 403,
