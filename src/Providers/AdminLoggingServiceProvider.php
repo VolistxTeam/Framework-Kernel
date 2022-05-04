@@ -16,9 +16,9 @@ class AdminLoggingServiceProvider extends ServiceProvider
     public function register()
     {
         if (config('volistx.logging.adminLogMode') === 'local') {
-            $this->app->bind(IAdminLoggingService::class, LocalAdminLoggingService::class);
+            $this->app->bind(LocalAdminLoggingService::class, IAdminLoggingService::class);
         } else {
-            $this->app->bind(IAdminLoggingService::class, RemoteAdminLoggingService::class);
+            $this->app->bind(RemoteAdminLoggingService::class, IAdminLoggingService::class);
         }
     }
 }
