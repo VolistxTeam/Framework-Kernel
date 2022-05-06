@@ -10,7 +10,7 @@ use Laravel\Lumen\Routing\Router;
 
 $router->group(['prefix' => 'sys-bin'], function () use ($router) {
     $router->get('/ping', function () {
-        return response('Hi!');
+        return response(Request::ip());
     });
 
     $router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () use ($router) {
