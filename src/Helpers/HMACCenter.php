@@ -27,9 +27,9 @@ class HMACCenter
         $signature = base64_encode($signedValue);
 
         return [
-            'X-HMAC-Timestamp'    => $timestamp,
+            'X-HMAC-Timestamp'      => $timestamp,
             'X-HMAC-Content-SHA256' => $signature,
-            'X-HMAC-Nonce'        => $nonce,
+            'X-HMAC-Nonce'          => $nonce,
         ];
     }
 }
