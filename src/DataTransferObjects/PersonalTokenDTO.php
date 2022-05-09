@@ -32,9 +32,9 @@ class PersonalTokenDTO extends DataTransferObjectBase
             'subscription' => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
             'permissions'  => $this->permissions,
             'geolocation'  => [
-                'ip_rule'       => AccessRule::from($this->ip_rule),
+                'ip_rule'       => AccessRule::from($this->ip_rule)->name,
                 'ip_range'      => $this->ip_range,
-                'country_rule'  => AccessRule::from($this->country_rule),
+                'country_rule'  => AccessRule::from($this->country_rule)->name,
                 'country_range' => $this->country_range,
             ],
             'token_status' => [
