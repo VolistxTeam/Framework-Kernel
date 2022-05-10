@@ -36,10 +36,10 @@ class SubscriptionController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'user_id' => ['bail', 'required', 'integer'],
-                'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
+                'user_id'           => ['bail', 'required', 'integer'],
+                'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id'],
                 'plan_activated_at' => ['bail', 'required', 'date'],
-                'plan_expires_at' => ['bail', 'required', 'date', 'after:plan_activated_at'],
+                'plan_expires_at'   => ['bail', 'required', 'date', 'after:plan_activated_at'],
             ]);
 
             if ($validator->fails()) {
@@ -47,11 +47,11 @@ class SubscriptionController extends Controller
             }
 
             $newSubscription = $this->subscriptionRepository->Create([
-                'user_id' => $request->input('user_id'),
-                'plan_id' => $request->input('plan_id'),
-                'hmac_token' => Keys::randomKey(32),
+                'user_id'           => $request->input('user_id'),
+                'plan_id'           => $request->input('plan_id'),
+                'hmac_token'        => Keys::randomKey(32),
                 'plan_activated_at' => $request->input('plan_activated_at'),
-                'plan_expires_at' => $request->input('plan_expires_at'),
+                'plan_expires_at'   => $request->input('plan_expires_at'),
             ]);
 
             return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
@@ -70,14 +70,13 @@ class SubscriptionController extends Controller
             $validator = Validator::make(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
             ]), [
-                'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+                'subscription_id'   => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
                 'plan_activated_at' => ['bail', 'sometimes', 'date'],
-                'hmac_token' => ['bail', 'sometimes', 'max:255'],
-                'plan_expires_at' => ['bail',
+                'hmac_token'        => ['bail', 'sometimes', 'max:255'],
+                'plan_expires_at'   => ['bail',
                     Rule::requiredIf(function () use ($request) {
                         return !empty($request->input('plan_activated_at'));
-                    })
-                    , 'date', 'after:plan_activated_at'],
+                    }), 'date', 'after:plan_activated_at', ],
                 'plan_id' => ['bail', 'sometimes', 'uuid', 'exists:plans,id'],
             ]);
 
@@ -166,7 +165,7 @@ class SubscriptionController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
-                'page' => $page,
+                'page'  => $page,
                 'limit' => $limit,
             ], [
                 '$page' => ['bail', 'sometimes', 'numeric'],
@@ -190,8 +189,8 @@ class SubscriptionController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $subs->perPage(),
-                    'current' => $subs->currentPage(),
-                    'total' => $subs->lastPage(),
+                    'current'  => $subs->currentPage(),
+                    'total'    => $subs->lastPage(),
                 ],
                 'items' => $items,
             ]);
@@ -213,12 +212,12 @@ class SubscriptionController extends Controller
 
             $validator = Validator::make(array_merge([
                 'subscription_id' => $subscription_id,
-                'page' => $page,
-                'limit' => $limit,
+                'page'            => $page,
+                'limit'           => $limit,
             ]), [
                 'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
-                '$page' => ['bail', 'sometimes', 'integer'],
-                'limit' => ['bail', 'sometimes', 'integer'],
+                '$page'           => ['bail', 'sometimes', 'integer'],
+                'limit'           => ['bail', 'sometimes', 'integer'],
             ]);
 
             if ($validator->fails()) {
@@ -248,12 +247,12 @@ class SubscriptionController extends Controller
 
             $validator = Validator::make([
                 'subscription_id' => $subscription_id,
-                'date' => $date,
-                'mode' => strtolower($mode),
+                'date'            => $date,
+                'mode'            => strtolower($mode),
             ], [
                 'subscription_id' => ['bail', 'required', 'exists:subscriptions,id'],
-                'date' => ['bail', 'sometimes', 'date'],
-                'mode' => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
+                'date'            => ['bail', 'sometimes', 'date'],
+                'mode'            => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
             ]);
 
             if ($validator->fails()) {

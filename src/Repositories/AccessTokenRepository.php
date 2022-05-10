@@ -15,13 +15,13 @@ class AccessTokenRepository
     public function Create($subscription_id, array $inputs): Model|Builder
     {
         return AccessToken::query()->create([
-            'key' => substr($inputs['key'], 0, 32),
-            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt' => $inputs['salt'],
-            'permissions' => $inputs['permissions'],
-            'ip_rule' => $inputs['ip_rule'] ?? AccessRule::NONE,
-            'ip_range' => $inputs['ip_range'] ?? [],
-            'country_rule' => $inputs['country_rule'] ?? AccessRule::NONE,
+            'key'           => substr($inputs['key'], 0, 32),
+            'secret'        => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt'   => $inputs['salt'],
+            'permissions'   => $inputs['permissions'],
+            'ip_rule'       => $inputs['ip_rule'] ?? AccessRule::NONE,
+            'ip_range'      => $inputs['ip_range'] ?? [],
+            'country_rule'  => $inputs['country_rule'] ?? AccessRule::NONE,
             'country_range' => $inputs['country_range'] ?? [],
         ]);
     }
