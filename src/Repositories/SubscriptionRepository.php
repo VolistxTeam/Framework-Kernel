@@ -13,11 +13,11 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'           => $inputs['user_id'],
-            'plan_id'           => $inputs['plan_id'],
-            'hmac_token'        => $inputs['hmac_token'],
+            'user_id' => $inputs['user_id'],
+            'plan_id' => $inputs['plan_id'],
+            'hmac_token' => $inputs['hmac_token'],
             'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at'   => $inputs['plan_expires_at'],
+            'plan_expires_at' => $inputs['plan_expires_at'],
         ]);
     }
 
@@ -34,23 +34,21 @@ class SubscriptionRepository
         $plan_id = $inputs['plan_id'] ?? null;
         $hmac_token = $inputs['hmac_token'] ?? null;
 
-        if (!$plan_expires_at && !$plan_id && !$plan_activated_at) {
-            return $subscription;
-        }
-
-        if ($plan_id) {
+        if ($plan_id !== null) {
             $subscription->plan_id = $plan_id;
         }
 
-        if ($hmac_token) {
+        if ($hmac_token !== null) {
             $subscription->hmac_token = $hmac_token;
         }
 
-        if ($plan_activated_at) {
+        if ($plan_activated_at !== null) {
             $subscription->plan_activated_at = $plan_activated_at;
         }
 
-        $subscription->plan_expires_at = $plan_expires_at;
+        if ($plan_expires_at !== null) {
+            $subscription->plan_expires_at = $plan_expires_at;
+        }
 
         $subscription->save();
 

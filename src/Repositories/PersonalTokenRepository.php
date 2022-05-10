@@ -16,17 +16,17 @@ class PersonalTokenRepository
     {
         return PersonalToken::query()->create([
             'subscription_id' => $subscription_id,
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
-            'ip_rule'         => $inputs['ip_rule'],
-            'ip_range'        => $inputs['ip_range'],
-            'country_rule'    => $inputs['country_rule'],
-            'country_range'   => $inputs['country_range'],
-            'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['duration'] != -1 ? Carbon::now()->addHours($inputs['duration']) : null,
-            'hidden'          => $inputs['hidden'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
+            'ip_rule' => $inputs['ip_rule'],
+            'ip_range' => $inputs['ip_range'],
+            'country_rule' => $inputs['country_rule'],
+            'country_range' => $inputs['country_range'],
+            'activated_at' => Carbon::now(),
+            'expires_at' => $inputs['duration'] != -1 ? Carbon::now()->addHours($inputs['duration']) : null,
+            'hidden' => $inputs['hidden'],
         ]);
     }
 
@@ -45,12 +45,7 @@ class PersonalTokenRepository
         $country_range = $inputs['country_range'] ?? null;
         $duration = $inputs['duration'] ?? null;
 
-        if (!$permissions && $ip_rule === null && !$ip_range
-            && $country_rule === null && !$country_range && !$duration) {
-            return $token;
-        }
-
-        if ($permissions) {
+        if ($permissions !== null) {
             $token->permissions = $permissions;
         }
 
@@ -58,7 +53,7 @@ class PersonalTokenRepository
             $token->ip_rule = $ip_rule;
         }
 
-        if ($ip_range) {
+        if ($ip_range !== null) {
             $token->ip_range = $ip_range;
         }
 
@@ -66,11 +61,11 @@ class PersonalTokenRepository
             $token->country_rule = $country_rule;
         }
 
-        if ($country_range) {
+        if ($country_range !== null) {
             $token->country_range = $country_range;
         }
 
-        if ($duration) {
+        if ($duration !== null) {
             $token->expires_at = $duration != -1 ? Carbon::createFromTimeString($token->activated_at)->addHours($duration) : null;
         }
 
