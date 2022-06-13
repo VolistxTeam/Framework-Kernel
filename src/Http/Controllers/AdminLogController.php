@@ -34,8 +34,8 @@ class AdminLogController extends Controller
                 'log_id' => ['bail', 'required', 'uuid', 'exists:admin_logs,id'],
             ], [
                 'log_id.required' => 'The log ID is required.',
-                'log_id.uuid' => 'The log ID must be a valid uuid.',
-                'log_id.exists' => 'The log item with the given ID was not found.',
+                'log_id.uuid'     => 'The log ID must be a valid uuid.',
+                'log_id.exists'   => 'The log item with the given ID was not found.',
             ]);
 
             if ($validator->fails()) {
@@ -69,10 +69,10 @@ class AdminLogController extends Controller
                 'page'  => $page,
                 'limit' => $limit,
             ], [
-                'page' => ['bail', 'sometimes', 'integer'],
+                'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer' => 'The page must be an integer.',
+                'page.integer'  => 'The page must be an integer.',
                 'limit.integer' => 'The limit must be an integer.',
             ]);
 
