@@ -69,9 +69,9 @@ class PlanController extends Controller
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
             ], [
-                'plan_id.required'     => 'The plan ID is required.',
-                'plan_id.uuid'         => 'The plan ID must be a valid uuid.',
-                'plan_id.exists'       => 'The plan with the given ID was not found.',
+                'plan_id.required'      => 'The plan ID is required.',
+                'plan_id.uuid'          => 'The plan ID must be a valid uuid.',
+                'plan_id.exists'        => 'The plan with the given ID was not found.',
                 'name.string'           => 'The name must be a string.',
                 'name.unique'           => 'The name must be unique.',
                 'description.string'    => 'The description must be a string.',
@@ -179,7 +179,7 @@ class PlanController extends Controller
             ], [
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
-            ],[
+            ], [
                 'page.integer'  => 'The page must be an integer.',
                 'limit.integer' => 'The limit must be an integer.',
             ]);
