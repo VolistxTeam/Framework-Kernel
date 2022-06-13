@@ -95,9 +95,9 @@ class SubscriptionController extends Controller
                 'subscription_id.exists'   => 'The subscription with the given ID was not found.',
                 'plan_activated_at.date'   => 'The plan activated at date must be a valid date.',
                 'plan_expires_at.date'     => 'The plan expires at date must be a valid date.',
-                'plan_expires_at.after'   => 'The plan expires at date must be after the plan activated at date.',
-                'plan_id.uuid'            => 'The plan ID must be a valid UUID.',
-                'plan_id.exists'          => 'The plan with the given ID was not found.',
+                'plan_expires_at.after'    => 'The plan expires at date must be after the plan activated at date.',
+                'plan_id.uuid'             => 'The plan ID must be a valid UUID.',
+                'plan_id.exists'           => 'The plan with the given ID was not found.',
             ]);
 
             if ($validator->fails()) {
@@ -196,7 +196,7 @@ class SubscriptionController extends Controller
                 'page'  => $page,
                 'limit' => $limit,
             ], [
-                'page' => ['bail', 'sometimes', 'integer'],
+                'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
                 'page.integer'              => 'The page must be an integer.',
@@ -248,12 +248,12 @@ class SubscriptionController extends Controller
                 'limit'           => $limit,
             ]), [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-                'page'           => ['bail', 'sometimes', 'integer'],
+                'page'            => ['bail', 'sometimes', 'integer'],
                 'limit'           => ['bail', 'sometimes', 'integer'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'subscription_id.required'  => 'The subscription ID is required.',
+                'subscription_id.uuid'      => 'The subscription ID must be a valid UUID.',
+                'subscription_id.exists'    => 'The subscription with the given ID was not found.',
                 'page.integer'              => 'The page must be an integer.',
                 'limit.integer'             => 'The limit must be an integer.',
             ]);
@@ -292,9 +292,9 @@ class SubscriptionController extends Controller
                 'date'            => ['bail', 'sometimes', 'date'],
                 'mode'            => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'subscription_id.required'  => 'The subscription ID is required.',
+                'subscription_id.uuid'      => 'The subscription ID must be a valid UUID.',
+                'subscription_id.exists'    => 'The subscription with the given ID was not found.',
                 'date.date'                 => 'The date must be a valid date.',
                 'mode.in'                   => 'The mode must be either "detailed" or "focused"',
             ]);

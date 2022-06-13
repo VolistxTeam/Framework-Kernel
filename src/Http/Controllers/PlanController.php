@@ -34,12 +34,12 @@ class PlanController extends Controller
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
             ], [
-                'name.required'        => 'The name is required.',
+                'name.required'         => 'The name is required.',
                 'name.string'           => 'The name must be a string.',
                 'name.unique'           => 'The name must be unique.',
-                'description.required' => 'The description is required.',
+                'description.required'  => 'The description is required.',
                 'description.string'    => 'The description must be a string.',
-                'data.required'        => 'The data is required.',
+                'data.required'         => 'The data is required.',
                 'data.array'            => 'The data must be an array.',
             ]);
 
