@@ -27,6 +27,6 @@ class CountryRequestValidationRule implements Rule
 
     public function message(): string
     {
-        return 'One or more country short name is invalid.';
+        return 'The country range item must be a valid country short name.';
     }
 }

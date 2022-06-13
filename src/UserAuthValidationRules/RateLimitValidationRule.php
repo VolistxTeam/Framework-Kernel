@@ -22,7 +22,7 @@ class RateLimitValidationRule extends ValidationRuleBase
 
             if (!$executed) {
                 return [
-                    'message' => Messages::E429('Rate limit exceeded.'),
+                    'message' => Messages::E429('You have exceeded the rate limit.'),
                     'code'    => 429,
                 ];
             }

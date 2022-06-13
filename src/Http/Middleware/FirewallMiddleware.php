@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
+use Volistx\FrameworkKernel\Facades\Messages;
 use function config;
 use Illuminate\Http\Request;
 use function response;
@@ -17,7 +18,7 @@ class FirewallMiddleware
         $ipSet = new IPSet(config('volistx.firewall.blacklist', []));
 
         if ($ipSet->match($clientIP)) {
-            return response('', 403);
+            return response()->json(Messages::E403(), 403);
         }
 
         return $next($request);

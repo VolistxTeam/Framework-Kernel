@@ -22,7 +22,7 @@ class IPValidationRule extends ValidationRuleBase
         if ($token->ip_rule === AccessRule::BLACKLIST && $ipSet->match($request->getClientIp()) ||
             ($token->ip_rule === AccessRule::WHITELIST && !$ipSet->match($request->getClientIp()))) {
             return [
-                'message' => Messages::E403('The application is not allowed to access from your IP address.'),
+                'message' => Messages::E403('This service is not allowed to access from your IP address.'),
                 'code'    => 403,
             ];
         }
