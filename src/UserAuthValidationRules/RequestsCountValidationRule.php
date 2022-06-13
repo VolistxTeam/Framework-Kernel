@@ -21,23 +21,25 @@ class RequestsCountValidationRule extends ValidationRuleBase
     {
         $sub_id = $this->inputs['token']->subscription()->first()->id;
         $plan = $this->inputs['plan'];
-        $planRequestsLimit = $plan['data']['requests'] ?? null;
 
-        $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id, Carbon::now());
-        if ($requestsMadeCount === null) {
-            return [
-                'message' => Messages::E500('The request count could not be retrieved.'),
-                'code'    => 500,
-            ];
+        if (isset($plan['data']['requests'])) {
+            $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id, Carbon::now());
+            $planRequestsLimit = $plan['data']['requests'] ?? null;
+
+            if ($requestsMadeCount === null) {
+                return [
+                    'message' => Messages::E500('The request count could not be retrieved.'),
+                    'code' => 500,
+                ];
+            }
+
+            if (!$planRequestsLimit || ($planRequestsLimit != -1 && $requestsMadeCount >= $planRequestsLimit)) {
+                return [
+                    'message' => Messages::E429('You have reached the limit of requests for this plan.'),
+                    'code' => 429,
+                ];
+            }
         }
-
-        if (!$planRequestsLimit || ($planRequestsLimit != -1 && $requestsMadeCount >= $planRequestsLimit)) {
-            return [
-                'message' => Messages::E429('You have reached the limit of requests for this plan.'),
-                'code'    => 429,
-            ];
-        }
-
         return true;
     }
 }
