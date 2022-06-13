@@ -38,7 +38,7 @@ class PersonalTokenController extends Controller
                 'subscription_id' => $subscription_id,
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-                'duration'        => ['bail', 'required', 'integer'],
+                'duration'        => ['bail', 'sometimes', 'nullable', 'integer'],
                 'permissions'     => ['bail', 'sometimes', 'array'],
                 'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
                 'ip_rule'         => ['bail', 'required', new Enum(AccessRule::class)],
