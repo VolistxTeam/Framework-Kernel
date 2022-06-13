@@ -3,10 +3,10 @@
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
-use Volistx\FrameworkKernel\Facades\Messages;
 use function config;
 use Illuminate\Http\Request;
 use function response;
+use Volistx\FrameworkKernel\Facades\Messages;
 use Wikimedia\IPSet;
 
 class FirewallMiddleware
