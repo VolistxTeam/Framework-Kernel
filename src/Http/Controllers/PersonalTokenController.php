@@ -163,7 +163,7 @@ class PersonalTokenController extends Controller
             ], [
                 'subscription_id.required' => 'The subscription ID is required.',
                 'subscription_id.uuid'     => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'   => 'The subscription ID does not found in the database.',
+                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
                 'token_id.required'        => 'The token ID is required.',
                 'token_id.uuid'            => 'The token ID must be a valid uuid.',
                 'token_id.exists'          => 'The token ID does not found in the database.',
@@ -206,7 +206,7 @@ class PersonalTokenController extends Controller
             ], [
                 'subscription_id.required' => 'The subscription ID is required.',
                 'subscription_id.uuid'     => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'   => 'The subscription ID does not found in the database.',
+                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
                 'token_id.required'        => 'The token ID is required.',
                 'token_id.uuid'            => 'The token ID must be a valid uuid.',
                 'token_id.exists'          => 'The token ID does not found in the database.',

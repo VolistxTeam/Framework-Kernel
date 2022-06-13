@@ -35,7 +35,7 @@ class AdminLogController extends Controller
             ], [
                 'log_id.required' => 'The log ID is required.',
                 'log_id.uuid'     => 'The log ID must be a valid uuid.',
-                'log_id.exists'   => 'The log item with the given ID was not found.',
+                'log_id.exists'   => 'The log with the given ID was not found.',
             ]);
 
             if ($validator->fails()) {
