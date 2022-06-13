@@ -35,7 +35,7 @@ class RequestsCountValidationRule extends ValidationRuleBase
 
             if (!$planRequestsLimit || ($planRequestsLimit != -1 && $requestsMadeCount >= $planRequestsLimit)) {
                 return [
-                    'message' => Messages::E429('You have reached the limit of requests for this plan. Please upgrade your plan if you want to continue using this service.'),
+                    'message' => Messages::E403('You have reached the limit of requests for this plan. Please upgrade your plan if you want to continue using this service.'),
                     'code'    => 429,
                 ];
             }

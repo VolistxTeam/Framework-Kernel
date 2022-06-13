@@ -39,7 +39,7 @@ class SubscriptionController extends Controller
                 'user_id'           => ['bail', 'required', 'integer'],
                 'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id'],
                 'plan_activated_at' => ['bail', 'required', 'date'],
-                'plan_expires_at'   => ['bail', 'required', 'date', 'after:plan_activated_at'],
+                'plan_expires_at'   => ['bail', 'sometimes', 'date', 'nullable', 'after:plan_activated_at'],
             ], [
                 'user_id.required'           => 'The user ID is required.',
                 'user_id.integer'            => 'The user ID must be an integer.',

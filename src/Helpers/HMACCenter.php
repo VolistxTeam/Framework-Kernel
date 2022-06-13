@@ -2,6 +2,7 @@
 
 namespace Volistx\FrameworkKernel\Helpers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Ramsey\Uuid\Uuid;
@@ -14,7 +15,7 @@ class HMACCenter
         $key = PersonalTokens::getToken()->subscription()->first()->hmac_token;
         $method = Request::method();
         $url = urlencode(URL::current());
-        $timestamp = strtotime('now');
+        $timestamp = Carbon::now()->getTimestamp();
         $nonce = Uuid::uuid4()->toString();
         $contentString = json_encode($content);
 

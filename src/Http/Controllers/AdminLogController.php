@@ -72,7 +72,7 @@ class AdminLogController extends Controller
                 'page' => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer' => 'The page number must be an integer.',
+                'page.integer' => 'The page must be an integer.',
                 'limit.integer' => 'The limit must be an integer.',
             ]);
 
