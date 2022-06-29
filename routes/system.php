@@ -46,9 +46,14 @@ $router->group(['prefix' => 'sys-bin'], function () use ($router) {
             $router->get('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlan');
         });
 
-        $router->group(['prefix' => 'logs'], function () use ($router) {
+        $router->group(['prefix' => 'admin/logs'], function () use ($router) {
             $router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLogs');
             $router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLog');
+        });
+
+        $router->group(['prefix' => 'users/logs'], function () use ($router) {
+            $router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLog');
+            $router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLogs');
         });
     });
 });

@@ -30,19 +30,19 @@ class RequestLoggingMiddleware
     {
         if (PersonalTokens::getToken()) {
             $inputs = [
-                'url'             => $request->fullUrl(),
-                'method'          => $request->method(),
-                'ip'              => $request->ip(),
-                'user_agent'      => $request->userAgent() ?? null,
+                'url' => $request->fullUrl(),
+                'method' => $request->method(),
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent() ?? null,
                 'subscription_id' => PersonalTokens::getToken()->subscription()->first()->id,
             ];
             $this->userLoggingService->CreateUserLog($inputs);
-        } elseif (AccessTokens::getToken()) {
+        } elseif (AccessTokens::getToken() && AccessTokens::getToken()->hidden === false) {
             $inputs = [
-                'url'             => $request->fullUrl(),
-                'method'          => $request->method(),
-                'ip'              => $request->ip(),
-                'user_agent'      => $request->userAgent() ?? null,
+                'url' => $request->fullUrl(),
+                'method' => $request->method(),
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent() ?? null,
                 'access_token_id' => AccessTokens::getToken()->id,
             ];
             $this->adminLoggingService->CreateAdminLog($inputs);
