@@ -28,7 +28,7 @@ class RequestLoggingMiddleware
 
     public function terminate(Request $request, Response $response): void
     {
-        if (PersonalTokens::getToken()) {
+        if (PersonalTokens::getToken() && PersonalTokens::getToken()->hidden === false) {
             $inputs = [
                 'url' => $request->fullUrl(),
                 'method' => $request->method(),
@@ -37,7 +37,7 @@ class RequestLoggingMiddleware
                 'subscription_id' => PersonalTokens::getToken()->subscription()->first()->id,
             ];
             $this->userLoggingService->CreateUserLog($inputs);
-        } elseif (AccessTokens::getToken() && AccessTokens::getToken()->hidden === false) {
+        } elseif (AccessTokens::getToken() ) {
             $inputs = [
                 'url' => $request->fullUrl(),
                 'method' => $request->method(),
