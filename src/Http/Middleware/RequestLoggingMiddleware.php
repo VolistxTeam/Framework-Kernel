@@ -37,7 +37,7 @@ class RequestLoggingMiddleware
                 'subscription_id' => PersonalTokens::getToken()->subscription()->first()->id,
             ];
             $this->userLoggingService->CreateUserLog($inputs);
-        } elseif (AccessTokens::getToken() ) {
+        } elseif (AccessTokens::getToken()) {
             $inputs = [
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
