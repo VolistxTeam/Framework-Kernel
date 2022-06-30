@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
-use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class UserLogController extends Controller
