@@ -322,7 +322,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function Sync(Request $request, $subscription_id): JsonResponse
+    public function Sync(Request $request, $subscription_id)
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'sync')) {
@@ -352,12 +352,15 @@ class PersonalTokenController extends Controller
                 'salt'            => $saltedKey['salt'],
                 'permissions'     => ['*'],
                 'ip_rule'         => AccessRule::NONE,
+                'ip_range'        => [],
+                'country_rule'    => AccessRule::NONE,
+                'country_range'   => [],
                 'activated_at'    => Carbon::now(),
                 'duration'        => -1,
                 'hidden'          => true,
             ]);
 
-            return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO(), 201);
+            return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
