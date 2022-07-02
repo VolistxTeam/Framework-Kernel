@@ -6,7 +6,6 @@ use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Models\Plan;
 
 class PlanRepository
@@ -32,7 +31,7 @@ class PlanRepository
         $name = $inputs['name'] ?? null;
         $description = $inputs['description'] ?? null;
         $data = $inputs['data'] ?? null;
-        $price = $inputs['price']?? null;
+        $price = $inputs['price'] ?? null;
 
         if ($name !== null) {
             $plan->name = $name;
@@ -76,12 +75,20 @@ class PlanRepository
 
     public function FindAll($needle, int $page, int $limit): LengthAwarePaginator
     {
-        $columns = Schema::getColumnListing('plans');
+        $values = explode(':', $needle, 2);
+        $columnName = strtolower($values[0]);
+        $searchValue = strtolower($values[1]);
 
-        return Plan::query()->where(function ($query) use ($needle, $columns) {
-            foreach ($columns as $column) {
-                $query->orWhere("plans.$column", 'LIKE', "%$needle%");
-            }
-        })->paginate($limit, ['*'], 'page', $page);
+//        $columns = Schema::getColumnListing('plans');
+//
+//        return Plan::query()->where(function ($query) use ($needle, $columns) {
+//            foreach ($columns as $column) {
+//                $query->orWhere("plans.$column", 'LIKE', "%$needle%");
+//            }
+//        })->paginate($limit, ['*'], 'page', $page);
+
+        return Plan::query()
+            ->where($values[0], 'LIKE', $searchValue)
+            ->paginate($limit, ['*'], 'page', $page);
     }
 }
