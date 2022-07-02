@@ -195,6 +195,10 @@ class PlanController extends Controller
 
             $plans = $this->planRepository->FindAll($search, (int) $page, (int) $limit);
 
+            if(!$plans){
+                return response()->json(Messages::E400('Invalid search column'), 400);
+            }
+
             $items = [];
             foreach ($plans->items() as $item) {
                 $items[] = PlanDTO::fromModel($item)->GetDTO();
