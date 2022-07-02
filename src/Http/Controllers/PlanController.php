@@ -43,7 +43,7 @@ class PlanController extends Controller
                 'data.required'         => 'The data is required.',
                 'data.array'            => 'The data must be an array.',
                 'price.required'        => 'The price is required.',
-                'price.numeric'         => 'the price must be a numeric value'
+                'price.numeric'         => 'the price must be a numeric value',
             ]);
 
             if ($validator->fails()) {
@@ -80,7 +80,7 @@ class PlanController extends Controller
                 'name.unique'           => 'The name must be unique.',
                 'description.string'    => 'The description must be a string.',
                 'data.array'            => 'The data must be an array.',
-                'price.numeric'         => 'the price must be a numeric value'
+                'price.numeric'         => 'the price must be a numeric value',
             ]);
 
             if ($validator->fails()) {
