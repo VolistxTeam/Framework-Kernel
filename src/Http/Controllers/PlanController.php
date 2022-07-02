@@ -33,6 +33,7 @@ class PlanController extends Controller
                 'name'        => ['bail', 'required', 'string', 'unique:plans'],
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
+                'price'       => ['bail', 'required', 'numeric'],
             ], [
                 'name.required'         => 'The name is required.',
                 'name.string'           => 'The name must be a string.',
@@ -41,6 +42,8 @@ class PlanController extends Controller
                 'description.string'    => 'The description must be a string.',
                 'data.required'         => 'The data is required.',
                 'data.array'            => 'The data must be an array.',
+                'price.required'        => 'The price is required.',
+                'price.numeric'         => 'the price must be a numeric value'
             ]);
 
             if ($validator->fails()) {
@@ -68,6 +71,7 @@ class PlanController extends Controller
                 'name'        => ['bail', 'sometimes', 'string', 'unique:plans'],
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
+                'price'       => ['bail', 'sometimes', 'numeric'],
             ], [
                 'plan_id.required'      => 'The plan ID is required.',
                 'plan_id.uuid'          => 'The plan ID must be a valid uuid.',
@@ -76,6 +80,7 @@ class PlanController extends Controller
                 'name.unique'           => 'The name must be unique.',
                 'description.string'    => 'The description must be a string.',
                 'data.array'            => 'The data must be an array.',
+                'price.numeric'         => 'the price must be a numeric value'
             ]);
 
             if ($validator->fails()) {
@@ -189,9 +194,6 @@ class PlanController extends Controller
             }
 
             $plans = $this->planRepository->FindAll($search, (int) $page, (int) $limit);
-            if (!$plans) {
-                return response()->json(Messages::E500(), 500);
-            }
 
             $items = [];
             foreach ($plans->items() as $item) {
