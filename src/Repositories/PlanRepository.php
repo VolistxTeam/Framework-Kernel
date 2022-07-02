@@ -77,7 +77,7 @@ class PlanRepository
     public function FindAll($search, int $page, int $limit): LengthAwarePaginator|null
     {
         //handle empty search
-        if($search === ''){
+        if ($search === '') {
             $search = 'id:';
         }
 
