@@ -195,7 +195,7 @@ class PlanController extends Controller
 
             $plans = $this->planRepository->FindAll($search, (int) $page, (int) $limit);
 
-            if(!$plans){
+            if (!$plans) {
                 return response()->json(Messages::E400('Invalid search column'), 400);
             }
 
