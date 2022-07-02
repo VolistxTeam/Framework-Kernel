@@ -14,10 +14,10 @@ class PlanRepository
     public function Create(array $inputs): Model|Builder
     {
         return Plan::query()->create([
-            'name'        => $inputs['name'],
+            'name' => $inputs['name'],
             'description' => $inputs['description'],
-            'data'        => $inputs['data'],
-            'price'       => $inputs['price'],
+            'data' => $inputs['data'],
+            'price' => $inputs['price'],
         ]);
     }
 
@@ -77,7 +77,7 @@ class PlanRepository
     public function FindAll($search, int $page, int $limit): LengthAwarePaginator|null
     {
         //handle empty search
-        if($search === ''){
+        if ($search === '') {
             $search = 'id:';
         }
 
@@ -97,7 +97,7 @@ class PlanRepository
         $searchValue = strtolower($values[1]);
 
         return Plan::query()
-            ->where($values[0], 'LIKE', $searchValue)
+            ->where($values[0], 'LIKE', "%$searchValue%")
             ->paginate($limit, ['*'], 'page', $page);
     }
 }
