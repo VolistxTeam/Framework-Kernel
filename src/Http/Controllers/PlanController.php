@@ -34,6 +34,7 @@ class PlanController extends Controller
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
                 'price'       => ['bail', 'required', 'numeric'],
+                'custom'      => ['bail', 'required', 'boolean']
             ], [
                 'name.required'         => 'The name is required.',
                 'name.string'           => 'The name must be a string.',
@@ -44,11 +45,14 @@ class PlanController extends Controller
                 'data.array'            => 'The data must be an array.',
                 'price.required'        => 'The price is required.',
                 'price.numeric'         => 'the price must be a numeric value',
+                'custom.required'        => 'The custom is required.',
+                'custom.boolean'         => 'the custom must be a boolean value'
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
+
             $newPlan = $this->planRepository->Create($request->all());
 
             return response()->json(PlanDTO::fromModel($newPlan)->GetDTO(), 201);
@@ -72,6 +76,7 @@ class PlanController extends Controller
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
                 'price'       => ['bail', 'sometimes', 'numeric'],
+                'custom'      => ['bail', 'sometimes', 'boolean']
             ], [
                 'plan_id.required'      => 'The plan ID is required.',
                 'plan_id.uuid'          => 'The plan ID must be a valid uuid.',
@@ -81,6 +86,7 @@ class PlanController extends Controller
                 'description.string'    => 'The description must be a string.',
                 'data.array'            => 'The data must be an array.',
                 'price.numeric'         => 'the price must be a numeric value',
+                'custom.boolean'         => 'the custom must be a boolean value',
             ]);
 
             if ($validator->fails()) {

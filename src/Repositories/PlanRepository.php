@@ -14,10 +14,11 @@ class PlanRepository
     public function Create(array $inputs): Model|Builder
     {
         return Plan::query()->create([
-            'name'        => $inputs['name'],
+            'name' => $inputs['name'],
             'description' => $inputs['description'],
-            'data'        => $inputs['data'],
-            'price'       => $inputs['price'],
+            'data' => $inputs['data'],
+            'price' => $inputs['price'],
+            'custom' => $inputs['custom']
         ]);
     }
 
@@ -33,18 +34,26 @@ class PlanRepository
         $description = $inputs['description'] ?? null;
         $data = $inputs['data'] ?? null;
         $price = $inputs['price'] ?? null;
+        $custom = $inputs['custom'] ?? null;
 
         if ($name !== null) {
             $plan->name = $name;
         }
+
         if ($description !== null) {
             $plan->description = $description;
         }
+
         if ($data !== null) {
             $plan->data = $data;
         }
+
         if ($price !== null) {
             $plan->price = $price;
+        }
+
+        if ($custom !== null) {
+            $plan->custom = $custom;
         }
 
         $plan->save();

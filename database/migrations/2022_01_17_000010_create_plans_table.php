@@ -20,6 +20,7 @@ class CreatePlansTable extends Migration
             $table->string('description')->nullable();
             $table->json('data')->default('[]');
             $table->double('price');
+            $table->integer('custom');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
         });
