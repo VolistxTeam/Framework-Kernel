@@ -34,19 +34,19 @@ class PlanController extends Controller
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
                 'price'       => ['bail', 'required', 'numeric'],
-                'custom'      => ['bail', 'required', 'boolean']
+                'custom'      => ['bail', 'required', 'boolean'],
             ], [
-                'name.required'         => 'The name is required.',
-                'name.string'           => 'The name must be a string.',
-                'name.unique'           => 'The name must be unique.',
-                'description.required'  => 'The description is required.',
-                'description.string'    => 'The description must be a string.',
-                'data.required'         => 'The data is required.',
-                'data.array'            => 'The data must be an array.',
-                'price.required'        => 'The price is required.',
-                'price.numeric'         => 'the price must be a numeric value',
+                'name.required'          => 'The name is required.',
+                'name.string'            => 'The name must be a string.',
+                'name.unique'            => 'The name must be unique.',
+                'description.required'   => 'The description is required.',
+                'description.string'     => 'The description must be a string.',
+                'data.required'          => 'The data is required.',
+                'data.array'             => 'The data must be an array.',
+                'price.required'         => 'The price is required.',
+                'price.numeric'          => 'the price must be a numeric value',
                 'custom.required'        => 'The custom is required.',
-                'custom.boolean'         => 'the custom must be a boolean value'
+                'custom.boolean'         => 'the custom must be a boolean value',
             ]);
 
             if ($validator->fails()) {
@@ -76,16 +76,16 @@ class PlanController extends Controller
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
                 'price'       => ['bail', 'sometimes', 'numeric'],
-                'custom'      => ['bail', 'sometimes', 'boolean']
+                'custom'      => ['bail', 'sometimes', 'boolean'],
             ], [
-                'plan_id.required'      => 'The plan ID is required.',
-                'plan_id.uuid'          => 'The plan ID must be a valid uuid.',
-                'plan_id.exists'        => 'The plan with the given ID was not found.',
-                'name.string'           => 'The name must be a string.',
-                'name.unique'           => 'The name must be unique.',
-                'description.string'    => 'The description must be a string.',
-                'data.array'            => 'The data must be an array.',
-                'price.numeric'         => 'the price must be a numeric value',
+                'plan_id.required'       => 'The plan ID is required.',
+                'plan_id.uuid'           => 'The plan ID must be a valid uuid.',
+                'plan_id.exists'         => 'The plan with the given ID was not found.',
+                'name.string'            => 'The name must be a string.',
+                'name.unique'            => 'The name must be unique.',
+                'description.string'     => 'The description must be a string.',
+                'data.array'             => 'The data must be an array.',
+                'price.numeric'          => 'the price must be a numeric value',
                 'custom.boolean'         => 'the custom must be a boolean value',
             ]);
 
