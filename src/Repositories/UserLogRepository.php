@@ -27,7 +27,7 @@ class UserLogRepository
         return UserLog::query()->where('id', $log_id)->first();
     }
 
-    public function FindAll($search, $page, $limit): LengthAwarePaginator | null
+    public function FindAll($search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {
@@ -55,7 +55,7 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogs($subscription_id, $search, $page, $limit): LengthAwarePaginator | null
+    public function FindSubscriptionLogs($subscription_id, $search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {

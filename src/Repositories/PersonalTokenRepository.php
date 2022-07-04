@@ -108,7 +108,7 @@ class PersonalTokenRepository
         return true;
     }
 
-    public function FindAll($subscription_id, $search, $page, $limit): LengthAwarePaginator | null
+    public function FindAll($subscription_id, $search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {

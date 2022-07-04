@@ -35,8 +35,9 @@ class LocalUserLoggingService implements IUserLoggingService
     {
         $logs = $this->logRepository->FindAll($search, $page, $limit);
 
-        if (!$logs === null)
+        if (!$logs === null) {
             return $logs;
+        }
 
         $logDTOs = [];
         foreach ($logs->items() as $log) {
@@ -57,8 +58,9 @@ class LocalUserLoggingService implements IUserLoggingService
     {
         $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $search, $page, $limit);
 
-        if (!$logs === null)
+        if (!$logs === null) {
             return $logs;
+        }
 
         $logDTOs = [];
         foreach ($logs->items() as $log) {
