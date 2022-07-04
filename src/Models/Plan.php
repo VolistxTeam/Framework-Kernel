@@ -34,13 +34,13 @@ class Plan extends Model
         'description',
         'data',
         'price',
-        'custom'
+        'custom',
     ];
 
     protected $casts = [
-        'data'  => 'array',
-        'price' => 'float',
-        'custom' => 'boolean'
+        'data'   => 'array',
+        'price'  => 'float',
+        'custom' => 'boolean',
     ];
 
     public function subscriptions(): HasMany
