@@ -88,13 +88,13 @@ class PlanRepository
         $columns = Schema::getColumnListing('plans');
 
         $values = explode(':', $search, 2);
-        $columnName = strtolower($values[0]);
+        $columnName = strtolower(trim($values[0]));
 
         if (!in_array($columnName, $columns)) {
             return null;
         }
 
-        $searchValue = strtolower($values[1]);
+        $searchValue = strtolower(trim($values[1]));
 
         return Plan::query()
             ->where($values[0], 'LIKE', "%$searchValue%")

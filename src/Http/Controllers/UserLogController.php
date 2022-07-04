@@ -82,6 +82,10 @@ class UserLogController extends Controller
 
             $logs = $this->userLoggingService->GetLogs($search, $page, $limit);
 
+            if (!$logs) {
+                return response()->json(Messages::E400('Invalid search column'), 400);
+            }
+
             return response()->json($logs);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);

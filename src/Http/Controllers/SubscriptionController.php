@@ -210,7 +210,7 @@ class SubscriptionController extends Controller
             $subs = $this->subscriptionRepository->FindAll($search, $page, $limit);
 
             if (!$subs) {
-                return response()->json(Messages::E500(), 500);
+                return response()->json(Messages::E400('Invalid search column'), 400);
             }
 
             $items = [];
@@ -263,8 +263,9 @@ class SubscriptionController extends Controller
             }
 
             $logs = $this->loggingService->GetSubscriptionLogs($subscription_id, $search, $page, $limit);
+
             if (!$logs) {
-                return response()->json(Messages::E500(), 500);
+                return response()->json(Messages::E400('Invalid search column'), 400);
             }
 
             return response()->json($logs);

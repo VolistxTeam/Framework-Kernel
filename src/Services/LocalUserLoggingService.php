@@ -35,6 +35,9 @@ class LocalUserLoggingService implements IUserLoggingService
     {
         $logs = $this->logRepository->FindAll($search, $page, $limit);
 
+        if (!$logs === null)
+            return $logs;
+
         $logDTOs = [];
         foreach ($logs->items() as $log) {
             $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
@@ -53,6 +56,9 @@ class LocalUserLoggingService implements IUserLoggingService
     public function GetSubscriptionLogs($subscription_id, string $search, int $page, int $limit)
     {
         $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $search, $page, $limit);
+
+        if (!$logs === null)
+            return $logs;
 
         $logDTOs = [];
         foreach ($logs->items() as $log) {

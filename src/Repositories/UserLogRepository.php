@@ -27,27 +27,60 @@ class UserLogRepository
         return UserLog::query()->where('id', $log_id)->first();
     }
 
-    public function FindAll($search, $page, $limit): LengthAwarePaginator
+    public function FindAll($search, $page, $limit): LengthAwarePaginator | null
     {
+        //handle empty search
+        if ($search === '') {
+            $search = 'id:';
+        }
+
+        if (!str_contains($search, ':')) {
+            return null;
+        }
+
         $columns = Schema::getColumnListing('user_logs');
 
-        return UserLog::query()->where(function ($query) use ($columns, $search) {
-            foreach ($columns as $column) {
-                $query->orWhere("$column", 'LIKE', "%$search%");
-            }
-        })->orderBy('created_at', 'DESC')
+        $values = explode(':', $search, 2);
+        $columnName = strtolower(trim($values[0]));
+
+        if (!in_array($columnName, $columns)) {
+            return null;
+        }
+
+        $searchValue = strtolower(trim($values[1]));
+
+        return UserLog::query()
+            ->where($values[0], 'LIKE', "%$searchValue%")
+            ->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogs($subscription_id, $needle, $page, $limit): LengthAwarePaginator
+    public function FindSubscriptionLogs($subscription_id, $search, $page, $limit): LengthAwarePaginator | null
     {
+        //handle empty search
+        if ($search === '') {
+            $search = 'id:';
+        }
+
+        if (!str_contains($search, ':')) {
+            return null;
+        }
+
         $columns = Schema::getColumnListing('user_logs');
 
-        return UserLog::query()->where('subscription_id', $subscription_id)->where(function ($query) use ($columns, $needle) {
-            foreach ($columns as $column) {
-                $query->orWhere("$column", 'LIKE', "%$needle%");
-            }
-        })->orderBy('created_at', 'DESC')
+        $values = explode(':', $search, 2);
+        $columnName = strtolower(trim($values[0]));
+
+        if (!in_array($columnName, $columns)) {
+            return null;
+        }
+
+        $searchValue = strtolower(trim($values[1]));
+
+        return UserLog::query()
+            ->where('subscription_id', $subscription_id)
+            ->where($values[0], 'LIKE', "%$searchValue%")
+            ->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
     }
 

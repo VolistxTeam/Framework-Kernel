@@ -304,6 +304,10 @@ class PersonalTokenController extends Controller
 
             $tokens = $this->personalTokenRepository->FindAll($subscription_id, $search, $page, $limit);
 
+            if (!$tokens) {
+                return response()->json(Messages::E400('Invalid search column'), 400);
+            }
+
             $userTokens = [];
             foreach ($tokens->items() as $item) {
                 $userTokens[] = PersonalTokenDTO::fromModel($item)->GetDTO();

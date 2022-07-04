@@ -73,14 +73,30 @@ class SubscriptionRepository
         return true;
     }
 
-    public function FindAll($needle, $page, $limit): LengthAwarePaginator
+    public function FindAll($search, $page, $limit): LengthAwarePaginator | null
     {
+        //handle empty search
+        if ($search === '') {
+            $search = 'id:';
+        }
+
+        if (!str_contains($search, ':')) {
+            return null;
+        }
+
         $columns = Schema::getColumnListing('subscriptions');
 
-        return Subscription::query()->where(function ($query) use ($needle, $columns) {
-            foreach ($columns as $column) {
-                $query->orWhere("subscriptions.$column", 'LIKE', "%$needle%");
-            }
-        })->paginate($limit, ['*'], 'page', $page);
+        $values = explode(':', $search, 2);
+        $columnName = strtolower(trim($values[0]));
+
+        if (!in_array($columnName, $columns)) {
+            return null;
+        }
+
+        $searchValue = strtolower(trim($values[1]));
+
+        return Subscription::query()
+            ->where($values[0], 'LIKE', "%$searchValue%")
+            ->paginate($limit, ['*'], 'page', $page);
     }
 }

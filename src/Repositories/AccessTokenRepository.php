@@ -99,16 +99,31 @@ class AccessTokenRepository
         return true;
     }
 
-    public function FindAll($needle, $page, $limit): LengthAwarePaginator
+    public function FindAll($search, $page, $limit): LengthAwarePaginator | null
     {
-        $columns = Schema::getColumnListing('access_tokens');
-        $query = AccessToken::query();
-
-        foreach ($columns as $column) {
-            $query->orWhere("$column", 'LIKE', "%$needle%");
+        //handle empty search
+        if ($search === '') {
+            $search = 'id:';
         }
 
-        return $query->paginate($limit, ['*'], 'page', $page);
+        if (!str_contains($search, ':')) {
+            return null;
+        }
+
+        $columns = Schema::getColumnListing('access_tokens');
+
+        $values = explode(':', $search, 2);
+        $columnName = strtolower(trim($values[0]));
+
+        if (!in_array($columnName, $columns)) {
+            return null;
+        }
+
+        $searchValue = strtolower(trim($values[1]));
+
+        return AccessToken::query()
+            ->where($values[0], 'LIKE', "%$searchValue%")
+            ->paginate($limit, ['*'], 'page', $page);
     }
 
     public function AuthAccessToken($token): ?object

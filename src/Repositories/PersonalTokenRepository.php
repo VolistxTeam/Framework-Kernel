@@ -108,15 +108,33 @@ class PersonalTokenRepository
         return true;
     }
 
-    public function FindAll($subscription_id, $needle, $page, $limit): LengthAwarePaginator
+    public function FindAll($subscription_id, $search, $page, $limit): LengthAwarePaginator | null
     {
+        //handle empty search
+        if ($search === '') {
+            $search = 'id:';
+        }
+
+        if (!str_contains($search, ':')) {
+            return null;
+        }
+
         $columns = Schema::getColumnListing('personal_tokens');
 
-        return PersonalToken::query()->where('subscription_id', $subscription_id)->where('hidden', false)->where(function ($query) use ($columns, $needle) {
-            foreach ($columns as $column) {
-                $query->orWhere("$column", 'LIKE', "%$needle%");
-            }
-        })->paginate($limit, ['*'], 'page', $page);
+        $values = explode(':', $search, 2);
+        $columnName = strtolower(trim($values[0]));
+
+        if (!in_array($columnName, $columns)) {
+            return null;
+        }
+
+        $searchValue = strtolower(trim($values[1]));
+
+        return PersonalToken::query()
+            ->where('subscription_id', $subscription_id)
+            ->where('hidden', false)
+            ->where($values[0], 'LIKE', "%$searchValue%")
+            ->paginate($limit, ['*'], 'page', $page);
     }
 
     public function AuthPersonalToken($token): ?object
