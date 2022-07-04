@@ -31,8 +31,9 @@ class LocalAdminLoggingService implements IAdminLoggingService
     {
         $logs = $this->logRepository->FindAll($search, $page, $limit);
 
-        if (!$logs === null)
+        if (!$logs === null) {
             return $logs;
+        }
 
         $logDTOs = [];
 
@@ -43,8 +44,8 @@ class LocalAdminLoggingService implements IAdminLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];

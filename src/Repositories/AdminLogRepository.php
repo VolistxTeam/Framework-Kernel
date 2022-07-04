@@ -26,7 +26,7 @@ class AdminLogRepository
         return AdminLog::query()->where('id', $log_id)->first();
     }
 
-    public function FindAll($search, $page, $limit): LengthAwarePaginator | null
+    public function FindAll($search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {

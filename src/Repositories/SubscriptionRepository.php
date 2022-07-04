@@ -73,7 +73,7 @@ class SubscriptionRepository
         return true;
     }
 
-    public function FindAll($search, $page, $limit): LengthAwarePaginator | null
+    public function FindAll($search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {
