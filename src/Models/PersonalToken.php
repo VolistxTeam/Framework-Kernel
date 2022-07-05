@@ -44,8 +44,8 @@ class PersonalToken extends Model
         'activated_at'  => 'date:Y-m-d H:i:s',
         'expires_at'    => 'date:Y-m-d H:i:s',
         'hidden'        => 'boolean',
-        'created_at' => 'date:Y-m-d H:i:s',
-        'updated_at' => 'date:Y-m-d H:i:s',
+        'created_at'    => 'date:Y-m-d H:i:s',
+        'updated_at'    => 'date:Y-m-d H:i:s',
     ];
 
     public function subscription(): BelongsTo

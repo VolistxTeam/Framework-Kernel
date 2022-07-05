@@ -38,9 +38,9 @@ class Plan extends Model
     ];
 
     protected $casts = [
-        'data'   => 'array',
-        'price'  => 'float',
-        'custom' => 'boolean',
+        'data'       => 'array',
+        'price'      => 'float',
+        'custom'     => 'boolean',
         'created_at' => 'date:Y-m-d H:i:s',
         'updated_at' => 'date:Y-m-d H:i:s',
     ];
