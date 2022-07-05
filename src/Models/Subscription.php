@@ -41,8 +41,8 @@ class Subscription extends Model
     protected $casts = [
         'plan_activated_at' => 'date:Y-m-d H:i:s',
         'plan_expires_at'   => 'date:Y-m-d H:i:s',
-        'created_at' => 'date:Y-m-d H:i:s',
-        'updated_at' => 'date:Y-m-d H:i:s',
+        'created_at'        => 'date:Y-m-d H:i:s',
+        'updated_at'        => 'date:Y-m-d H:i:s',
     ];
 
     public function personalTokens(): HasMany

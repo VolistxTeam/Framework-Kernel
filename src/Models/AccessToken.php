@@ -41,8 +41,8 @@ class AccessToken extends Model
         'ip_range'      => 'array',
         'country_rule'  => AccessRule::class,
         'country_range' => 'array',
-        'created_at' => 'date:Y-m-d H:i:s',
-        'updated_at' => 'date:Y-m-d H:i:s',
+        'created_at'    => 'date:Y-m-d H:i:s',
+        'updated_at'    => 'date:Y-m-d H:i:s',
     ];
 
     public function setCountryRangeAttribute($value)
