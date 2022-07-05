@@ -31,6 +31,8 @@ class SubscriptionDTO extends DataTransferObjectBase
                 'activated_at' => $this->plan_activated_at,
                 'expires_at'   => $this->plan_expires_at,
             ],
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

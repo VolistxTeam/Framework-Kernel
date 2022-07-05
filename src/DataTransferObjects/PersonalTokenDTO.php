@@ -42,6 +42,8 @@ class PersonalTokenDTO extends DataTransferObjectBase
                 'activated_at' => $this->activated_at,
                 'expires_at'   => $this->expires_at,
             ],
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
 
         if (!$key) {
