@@ -20,10 +20,10 @@
     "fakerphp/faker": "^1.19",
     "laravel/lumen-framework": "^9.0",
     "rogervila/lumen-rate-limiting": "^1.1",
-    "wikimedia/ip-set": "^3.0",
+    "wikimedia/ip-set": "^3.1",
     "guzzlehttp/guzzle": "^7.4",
     "cryental/larasupport": "^1.7",
-    "nesbot/carbon": "^2.57",
+    "nesbot/carbon": "^2.59",
     "menarasolutions/geographer": "^0.3.13"
   },
   "require-dev": {
