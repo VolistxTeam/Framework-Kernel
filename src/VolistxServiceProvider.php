@@ -41,7 +41,7 @@ class VolistxServiceProvider extends ServiceProvider
         $this->app->register(PersonalTokenServiceProvider::class);
         $this->app->register(PlansServiceProvider::class);
 
-        $this->loadRoutesFrom(__DIR__.'/../routes/system.php');
+        require __DIR__.'/../routes/system.php';
 
         if ($this->app->runningInConsole()) {
             $this->commands([
