@@ -6,6 +6,7 @@ class PlanDTO extends DataTransferObjectBase
 {
     public string $id;
     public string $name;
+    public string $tag;
     public ?string $description;
     public array $data;
     public float $price;
@@ -24,6 +25,7 @@ class PlanDTO extends DataTransferObjectBase
         return [
             'id'          => $this->id,
             'name'        => $this->name,
+            'tag'         => $this->tag,
             'description' => $this->description,
             'data'        => $this->data,
             'tier'        => $this->tier,

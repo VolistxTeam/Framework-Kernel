@@ -15,6 +15,7 @@ class PlanRepository
     {
         return Plan::query()->create([
             'name'        => $inputs['name'],
+            'tag'        => $inputs['tag'],
             'description' => $inputs['description'],
             'data'        => $inputs['data'],
             'price'       => $inputs['price'],
@@ -32,6 +33,7 @@ class PlanRepository
         }
 
         $name = $inputs['name'] ?? null;
+        $tag = $inputs['tag'] ?? null;
         $description = $inputs['description'] ?? null;
         $data = $inputs['data'] ?? null;
         $price = $inputs['price'] ?? null;
@@ -42,6 +44,9 @@ class PlanRepository
             $plan->name = $name;
         }
 
+        if ($tag !== null) {
+            $plan->tag = $tag;
+        }
         if ($description !== null) {
             $plan->description = $description;
         }

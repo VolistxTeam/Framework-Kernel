@@ -31,6 +31,7 @@ class PlanController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'name'        => ['bail', 'required', 'string', 'unique:plans'],
+                'tag'        => ['bail', 'required', 'string', 'unique:plans,tag'],
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
                 'price'       => ['bail', 'required', 'numeric'],
@@ -40,6 +41,9 @@ class PlanController extends Controller
                 'name.required'          => 'The name is required.',
                 'name.string'            => 'The name must be a string.',
                 'name.unique'            => 'The name must be unique.',
+                'tag.required'          => 'The tag is required.',
+                'tag.string'            => 'The tag must be a string.',
+                'tag.unique'            => 'The tag must be unique.',
                 'description.required'   => 'The description is required.',
                 'description.string'     => 'The description must be a string.',
                 'data.required'          => 'The data is required.',
@@ -77,6 +81,7 @@ class PlanController extends Controller
             ]), [
                 'plan_id'     => ['bail', 'required', 'uuid', 'exists:plans,id'],
                 'name'        => ['bail', 'sometimes', 'string', 'unique:plans'],
+                'tag'        => ['bail', 'sometimes', 'string', 'unique:plans,tag'],
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
                 'price'       => ['bail', 'sometimes', 'numeric'],
@@ -88,6 +93,7 @@ class PlanController extends Controller
                 'plan_id.exists'         => 'The plan with the given ID was not found.',
                 'name.string'            => 'The name must be a string.',
                 'name.unique'            => 'The name must be unique.',
+                'tag.unique'            => 'The tag must be unique.',
                 'description.string'     => 'The description must be a string.',
                 'data.array'             => 'The data must be an array.',
                 'price.numeric'          => 'the price must be a numeric value',
