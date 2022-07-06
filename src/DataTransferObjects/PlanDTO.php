@@ -10,6 +10,9 @@ class PlanDTO extends DataTransferObjectBase
     public array $data;
     public float $price;
     public bool $custom;
+    public string $created_at;
+    public string $updated_at;
+    public int $tier;
 
     public static function fromModel($plan): self
     {
