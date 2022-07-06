@@ -10,6 +10,7 @@ class PlanDTO extends DataTransferObjectBase
     public array $data;
     public float $price;
     public bool $custom;
+    public int $tier;
 
     public static function fromModel($plan): self
     {
@@ -23,6 +24,7 @@ class PlanDTO extends DataTransferObjectBase
             'name'        => $this->name,
             'description' => $this->description,
             'data'        => $this->data,
+            'tier'        => $this->tier,
             'price'       => $this->price,
             'custom'      => $this->custom,
         ];
