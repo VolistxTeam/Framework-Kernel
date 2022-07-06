@@ -15,7 +15,7 @@ class PlanRepository
     {
         return Plan::query()->create([
             'name'        => $inputs['name'],
-            'tag'        => $inputs['tag'],
+            'tag'         => $inputs['tag'],
             'description' => $inputs['description'],
             'data'        => $inputs['data'],
             'price'       => $inputs['price'],
