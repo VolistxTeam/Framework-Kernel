@@ -34,7 +34,7 @@ class PlanController extends Controller
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
                 'price'       => ['bail', 'required', 'numeric'],
-                'tier'       => ['bail', 'required', 'integer','unique:plans,tier'],
+                'tier'        => ['bail', 'required', 'integer', 'unique:plans,tier'],
                 'custom'      => ['bail', 'required', 'boolean'],
             ], [
                 'name.required'          => 'The name is required.',
@@ -46,9 +46,9 @@ class PlanController extends Controller
                 'data.array'             => 'The data must be an array.',
                 'price.required'         => 'The price is required.',
                 'price.numeric'          => 'the price must be a numeric value',
-                'tier.required'        => 'The tier is required.',
-                'tier.integer'         => 'the tier must be a unique integer value value',
-                'tier.unique'         => 'the tier must be a unique integer value value',
+                'tier.required'          => 'The tier is required.',
+                'tier.integer'           => 'the tier must be a unique integer value value',
+                'tier.unique'            => 'the tier must be a unique integer value value',
                 'custom.required'        => 'The custom is required.',
                 'custom.boolean'         => 'the custom must be a boolean value',
             ]);
@@ -80,7 +80,7 @@ class PlanController extends Controller
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
                 'price'       => ['bail', 'sometimes', 'numeric'],
-                'tier'       => ['bail', 'required', 'integer','unique:plans,tier'],
+                'tier'        => ['bail', 'required', 'integer', 'unique:plans,tier'],
                 'custom'      => ['bail', 'sometimes', 'boolean'],
             ], [
                 'plan_id.required'       => 'The plan ID is required.',
@@ -91,8 +91,8 @@ class PlanController extends Controller
                 'description.string'     => 'The description must be a string.',
                 'data.array'             => 'The data must be an array.',
                 'price.numeric'          => 'the price must be a numeric value',
-                'tier.integer'         => 'the tier must be a unique integer value value',
-                'tier.unique'         => 'the tier must be a unique integer value value',
+                'tier.integer'           => 'the tier must be a unique integer value value',
+                'tier.unique'            => 'the tier must be a unique integer value value',
                 'custom.boolean'         => 'the custom must be a boolean value',
             ]);
 
