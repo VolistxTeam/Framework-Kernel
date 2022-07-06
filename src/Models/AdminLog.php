@@ -31,4 +31,8 @@ class AdminLog extends Model
         'ip',
         'user_agent',
     ];
+
+    protected $casts = [
+        'created_at' => 'date:Y-m-d H:i:s',
+    ];
 }

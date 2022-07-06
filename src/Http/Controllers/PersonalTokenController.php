@@ -360,7 +360,7 @@ class PersonalTokenController extends Controller
                 'country_rule'    => AccessRule::NONE,
                 'country_range'   => [],
                 'activated_at'    => Carbon::now(),
-                'duration'        => -1,
+                'duration'        => null,
                 'hidden'          => true,
             ]);
 
