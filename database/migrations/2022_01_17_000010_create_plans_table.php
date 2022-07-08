@@ -22,7 +22,7 @@ class CreatePlansTable extends Migration
             $table->json('data')->default('[]');
             $table->double('price');
             $table->integer('custom');
-            $table->integer('tier')->unique();
+            $table->integer('tier');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
         });
