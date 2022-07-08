@@ -30,7 +30,7 @@ class PlanController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'name'        => ['bail', 'required', 'string', 'unique:plans'],
+                'name'        => ['bail', 'required', 'string'],
                 'tag'         => ['bail', 'required', 'string', 'unique:plans,tag'],
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
@@ -40,7 +40,6 @@ class PlanController extends Controller
             ], [
                 'name.required'          => 'The name is required.',
                 'name.string'            => 'The name must be a string.',
-                'name.unique'            => 'The name must be unique.',
                 'tag.required'           => 'The tag is required.',
                 'tag.string'             => 'The tag must be a string.',
                 'tag.unique'             => 'The tag must be unique.',
@@ -79,7 +78,7 @@ class PlanController extends Controller
                 'plan_id' => $plan_id,
             ]), [
                 'plan_id'     => ['bail', 'required', 'uuid', 'exists:plans,id'],
-                'name'        => ['bail', 'sometimes', 'string', 'unique:plans'],
+                'name'        => ['bail', 'sometimes', 'string'],
                 'tag'         => ['bail', 'sometimes', 'string', 'unique:plans,tag'],
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
@@ -91,7 +90,6 @@ class PlanController extends Controller
                 'plan_id.uuid'           => 'The plan ID must be a valid uuid.',
                 'plan_id.exists'         => 'The plan with the given ID was not found.',
                 'name.string'            => 'The name must be a string.',
-                'name.unique'            => 'The name must be unique.',
                 'tag.unique'             => 'The tag must be unique.',
                 'description.string'     => 'The description must be a string.',
                 'data.array'             => 'The data must be an array.',
