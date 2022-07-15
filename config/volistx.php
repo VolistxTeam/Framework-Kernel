@@ -20,6 +20,7 @@ return [
         'verification'  => env('GEOPOINT_API_HMAC_VERIFICATION', false),
     ],
     'validators' => [
+        Volistx\FrameworkKernel\UserAuthValidationRules\PlanExpiryValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\ValidKeyValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\KeyExpiryValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\IPValidationRule::class,
