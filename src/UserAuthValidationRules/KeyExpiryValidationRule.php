@@ -13,7 +13,7 @@ class KeyExpiryValidationRule extends ValidationRuleBase
 
         if ($token->expires_at && Carbon::now()->greaterThan(Carbon::createFromTimeString($token->expires_at))) {
             return [
-                'message' => Messages::E403('Your subscription has been expired. Please renew if you want to continue using this service.'),
+                'message' => Messages::E403('Your token has been expired. Please generate a new token if you want to continue using this service.'),
                 'code'    => 403,
             ];
         }
