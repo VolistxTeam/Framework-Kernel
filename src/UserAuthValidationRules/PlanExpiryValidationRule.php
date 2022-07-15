@@ -14,7 +14,7 @@ class PlanExpiryValidationRule extends ValidationRuleBase
         if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->plan_expires_at))) {
             return [
                 'message' => Messages::E403('Your subscription has been expired. Please renew if you want to continue using this service.'),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 
