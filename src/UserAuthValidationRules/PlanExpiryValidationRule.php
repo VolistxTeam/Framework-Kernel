@@ -11,11 +11,13 @@ class PlanExpiryValidationRule extends ValidationRuleBase
     {
         $subscription = $this->inputs['token']->subscription()->first();
 
-        if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->plan_expires_at))) {
-            return [
-                'message' => Messages::E403('Your subscription has been expired. Please renew if you want to continue using this service.'),
-                'code'    => 403,
-            ];
+        if ($subscription->plan_expires_at != null) {
+            if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->plan_expires_at))) {
+                return [
+                    'message' => Messages::E403('Your subscription has been expired. Please renew if you want to continue using this service.'),
+                    'code'    => 403,
+                ];
+            }
         }
 
         return true;
