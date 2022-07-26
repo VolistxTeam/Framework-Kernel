@@ -44,6 +44,8 @@ class Plan extends Model
         'price'  => 'float',
         'custom' => 'boolean',
         'tier'   => 'integer',
+        'created_at' => 'date:Y-m-d H:i:s',
+        'updated_at' => 'date:Y-m-d H:i:s',
     ];
 
     public function subscriptions(): HasMany
