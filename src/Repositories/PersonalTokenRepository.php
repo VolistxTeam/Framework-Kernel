@@ -27,7 +27,7 @@ class PersonalTokenRepository
             'activated_at'    => Carbon::now(),
             'expires_at'      => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
             'hidden'          => $inputs['hidden'],
-            'disable_logging' => $inputs['disable_logging']
+            'disable_logging' => $inputs['disable_logging'],
         ]);
     }
 

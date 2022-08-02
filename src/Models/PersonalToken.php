@@ -33,21 +33,21 @@ class PersonalToken extends Model
         'activated_at',
         'expires_at',
         'hidden',
-        'disable_logging'
+        'disable_logging',
     ];
 
     protected $casts = [
-        'permissions'   => 'array',
-        'ip_rule'       => AccessRule::class,
-        'ip_range'      => 'array',
-        'country_rule'  => AccessRule::class,
-        'country_range' => 'array',
-        'activated_at'  => 'date:Y-m-d H:i:s',
-        'expires_at'    => 'date:Y-m-d H:i:s',
-        'hidden'        => 'boolean',
-        'created_at'    => 'date:Y-m-d H:i:s',
-        'updated_at'    => 'date:Y-m-d H:i:s',
-        'disable_logging' => 'boolean'
+        'permissions'     => 'array',
+        'ip_rule'         => AccessRule::class,
+        'ip_range'        => 'array',
+        'country_rule'    => AccessRule::class,
+        'country_range'   => 'array',
+        'activated_at'    => 'date:Y-m-d H:i:s',
+        'expires_at'      => 'date:Y-m-d H:i:s',
+        'hidden'          => 'boolean',
+        'created_at'      => 'date:Y-m-d H:i:s',
+        'updated_at'      => 'date:Y-m-d H:i:s',
+        'disable_logging' => 'boolean',
     ];
 
     public function subscription(): BelongsTo

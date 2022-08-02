@@ -46,7 +46,7 @@ class PersonalTokenController extends Controller
                 'ip_range.*'      => ['bail', 'required_if:ip_rule,1,2', 'ip'],
                 'country_rule'    => ['bail', 'required', new Enum(AccessRule::class)],
                 'country_range'   => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
-                'disable_logging' =>['bail', 'sometimes', 'nullable', 'boolean'],
+                'disable_logging' => ['bail', 'sometimes', 'nullable', 'boolean'],
             ], [
                 'subscription_id.required'  => 'The subscription ID is required.',
                 'subscription_id.exists'    => 'The subscription with the given ID was not found.',
@@ -82,7 +82,7 @@ class PersonalTokenController extends Controller
                 'activated_at'    => Carbon::now(),
                 'duration'        => $request->input('duration'),
                 'hidden'          => false,
-                'disable_logging' => $request->input('disable_logging') ?? false
+                'disable_logging' => $request->input('disable_logging') ?? false,
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
@@ -112,7 +112,7 @@ class PersonalTokenController extends Controller
                 'ip_range.*'      => ['bail', 'required_if:ip_rule,1,2', 'ip'],
                 'country_rule'    => ['bail', 'sometimes', new Enum(AccessRule::class)],
                 'country_range'   => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
-                'disable_logging' =>['bail', 'sometimes', 'nullable', 'boolean'],
+                'disable_logging' => ['bail', 'sometimes', 'nullable', 'boolean'],
             ], [
                 'subscription_id.required'  => 'The subscription ID is required.',
                 'subscription_id.uuid'      => 'The subscription ID must be a valid uuid.',
