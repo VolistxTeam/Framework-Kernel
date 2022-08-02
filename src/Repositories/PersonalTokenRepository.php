@@ -27,6 +27,7 @@ class PersonalTokenRepository
             'activated_at'    => Carbon::now(),
             'expires_at'      => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
             'hidden'          => $inputs['hidden'],
+            'disable_logging' => $inputs['disable_logging']
         ]);
     }
 
@@ -44,6 +45,7 @@ class PersonalTokenRepository
         $country_rule = $inputs['country_rule'] ?? null;
         $country_range = $inputs['country_range'] ?? null;
         $duration = $inputs['duration'] ?? null;
+        $disable_logging = $inputs['disable_logging'] ?? null;
 
         if ($permissions !== null) {
             $token->permissions = $permissions;
@@ -67,6 +69,10 @@ class PersonalTokenRepository
 
         if ($duration !== null) {
             $token->expires_at = $duration != null ? Carbon::createFromTimeString($token->activated_at)->addHours($duration) : null;
+        }
+
+        if ($disable_logging !== null) {
+            $token->disable_logging = $disable_logging;
         }
 
         $token->save();

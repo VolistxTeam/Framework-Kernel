@@ -27,6 +27,7 @@ class CreatePersonalTokensTable extends Migration
             $table->json('country_range')->default('[]');
             $table->json('permissions')->default('[]');
             $table->boolean('hidden')->default(false);
+            $table->boolean('disable_logging')->default(false);
             $table->dateTime('activated_at')->nullable();
             $table->dateTime('expires_at')->nullable();
             $table->dateTime('created_at');

@@ -33,6 +33,7 @@ class PersonalToken extends Model
         'activated_at',
         'expires_at',
         'hidden',
+        'disable_logging'
     ];
 
     protected $casts = [
@@ -46,6 +47,7 @@ class PersonalToken extends Model
         'hidden'        => 'boolean',
         'created_at'    => 'date:Y-m-d H:i:s',
         'updated_at'    => 'date:Y-m-d H:i:s',
+        'disable_logging' => 'boolean'
     ];
 
     public function subscription(): BelongsTo
