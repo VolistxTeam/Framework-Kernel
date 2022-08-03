@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 use Volistx\FrameworkKernel\DataTransferObjects\PersonalTokenDTO;
 use Volistx\FrameworkKernel\Enums\AccessRule;
+use Volistx\FrameworkKernel\Enums\RateLimitMode;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Keys;
 use Volistx\FrameworkKernel\Facades\Messages;
@@ -39,6 +40,7 @@ class PersonalTokenController extends Controller
             ]), [
                 'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
                 'duration'        => ['bail', 'sometimes', 'nullable', 'integer'],
+                'rate_limit_mode'    => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
                 'permissions'     => ['bail', 'sometimes', 'array'],
                 'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
                 'ip_rule'         => ['bail', 'required', new Enum(AccessRule::class)],
@@ -52,9 +54,10 @@ class PersonalTokenController extends Controller
                 'subscription_id.exists'    => 'The subscription with the given ID was not found.',
                 'duration.required'         => 'The duration is required.',
                 'duration.integer'          => 'The duration must be an integer.',
+                'rate_limit_mode.required'          => 'The rate limit mode is required.',
+                'rate_limit_mode.enum'              => 'The rate limit mode must be a valid type.',
                 'permissions.array'         => 'The permissions must be an array.',
                 'permissions.*.string'      => 'The permissions item must be a string.',
-                'ip_rule.required'          => 'The ip rule is required.',
                 'ip_rule.enum'              => 'The ip rule must be a valid type.',
                 'ip_range.required_if'      => 'The IP range is required when the IP rule is 1 or 2.',
                 'ip_range.array'            => 'The IP range must be an array.',
@@ -74,6 +77,7 @@ class PersonalTokenController extends Controller
             $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
+                'rate_limit_mode' => $request->input('rate_limit_mode')?? RateLimitMode::SUBSCRIPTION,
                 'permissions'     => $request->input('permissions') ?? [],
                 'ip_rule'         => $request->input('ip_rule') ?? AccessRule::NONE,
                 'ip_range'        => $request->input('ip_range') ?? [],
@@ -106,6 +110,7 @@ class PersonalTokenController extends Controller
                 'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
                 'duration'        => ['bail', 'sometimes', 'integer'],
                 'permissions'     => ['bail', 'sometimes', 'array'],
+                'rate_limit_mode'    => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
                 'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
                 'ip_rule'         => ['bail', 'sometimes', new Enum(AccessRule::class)],
                 'ip_range'        => ['bail', 'required_if:ip_rule,1,2', 'array'],
@@ -124,6 +129,7 @@ class PersonalTokenController extends Controller
                 'duration.integer'          => 'The duration must be an integer.',
                 'permissions.array'         => 'The permissions must be an array.',
                 'permissions.*.string'      => 'The permissions item must be a string.',
+                'rate_limit_mode.enum'              => 'The rate limit mode must be a valid type.',
                 'ip_rule.required'          => 'The ip rule is required.',
                 'ip_rule.enum'              => 'The ip rule must be a valid type.',
                 'ip_range.required_if'      => 'The IP range is required when the IP rule is 1 or 2.',
@@ -133,6 +139,7 @@ class PersonalTokenController extends Controller
                 'country_rule.enum'         => 'The country rule must be a valid type.',
                 'country_range.required_if' => 'The country range is required when the country rule is 1 or 2.',
                 'country_range.array'       => 'The country range must be an array.',
+                'disable_logging.boolean'          => 'Disable logging must be a bool value'
             ]);
 
             if ($validator->fails()) {

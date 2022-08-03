@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Volistx\FrameworkKernel\Enums\AccessRule;
+use Volistx\FrameworkKernel\Enums\RateLimitMode;
 use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
 class PersonalToken extends Model
@@ -25,6 +26,7 @@ class PersonalToken extends Model
         'key',
         'secret',
         'secret_salt',
+        'rate_limit_mode',
         'permissions',
         'ip_rule',
         'ip_range',
@@ -38,6 +40,7 @@ class PersonalToken extends Model
 
     protected $casts = [
         'permissions'     => 'array',
+        'rate_limit_mode' => RateLimitMode::class,
         'ip_rule'         => AccessRule::class,
         'ip_range'        => 'array',
         'country_rule'    => AccessRule::class,

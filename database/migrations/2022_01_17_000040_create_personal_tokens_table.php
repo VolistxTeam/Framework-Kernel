@@ -21,6 +21,7 @@ class CreatePersonalTokensTable extends Migration
             $table->string('key', 32);
             $table->string('secret', 64);
             $table->string('secret_salt', 16);
+            $table->integer('rate_limit_mode');
             $table->integer('ip_rule');
             $table->json('ip_range')->default('[]');
             $table->integer('country_rule');
