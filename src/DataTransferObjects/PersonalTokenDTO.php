@@ -33,7 +33,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
             'key' => $key,
             'subscription' => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
             'permissions' => $this->permissions,
-            'rate_limit_mode' => RateLimitMode::from($this->rate_limit_mode),
+            'rate_limit_mode' => RateLimitMode::from($this->rate_limit_mode)->name,
             'geolocation' => [
                 'ip_rule' => AccessRule::from($this->ip_rule)->name,
                 'ip_range' => $this->ip_range,
