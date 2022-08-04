@@ -28,7 +28,7 @@ class RequestLoggingMiddleware
 
     public function terminate(Request $request, Response $response): void
     {
-        if (PersonalTokens::getToken() && (PersonalTokens::getToken()->hidden === false || PersonalTokens::getToken()->disable_logging === false)) {
+        if (PersonalTokens::getToken() && (PersonalTokens::getToken()->hidden === false || PersonalTokens::getToken()->disable_logging === true)) {
             $inputs = [
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
