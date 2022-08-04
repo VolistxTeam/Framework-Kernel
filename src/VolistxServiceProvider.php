@@ -30,6 +30,7 @@ class VolistxServiceProvider extends ServiceProvider
             __DIR__.'/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
 
+        // Register All Required Providers
         $this->app->register(AdminLoggingServiceProvider::class);
         $this->app->register(GeoLocationServiceProvider::class);
         $this->app->register(HMACServiceProvider::class);
