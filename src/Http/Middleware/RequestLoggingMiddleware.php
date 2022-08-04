@@ -28,15 +28,17 @@ class RequestLoggingMiddleware
 
     public function terminate(Request $request, Response $response): void
     {
-        if (PersonalTokens::getToken() && (PersonalTokens::getToken()->hidden === false || PersonalTokens::getToken()->disable_logging === true)) {
-            $inputs = [
-                'url'             => $request->fullUrl(),
-                'method'          => $request->method(),
-                'ip'              => $request->ip(),
-                'user_agent'      => $request->userAgent() ?? null,
-                'subscription_id' => PersonalTokens::getToken()->subscription()->first()->id,
-            ];
-            $this->userLoggingService->CreateUserLog($inputs);
+        if (PersonalTokens::getToken() && PersonalTokens::getToken()->hidden === false) {
+            if (PersonalTokens::getToken()->disable_logging === true) {
+                $inputs = [
+                    'url'             => $request->fullUrl(),
+                    'method'          => $request->method(),
+                    'ip'              => $request->ip(),
+                    'user_agent'      => $request->userAgent() ?? null,
+                    'subscription_id' => PersonalTokens::getToken()->subscription()->first()->id,
+                ];
+                $this->userLoggingService->CreateUserLog($inputs);
+            }
         } elseif (AccessTokens::getToken()) {
             $inputs = [
                 'url'             => $request->fullUrl(),
