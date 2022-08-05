@@ -16,6 +16,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
     public array $ip_range;
     public int $country_rule;
     public array $country_range;
+    public bool $disable_logging;
     public string $activated_at;
     public ?string $expires_at;
     public string $created_at;
@@ -45,6 +46,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
                 'activated_at' => $this->activated_at,
                 'expires_at'   => $this->expires_at,
             ],
+            'disable_logging' => $this->disable_logging,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

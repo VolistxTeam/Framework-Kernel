@@ -66,6 +66,8 @@ class PersonalTokenController extends Controller
                 'country_rule.enum'                 => 'The country rule must be a valid type.',
                 'country_range.required_if'         => 'The country range is required when the country rule is 1 or 2.',
                 'country_range.array'               => 'The country range must be an array.',
+                'country_range.*.required_if'      => 'The country range item must be a valid country code.',
+                'disable_logging.boolean'           => 'The disable logging must be a boolean.',
             ]);
 
             if ($validator->fails()) {
@@ -139,7 +141,8 @@ class PersonalTokenController extends Controller
                 'country_rule.enum'                 => 'The country rule must be a valid type.',
                 'country_range.required_if'         => 'The country range is required when the country rule is 1 or 2.',
                 'country_range.array'               => 'The country range must be an array.',
-                'disable_logging.boolean'           => 'Disable logging must be a bool value',
+                'country_range.*.required_if'      => 'The country range item must be a valid country code.',
+                'disable_logging.boolean'           => 'The disable logging must be a boolean.',
             ]);
 
             if ($validator->fails()) {
@@ -372,6 +375,7 @@ class PersonalTokenController extends Controller
                 'activated_at'    => Carbon::now(),
                 'duration'        => null,
                 'hidden'          => true,
+                'disable_logging' => true
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
