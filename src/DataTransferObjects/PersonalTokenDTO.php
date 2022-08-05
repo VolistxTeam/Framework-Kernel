@@ -47,8 +47,8 @@ class PersonalTokenDTO extends DataTransferObjectBase
                 'expires_at'   => $this->expires_at,
             ],
             'disable_logging' => $this->disable_logging,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at'      => $this->created_at,
+            'updated_at'      => $this->updated_at,
         ];
 
         if (!$key) {
