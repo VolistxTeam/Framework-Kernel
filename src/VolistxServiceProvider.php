@@ -9,7 +9,6 @@ use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
 use Volistx\FrameworkKernel\Providers\AccessTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
-use Volistx\FrameworkKernel\Providers\CatchAllOptionsRequestsProvider;
 use Volistx\FrameworkKernel\Providers\GeoLocationServiceProvider;
 use Volistx\FrameworkKernel\Providers\HMACServiceProvider;
 use Volistx\FrameworkKernel\Providers\KeysServiceProvider;
