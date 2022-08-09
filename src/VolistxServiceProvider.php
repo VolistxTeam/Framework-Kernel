@@ -9,6 +9,7 @@ use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
 use Volistx\FrameworkKernel\Providers\AccessTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
+use Volistx\FrameworkKernel\Providers\CatchAllOptionsRequestsProvider;
 use Volistx\FrameworkKernel\Providers\GeoLocationServiceProvider;
 use Volistx\FrameworkKernel\Providers\HMACServiceProvider;
 use Volistx\FrameworkKernel\Providers\KeysServiceProvider;
@@ -41,6 +42,7 @@ class VolistxServiceProvider extends ServiceProvider
         $this->app->register(AccessTokenServiceProvider::class);
         $this->app->register(PersonalTokenServiceProvider::class);
         $this->app->register(PlansServiceProvider::class);
+        $this->app->register(CatchAllOptionsRequestsProvider::class);
 
         require __DIR__.'/../routes/system.php';
 

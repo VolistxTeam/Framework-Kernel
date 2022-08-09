@@ -21,9 +21,13 @@ class FirewallMiddleware
             return response()->json(Messages::E403(), 403);
         }
 
+        if ($request->isMethod('OPTIONS')) {
+            return response('', 200);
+        }
+
         return $next($request)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-            ->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, X-Request-With');
+            ->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE')
+            ->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'))
+            ->header('Access-Control-Allow-Origin', '*');
     }
 }
