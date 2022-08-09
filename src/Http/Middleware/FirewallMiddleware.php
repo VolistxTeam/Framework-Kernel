@@ -22,7 +22,10 @@ class FirewallMiddleware
         }
 
         if ($request->isMethod('OPTIONS')) {
-            return response('', 200);
+            return response('', 200)
+                ->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE')
+                ->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'))
+                ->header('Access-Control-Allow-Origin', '*');
         }
 
         return $next($request)
