@@ -372,6 +372,8 @@ class PersonalTokenController extends Controller
                 'activated_at'    => Carbon::now(),
                 'duration'        => null,
                 'hidden'          => true,
+                'disable_logging' => true,
+                'rate_limit_mode' => RateLimitMode::IP
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
