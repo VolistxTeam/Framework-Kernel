@@ -48,9 +48,9 @@ class PersonalToken extends Model
         'activated_at'    => 'date:Y-m-d H:i:s',
         'expires_at'      => 'date:Y-m-d H:i:s',
         'hidden'          => 'boolean',
+        'disable_logging' => 'boolean',
         'created_at'      => 'date:Y-m-d H:i:s',
         'updated_at'      => 'date:Y-m-d H:i:s',
-        'disable_logging' => 'boolean',
     ];
 
     public function subscription(): BelongsTo
@@ -58,7 +58,6 @@ class PersonalToken extends Model
         return $this->belongsTo(Subscription::class);
     }
 
-    //mutator to set country range to upper
     public function setCountryRangeAttribute($value)
     {
         $this->attributes['country_range'] = json_encode(array_map('strtoupper', $value));
