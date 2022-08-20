@@ -376,7 +376,7 @@ class PersonalTokenController extends Controller
                 'duration'        => null,
                 'hidden'          => true,
                 'disable_logging' => true,
-                'rate_limit_mode' => RateLimitMode::IP,
+                'rate_limit_mode' => RateLimitMode::SUBSCRIPTION,
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
