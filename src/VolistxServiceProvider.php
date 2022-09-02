@@ -51,7 +51,7 @@ class VolistxServiceProvider extends ServiceProvider
                 AccessKeyDeleteCommand::class,
                 AccessKeyGenerateCommand::class,
                 ScheduleListCommand::class,
-                ScheduleClearCacheCommand::class
+                ScheduleClearCacheCommand::class,
             ]);
         }
     }
