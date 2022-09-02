@@ -2,6 +2,8 @@
 
 namespace Volistx\FrameworkKernel;
 
+use Illuminate\Console\Scheduling\ScheduleClearCacheCommand;
+use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Routing\Router;
@@ -48,6 +50,8 @@ class VolistxServiceProvider extends ServiceProvider
             $this->commands([
                 AccessKeyDeleteCommand::class,
                 AccessKeyGenerateCommand::class,
+                ScheduleListCommand::class,
+                ScheduleClearCacheCommand::class
             ]);
         }
     }
