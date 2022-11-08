@@ -8,14 +8,14 @@ Please DO NOT touch any routes here!!
 
 use Laravel\Lumen\Routing\Router;
 
-Router::group(['prefix' => 'sys-bin'], function () use ($router) {
+Router::group(['prefix' => 'sys-bin'], function () {
     Router::get('/ping', function () {
         return response('Hi!');
     });
 
-    Router::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () use ($router) {
-        Router::group(['prefix' => 'subscriptions'], function () use ($router) {
-            Router::group(['middleware' => ['filter.json']], function () use ($router) {
+    Router::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () {
+        Router::group(['prefix' => 'subscriptions'], function () {
+            Router::group(['middleware' => ['filter.json']], function () {
                 Router::post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
                 Router::patch('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UpdateSubscription');
                 Router::post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
@@ -38,8 +38,8 @@ Router::group(['prefix' => 'sys-bin'], function () use ($router) {
             Router::post('/{subscription_id}/personal-tokens/sync', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@Sync');
         });
 
-        Router::group(['prefix' => 'plans'], function () use ($router) {
-            Router::group(['middleware' => ['filter.json']], function () use ($router) {
+        Router::group(['prefix' => 'plans'], function () {
+            Router::group(['middleware' => ['filter.json']], function () {
                 Router::post('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@CreatePlan');
                 Router::patch('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@UpdatePlan');
             });
@@ -48,12 +48,12 @@ Router::group(['prefix' => 'sys-bin'], function () use ($router) {
             Router::get('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlan');
         });
 
-        Router::group(['prefix' => 'logs'], function () use ($router) {
+        Router::group(['prefix' => 'logs'], function () {
             Router::get('/', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLogs');
             Router::get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLog');
         });
 
-        Router::group(['prefix' => 'user-logs'], function () use ($router) {
+        Router::group(['prefix' => 'user-logs'], function () {
             Router::get('/', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLogs');
             Router::get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLog');
         });
