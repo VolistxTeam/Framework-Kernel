@@ -1,61 +1,55 @@
 <?php
 
-/** @var Router $router */
+$router = $this->app->router;
 
-/*
-Please DO NOT touch any routes here!!
-*/
-
-use Laravel\Lumen\Routing\Router;
-
-Router::group(['prefix' => 'sys-bin'], function () use ($router) {
-    Router::get('/ping', function () {
+$this->app->router->group(['prefix' => 'sys-bin'], function () use ($router) {
+    $this->app->router->get('/ping', function () {
         return response('Hi!');
     });
 
-    Router::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () use ($router) {
-        Router::group(['prefix' => 'subscriptions'], function () use ($router) {
-            Router::group(['middleware' => ['filter.json']], function () use ($router) {
-                Router::post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
-                Router::patch('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UpdateSubscription');
-                Router::post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
-                Router::post('/{subscription_id}/personal-tokens', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@CreatePersonalToken');
-                Router::patch('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@UpdatePersonalToken');
+    $this->app->router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () use ($router) {
+        $this->app->router->group(['prefix' => 'subscriptions'], function () use ($router) {
+            $this->app->router->group(['middleware' => ['filter.json']], function () use ($router) {
+                $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
+                $this->app->router->patch('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UpdateSubscription');
+                $this->app->router->post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
+                $this->app->router->post('/{subscription_id}/personal-tokens', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@CreatePersonalToken');
+                $this->app->router->patch('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@UpdatePersonalToken');
             });
 
-            Router::post('/{subscription_id}/uncancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UncancelSubscription');
+            $this->app->router->post('/{subscription_id}/uncancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UncancelSubscription');
 
-            Router::delete('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@DeleteSubscription');
-            Router::get('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptions');
-            Router::get('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscription');
-            Router::get('/{subscription_id}/logs', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionLogs');
-            Router::get('/{subscription_id}/usages', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionUsages');
+            $this->app->router->delete('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@DeleteSubscription');
+            $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptions');
+            $this->app->router->get('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscription');
+            $this->app->router->get('/{subscription_id}/logs', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionLogs');
+            $this->app->router->get('/{subscription_id}/usages', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionUsages');
 
-            Router::delete('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@DeletePersonalToken');
-            Router::patch('/{subscription_id}/personal-tokens/{token_id}/reset', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@ResetPersonalToken');
-            Router::get('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@GetPersonalToken');
-            Router::get('/{subscription_id}/personal-tokens', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@GetPersonalTokens');
-            Router::post('/{subscription_id}/personal-tokens/sync', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@Sync');
+            $this->app->router->delete('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@DeletePersonalToken');
+            $this->app->router->patch('/{subscription_id}/personal-tokens/{token_id}/reset', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@ResetPersonalToken');
+            $this->app->router->get('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@GetPersonalToken');
+            $this->app->router->get('/{subscription_id}/personal-tokens', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@GetPersonalTokens');
+            $this->app->router->post('/{subscription_id}/personal-tokens/sync', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@Sync');
         });
 
-        Router::group(['prefix' => 'plans'], function () use ($router) {
-            Router::group(['middleware' => ['filter.json']], function () use ($router) {
-                Router::post('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@CreatePlan');
-                Router::patch('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@UpdatePlan');
+        $this->app->router->group(['prefix' => 'plans'], function () use ($router) {
+            $this->app->router->group(['middleware' => ['filter.json']], function () use ($router) {
+                $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@CreatePlan');
+                $this->app->router->patch('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@UpdatePlan');
             });
-            Router::delete('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@DeletePlan');
-            Router::get('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlans');
-            Router::get('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlan');
+            $this->app->router->delete('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@DeletePlan');
+            $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlans');
+            $this->app->router->get('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlan');
         });
 
-        Router::group(['prefix' => 'logs'], function () use ($router) {
-            Router::get('/', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLogs');
-            Router::get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLog');
+        $this->app->router->group(['prefix' => 'logs'], function () use ($router) {
+            $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLogs');
+            $this->app->router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLog');
         });
 
-        Router::group(['prefix' => 'user-logs'], function () use ($router) {
-            Router::get('/', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLogs');
-            Router::get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLog');
+        $this->app->router->group(['prefix' => 'user-logs'], function () use ($router) {
+            $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLogs');
+            $this->app->router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLog');
         });
     });
 });
