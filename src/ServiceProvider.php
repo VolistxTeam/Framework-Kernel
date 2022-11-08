@@ -24,8 +24,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot(Router $router, GateContract $gate): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/volistx.php', 'volistx');
-        $this->mergeConfigFrom(__DIR__.'/../config/larex.php', 'larex');
-        $this->mergeConfigFrom(__DIR__.'/../config/larex-crowdin.php', 'larex-crowdin');
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
