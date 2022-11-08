@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Laravel\Lumen\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
+use Volistx\FrameworkKernel\Console\Commands\SubscriptionCronCommand;
 use Volistx\FrameworkKernel\Providers\AccessTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
 use Volistx\FrameworkKernel\Providers\GeoLocationServiceProvider;
@@ -18,6 +19,7 @@ use Volistx\FrameworkKernel\Providers\PermissionsServiceProvider;
 use Volistx\FrameworkKernel\Providers\PersonalTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\PlansServiceProvider;
 use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -55,6 +57,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 AccessKeyGenerateCommand::class,
                 ScheduleListCommand::class,
                 ScheduleClearCacheCommand::class,
+                SubscriptionCronCommand::class
             ]);
         }
 
@@ -64,5 +67,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             __DIR__.'/../database/migrations' => database_path('migrations'),
             __DIR__.'/../locales'             => resource_path('lang/vendor/volistx'),
         ]);
+        if ($this->app->runningInConsole()) {
+            $this->app->booted(function () {
+                $schedule = $this->app->make(SubscriptionCronCommand::class);
+                $schedule->command('volistx:sync-subscriptions')->everyHour();
+            });
+        }
     }
 }
