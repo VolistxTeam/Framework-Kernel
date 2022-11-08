@@ -21,7 +21,7 @@ class GeoLocationCenter
 
     public function search(string $ip)
     {
-        $response = $this->client->get("$this->httpBaseUrl/$ip", [
+        $response = $this->client->get("$this->httpBaseUrl/lookup?ip=$ip", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
             ],
