@@ -87,7 +87,7 @@ class SubscriptionController extends Controller
                 'subscription_id'   => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
                 'plan_activated_at' => ['bail', 'sometimes', 'date'],
                 'hmac_token'        => ['bail', 'sometimes', 'max:255'],
-                'plan_expires_at'   => ['bail',
+                'plan_expires_at'   => ['bail', 'sometimes', 'nullable',
                     Rule::requiredIf(function () use ($request) {
                         return !empty($request->input('plan_activated_at'));
                     }), 'date', 'after:plan_activated_at', ],
@@ -186,12 +186,6 @@ class SubscriptionController extends Controller
                 'plan_expires_at' => null
             ]);
 
-            $item = $this->subscriptionRepository->Find($subscription_id);
-
-            $item->plan_id = config('volistx.fallback_plan.id');
-            $item->plan_expires_at = null;
-            $this->save();
-
             $updatedSub = $this->subscriptionRepository->Find($subscription_id);
 
             if (!$updatedSub) {
@@ -250,10 +244,10 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E400($validator->errors()->first()), 400);
         }
 
-        $item = $this->subscriptionRepository->Find($subscription_id);
-        $item->plan_cancels_at = null;
-        $item->plan_cancelled_at = null;
-        $this->save();
+        $this->subscriptionRepository->Update($subscription_id, [
+            'plan_cancels_at' => null,
+            'plan_cancelled_at' => null
+        ]);
 
         $updatedSub = $this->subscriptionRepository->Find($subscription_id);
 

@@ -31,34 +31,34 @@ class SubscriptionRepository
             return null;
         }
 
-        $plan_activated_at = $inputs['plan_activated_at'] ?? null;
-        $plan_expires_at = $inputs['plan_expires_at'] ?? null;
-        $plan_cancels_at = $inputs['plan_cancels_at'] ?? null;
-        $plan_cancelled_at = $inputs['plan_cancelled_at'] ?? null;
-        $plan_id = $inputs['plan_id'] ?? null;
-        $hmac_token = $inputs['hmac_token'] ?? null;
+        $plan_activated_at = $inputs['plan_activated_at'];
+        $plan_expires_at = $inputs['plan_expires_at'];
+        $plan_cancels_at = $inputs['plan_cancels_at'];
+        $plan_cancelled_at = $inputs['plan_cancelled_at'];
+        $plan_id = $inputs['plan_id'];
+        $hmac_token = $inputs['hmac_token'];
 
-        if ($plan_id !== null) {
+        if (isset($plan_id)) {
             $subscription->plan_id = $plan_id;
         }
 
-        if ($hmac_token !== null) {
+        if (isset($hmac_token)) {
             $subscription->hmac_token = $hmac_token;
         }
 
-        if ($plan_activated_at !== null) {
+        if (isset($plan_activated_at)) {
             $subscription->plan_activated_at = $plan_activated_at;
         }
 
-        if ($plan_expires_at !== null) {
+        if (isset($plan_expires_at)) {
             $subscription->plan_expires_at = $plan_expires_at;
         }
 
-        if ($plan_cancels_at !== null) {
+        if (isset($plan_cancels_at)) {
             $subscription->plan_cancels_at = $plan_cancels_at;
         }
 
-        if ($plan_cancelled_at !== null) {
+        if (isset($plan_cancelled_at)) {
             $subscription->plan_cancelled_at = $plan_cancelled_at;
         }
 
