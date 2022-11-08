@@ -19,7 +19,6 @@ use Volistx\FrameworkKernel\Providers\PermissionsServiceProvider;
 use Volistx\FrameworkKernel\Providers\PersonalTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\PlansServiceProvider;
 use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
-use Illuminate\Console\Scheduling\Schedule;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -57,7 +56,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 AccessKeyGenerateCommand::class,
                 ScheduleListCommand::class,
                 ScheduleClearCacheCommand::class,
-                SubscriptionCronCommand::class
+                SubscriptionCronCommand::class,
             ]);
         }
 
