@@ -245,8 +245,8 @@ class SubscriptionController extends Controller
         }
 
         $this->subscriptionRepository->Update($subscription_id, [
-            'plan_cancels_at' => null,
-            'plan_cancelled_at' => null
+            'plan_cancels_at'   => null,
+            'plan_cancelled_at' => null,
         ]);
 
         $updatedSub = $this->subscriptionRepository->Find($subscription_id);
