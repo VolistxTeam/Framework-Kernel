@@ -8,14 +8,14 @@ Please DO NOT touch any routes here!!
 
 use Laravel\Lumen\Routing\Router;
 
-$this->app->router->group(['prefix' => 'sys-bin'], function () use ($router) {
+$this->app->router->group(['prefix' => 'sys-bin'], function () {
     $this->app->router->get('/ping', function () {
         return response('Hi!');
     });
 
-    $this->app->router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () use ($router) {
-        $this->app->router->group(['prefix' => 'subscriptions'], function () use ($router) {
-            $this->app->router->group(['middleware' => ['filter.json']], function () use ($router) {
+    $this->app->router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () {
+        $this->app->router->group(['prefix' => 'subscriptions'], function () {
+            $this->app->router->group(['middleware' => ['filter.json']], function () {
                 $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
                 $this->app->router->patch('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UpdateSubscription');
                 $this->app->router->post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
@@ -38,8 +38,8 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () use ($router) {
             $this->app->router->post('/{subscription_id}/personal-tokens/sync', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@Sync');
         });
 
-        $this->app->router->group(['prefix' => 'plans'], function () use ($router) {
-            $this->app->router->group(['middleware' => ['filter.json']], function () use ($router) {
+        $this->app->router->group(['prefix' => 'plans'], function () {
+            $this->app->router->group(['middleware' => ['filter.json']], function () {
                 $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@CreatePlan');
                 $this->app->router->patch('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@UpdatePlan');
             });
@@ -48,12 +48,12 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () use ($router) {
             $this->app->router->get('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlan');
         });
 
-        $this->app->router->group(['prefix' => 'logs'], function () use ($router) {
+        $this->app->router->group(['prefix' => 'logs'], function () {
             $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLogs');
             $this->app->router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLog');
         });
 
-        $this->app->router->group(['prefix' => 'user-logs'], function () use ($router) {
+        $this->app->router->group(['prefix' => 'user-logs'], function () {
             $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLogs');
             $this->app->router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLog');
         });

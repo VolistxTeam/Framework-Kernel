@@ -61,7 +61,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         if (config('volistx.cdn_service') === 'cloudflare') {
             $this->app->register(\Monicahq\Cloudflare\TrustedProxyServiceProvider::class);
-        } else if (config('volistx.cdn_service') === 'stackpath') {
+        } elseif (config('volistx.cdn_service') === 'stackpath') {
             $this->app->register(\Cryental\StackPath\TrustedProxyServiceProvider::class);
         } else {
             $this->app->register(TrustProxies::class);
