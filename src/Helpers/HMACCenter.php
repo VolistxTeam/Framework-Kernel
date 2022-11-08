@@ -14,7 +14,7 @@ class HMACCenter
     {
         $key = PersonalTokens::getToken()->subscription()->first()->hmac_token;
         $method = Request::method();
-        $url = urlencode(URL::current());
+        $url = urlencode(URL::full());
         $timestamp = Carbon::now()->getTimestamp();
         $nonce = Uuid::uuid4()->toString();
         $contentString = json_encode($content);
