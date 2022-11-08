@@ -17,7 +17,7 @@ class SubscriptionRepository
             'plan_id'             => $inputs['plan_id'],
             'hmac_token'          => $inputs['hmac_token'],
             'plan_activated_at'   => $inputs['plan_activated_at'],
-            'plan_expires_at'     => $inputs['plan_expires_at'],
+            'plan_expires_at'     => $inputs['plan_expires_at'] ?? null,
             'plan_cancels_at'     => null,
             'plan_cancelled_at'   => null,
         ]);

@@ -41,7 +41,7 @@ class SubscriptionController extends Controller
                     Rule::exists('plans', 'id')->where(function ($query) {
                         return $query->where('is_active', true);
                     }), ],
-                'plan_activated_at' => ['bail', 'required', 'date'],
+                'plan_activated_at' => ['bail', 'sometimes', 'date', 'nullable'],
                 'plan_expires_at'   => ['bail', 'sometimes', 'date', 'nullable', 'after:plan_activated_at'],
             ], [
                 'user_id.required'           => 'The user ID is required.',
@@ -64,8 +64,8 @@ class SubscriptionController extends Controller
                 'user_id'           => $request->input('user_id'),
                 'plan_id'           => $request->input('plan_id'),
                 'hmac_token'        => Keys::randomKey(32),
-                'plan_activated_at' => $request->input('plan_activated_at'),
-                'plan_expires_at'   => $request->input('plan_expires_at'),
+                'plan_activated_at' => $request->input('plan_activated_at') ?? Carbon::now(),
+                'plan_expires_at'   => $request->input('plan_expires_at') ?? null,
             ]);
 
             return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
