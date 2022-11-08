@@ -24,7 +24,9 @@
     "guzzlehttp/guzzle": "^7.4",
     "cryental/larasupport": "^1.7",
     "nesbot/carbon": "^2.60",
-    "menarasolutions/geographer": "^0.3.13"
+    "menarasolutions/geographer": "^0.3.13",
+    "cryental/laravel-stackpath": "^1.1",
+    "monicahq/laravel-cloudflare": "^3.3"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",
