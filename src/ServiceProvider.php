@@ -69,10 +69,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         ]);
 
         if ($this->app->runningInConsole()) {
-            $this->app->booted(function () {
-                $schedule = $this->app->make(SubscriptionCronCommand::class);
-                $schedule->command('volistx-subscription:cron')->everyHour();
-            });
+            $schedule = $this->app->make(SubscriptionCronCommand::class);
+            $schedule->command('volistx-subscription:cron')->everyHour();
         }
     }
 }
