@@ -16,6 +16,9 @@ class PlanExpiryValidationRule extends ValidationRuleBase
             if (config('volistx.fallback_plan.id') !== null) {
                 $repo = new SubscriptionRepository();
                 $repo->SwitchToFreePlan($subscription->id);
+
+                // refresh info
+                $subscription = $this->inputs['token']->subscription()->first();
             } else {
                 return [
                     'message' => Messages::E403('Your plan has been cancelled. Please subscribe to a new plan if you want to continue using this service.'),
