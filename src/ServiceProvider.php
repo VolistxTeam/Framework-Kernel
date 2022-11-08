@@ -23,11 +23,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     public function boot(Router $router, GateContract $gate): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/volistx.php', 'volistx');
-        $this->mergeConfigFrom(__DIR__ . '/../config/larex.php', 'larex');
-        $this->mergeConfigFrom(__DIR__ . '/../config/larex-crowdin.php', 'larex-crowdin');
+        $this->mergeConfigFrom(__DIR__.'/../config/volistx.php', 'volistx');
+        $this->mergeConfigFrom(__DIR__.'/../config/larex.php', 'larex');
+        $this->mergeConfigFrom(__DIR__.'/../config/larex-crowdin.php', 'larex-crowdin');
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Register All Required Providers
         $serviceProvider = [
@@ -47,9 +47,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $this->app->register($provider);
         }
 
-        $this->loadRoutesFrom(__DIR__ . '/../routes/system.php');
+        $this->loadRoutesFrom(__DIR__.'/../routes/system.php');
 
-        $this->loadTranslationsFrom(__DIR__ . '/../locales', 'volistx');
+        $this->loadTranslationsFrom(__DIR__.'/../locales', 'volistx');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -62,9 +62,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // publish config and migration
         $this->publishes([
-            __DIR__ . '/../config/volistx.php' => config_path('volistx.php'),
-            __DIR__ . '/../database/migrations' => database_path('migrations'),
-            __DIR__ . '/../locales' => resource_path('lang/vendor/volistx'),
+            __DIR__.'/../config/volistx.php'  => config_path('volistx.php'),
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__.'/../locales'             => resource_path('lang/vendor/volistx'),
         ]);
     }
 }
