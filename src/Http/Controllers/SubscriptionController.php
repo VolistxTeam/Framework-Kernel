@@ -194,7 +194,7 @@ class SubscriptionController extends Controller
 
         $cancels_at = Carbon::now();
 
-        if ($immediately) {
+        if ($immediately === true) {
             $this->subscriptionRepository->Cancel($subscription_id, $cancels_at, true);
         } else {
             $this->subscriptionRepository->Cancel($subscription_id, $cancels_at);
