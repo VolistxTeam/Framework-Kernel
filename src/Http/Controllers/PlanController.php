@@ -83,7 +83,7 @@ class PlanController extends Controller
                 'description' => ['bail', 'sometimes', 'string'],
                 'data'        => ['bail', 'sometimes', 'array'],
                 'price'       => ['bail', 'sometimes', 'numeric'],
-                'tier'        => ['bail', 'required', 'integer'],
+                'tier'        => ['bail', 'sometimes', 'integer'],
                 'custom'      => ['bail', 'sometimes', 'boolean'],
                 'is_active'   => ['bail', 'sometimes', 'boolean'],
             ], [
