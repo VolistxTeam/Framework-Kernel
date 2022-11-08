@@ -16,13 +16,14 @@ class CreatePlansTable extends Migration
         Schema::enableForeignKeyConstraints();
         Schema::create('plans', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
             $table->string('tag')->unique();
+            $table->string('name');
             $table->string('description')->nullable();
             $table->json('data')->default('[]');
-            $table->double('price');
+            $table->decimal('price')->default('0.00');
             $table->integer('custom');
             $table->integer('tier');
+            $table->boolean('is_active')->default(true);
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
         });

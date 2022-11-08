@@ -37,7 +37,10 @@ class SubscriptionController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'user_id'           => ['bail', 'required', 'integer'],
-                'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id'],
+                'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id',
+                    Rule::exists('plans')->where(function ($query) {
+                    return $query->where('is_active', true);
+                }),],
                 'plan_activated_at' => ['bail', 'required', 'date'],
                 'plan_expires_at'   => ['bail', 'sometimes', 'date', 'nullable', 'after:plan_activated_at'],
             ], [
@@ -146,6 +149,103 @@ class SubscriptionController extends Controller
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
+    }
+
+    public function CancelSubscription(Request $request, $subscription_id) {
+        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'cancel')) {
+            return response()->json(Messages::E401(), 401);
+        }
+
+        $immediately = $request->input('immediately', false);
+        $ignoreFallback = $request->input('ignore_fallback', false);
+
+        $validator = Validator::make([
+            'subscription_id' => $subscription_id,
+            'immediately' => $immediately,
+            'ignore_fallback' => $ignoreFallback,
+        ], [
+            'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+            'immediately' => ['bail', 'sometimes', 'boolean'],
+            'ignore_fallback' => ['bail', 'sometimes', 'boolean'],
+        ], [
+            'subscription_id.required' => 'The subscription ID is required.',
+            'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
+            'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+            'immediately.boolean'      => 'The immediately flag must be a boolean value.',
+            'ignore_fallback.boolean'  => 'The ignore fallback flag must be a boolean value.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Messages::E400($validator->errors()->first()), 400);
+        }
+
+        if (!$ignoreFallback && config('volistx.fallback_plan.id') !== null) {
+            $this->subscriptionRepository->Update($subscription_id, [
+                'plan_id' => config('volistx.fallback_plan.id'),
+            ]);
+
+            $updatedSub = $this->subscriptionRepository->Find($subscription_id);
+
+            if (!$updatedSub) {
+                return response()->json(Messages::E404(), 404);
+            }
+
+            return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
+        }
+
+        $cancels_at = Carbon::now();
+
+        if ($immediately) {
+            $this->subscriptionRepository->Update($subscription_id, [
+                'plan_expires_at' => $cancels_at,
+                'plan_cancels_at' => $cancels_at,
+                'plan_cancelled_at' => $cancels_at,
+            ]);
+        } else {
+            $this->subscriptionRepository->Update($subscription_id, [
+                'plan_cancels_at' => $cancels_at,
+                'plan_cancelled_at' => $cancels_at,
+            ]);
+        }
+
+        $updatedSub = $this->subscriptionRepository->Find($subscription_id);
+        if (!$updatedSub) {
+            return response()->json(Messages::E404(), 404);
+        }
+        return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
+    }
+
+    public function UncancelSubscription(Request $request, $subscription_id) {
+        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'cancel')) {
+            return response()->json(Messages::E401(), 401);
+        }
+
+        $validator = Validator::make([
+            'subscription_id' => $subscription_id
+        ], [
+            'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id']
+        ], [
+            'subscription_id.required' => 'The subscription ID is required.',
+            'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
+            'subscription_id.exists'   => 'The subscription with the given ID was not found.'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Messages::E400($validator->errors()->first()), 400);
+        }
+
+        $this->subscriptionRepository->Update($subscription_id, [
+            'plan_cancels_at' => null,
+            'plan_cancelled_at' => null,
+        ]);
+
+        $updatedSub = $this->subscriptionRepository->Find($subscription_id);
+
+        if (!$updatedSub) {
+            return response()->json(Messages::E404(), 404);
+        }
+
+        return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
     }
 
     public function GetSubscription(Request $request, $subscription_id): JsonResponse

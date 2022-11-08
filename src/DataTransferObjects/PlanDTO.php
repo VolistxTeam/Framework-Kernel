@@ -14,6 +14,7 @@ class PlanDTO extends DataTransferObjectBase
     public string $created_at;
     public string $updated_at;
     public int $tier;
+    public bool $is_active;
 
     public static function fromModel($plan): self
     {
@@ -24,13 +25,14 @@ class PlanDTO extends DataTransferObjectBase
     {
         return [
             'id'          => $this->id,
-            'name'        => $this->name,
             'tag'         => $this->tag,
+            'name'        => $this->name,
             'description' => $this->description,
             'data'        => $this->data,
             'tier'        => $this->tier,
             'price'       => $this->price,
             'custom'      => $this->custom,
+            'is_active'   => $this->is_active,
             'created_at'  => $this->created_at,
             'updated_at'  => $this->updated_at,
         ];

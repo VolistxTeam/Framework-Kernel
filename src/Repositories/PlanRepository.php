@@ -39,6 +39,7 @@ class PlanRepository
         $price = $inputs['price'] ?? null;
         $tier = $inputs['tier'] ?? null;
         $custom = $inputs['custom'] ?? null;
+        $is_active = $inputs['is_active'] ?? null;
 
         if ($name !== null) {
             $plan->name = $name;
@@ -65,6 +66,10 @@ class PlanRepository
 
         if ($custom !== null) {
             $plan->custom = $custom;
+        }
+
+        if ($is_active !== null) {
+            $plan->is_active = $is_active;
         }
 
         $plan->save();

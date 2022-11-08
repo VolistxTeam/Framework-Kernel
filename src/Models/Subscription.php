@@ -36,11 +36,15 @@ class Subscription extends Model
         'hmac_token',
         'plan_activated_at',
         'plan_expires_at',
+        'plan_cancels_at',
+        'plan_cancelled_at',
     ];
 
     protected $casts = [
         'plan_activated_at' => 'date:Y-m-d H:i:s',
         'plan_expires_at'   => 'date:Y-m-d H:i:s',
+        'plan_cancels_at' => 'date:Y-m-d H:i:s',
+        'plan_cancelled_at'   => 'date:Y-m-d H:i:s',
         'created_at'        => 'date:Y-m-d H:i:s',
         'updated_at'        => 'date:Y-m-d H:i:s',
     ];

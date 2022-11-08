@@ -18,10 +18,12 @@ $router->group(['prefix' => 'sys-bin'], function () use ($router) {
             $router->group(['middleware' => ['filter.json']], function () use ($router) {
                 $router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
                 $router->patch('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UpdateSubscription');
-
+                $router->post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
                 $router->post('/{subscription_id}/personal-tokens', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@CreatePersonalToken');
                 $router->patch('/{subscription_id}/personal-tokens/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@UpdatePersonalToken');
             });
+
+            $router->post('/{subscription_id}/uncancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UncancelSubscription');
 
             $router->delete('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@DeleteSubscription');
             $router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptions');

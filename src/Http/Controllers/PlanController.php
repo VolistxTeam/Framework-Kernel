@@ -85,6 +85,7 @@ class PlanController extends Controller
                 'price'       => ['bail', 'sometimes', 'numeric'],
                 'tier'        => ['bail', 'required', 'integer'],
                 'custom'      => ['bail', 'sometimes', 'boolean'],
+                'is_active'   => ['bail', 'sometimes', 'boolean'],
             ], [
                 'plan_id.required'       => 'The plan ID is required.',
                 'plan_id.uuid'           => 'The plan ID must be a valid uuid.',
@@ -96,6 +97,7 @@ class PlanController extends Controller
                 'price.numeric'          => 'the price must be a numeric value',
                 'tier.integer'           => 'the tier must be a unique integer value value',
                 'custom.boolean'         => 'the custom must be a boolean value',
+                'is_active.boolean'      => 'the is_active must be a boolean value',
             ]);
 
             if ($validator->fails()) {

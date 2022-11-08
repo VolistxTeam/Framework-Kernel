@@ -18,6 +18,8 @@ class SubscriptionRepository
             'hmac_token'        => $inputs['hmac_token'],
             'plan_activated_at' => $inputs['plan_activated_at'],
             'plan_expires_at'   => $inputs['plan_expires_at'],
+            'plan_cancels_at'   => $inputs['plan_cancels_at'],
+            'plan_cancelled_at'   => $inputs['plan_cancelled_at'],
         ]);
     }
 
@@ -30,7 +32,9 @@ class SubscriptionRepository
         }
 
         $plan_activated_at = $inputs['plan_activated_at'] ?? null;
-        $plan_expires_at = $inputs['plan_expires_at'] ?? null;
+        $plan_expires_at = $inputs['plan_expires_at'] ?? 0;
+        $plan_cancels_at = $inputs['plan_cancels_at'] ?? 0;
+        $plan_cancelled_at = $inputs['plan_cancelled_at'] ?? 0;
         $plan_id = $inputs['plan_id'] ?? null;
         $hmac_token = $inputs['hmac_token'] ?? null;
 
@@ -46,8 +50,16 @@ class SubscriptionRepository
             $subscription->plan_activated_at = $plan_activated_at;
         }
 
-        if ($plan_expires_at !== null) {
+        if ($plan_expires_at !== 0) {
             $subscription->plan_expires_at = $plan_expires_at;
+        }
+
+        if ($plan_cancels_at !== 0) {
+            $subscription->plan_cancels_at = $plan_cancels_at;
+        }
+
+        if ($plan_cancelled_at !== 0) {
+            $subscription->plan_cancelled_at = $plan_cancelled_at;
         }
 
         $subscription->save();
