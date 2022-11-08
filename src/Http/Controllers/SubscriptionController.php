@@ -181,10 +181,7 @@ class SubscriptionController extends Controller
         }
 
         if (!$ignoreFallback && config('volistx.fallback_plan.id') !== null) {
-            $this->subscriptionRepository->Update($subscription_id, [
-                'plan_id'         => config('volistx.fallback_plan.id'),
-                'plan_expires_at' => null,
-            ]);
+            $this->subscriptionRepository->SwitchToFreePlan($subscription_id);
 
             $updatedSub = $this->subscriptionRepository->Find($subscription_id);
 
@@ -197,23 +194,10 @@ class SubscriptionController extends Controller
 
         $cancels_at = Carbon::now();
 
-        $this->subscriptionRepository->Update($subscription_id, [
-            'plan_expires_at'   => $cancels_at,
-            'plan_cancels_at'   => $cancels_at,
-            'plan_cancelled_at' => $cancels_at,
-        ]);
-
         if ($immediately) {
-            $this->subscriptionRepository->Update($subscription_id, [
-                'plan_expires_at'   => $cancels_at,
-                'plan_cancels_at'   => $cancels_at,
-                'plan_cancelled_at' => $cancels_at,
-            ]);
+            $this->subscriptionRepository->Cancel($subscription_id, $cancels_at, true);
         } else {
-            $this->subscriptionRepository->Update($subscription_id, [
-                'plan_cancels_at'   => $cancels_at,
-                'plan_cancelled_at' => $cancels_at,
-            ]);
+            $this->subscriptionRepository->Cancel($subscription_id, $cancels_at);
         }
 
         $updatedSub = $this->subscriptionRepository->Find($subscription_id);
@@ -244,10 +228,7 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E400($validator->errors()->first()), 400);
         }
 
-        $this->subscriptionRepository->Update($subscription_id, [
-            'plan_cancels_at' => null,
-            'plan_cancelled_at' => null
-        ]);
+        $this->subscriptionRepository->Uncancel($subscription_id);
 
         $updatedSub = $this->subscriptionRepository->Find($subscription_id);
 

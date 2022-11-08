@@ -31,34 +31,34 @@ class SubscriptionRepository
             return null;
         }
 
-        $plan_activated_at = $inputs['plan_activated_at'];
-        $plan_expires_at = $inputs['plan_expires_at'];
-        $plan_cancels_at = $inputs['plan_cancels_at'];
-        $plan_cancelled_at = $inputs['plan_cancelled_at'];
-        $plan_id = $inputs['plan_id'];
-        $hmac_token = $inputs['hmac_token'];
+        $plan_activated_at = $inputs['plan_activated_at'] ?? null;
+        $plan_expires_at = $inputs['plan_expires_at'] ?? null;
+        $plan_cancels_at = $inputs['plan_cancels_at'] ?? null;
+        $plan_cancelled_at = $inputs['plan_cancelled_at'] ?? null;
+        $plan_id = $inputs['plan_id'] ?? null;
+        $hmac_token = $inputs['hmac_token'] ?? null;
 
-        if (isset($plan_id)) {
+        if ($plan_id !== null) {
             $subscription->plan_id = $plan_id;
         }
 
-        if (isset($hmac_token)) {
+        if ($hmac_token !== null) {
             $subscription->hmac_token = $hmac_token;
         }
 
-        if (isset($plan_activated_at)) {
+        if ($plan_activated_at !== null) {
             $subscription->plan_activated_at = $plan_activated_at;
         }
 
-        if (isset($plan_expires_at)) {
+        if ($plan_expires_at !== null) {
             $subscription->plan_expires_at = $plan_expires_at;
         }
 
-        if (isset($plan_cancels_at)) {
+        if ($plan_cancels_at !== null) {
             $subscription->plan_cancels_at = $plan_cancels_at;
         }
 
-        if (isset($plan_cancelled_at)) {
+        if ($plan_cancelled_at !== null) {
             $subscription->plan_cancelled_at = $plan_cancelled_at;
         }
 
@@ -70,6 +70,62 @@ class SubscriptionRepository
     public function Find($subscriptionID): ?object
     {
         return Subscription::with('plan')->where('id', $subscriptionID)->first();
+    }
+
+    public function Cancel($subscriptionID, $cancels_at, $immediately = false): ?object
+    {
+        $subscription = $this->Find($subscriptionID);
+
+        if (!$subscription) {
+            return null;
+        }
+
+        if ($immediately) {
+            $subscription->plan_expires_at = $cancels_at;
+        }
+
+        $subscription->plan_cancels_at = $cancels_at;
+        $subscription->plan_cancelled_at = $cancels_at;
+
+        $subscription->save();
+
+        return $subscription;
+    }
+
+    public function Uncancel($subscriptionID): ?object
+    {
+        $subscription = $this->Find($subscriptionID);
+
+        if (!$subscription) {
+            return null;
+        }
+
+        $subscription->plan_cancels_at = null;
+        $subscription->plan_cancelled_at = null;
+
+        $subscription->save();
+
+        return $subscription;
+    }
+
+    public function SwitchToFreePlan($subscriptionID): ?object
+    {
+        if (config('volistx.fallback_plan.id') !== null) {
+            $subscription = $this->Find($subscriptionID);
+
+            if (!$subscription) {
+                return null;
+            }
+
+            $subscription->plan_id = config('volistx.fallback_plan.id');
+            $subscription->plan_expires_at = null;
+
+            $subscription->save();
+
+            return $subscription;
+        } else {
+            return null;
+        }
     }
 
     public function Delete($subscriptionID): ?bool
