@@ -35,5 +35,4 @@ return [
     'fallback_plan' => [
         'id' => env('FALLBACK_PLAN_ID', null),
     ],
-    'cdn_service' => env('CDN_SERVICE', 'cloudflare'),
 ];
