@@ -84,7 +84,7 @@ class SubscriptionRepository
             $subscription->plan_expires_at = $cancels_at;
         }
 
-        $subscription->plan_cancels_at = $cancels_at;
+        $subscription->plan_cancels_at = $subscription->plan_expires_at;
         $subscription->plan_cancelled_at = $cancels_at;
 
         $subscription->save();
