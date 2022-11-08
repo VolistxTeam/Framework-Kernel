@@ -40,6 +40,8 @@ class SubscriptionRepository
 
         if ($plan_id !== null) {
             $subscription->plan_id = $plan_id;
+            $subscription->plan_cancels_at = null;
+            $subscription->plan_cancelled_at = null;
         }
 
         if ($hmac_token !== null) {
@@ -119,7 +121,7 @@ class SubscriptionRepository
 
             $subscription->plan_id = config('volistx.fallback_plan.id');
             $subscription->plan_expires_at = null;
-
+            $subscription->plan_cancels_at = null;
             $subscription->save();
 
             return $subscription;
