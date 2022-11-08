@@ -55,9 +55,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $this->commands([
                 AccessKeyDeleteCommand::class,
                 AccessKeyGenerateCommand::class,
+                SubscriptionCronCommand::class,
                 ScheduleListCommand::class,
-                ScheduleClearCacheCommand::class,
-                SubscriptionCronCommand::class
+                ScheduleClearCacheCommand::class
             ]);
         }
 
@@ -67,10 +67,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             __DIR__.'/../database/migrations' => database_path('migrations'),
             __DIR__.'/../locales'             => resource_path('lang/vendor/volistx'),
         ]);
+
         if ($this->app->runningInConsole()) {
             $this->app->booted(function () {
                 $schedule = $this->app->make(SubscriptionCronCommand::class);
-                $schedule->command('volistx:sync-subscriptions')->everyHour();
+                $schedule->command('volistx-subscription:cron')->everyHour();
             });
         }
     }
