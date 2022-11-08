@@ -38,7 +38,7 @@ class SubscriptionController extends Controller
             $validator = Validator::make($request->all(), [
                 'user_id'           => ['bail', 'required', 'integer'],
                 'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id',
-                    Rule::exists('plans')->where(function ($query) {
+                    Rule::exists('plans', 'id')->where(function ($query) {
                         return $query->where('is_active', true);
                     }), ],
                 'plan_activated_at' => ['bail', 'required', 'date'],
