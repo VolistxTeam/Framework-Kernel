@@ -5,7 +5,6 @@ namespace Volistx\FrameworkKernel;
 use Illuminate\Console\Scheduling\ScheduleClearCacheCommand;
 use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
@@ -20,31 +19,37 @@ use Volistx\FrameworkKernel\Providers\PersonalTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\PlansServiceProvider;
 use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
 
-class VolistxServiceProvider extends ServiceProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     public function boot(Router $router, GateContract $gate): void
     {
-        $this->publishes([
-            __DIR__.'/../config/volistx.php' => config_path('volistx.php'),
-        ], 'config');
+        $this->mergeConfigFrom(__DIR__ . '/../config/volistx.php', 'volistx');
+        $this->mergeConfigFrom(__DIR__ . '/../config/larex.php', 'larex');
+        $this->mergeConfigFrom(__DIR__ . '/../config/larex-crowdin.php', 'larex-crowdin');
 
-        $this->publishes([
-            __DIR__.'/../database/migrations/' => database_path('migrations'),
-        ], 'migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         // Register All Required Providers
-        $this->app->register(AdminLoggingServiceProvider::class);
-        $this->app->register(GeoLocationServiceProvider::class);
-        $this->app->register(HMACServiceProvider::class);
-        $this->app->register(KeysServiceProvider::class);
-        $this->app->register(MessagesServiceProvider::class);
-        $this->app->register(PermissionsServiceProvider::class);
-        $this->app->register(UserLoggingServiceProvider::class);
-        $this->app->register(AccessTokenServiceProvider::class);
-        $this->app->register(PersonalTokenServiceProvider::class);
-        $this->app->register(PlansServiceProvider::class);
+        $serviceProvider = [
+            AccessTokenServiceProvider::class,
+            AdminLoggingServiceProvider::class,
+            GeoLocationServiceProvider::class,
+            HMACServiceProvider::class,
+            KeysServiceProvider::class,
+            MessagesServiceProvider::class,
+            PermissionsServiceProvider::class,
+            PersonalTokenServiceProvider::class,
+            PlansServiceProvider::class,
+            UserLoggingServiceProvider::class,
+        ];
 
-        require __DIR__.'/../routes/system.php';
+        foreach ($serviceProvider as $provider) {
+            $this->app->register($provider);
+        }
+
+        $this->loadRoutesFrom(__DIR__ . '/../routes/system.php');
+
+        $this->loadTranslationsFrom(__DIR__ . '/../locales', 'volistx');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -54,5 +59,12 @@ class VolistxServiceProvider extends ServiceProvider
                 ScheduleClearCacheCommand::class,
             ]);
         }
+
+        // publish config and migration
+        $this->publishes([
+            __DIR__ . '/../config/volistx.php' => config_path('volistx.php'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../locales' => resource_path('lang/vendor/volistx'),
+        ]);
     }
 }
