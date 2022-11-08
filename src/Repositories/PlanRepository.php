@@ -21,7 +21,7 @@ class PlanRepository
             'price'       => $inputs['price'],
             'tier'        => $inputs['tier'],
             'custom'      => $inputs['custom'],
-            'is_active' => true,
+            'is_active'   => true,
         ]);
     }
 
