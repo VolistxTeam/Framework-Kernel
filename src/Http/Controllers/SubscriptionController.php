@@ -163,33 +163,18 @@ class SubscriptionController extends Controller
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
             'immediately'     => $immediately,
-            'ignore_fallback' => $ignoreFallback,
         ], [
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             'immediately'     => ['bail', 'sometimes', 'boolean'],
-            'ignore_fallback' => ['bail', 'sometimes', 'boolean'],
         ], [
             'subscription_id.required' => 'The subscription ID is required.',
             'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
             'subscription_id.exists'   => 'The subscription with the given ID was not found.',
             'immediately.boolean'      => 'The immediately flag must be a boolean value.',
-            'ignore_fallback.boolean'  => 'The ignore fallback flag must be a boolean value.',
         ]);
 
         if ($validator->fails()) {
             return response()->json(Messages::E400($validator->errors()->first()), 400);
-        }
-
-        if (!$ignoreFallback && config('volistx.fallback_plan.id') !== null) {
-            $this->subscriptionRepository->SwitchToFreePlan($subscription_id);
-
-            $updatedSub = $this->subscriptionRepository->Find($subscription_id);
-
-            if (!$updatedSub) {
-                return response()->json(Messages::E404(), 404);
-            }
-
-            return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
         }
 
         $cancels_at = Carbon::now();

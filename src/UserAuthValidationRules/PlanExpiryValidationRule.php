@@ -15,14 +15,10 @@ class PlanExpiryValidationRule extends ValidationRuleBase
         if ($subscription->plan_cancels_at && Carbon::now()->gte($subscription->plan_cancels_at)) {
             if (config('volistx.fallback_plan.id') !== null) {
                 $repo = new SubscriptionRepository();
-                $repo->Update($subscription->id, [
-                    'plan_id'           => config('volistx.fallback_plan.id'),
-                    'plan_activated_at' => Carbon::now(),
-                    'plan_expires_at'   => null,
-                ]);
+                $repo->SwitchToFreePlan($subscription->id);
             } else {
                 return [
-                    'message' => Messages::E403('Your plan has been cancelled. Please upgrade your plan if you want to continue using this service.'),
+                    'message' => Messages::E403('Your plan has been cancelled. Please subscribe to a new plan if you want to continue using this service.'),
                     'code'    => 403,
                 ];
             }
