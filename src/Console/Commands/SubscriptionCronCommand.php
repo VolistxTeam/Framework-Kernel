@@ -25,5 +25,7 @@ class SubscriptionCronCommand extends Command
                 }
             }
         }
+
+        $this->info("Subscription cron job has been completed.");
     }
 }
