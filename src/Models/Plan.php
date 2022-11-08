@@ -41,7 +41,7 @@ class Plan extends Model
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'  => 'boolean',
         'data'       => 'array',
         'price'      => 'float',
         'custom'     => 'boolean',

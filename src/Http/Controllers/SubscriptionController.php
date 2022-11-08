@@ -39,8 +39,8 @@ class SubscriptionController extends Controller
                 'user_id'           => ['bail', 'required', 'integer'],
                 'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id',
                     Rule::exists('plans')->where(function ($query) {
-                    return $query->where('is_active', true);
-                }),],
+                        return $query->where('is_active', true);
+                    }), ],
                 'plan_activated_at' => ['bail', 'required', 'date'],
                 'plan_expires_at'   => ['bail', 'sometimes', 'date', 'nullable', 'after:plan_activated_at'],
             ], [
@@ -151,7 +151,8 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function CancelSubscription(Request $request, $subscription_id) {
+    public function CancelSubscription(Request $request, $subscription_id)
+    {
         if (!Permissions::check(AccessTokens::getToken(), $this->module, 'cancel')) {
             return response()->json(Messages::E401(), 401);
         }
@@ -161,11 +162,11 @@ class SubscriptionController extends Controller
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
-            'immediately' => $immediately,
+            'immediately'     => $immediately,
             'ignore_fallback' => $ignoreFallback,
         ], [
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-            'immediately' => ['bail', 'sometimes', 'boolean'],
+            'immediately'     => ['bail', 'sometimes', 'boolean'],
             'ignore_fallback' => ['bail', 'sometimes', 'boolean'],
         ], [
             'subscription_id.required' => 'The subscription ID is required.',
@@ -197,13 +198,13 @@ class SubscriptionController extends Controller
 
         if ($immediately) {
             $this->subscriptionRepository->Update($subscription_id, [
-                'plan_expires_at' => $cancels_at,
-                'plan_cancels_at' => $cancels_at,
+                'plan_expires_at'   => $cancels_at,
+                'plan_cancels_at'   => $cancels_at,
                 'plan_cancelled_at' => $cancels_at,
             ]);
         } else {
             $this->subscriptionRepository->Update($subscription_id, [
-                'plan_cancels_at' => $cancels_at,
+                'plan_cancels_at'   => $cancels_at,
                 'plan_cancelled_at' => $cancels_at,
             ]);
         }
@@ -212,22 +213,24 @@ class SubscriptionController extends Controller
         if (!$updatedSub) {
             return response()->json(Messages::E404(), 404);
         }
+
         return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
     }
 
-    public function UncancelSubscription(Request $request, $subscription_id) {
+    public function UncancelSubscription(Request $request, $subscription_id)
+    {
         if (!Permissions::check(AccessTokens::getToken(), $this->module, 'cancel')) {
             return response()->json(Messages::E401(), 401);
         }
 
         $validator = Validator::make([
-            'subscription_id' => $subscription_id
+            'subscription_id' => $subscription_id,
         ], [
-            'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id']
+            'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
         ], [
             'subscription_id.required' => 'The subscription ID is required.',
             'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-            'subscription_id.exists'   => 'The subscription with the given ID was not found.'
+            'subscription_id.exists'   => 'The subscription with the given ID was not found.',
         ]);
 
         if ($validator->fails()) {
@@ -235,7 +238,7 @@ class SubscriptionController extends Controller
         }
 
         $this->subscriptionRepository->Update($subscription_id, [
-            'plan_cancels_at' => null,
+            'plan_cancels_at'   => null,
             'plan_cancelled_at' => null,
         ]);
 
