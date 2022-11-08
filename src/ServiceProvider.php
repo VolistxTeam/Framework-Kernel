@@ -5,8 +5,6 @@ namespace Volistx\FrameworkKernel;
 use Illuminate\Console\Scheduling\ScheduleClearCacheCommand;
 use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Http\Middleware\TrustProxies;
 use Laravel\Lumen\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
