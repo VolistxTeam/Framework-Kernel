@@ -182,8 +182,8 @@ class SubscriptionController extends Controller
 
         if (!$ignoreFallback && config('volistx.fallback_plan.id') !== null) {
             $this->subscriptionRepository->Update($subscription_id, [
-                'plan_id' => config('volistx.fallback_plan.id'),
-                'plan_expires_at' => null
+                'plan_id'         => config('volistx.fallback_plan.id'),
+                'plan_expires_at' => null,
             ]);
 
             $updatedSub = $this->subscriptionRepository->Find($subscription_id);
@@ -198,21 +198,21 @@ class SubscriptionController extends Controller
         $cancels_at = Carbon::now();
 
         $this->subscriptionRepository->Update($subscription_id, [
-            'plan_expires_at' => $cancels_at,
-            'plan_cancels_at' => $cancels_at,
-            'plan_cancelled_at' => $cancels_at
+            'plan_expires_at'   => $cancels_at,
+            'plan_cancels_at'   => $cancels_at,
+            'plan_cancelled_at' => $cancels_at,
         ]);
 
         if ($immediately) {
             $this->subscriptionRepository->Update($subscription_id, [
-                'plan_expires_at' => $cancels_at,
-                'plan_cancels_at' => $cancels_at,
-                'plan_cancelled_at' => $cancels_at
+                'plan_expires_at'   => $cancels_at,
+                'plan_cancels_at'   => $cancels_at,
+                'plan_cancelled_at' => $cancels_at,
             ]);
         } else {
             $this->subscriptionRepository->Update($subscription_id, [
-                'plan_cancels_at' => $cancels_at,
-                'plan_cancelled_at' => $cancels_at
+                'plan_cancels_at'   => $cancels_at,
+                'plan_cancelled_at' => $cancels_at,
             ]);
         }
 
