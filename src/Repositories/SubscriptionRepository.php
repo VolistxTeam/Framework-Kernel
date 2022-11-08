@@ -13,12 +13,12 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'           => $inputs['user_id'],
-            'plan_id'           => $inputs['plan_id'],
-            'hmac_token'        => $inputs['hmac_token'],
-            'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at'   => $inputs['plan_expires_at'],
-            'plan_cancels_at'   => $inputs['plan_cancels_at'],
+            'user_id'             => $inputs['user_id'],
+            'plan_id'             => $inputs['plan_id'],
+            'hmac_token'          => $inputs['hmac_token'],
+            'plan_activated_at'   => $inputs['plan_activated_at'],
+            'plan_expires_at'     => $inputs['plan_expires_at'],
+            'plan_cancels_at'     => $inputs['plan_cancels_at'],
             'plan_cancelled_at'   => $inputs['plan_cancelled_at'],
         ]);
     }

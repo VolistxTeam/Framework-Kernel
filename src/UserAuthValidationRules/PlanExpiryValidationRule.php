@@ -14,11 +14,11 @@ class PlanExpiryValidationRule extends ValidationRuleBase
 
         if ($subscription->plan_cancels_at && Carbon::now()->gte($subscription->plan_cancels_at)) {
             if (config('volistx.fallback_plan.id') !== null) {
-                $repo = new SubscriptionRepository;
+                $repo = new SubscriptionRepository();
                 $repo->Update($subscription->id, [
-                    'plan_id' => config('volistx.fallback_plan.id'),
+                    'plan_id'           => config('volistx.fallback_plan.id'),
                     'plan_activated_at' => Carbon::now(),
-                    'plan_expires_at' => null,
+                    'plan_expires_at'   => null,
                 ]);
             } else {
                 return [
