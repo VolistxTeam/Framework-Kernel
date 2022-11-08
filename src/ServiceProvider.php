@@ -2,6 +2,7 @@
 
 namespace Volistx\FrameworkKernel;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Console\Scheduling\ScheduleClearCacheCommand;
 use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
@@ -67,9 +68,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             __DIR__.'/../locales'             => resource_path('lang/vendor/volistx'),
         ]);
 
-        if ($this->app->runningInConsole()) {
-            $schedule = $this->app->make(SubscriptionCronCommand::class);
-            $schedule->command('volistx-subscription:cron')->everyHour();
-        }
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command('volistx-subscription:cron')->everyFiveMinutes();
+        });
     }
 }
