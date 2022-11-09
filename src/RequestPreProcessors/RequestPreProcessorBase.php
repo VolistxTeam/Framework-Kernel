@@ -11,5 +11,5 @@ abstract class RequestPreProcessorBase
         $this->inputs = $inputs;
     }
 
-    abstract public function Process(): bool | array;
+    abstract public function Process(): bool|array;
 }

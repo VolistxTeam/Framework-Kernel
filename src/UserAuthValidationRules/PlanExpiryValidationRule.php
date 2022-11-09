@@ -4,7 +4,6 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Carbon\Carbon;
 use Volistx\FrameworkKernel\Facades\Messages;
-use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
 class PlanExpiryValidationRule extends ValidationRuleBase
 {

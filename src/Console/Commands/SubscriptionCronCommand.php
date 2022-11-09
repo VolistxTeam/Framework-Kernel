@@ -25,6 +25,7 @@ class SubscriptionCronCommand extends Command
     {
         if (config('volistx.fallback_plan.id') === null) {
             $this->info('Subscription cron job has been completed. No Fall-back id detected and no changed were made');
+
             return;
         }
 
