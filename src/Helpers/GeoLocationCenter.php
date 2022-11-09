@@ -3,30 +3,35 @@
 namespace Volistx\FrameworkKernel\Helpers;
 
 use GuzzleHttp\Client;
+use Volistx\FrameworkKernel\Facades\HMAC;
 
 class GeoLocationCenter
 {
     private Client $client;
     private string $httpBaseUrl;
     private string $remoteToken;
-    private bool $verification;
+    private string $verification_token;
 
     public function __construct()
     {
         $this->client = new Client();
         $this->httpBaseUrl = config('volistx.geolocation.base_url');
         $this->remoteToken = config('volistx.geolocation.token');
-        $this->verification = config('volistx.geolocation.verification');
+        $this->verification_token = config('volistx.geolocation.verification');
     }
 
     public function search(string $ip)
     {
-        $response = $this->client->get("$this->httpBaseUrl/lookup?ip=$ip", [
+        $url = "$this->httpBaseUrl/lookup?ip=$ip";
+
+        $response = $this->client->get($url, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
             ],
         ]);
 
-        return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
+        return $response->getStatusCode() == 200 && HMAC::verify($this->verification_token, "GET", urlencode($url), $response)
+            ? json_decode($response->getBody()->getContents())
+            : null;
     }
 }

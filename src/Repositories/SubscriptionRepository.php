@@ -13,13 +13,13 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'             => $inputs['user_id'],
-            'plan_id'             => $inputs['plan_id'],
-            'hmac_token'          => $inputs['hmac_token'],
-            'plan_activated_at'   => $inputs['plan_activated_at'],
-            'plan_expires_at'     => $inputs['plan_expires_at'] ?? null,
-            'plan_cancels_at'     => null,
-            'plan_cancelled_at'   => null,
+            'user_id' => $inputs['user_id'],
+            'plan_id' => $inputs['plan_id'],
+            'hmac_token' => $inputs['hmac_token'],
+            'plan_activated_at' => $inputs['plan_activated_at'],
+            'plan_expires_at' => $inputs['plan_expires_at'] ?? null,
+            'plan_cancels_at' => null,
+            'plan_cancelled_at' => null,
         ]);
     }
 
@@ -110,24 +110,23 @@ class SubscriptionRepository
         return $subscription;
     }
 
-    public function SwitchToFreePlan($subscriptionID): ?object
+    public function SwitchToFreePlan($subscriptionID): ?bool
     {
-        if (config('volistx.fallback_plan.id') !== null) {
-            $subscription = $this->Find($subscriptionID);
-
-            if (!$subscription) {
-                return null;
-            }
-
-            $subscription->plan_id = config('volistx.fallback_plan.id');
-            $subscription->plan_expires_at = null;
-            $subscription->plan_cancels_at = null;
-            $subscription->save();
-
-            return $subscription;
-        } else {
+        if (config('volistx.fallback_plan.id') === null) {
             return null;
         }
+        $subscription = $this->Find($subscriptionID);
+
+        if (!$subscription) {
+            return null;
+        }
+
+        $subscription->plan_id = config('volistx.fallback_plan.id');
+        $subscription->plan_expires_at = null;
+        $subscription->plan_cancels_at = null;
+        $subscription->save();
+
+        return true;
     }
 
     public function Delete($subscriptionID): ?bool

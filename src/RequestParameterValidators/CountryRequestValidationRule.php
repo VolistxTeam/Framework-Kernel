@@ -1,6 +1,6 @@
 <?php
 
-namespace Volistx\FrameworkKernel\RequestValidators;
+namespace Volistx\FrameworkKernel\RequestParameterValidators;
 
 use Illuminate\Contracts\Validation\Rule;
 use MenaraSolutions\Geographer\Earth;

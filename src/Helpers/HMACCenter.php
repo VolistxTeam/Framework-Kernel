@@ -5,6 +5,7 @@ namespace Volistx\FrameworkKernel\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
+use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 
@@ -34,5 +35,21 @@ class HMACCenter
             'X-HMAC-Content-SHA256' => $signature,
             'X-HMAC-Nonce'          => $nonce,
         ];
+    }
+
+    public static function verify($hmac_token, $method, $url,ResponseInterface $response){
+        $contentString = $response->getBody()->getContents();
+        $nonce = $response->getHeader("X-Hmac-Nonce")[0];
+        $timestamp = $response->getHeader("X-Hmac-Timestamp")[0];
+
+        $valueToSign = $method
+            .$url
+            .$nonce
+            .$timestamp
+            .$contentString;
+
+        $signedValue = hash_hmac('sha256', $valueToSign, $hmac_token, true);
+
+        return base64_encode($signedValue) === $response->getHeader("X-Hmac-Content-Sha256")[0];
     }
 }

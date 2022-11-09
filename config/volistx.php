@@ -29,10 +29,13 @@ return [
         Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionRateLimitValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\IPRateLimitValidationRule::class,
     ],
+    'preprocessors' => [
+        Volistx\FrameworkKernel\RequestPreProcessors\SubscriptionStatusPreProcessor::class
+    ],
     'services_permissions' => [
         '*',
     ],
     'fallback_plan' => [
-        'id' => env('FALLBACK_PLAN_ID', null),
+        'id' => env('FALLBACK_PLAN_ID'),
     ],
 ];

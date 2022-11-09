@@ -16,7 +16,7 @@ use Volistx\FrameworkKernel\Facades\Keys;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\PersonalTokenRepository;
-use Volistx\FrameworkKernel\RequestValidators\CountryRequestValidationRule;
+use Volistx\FrameworkKernel\RequestParameterValidators\CountryRequestValidationRule;
 
 class PersonalTokenController extends Controller
 {
