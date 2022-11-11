@@ -2,10 +2,12 @@
 
 namespace Volistx\FrameworkKernel\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
+use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Models\Subscription;
 
 class SubscriptionRepository
@@ -16,12 +18,34 @@ class SubscriptionRepository
             'user_id' => $inputs['user_id'],
             'plan_id' => $inputs['plan_id'],
             'hmac_token' => $inputs['hmac_token'],
-            'plan_activated_at' => $inputs['plan_activated_at'],
-            'plan_expires_at' => $inputs['plan_expires_at'] ?? null,
+            'status' => SubscriptionStatus::ACTIVE,
+            'plan_activated_at' => Carbon::now(),
+            'plan_expires_at' => $inputs['plan_expires_at'],
             'plan_cancels_at' => null,
             'plan_cancelled_at' => null,
         ]);
     }
+
+    public function Clone($subscriptionID, $inputs): Builder|Model|null
+    {
+        $subscription = $this->Find($subscriptionID);
+
+        if (!$subscription) {
+            return null;
+        }
+
+        return Subscription::query()->create([
+            'user_id' => $subscription->user_id,
+            'plan_id' => $inputs['plan_id'] ?? $subscription->plan_id,
+            'hmac_token' => $inputs['hmac_token'] ?? $subscription->hmac_token,
+            'status' => SubscriptionStatus::ACTIVE,
+            'plan_activated_at' => Carbon::now(),
+            'plan_expires_at' => $inputs['plan_expires_at'],
+            'plan_cancels_at' => null,
+            'plan_cancelled_at' => null,
+        ]);
+    }
+
 
     public function Update($subscriptionID, array $inputs): ?object
     {
@@ -31,37 +55,20 @@ class SubscriptionRepository
             return null;
         }
 
-        $plan_activated_at = $inputs['plan_activated_at'] ?? null;
-        $plan_expires_at = $inputs['plan_expires_at'] ?? 1;
-        $plan_cancels_at = $inputs['plan_cancels_at'] ?? null;
-        $plan_cancelled_at = $inputs['plan_cancelled_at'] ?? null;
-        $plan_id = $inputs['plan_id'] ?? null;
-        $hmac_token = $inputs['hmac_token'] ?? null;
-
-        if ($plan_id !== null) {
-            $subscription->plan_id = $plan_id;
-            $subscription->plan_cancels_at = null;
-            $subscription->plan_cancelled_at = null;
+        if (isset($inputs['status'])) {
+            $subscription->status = $inputs['status'];
         }
 
-        if ($hmac_token !== null) {
-            $subscription->hmac_token = $hmac_token;
+        if (isset($inputs['hmac_token'])) {
+            $subscription->hmac_token = $inputs['hmac_token'];
         }
 
-        if ($plan_activated_at !== null) {
-            $subscription->plan_activated_at = $plan_activated_at;
+        if (isset($inputs['plan_cancels_at'])) {
+            $subscription->plan_cancels_at = $inputs['plan_cancels_at'];
         }
 
-        if ($plan_expires_at !== 1) {
-            $subscription->plan_expires_at = $plan_expires_at;
-        }
-
-        if ($plan_cancels_at !== null) {
-            $subscription->plan_cancels_at = $plan_cancels_at;
-        }
-
-        if ($plan_cancelled_at !== null) {
-            $subscription->plan_cancelled_at = $plan_cancelled_at;
+        if (isset($inputs['plan_cancelled_at'])) {
+            $subscription->plan_cancelled_at = $inputs['plan_cancelled_at'];
         }
 
         $subscription->save();
@@ -72,61 +79,6 @@ class SubscriptionRepository
     public function Find($subscriptionID): ?object
     {
         return Subscription::with('plan')->where('id', $subscriptionID)->first();
-    }
-
-    public function Cancel($subscriptionID, $cancels_at, $immediately = false): ?object
-    {
-        $subscription = $this->Find($subscriptionID);
-
-        if (!$subscription) {
-            return null;
-        }
-
-        if ($immediately) {
-            $subscription->plan_expires_at = $cancels_at;
-        }
-
-        $subscription->plan_cancels_at = $subscription->plan_expires_at;
-        $subscription->plan_cancelled_at = $cancels_at;
-
-        $subscription->save();
-
-        return $subscription;
-    }
-
-    public function Uncancel($subscriptionID): ?object
-    {
-        $subscription = $this->Find($subscriptionID);
-
-        if (!$subscription) {
-            return null;
-        }
-
-        $subscription->plan_cancels_at = null;
-        $subscription->plan_cancelled_at = null;
-
-        $subscription->save();
-
-        return $subscription;
-    }
-
-    public function SwitchToFreePlan($subscriptionID): ?bool
-    {
-        if (config('volistx.fallback_plan.id') === null) {
-            return null;
-        }
-        $subscription = $this->Find($subscriptionID);
-
-        if (!$subscription) {
-            return null;
-        }
-
-        $subscription->plan_id = config('volistx.fallback_plan.id');
-        $subscription->plan_expires_at = null;
-        $subscription->plan_cancels_at = null;
-        $subscription->save();
-
-        return true;
     }
 
     public function Delete($subscriptionID): ?bool

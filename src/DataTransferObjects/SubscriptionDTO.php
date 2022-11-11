@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\DataTransferObjects;
 
 use Carbon\Carbon;
+use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 
 class SubscriptionDTO extends DataTransferObjectBase
 {
@@ -15,6 +16,7 @@ class SubscriptionDTO extends DataTransferObjectBase
     public string $updated_at;
     public ?string $plan_cancels_at;
     public ?string $plan_cancelled_at;
+    public ?int $status;
 
     public static function fromModel($subscription): self
     {
@@ -28,9 +30,8 @@ class SubscriptionDTO extends DataTransferObjectBase
             'user_id'     => $this->user_id,
             'plan'        => PlanDTO::fromModel($this->entity->plan()->first())->GetDTO(),
             'hmac_token'  => $this->hmac_token,
-            'plan_status' => [
-                'is_expired'   => $this->plan_expires_at != null && Carbon::now()->gte(Carbon::createFromTimeString($this->plan_expires_at)),
-                'is_cancelled' => $this->plan_cancels_at && Carbon::now()->gte($this->plan_cancels_at),
+            'status'      => SubscriptionStatus::from($this->status)->name,
+            'status_information' => [
                 'activated_at' => $this->plan_activated_at,
                 'expires_at'   => $this->plan_expires_at,
                 'cancels_at'   => $this->plan_cancels_at,

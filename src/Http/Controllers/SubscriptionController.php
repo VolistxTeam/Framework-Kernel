@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Volistx\FrameworkKernel\DataTransferObjects\SubscriptionDTO;
+use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Keys;
 use Volistx\FrameworkKernel\Facades\Messages;
@@ -36,24 +37,18 @@ class SubscriptionController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'user_id'           => ['bail', 'required', 'integer'],
-                'plan_id'           => ['bail', 'required', 'uuid', 'exists:plans,id',
-                    Rule::exists('plans', 'id')->where(function ($query) {
-                        return $query->where('is_active', true);
-                    }), ],
-                'plan_activated_at' => ['bail', 'sometimes', 'date', 'nullable'],
-                'plan_expires_at'   => ['bail', 'sometimes', 'date', 'nullable', 'after:plan_activated_at'],
+                'user_id' => ['bail', 'required', 'integer'],
+                'plan_id' => ['bail', 'required', 'uuid', Rule::exists('plans', 'id')->where(function ($query) {
+                    return $query->where('is_active', true);
+                })],
+                'plan_expires_at' => ['bail', 'sometimes', 'date', 'nullable'],
             ], [
-                'user_id.required'           => 'The user ID is required.',
-                'user_id.integer'            => 'The user ID must be an integer.',
-                'plan_id.required'           => 'The plan ID is required.',
-                'plan_id.uuid'               => 'The plan ID must be a UUID.',
-                'plan_id.exists'             => 'The plan with the given ID was not found.',
-                'plan_activated_at.required' => 'The plan activated at is required.',
-                'plan_activated_at.date'     => 'The plan activated at must be a valid date.',
-                'plan_expires_at.required'   => 'The plan expires at is required.',
-                'plan_expires_at.date'       => 'The plan expires at must be a valid date.',
-                'plan_expires_at.after'      => 'The plan expires at must be after the plan activated at.',
+                'user_id.required' => 'The user ID is required.',
+                'user_id.integer' => 'The user ID must be an integer.',
+                'plan_id.required' => 'The plan ID is required.',
+                'plan_id.uuid' => 'The plan ID must be a UUID.',
+                'plan_id.exists' => 'The plan with the given ID was not found.',
+                'plan_expires_at.date' => 'The plan expires at must be a valid date.',
             ]);
 
             if ($validator->fails()) {
@@ -61,11 +56,10 @@ class SubscriptionController extends Controller
             }
 
             $newSubscription = $this->subscriptionRepository->Create([
-                'user_id'           => $request->input('user_id'),
-                'plan_id'           => $request->input('plan_id'),
-                'hmac_token'        => Keys::randomKey(32),
-                'plan_activated_at' => $request->input('plan_activated_at') ?? Carbon::now(),
-                'plan_expires_at'   => $request->input('plan_expires_at') ?? null,
+                'user_id' => $request->input('user_id'),
+                'plan_id' => $request->input('plan_id'),
+                'hmac_token' => Keys::randomKey(32),
+                'plan_expires_at' => $request->input('plan_expires_at'),
             ]);
 
             return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
@@ -84,23 +78,13 @@ class SubscriptionController extends Controller
             $validator = Validator::make(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
             ]), [
-                'subscription_id'   => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-                'plan_activated_at' => ['bail', 'sometimes', 'date'],
-                'hmac_token'        => ['bail', 'sometimes', 'max:255'],
-                'plan_expires_at'   => ['bail', 'sometimes', 'nullable',
-                    Rule::requiredIf(function () use ($request) {
-                        return !empty($request->input('plan_activated_at'));
-                    }), 'date', 'after:plan_activated_at', ],
-                'plan_id' => ['bail', 'sometimes', 'uuid', 'exists:plans,id'],
+                'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+                'hmac_token' => ['bail', 'sometimes', 'max:255'],
             ], [
                 'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
-                'plan_activated_at.date'   => 'The plan activated at date must be a valid date.',
-                'plan_expires_at.date'     => 'The plan expires at date must be a valid date.',
-                'plan_expires_at.after'    => 'The plan expires at date must be after the plan activated at date.',
-                'plan_id.uuid'             => 'The plan ID must be a valid UUID.',
-                'plan_id.exists'           => 'The plan with the given ID was not found.',
+                'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
+                'hmac_token.max' => 'Hmac_Token must not exceed 255 chars',
+                'subscription_id.exists' => 'The subscription with the given ID was not found.',
             ]);
 
             if ($validator->fails()) {
@@ -108,10 +92,6 @@ class SubscriptionController extends Controller
             }
 
             $updatedSub = $this->subscriptionRepository->Update($subscription_id, $request->all());
-
-            if (!$updatedSub) {
-                return response()->json(Messages::E404(), 404);
-            }
 
             return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
         } catch (Exception $ex) {
@@ -132,8 +112,8 @@ class SubscriptionController extends Controller
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
                 'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
+                'subscription_id.exists' => 'The subscription with the given ID was not found.',
             ]);
 
             if ($validator->fails()) {
@@ -151,51 +131,51 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function CancelSubscription(Request $request, $subscription_id)
+    public function CancelSubscription(Request $request, $subscription_id): JsonResponse
     {
         if (!Permissions::check(AccessTokens::getToken(), $this->module, 'cancel')) {
             return response()->json(Messages::E401(), 401);
         }
 
-        $immediately = $request->input('immediately', false);
-        $ignoreFallback = $request->input('ignore_fallback', false);
+        $cancels_at = $request->input('cancels_at', Carbon::now());
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
-            'immediately'     => $immediately,
+            'cancels_at' => $cancels_at,
         ], [
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-            'immediately'     => ['bail', 'sometimes', 'boolean'],
+            'cancels_at' => ['bail', 'sometimes', 'date'],
         ], [
             'subscription_id.required' => 'The subscription ID is required.',
-            'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-            'subscription_id.exists'   => 'The subscription with the given ID was not found.',
-            'immediately.boolean'      => 'The immediately flag must be a boolean value.',
+            'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
+            'subscription_id.exists' => 'The subscription with the given ID was not found.',
+            'cancels_at.date' => 'The immediately flag must be a boolean value.',
         ]);
 
         if ($validator->fails()) {
             return response()->json(Messages::E400($validator->errors()->first()), 400);
         }
 
-        $cancels_at = Carbon::now();
+        $subscription = $this->subscriptionRepository->Find($subscription_id);
 
-        if ($immediately === true) {
-            $this->subscriptionRepository->Cancel($subscription_id, $cancels_at, true);
-        } else {
-            $this->subscriptionRepository->Cancel($subscription_id, $cancels_at);
+        if ($subscription->status !== SubscriptionStatus::ACTIVE) {
+            return response()->json(Messages::E400("Can't cancel a subscription"), 400);
         }
+
+        $this->subscriptionRepository->Update($subscription_id,
+            [
+                "status" => SubscriptionStatus::SCHEDULED_TO_GET_CANCELLED,
+                "plan_cancels_at" => $cancels_at
+            ]);
 
         $updatedSub = $this->subscriptionRepository->Find($subscription_id);
-        if (!$updatedSub) {
-            return response()->json(Messages::E404(), 404);
-        }
 
         return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
     }
 
-    public function UncancelSubscription(Request $request, $subscription_id)
+    public function UncancelSubscription(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'cancel')) {
+        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'un-cancel')) {
             return response()->json(Messages::E401(), 401);
         }
 
@@ -205,21 +185,28 @@ class SubscriptionController extends Controller
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
         ], [
             'subscription_id.required' => 'The subscription ID is required.',
-            'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-            'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+            'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
+            'subscription_id.exists' => 'The subscription with the given ID was not found.',
+            'cancels_at.date' => 'The immediately flag must be a boolean value.',
         ]);
 
         if ($validator->fails()) {
             return response()->json(Messages::E400($validator->errors()->first()), 400);
         }
 
-        $this->subscriptionRepository->Uncancel($subscription_id);
+        $subscription = $this->subscriptionRepository->Find($subscription_id);
+
+        if ($subscription->status !== SubscriptionStatus::SCHEDULED_TO_GET_CANCELLED) {
+            return response()->json(Messages::E400("Can't un-cancel a subscription"), 400);
+        }
+
+        $this->subscriptionRepository->Update($subscription_id,
+            [
+                "status" => SubscriptionStatus::ACTIVE,
+                "plan_cancels_at" => null
+            ]);
 
         $updatedSub = $this->subscriptionRepository->Find($subscription_id);
-
-        if (!$updatedSub) {
-            return response()->json(Messages::E404(), 404);
-        }
 
         return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
     }
@@ -237,8 +224,8 @@ class SubscriptionController extends Controller
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
                 'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
+                'subscription_id.exists' => 'The subscription with the given ID was not found.',
             ]);
 
             if ($validator->fails()) {
@@ -269,14 +256,14 @@ class SubscriptionController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
-                'page'  => $page,
+                'page' => $page,
                 'limit' => $limit,
             ], [
-                'page'  => ['bail', 'sometimes', 'integer'],
+                'page' => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'              => 'The page must be an integer.',
-                'limit.integer'             => 'The limit must be an integer.',
+                'page.integer' => 'The page must be an integer.',
+                'limit.integer' => 'The limit must be an integer.',
             ]);
 
             if ($validator->fails()) {
@@ -297,8 +284,8 @@ class SubscriptionController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $subs->perPage(),
-                    'current'  => $subs->currentPage(),
-                    'total'    => $subs->lastPage(),
+                    'current' => $subs->currentPage(),
+                    'total' => $subs->lastPage(),
                 ],
                 'items' => $items,
             ]);
@@ -320,18 +307,18 @@ class SubscriptionController extends Controller
 
             $validator = Validator::make(array_merge([
                 'subscription_id' => $subscription_id,
-                'page'            => $page,
-                'limit'           => $limit,
+                'page' => $page,
+                'limit' => $limit,
             ]), [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-                'page'            => ['bail', 'sometimes', 'integer'],
-                'limit'           => ['bail', 'sometimes', 'integer'],
+                'page' => ['bail', 'sometimes', 'integer'],
+                'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'subscription_id.required'  => 'The subscription ID is required.',
-                'subscription_id.uuid'      => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'    => 'The subscription with the given ID was not found.',
-                'page.integer'              => 'The page must be an integer.',
-                'limit.integer'             => 'The limit must be an integer.',
+                'subscription_id.required' => 'The subscription ID is required.',
+                'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
+                'subscription_id.exists' => 'The subscription with the given ID was not found.',
+                'page.integer' => 'The page must be an integer.',
+                'limit.integer' => 'The limit must be an integer.',
             ]);
 
             if ($validator->fails()) {
@@ -362,18 +349,18 @@ class SubscriptionController extends Controller
 
             $validator = Validator::make([
                 'subscription_id' => $subscription_id,
-                'date'            => $date,
-                'mode'            => strtolower($mode),
+                'date' => $date,
+                'mode' => strtolower($mode),
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-                'date'            => ['bail', 'sometimes', 'date'],
-                'mode'            => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
+                'date' => ['bail', 'sometimes', 'date'],
+                'mode' => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
             ], [
-                'subscription_id.required'  => 'The subscription ID is required.',
-                'subscription_id.uuid'      => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'    => 'The subscription with the given ID was not found.',
-                'date.date'                 => 'The date must be a valid date.',
-                'mode.in'                   => 'The mode must be either "detailed" or "focused"',
+                'subscription_id.required' => 'The subscription ID is required.',
+                'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
+                'subscription_id.exists' => 'The subscription with the given ID was not found.',
+                'date.date' => 'The date must be a valid date.',
+                'mode.in' => 'The mode must be either "detailed" or "focused"',
             ]);
 
             if ($validator->fails()) {
