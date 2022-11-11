@@ -2,7 +2,6 @@
 
 namespace Volistx\FrameworkKernel\DataTransferObjects;
 
-use Carbon\Carbon;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 
 class SubscriptionDTO extends DataTransferObjectBase
@@ -26,11 +25,11 @@ class SubscriptionDTO extends DataTransferObjectBase
     public function GetDTO(): array
     {
         return [
-            'id'          => $this->id,
-            'user_id'     => $this->user_id,
-            'plan'        => PlanDTO::fromModel($this->entity->plan()->first())->GetDTO(),
-            'hmac_token'  => $this->hmac_token,
-            'status'      => SubscriptionStatus::from($this->status)->name,
+            'id'                 => $this->id,
+            'user_id'            => $this->user_id,
+            'plan'               => PlanDTO::fromModel($this->entity->plan()->first())->GetDTO(),
+            'hmac_token'         => $this->hmac_token,
+            'status'             => SubscriptionStatus::from($this->status)->name,
             'status_information' => [
                 'activated_at' => $this->plan_activated_at,
                 'expires_at'   => $this->plan_expires_at,

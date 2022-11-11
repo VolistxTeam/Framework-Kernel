@@ -5,7 +5,6 @@ namespace Volistx\FrameworkKernel\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
-use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Models\Subscription;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
@@ -35,13 +34,13 @@ class SubscriptionCronCommand extends Command
 
         foreach ($subscriptions as $subscription) {
             $this->subscriptionRepository->Update($subscription->id, [
-                "status" => SubscriptionStatus::CANCELLED,
-                "plan_cancelled_at" => Carbon::now()
+                'status'            => SubscriptionStatus::CANCELLED,
+                'plan_cancelled_at' => Carbon::now(),
             ]);
 
             $this->subscriptionRepository->Clone($subscription->id, [
-                'plan_id' => config('volistx.fallback_plan.id'),
-                'plan_expires_at' => null
+                'plan_id'         => config('volistx.fallback_plan.id'),
+                'plan_expires_at' => null,
             ]);
 
             //Need to associate all of the old subscription personal tokens with new subscription or the code wont work.

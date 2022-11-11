@@ -25,7 +25,7 @@ class CreateSubscriptionsTable extends Migration
             $table->dateTime('plan_cancelled_at')->nullable();
             $table->dateTime('plan_expired_at')->nullable();
             $table->string('hmac_token', 255);
-            $table->integer("status");
+            $table->integer('status');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
         });
