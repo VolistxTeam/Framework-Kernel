@@ -30,7 +30,7 @@ return [
         Volistx\FrameworkKernel\UserAuthValidationRules\IPRateLimitValidationRule::class,
     ],
     'preprocessors' => [
-        Volistx\FrameworkKernel\RequestPreProcessors\SubscriptionStatusPreProcessor::class
+        Volistx\FrameworkKernel\RequestPreProcessors\SubscriptionStatusPreProcessor::class,
     ],
     'services_permissions' => [
         '*',

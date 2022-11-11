@@ -37,10 +37,11 @@ class HMACCenter
         ];
     }
 
-    public static function verify($hmac_token, $method, $url,ResponseInterface $response){
+    public static function verify($hmac_token, $method, $url, ResponseInterface $response)
+    {
         $contentString = $response->getBody()->getContents();
-        $nonce = $response->getHeader("X-Hmac-Nonce")[0];
-        $timestamp = $response->getHeader("X-Hmac-Timestamp")[0];
+        $nonce = $response->getHeader('X-Hmac-Nonce')[0];
+        $timestamp = $response->getHeader('X-Hmac-Timestamp')[0];
 
         $valueToSign = $method
             .$url
@@ -50,6 +51,6 @@ class HMACCenter
 
         $signedValue = hash_hmac('sha256', $valueToSign, $hmac_token, true);
 
-        return base64_encode($signedValue) === $response->getHeader("X-Hmac-Content-Sha256")[0];
+        return base64_encode($signedValue) === $response->getHeader('X-Hmac-Content-Sha256')[0];
     }
 }
