@@ -16,8 +16,7 @@ class CreatePersonalTokensTable extends Migration
         Schema::enableForeignKeyConstraints();
         Schema::create('personal_tokens', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('subscription_id')->index('personalToken_subscription_id');
-            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
+            $table->integer('user_id')->index('token_user_id');
             $table->string('key', 32);
             $table->string('secret', 64);
             $table->string('secret_salt', 16);
