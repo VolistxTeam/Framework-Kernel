@@ -47,8 +47,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -72,8 +72,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -125,8 +125,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'usages' => [
                 'current' => 5,
-                'max' => 100,
-                'percent' => '0.05%'
+                'max'     => 100,
+                'percent' => '0.05%',
             ],
             'details' => null,
         ];

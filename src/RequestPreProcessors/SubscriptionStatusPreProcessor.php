@@ -24,7 +24,7 @@ class SubscriptionStatusPreProcessor extends RequestPreProcessorBase
         if ($subscription->status === SubscriptionStatus::ACTIVE && !empty($subscription->cancels_at) && Carbon::now()->gte($subscription->plan_cancels_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
                 'status'            => SubscriptionStatus::CANCELLED,
-                'cancelled_at' => Carbon::now(),
+                'cancelled_at'      => Carbon::now(),
             ]);
 
             if (!config('volistx.fallback_plan.id')) {
@@ -36,7 +36,7 @@ class SubscriptionStatusPreProcessor extends RequestPreProcessorBase
 
             $this->subscriptionRepository->Clone($subscription->id, [
                 'plan_id'         => config('volistx.fallback_plan.id'),
-                'expires_at' => null,
+                'expires_at'      => null,
             ]);
         }
 

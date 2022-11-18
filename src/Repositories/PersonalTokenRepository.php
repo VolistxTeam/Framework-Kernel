@@ -74,7 +74,7 @@ class PersonalTokenRepository
         }
 
         if ($duration !== null) {
-            $token->expires_at =  Carbon::createFromTimeString($token->activated_at)->addHours($duration);
+            $token->expires_at = Carbon::createFromTimeString($token->activated_at)->addHours($duration);
         }
 
         if ($disable_logging !== null) {
