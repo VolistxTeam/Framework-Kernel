@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
-use Volistx\FrameworkKernel\Models\AccessToken;
 use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
 
 class AccessKeyGenerateCommand extends Command

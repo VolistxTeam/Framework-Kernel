@@ -15,13 +15,13 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id' => $inputs['user_id'],
-            'plan_id' => $inputs['plan_id'],
-            'hmac_token' => $inputs['hmac_token'],
-            'status' => SubscriptionStatus::ACTIVE,
+            'user_id'      => $inputs['user_id'],
+            'plan_id'      => $inputs['plan_id'],
+            'hmac_token'   => $inputs['hmac_token'],
+            'status'       => SubscriptionStatus::ACTIVE,
             'activated_at' => Carbon::now(),
-            'expires_at' => $inputs['plan_expires_at'],
-            'cancels_at' => null,
+            'expires_at'   => $inputs['plan_expires_at'],
+            'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
     }
@@ -35,14 +35,14 @@ class SubscriptionRepository
         }
 
         return Subscription::query()->create([
-            'user_id' => $subscription->user_id,
-            'plan_id' => $inputs['plan_id'] ?? $subscription->plan_id,
-            'hmac_token' => $inputs['hmac_token'] ?? $subscription->hmac_token,
-            'status' => SubscriptionStatus::ACTIVE,
+            'user_id'           => $subscription->user_id,
+            'plan_id'           => $inputs['plan_id'] ?? $subscription->plan_id,
+            'hmac_token'        => $inputs['hmac_token'] ?? $subscription->hmac_token,
+            'status'            => SubscriptionStatus::ACTIVE,
             'plan_activated_at' => Carbon::now(),
-            'plan_expires_at' => $inputs['expires_at'] ?? $subscription->expires_at,
-            'cancels_at' => $inputs['cancels_at'] ?? $subscription->expires_at,
-            'cancelled_at' => $inputs['cancelled_at'] ?? $subscription->expires_at,
+            'plan_expires_at'   => $inputs['expires_at'] ?? $subscription->expires_at,
+            'cancels_at'        => $inputs['cancels_at'] ?? $subscription->expires_at,
+            'cancelled_at'      => $inputs['cancelled_at'] ?? $subscription->expires_at,
         ]);
     }
 

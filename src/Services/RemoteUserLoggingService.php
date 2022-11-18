@@ -70,9 +70,9 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
             [
                 'query' => [
-//                    'search' => $search,
-//                    'page'   => $page,
-//                    'limit'  => $limit,
+                    //                    'search' => $search,
+                    //                    'page'   => $page,
+                    //                    'limit'  => $limit,
                 ],
             ],
         ]);
@@ -89,7 +89,7 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
             [
                 'query' => [
-//                    'date' => $date,
+                    //                    'date' => $date,
                 ],
             ],
         ]);
@@ -107,9 +107,9 @@ class RemoteUserLoggingService implements IUserLoggingService
                 'Content-Type'  => 'application/json',
             ],
             'query' => [
-//                'date'  => $date,
-//                'mode'  => $mode,
-//                'count' => $subscriptionRepo->Find($subscription_id)->plan()->first()->data['requests'],
+                //                'date'  => $date,
+                //                'mode'  => $mode,
+                //                'count' => $subscriptionRepo->Find($subscription_id)->plan()->first()->data['requests'],
             ],
         ]);
 

@@ -5,7 +5,6 @@ namespace Volistx\FrameworkKernel\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
@@ -43,10 +42,10 @@ class Subscription extends Model
 
     protected $casts = [
         'status'              => SubscriptionStatus::class,
-        'activated_at'   => 'date:Y-m-d H:i:s',
-        'expires_at'     => 'date:Y-m-d H:i:s',
-        'cancels_at'     => 'date:Y-m-d H:i:s',
-        'cancelled_at'   => 'date:Y-m-d H:i:s',
+        'activated_at'        => 'date:Y-m-d H:i:s',
+        'expires_at'          => 'date:Y-m-d H:i:s',
+        'cancels_at'          => 'date:Y-m-d H:i:s',
+        'cancelled_at'        => 'date:Y-m-d H:i:s',
         'created_at'          => 'date:Y-m-d H:i:s',
         'updated_at'          => 'date:Y-m-d H:i:s',
     ];

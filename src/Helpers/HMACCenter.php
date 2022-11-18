@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
-use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
 
 class HMACCenter

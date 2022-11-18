@@ -32,7 +32,7 @@ class UserAuthMiddleware
 
         $activeSubscription = $this->subscriptionRepository->FindUserActiveSubscription($token->user_id);
 
-        if(!$activeSubscription){
+        if (!$activeSubscription) {
             return response()->json(Messages::E401(), 401);
         }
 
@@ -41,9 +41,9 @@ class UserAuthMiddleware
         //prepare inputs array
         $ValidatorsInputs = [
             'subscription' => $activeSubscription,
-            'request' => $request,
-            'token'   => $token,
-            'plan'    => $plan,
+            'request'      => $request,
+            'token'        => $token,
+            'plan'         => $plan,
         ];
 
         //Request Validators : they are validating the request .. and they dont change in the base. invalid request shouldn't be anything in db

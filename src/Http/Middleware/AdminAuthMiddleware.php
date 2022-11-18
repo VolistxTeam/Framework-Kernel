@@ -4,9 +4,9 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Volistx\FrameworkKernel\Facades\Messages;
 use function response;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
+use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
 use Volistx\FrameworkKernel\UserAuthValidationRules\IPValidationRule;
 
@@ -23,7 +23,7 @@ class AdminAuthMiddleware
     {
         $token = $this->accessTokenRepository->AuthAccessToken($request->bearerToken());
 
-        if(!$token){
+        if (!$token) {
             return response()->json(Messages::E401(), 401);
         }
 

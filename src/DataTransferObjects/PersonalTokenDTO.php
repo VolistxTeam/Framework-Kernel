@@ -32,7 +32,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
         $result = [
             'id'              => $this->id,
             'key'             => $key,
-            'user_id'    => $this->user_id,
+            'user_id'         => $this->user_id,
             'permissions'     => $this->permissions,
             'rate_limit_mode' => RateLimitMode::from($this->rate_limit_mode)->name,
             'geolocation'     => [

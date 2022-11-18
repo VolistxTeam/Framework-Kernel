@@ -26,8 +26,7 @@ class SubscriptionStatusCronCommand extends Command
     public function handle(): void
     {
         $subscriptions = Subscription::query()
-            ->where('status', "=", SubscriptionStatus::ACTIVE->value);
-
+            ->where('status', '=', SubscriptionStatus::ACTIVE->value);
 
         foreach ($subscriptions as $subscription) {
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->expires_at))) {
@@ -38,14 +37,14 @@ class SubscriptionStatusCronCommand extends Command
 
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->cancels_at))) {
                 $this->subscriptionRepository->Update($subscription->id, [
-                    'status' => SubscriptionStatus::CANCELLED,
+                    'status'       => SubscriptionStatus::CANCELLED,
                     'cancelled_at' => Carbon::now(),
                 ]);
             }
 
             if (config('volistx.fallback_plan.id') !== null) {
                 $this->subscriptionRepository->Clone($subscription->id, [
-                    'plan_id' => config('volistx.fallback_plan.id'),
+                    'plan_id'         => config('volistx.fallback_plan.id'),
                     'plan_expires_at' => null,
                 ]);
             }
