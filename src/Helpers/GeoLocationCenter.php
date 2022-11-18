@@ -32,7 +32,7 @@ class GeoLocationCenter
         ]);
 
         if ($this->verification) {
-            return $response->getStatusCode() == 200 && HMAC::verify($this->verification_token, 'GET', urlencode($url), $response)
+            return $response->getStatusCode() == 200 && HMAC::verify($this->verification_key, 'GET', urlencode($url), $response)
                 ? json_decode($response->getBody()->getContents())
                 : null;
         } else {
