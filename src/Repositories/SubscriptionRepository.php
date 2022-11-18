@@ -20,7 +20,7 @@ class SubscriptionRepository
             'hmac_token'   => $inputs['hmac_token'],
             'status'       => SubscriptionStatus::ACTIVE,
             'activated_at' => Carbon::now(),
-            'expires_at'   => $inputs['plan_expires_at'],
+            'expires_at'   => $inputs['expires_at'],
             'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
@@ -39,8 +39,8 @@ class SubscriptionRepository
             'plan_id'           => $inputs['plan_id'] ?? $subscription->plan_id,
             'hmac_token'        => $inputs['hmac_token'] ?? $subscription->hmac_token,
             'status'            => SubscriptionStatus::ACTIVE,
-            'plan_activated_at' => Carbon::now(),
-            'plan_expires_at'   => $inputs['expires_at'] ?? $subscription->expires_at,
+            'activated_at' => Carbon::now(),
+            'expires_at'   => $inputs['expires_at'] ?? $subscription->expires_at,
             'cancels_at'        => $inputs['cancels_at'] ?? $subscription->expires_at,
             'cancelled_at'      => $inputs['cancelled_at'] ?? $subscription->expires_at,
         ]);
