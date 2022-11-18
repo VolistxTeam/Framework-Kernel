@@ -18,6 +18,7 @@ return [
         'token'         => env('GEOPOINT_API_KEY'),
         'base_url'      => env('GEOPOINT_API_URL'),
         'verification'  => env('GEOPOINT_API_HMAC_VERIFICATION', false),
+        'verification_key'  => env('GEOPOINT_API_HMAC_KEY'),
     ],
     'validators' => [
         Volistx\FrameworkKernel\UserAuthValidationRules\ValidKeyValidationRule::class,
