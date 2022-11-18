@@ -3,19 +3,27 @@
 namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Carbon\Carbon;
+use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\Messages;
 
-class PlanExpiryValidationRule extends ValidationRuleBase
+class SubscriptionExpiryValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {
-        $subscription = $this->inputs['token']->subscription()->first();
+        $subscription = $this->inputs['subscription'];
 
-        if ($subscription->plan_expires_at != null) {
+        if ($subscription->status != SubscriptionStatus::ACTIVE) {
+            return [
+                'message' => Messages::E403('Your subscription is not active.'),
+                'code' => 403,
+            ];
+        }
+
+        if (!empty($subscription->plan_expires_at)) {
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->plan_expires_at))) {
                 return [
                     'message' => Messages::E403('Your subscription has been expired. Please renew if you want to continue using this service.'),
-                    'code'    => 403,
+                    'code' => 403,
                 ];
             }
         }

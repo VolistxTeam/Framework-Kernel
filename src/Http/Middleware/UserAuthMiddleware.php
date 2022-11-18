@@ -7,15 +7,19 @@ use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Plans;
+use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Repositories\PersonalTokenRepository;
+use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
 class UserAuthMiddleware
 {
     private PersonalTokenRepository $personalTokenRepository;
+    private SubscriptionRepository $subscriptionRepository;
 
-    public function __construct(PersonalTokenRepository $personalTokenRepository)
+    public function __construct(PersonalTokenRepository $personalTokenRepository, SubscriptionRepository $subscriptionRepository)
     {
         $this->personalTokenRepository = $personalTokenRepository;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     public function handle(Request $request, Closure $next)
@@ -26,14 +30,17 @@ class UserAuthMiddleware
             return response()->json(Messages::E401(), 401);
         }
 
-        $plan = $token->subscription()->first()->plan()->first();
+        $activeSubscription = $this->subscriptionRepository->FindUserActiveSubscription($token->user_id);
 
-        if (!$plan) {
+        if(!$activeSubscription){
             return response()->json(Messages::E401(), 401);
         }
 
+        $plan = $activeSubscription->plan()->first();
+
         //prepare inputs array
         $ValidatorsInputs = [
+            'subscription' => $activeSubscription,
             'request' => $request,
             'token'   => $token,
             'plan'    => $plan,
@@ -80,6 +87,7 @@ class UserAuthMiddleware
         //We passed all validators, so request is valid, and also passed preprocessors so required db processing is made, now we can proceed with the request middleware chain
         PersonalTokens::setToken($token);
         Plans::setPlan($plan);
+        Subscriptions::setSubscription($activeSubscription);
 
         return $next($request);
     }

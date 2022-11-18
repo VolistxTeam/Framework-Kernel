@@ -8,5 +8,4 @@ enum SubscriptionStatus: int
     case INACTIVE = 1;
     case EXPIRED = 2;
     case CANCELLED = 3;
-    case SCHEDULED_TO_GET_CANCELLED = 4;
 }

@@ -15,10 +15,10 @@ class UserLogRepository
     {
         return UserLog::query()->create([
             'subscription_id' => $inputs['subscription_id'],
-            'url'             => $inputs['url'],
-            'ip'              => $inputs['ip'],
-            'method'          => $inputs['method'],
-            'user_agent'      => $inputs['user_agent'],
+            'url' => $inputs['url'],
+            'ip' => $inputs['ip'],
+            'method' => $inputs['method'],
+            'user_agent' => $inputs['user_agent'],
         ]);
     }
 
@@ -55,51 +55,48 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogs($subscription_id, $search, $page, $limit): LengthAwarePaginator|null
+    public function FindSubscriptionLogs($user_id, $start_date, $end_date): LengthAwarePaginator|null
     {
-        //handle empty search
-        if ($search === '') {
-            $search = 'id:';
+        $start = Carbon::createFromFormat('date:Y-m-d H:i:s', $start_date);
+        $query = UserLog::query()->where('user_id', $user_id)
+            ->whereDate('created_at', '>=', $start);
+
+        if ($end_date != null) {
+            $end = Carbon::createFromFormat('date:Y-m-d H:i:s', $end_date);
+            $query = $query->whereDate('created_at', '<=', $end);
         }
 
-        if (!str_contains($search, ':')) {
-            return null;
-        }
-
-        $columns = Schema::getColumnListing('user_logs');
-
-        $values = explode(':', $search, 2);
-        $columnName = strtolower(trim($values[0]));
-
-        if (!in_array($columnName, $columns)) {
-            return null;
-        }
-
-        $searchValue = strtolower(trim($values[1]));
-
-        return UserLog::query()
-            ->where('subscription_id', $subscription_id)
-            ->where($values[0], 'LIKE', "%$searchValue%")
-            ->orderBy('created_at', 'DESC')
-            ->paginate($limit, ['*'], 'page', $page);
+        return $query->get();
     }
 
-    public function FindSubscriptionLogsCount($subscription_id, $date): int
+    public function FindSubscriptionLogsCount($user_id, $start_date, $end_date): int
     {
-        return UserLog::query()->where('subscription_id', $subscription_id)
-            ->whereMonth('created_at', $date->format('m'))
-            ->whereYear('created_at', $date->format('Y'))
-            ->count();
+        $start = Carbon::createFromFormat('date:Y-m-d H:i:s', $start_date);
+        $query = UserLog::query()->where('user_id', $user_id)
+            ->whereDate('created_at', '>=', $start);
+
+        if ($end_date != null) {
+            $end = Carbon::createFromFormat('date:Y-m-d H:i:s', $end_date);
+            $query = $query->whereDate('created_at', '<=', $end);
+        }
+
+        return $query->count();
     }
 
-    public function FindSubscriptionUsages($subscription_id, $date): ?object
+    public function FindSubscriptionUsages($user_id, $start_date, $end_date): ?object
     {
-        return UserLog::query()->where('subscription_id', $subscription_id)
-            ->whereYear('created_at', Carbon::parse($date)->format('Y'))
-            ->whereMonth('created_at', Carbon::parse($date)->format('m'))
-            ->get()
-            ->groupBy(function ($date) {
-                return Carbon::parse($date->created_at)->format('j'); // grouping by days
+        $start = Carbon::createFromFormat('date:Y-m-d H:i:s', $start_date);
+        $query = UserLog::query()->where('user_id', $user_id)
+            ->whereDate('created_at', '>=', $start);
+
+        if ($end_date != null) {
+            $end = Carbon::createFromFormat('date:Y-m-d H:i:s', $end_date);
+            $query = $query->whereDate('created_at', '<=', $end);
+        }
+
+        return $query->get()
+            ->groupBy(function ($log) {
+                return Carbon::parse($log->created_at)->format('j'); // grouping by days
             });
     }
 }

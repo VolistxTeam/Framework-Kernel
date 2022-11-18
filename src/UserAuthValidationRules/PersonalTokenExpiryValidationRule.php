@@ -5,7 +5,7 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 use Carbon\Carbon;
 use Volistx\FrameworkKernel\Facades\Messages;
 
-class KeyExpiryValidationRule extends ValidationRuleBase
+class PersonalTokenExpiryValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {

@@ -7,9 +7,17 @@ use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\AccessToken;
+use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
 
 class AccessKeyGenerateCommand extends Command
 {
+    private AccessTokenRepository $accessTokenRepository;
+
+    public function __construct(AccessTokenRepository $accessTokenRepository)
+    {
+        parent::__construct();
+        $this->accessTokenRepository = $accessTokenRepository;
+    }
     protected $signature = 'access-key:generate';
 
     protected $description = 'Create an access key';
@@ -19,7 +27,7 @@ class AccessKeyGenerateCommand extends Command
         $key = Str::random(64);
         $salt = Str::random(16);
 
-        AccessToken::query()->create([
+        $this->accessTokenRepository->Create([
             'key'           => substr($key, 0, 32),
             'secret'        => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
             'secret_salt'   => $salt,

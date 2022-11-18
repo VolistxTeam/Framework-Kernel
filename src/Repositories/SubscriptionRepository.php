@@ -15,14 +15,14 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'           => $inputs['user_id'],
-            'plan_id'           => $inputs['plan_id'],
-            'hmac_token'        => $inputs['hmac_token'],
-            'status'            => SubscriptionStatus::ACTIVE,
-            'plan_activated_at' => Carbon::now(),
-            'plan_expires_at'   => $inputs['plan_expires_at'],
-            'plan_cancels_at'   => null,
-            'plan_cancelled_at' => null,
+            'user_id' => $inputs['user_id'],
+            'plan_id' => $inputs['plan_id'],
+            'hmac_token' => $inputs['hmac_token'],
+            'status' => SubscriptionStatus::ACTIVE,
+            'activated_at' => Carbon::now(),
+            'expires_at' => $inputs['plan_expires_at'],
+            'cancels_at' => null,
+            'cancelled_at' => null,
         ]);
     }
 
@@ -35,14 +35,14 @@ class SubscriptionRepository
         }
 
         return Subscription::query()->create([
-            'user_id'           => $subscription->user_id,
-            'plan_id'           => $inputs['plan_id'] ?? $subscription->plan_id,
-            'hmac_token'        => $inputs['hmac_token'] ?? $subscription->hmac_token,
-            'status'            => SubscriptionStatus::ACTIVE,
+            'user_id' => $subscription->user_id,
+            'plan_id' => $inputs['plan_id'] ?? $subscription->plan_id,
+            'hmac_token' => $inputs['hmac_token'] ?? $subscription->hmac_token,
+            'status' => SubscriptionStatus::ACTIVE,
             'plan_activated_at' => Carbon::now(),
-            'plan_expires_at'   => $inputs['plan_expires_at'],
-            'plan_cancels_at'   => null,
-            'plan_cancelled_at' => null,
+            'plan_expires_at' => $inputs['expires_at'] ?? $subscription->expires_at,
+            'cancels_at' => $inputs['cancels_at'] ?? $subscription->expires_at,
+            'cancelled_at' => $inputs['cancelled_at'] ?? $subscription->expires_at,
         ]);
     }
 
@@ -62,11 +62,11 @@ class SubscriptionRepository
             $subscription->hmac_token = $inputs['hmac_token'];
         }
 
-        if (isset($inputs['plan_cancels_at'])) {
+        if (isset($inputs['cancels_at'])) {
             $subscription->plan_cancels_at = $inputs['plan_cancels_at'];
         }
 
-        if (isset($inputs['plan_cancelled_at'])) {
+        if (isset($inputs['cancelled_at'])) {
             $subscription->plan_cancelled_at = $inputs['plan_cancelled_at'];
         }
 
@@ -78,6 +78,14 @@ class SubscriptionRepository
     public function Find($subscriptionID): ?object
     {
         return Subscription::with('plan')->where('id', $subscriptionID)->first();
+    }
+
+    public function FindUserActiveSubscription($user_id): Builder|Model|null
+    {
+        return Subscription::with('plan')
+            ->where('user_id', $user_id)
+            ->where('status', SubscriptionStatus::ACTIVE)
+            ->first();
     }
 
     public function Delete($subscriptionID): ?bool

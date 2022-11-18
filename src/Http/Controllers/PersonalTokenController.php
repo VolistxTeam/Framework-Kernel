@@ -28,17 +28,15 @@ class PersonalTokenController extends Controller
         $this->personalTokenRepository = $personalTokenRepository;
     }
 
-    public function CreatePersonalToken(Request $request, $subscription_id): JsonResponse
+    public function CreatePersonalToken(Request $request): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'create')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
-            ]), [
-                'subscription_id'    => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
+            $validator = Validator::make($request->all(), [
+                'user_id'            => ['required', 'integer', 'bail'],
                 'duration'           => ['bail', 'sometimes', 'nullable', 'integer'],
                 'rate_limit_mode'    => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
                 'permissions'        => ['bail', 'sometimes', 'array'],
@@ -50,8 +48,7 @@ class PersonalTokenController extends Controller
                 'country_range'      => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
                 'disable_logging'    => ['bail', 'sometimes', 'nullable', 'boolean'],
             ], [
-                'subscription_id.required'          => 'The subscription ID is required.',
-                'subscription_id.exists'            => 'The subscription with the given ID was not found.',
+                'user_id.required'                  => 'The user ID is required.',
                 'duration.required'                 => 'The duration is required.',
                 'duration.integer'                  => 'The duration must be an integer.',
                 'rate_limit_mode.required'          => 'The rate limit mode is required.',
@@ -76,7 +73,8 @@ class PersonalTokenController extends Controller
 
             $saltedKey = Keys::randomSaltedKey();
 
-            $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
+            $newPersonalToken = $this->personalTokenRepository->Create([
+                'user_id'         => $request->input('user_id'),
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
                 'rate_limit_mode' => $request->input('rate_limit_mode') ?? RateLimitMode::SUBSCRIPTION,
@@ -97,7 +95,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function UpdatePersonalToken(Request $request, $subscription_id, $token_id): JsonResponse
+    public function UpdatePersonalToken(Request $request, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'update')) {
@@ -105,10 +103,8 @@ class PersonalTokenController extends Controller
             }
 
             $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
                 'token_id'        => $token_id,
             ]), [
-                'subscription_id'    => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
                 'token_id'           => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
                 'duration'           => ['bail', 'sometimes', 'integer'],
                 'permissions'        => ['bail', 'sometimes', 'array'],
@@ -121,9 +117,6 @@ class PersonalTokenController extends Controller
                 'country_range'      => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
                 'disable_logging'    => ['bail', 'sometimes', 'nullable', 'boolean'],
             ], [
-                'subscription_id.required'          => 'The subscription ID is required.',
-                'subscription_id.uuid'              => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'            => 'The subscription with the given ID was not found.',
                 'token_id.required'                 => 'The token ID is required.',
                 'token_id.uuid'                     => 'The token ID must be a valid uuid.',
                 'token_id.exists'                   => 'The token with the given ID was not found.',
@@ -149,7 +142,7 @@ class PersonalTokenController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $updatedToken = $this->personalTokenRepository->Update($subscription_id, $token_id, $request->all());
+            $updatedToken = $this->personalTokenRepository->Update($token_id, $request->all());
             if (!$updatedToken) {
                 return response()->json(Messages::E404(), 404);
             }
@@ -160,7 +153,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function ResetPersonalToken(Request $request, $subscription_id, $token_id): JsonResponse
+    public function ResetPersonalToken(Request $request, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'reset')) {
@@ -168,15 +161,10 @@ class PersonalTokenController extends Controller
             }
 
             $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
                 'token_id'        => $token_id,
             ]), [
-                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
                 'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
                 'token_id.required'        => 'The token ID is required.',
                 'token_id.uuid'            => 'The token ID must be a valid uuid.',
                 'token_id.exists'          => 'The token ID does not found in the database.',
@@ -189,7 +177,6 @@ class PersonalTokenController extends Controller
             $saltedKey = Keys::randomSaltedKey();
 
             $resetToken = $this->personalTokenRepository->Reset(
-                $subscription_id,
                 $token_id,
                 $saltedKey
             );
@@ -204,22 +191,17 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function DeletePersonalToken(Request $request, $subscription_id, $token_id): JsonResponse
+    public function DeletePersonalToken(Request $request, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
                 return response()->json(Messages::E401(), 401);
             }
             $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
                 'token_id'        => $token_id,
             ]), [
-                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
                 'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
                 'token_id.required'        => 'The token ID is required.',
                 'token_id.uuid'            => 'The token ID must be a valid uuid.',
                 'token_id.exists'          => 'The token ID does not found in the database.',
@@ -229,7 +211,7 @@ class PersonalTokenController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $result = $this->personalTokenRepository->Delete($subscription_id, $token_id);
+            $result = $this->personalTokenRepository->Delete($token_id);
             if (!$result) {
                 return response()->json(Messages::E404(), 404);
             }
@@ -240,7 +222,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function GetPersonalToken(Request $request, $subscription_id, $token_id): JsonResponse
+    public function GetPersonalToken(Request $request, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
@@ -248,15 +230,10 @@ class PersonalTokenController extends Controller
             }
 
             $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
                 'token_id'        => $token_id,
             ]), [
-                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
                 'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
                 'token_id.required'        => 'The token ID is required.',
                 'token_id.uuid'            => 'The token ID must be a valid uuid.',
                 'token_id.exists'          => 'The token with the given ID was not found.',
@@ -266,7 +243,7 @@ class PersonalTokenController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $token = $this->personalTokenRepository->Find($subscription_id, $token_id);
+            $token = $this->personalTokenRepository->Find($token_id);
 
             if (!$token) {
                 return response()->json(Messages::E404(), 404);
@@ -278,25 +255,11 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function GetPersonalTokens(Request $request, $subscription_id): JsonResponse
+    public function GetPersonalTokens(Request $request): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view-all')) {
                 return response()->json(Messages::E401(), 401);
-            }
-
-            $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
-            ]), [
-                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
-            ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
             $search = $request->input('search', '');
@@ -315,7 +278,7 @@ class PersonalTokenController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $tokens = $this->personalTokenRepository->FindAll($subscription_id, $search, $page, $limit);
+            $tokens = $this->personalTokenRepository->FindAll($search, $page, $limit);
 
             if (!$tokens) {
                 return response()->json(Messages::E400('Invalid search column'), 400);
@@ -339,32 +302,29 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function Sync(Request $request, $subscription_id)
+    public function Sync(Request $request)
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'sync')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
-            ]), [
-                'subscription_id' => ['required', 'uuid', 'bail', 'exists:subscriptions,id'],
+            $validator = Validator::make($request->all(), [
+                'user_id' => ['required', 'integer', 'bail'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid uuid.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'user_id.required' => 'The user ID is required.',
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $this->personalTokenRepository->DeleteHiddenTokens($subscription_id);
+            $this->personalTokenRepository->DeleteHiddenTokens($request->input('user_id'));
 
             $saltedKey = Keys::randomSaltedKey();
 
-            $newPersonalToken = $this->personalTokenRepository->Create($subscription_id, [
+            $newPersonalToken = $this->personalTokenRepository->Create([
+                'user_id'         => $request->input('user_id'),
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
                 'permissions'     => ['*'],

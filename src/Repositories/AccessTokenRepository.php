@@ -12,7 +12,7 @@ use Volistx\FrameworkKernel\Models\AccessToken;
 
 class AccessTokenRepository
 {
-    public function Create($subscription_id, array $inputs): Model|Builder
+    public function Create(array $inputs): Model|Builder
     {
         return AccessToken::query()->create([
             'key'           => substr($inputs['key'], 0, 32),

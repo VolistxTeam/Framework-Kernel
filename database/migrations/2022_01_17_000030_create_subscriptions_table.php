@@ -19,11 +19,11 @@ class CreateSubscriptionsTable extends Migration
             $table->integer('user_id')->index('sub_user_id');
             $table->uuid('plan_id')->index('sub_plan_id');
             $table->foreign('plan_id')->references('id')->on('plans');
-            $table->dateTime('plan_activated_at');
-            $table->dateTime('plan_expires_at')->nullable();
-            $table->dateTime('plan_cancels_at')->nullable();
-            $table->dateTime('plan_cancelled_at')->nullable();
-            $table->dateTime('plan_expired_at')->nullable();
+            $table->dateTime('activated_at');
+            $table->dateTime('expires_at')->nullable();
+            $table->dateTime('cancels_at')->nullable();
+            $table->dateTime('cancelled_at')->nullable();
+            $table->dateTime('expired_at')->nullable();
             $table->string('hmac_token', 255);
             $table->integer('status');
             $table->dateTime('created_at');

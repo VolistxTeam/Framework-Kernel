@@ -35,26 +35,21 @@ class Subscription extends Model
         'user_id',
         'plan_id',
         'hmac_token',
-        'plan_activated_at',
-        'plan_expires_at',
-        'plan_cancels_at',
-        'plan_cancelled_at',
+        'activated_at',
+        'expires_at',
+        'cancels_at',
+        'cancelled_at',
     ];
 
     protected $casts = [
         'status'              => SubscriptionStatus::class,
-        'plan_activated_at'   => 'date:Y-m-d H:i:s',
-        'plan_expires_at'     => 'date:Y-m-d H:i:s',
-        'plan_cancels_at'     => 'date:Y-m-d H:i:s',
-        'plan_cancelled_at'   => 'date:Y-m-d H:i:s',
+        'activated_at'   => 'date:Y-m-d H:i:s',
+        'expires_at'     => 'date:Y-m-d H:i:s',
+        'cancels_at'     => 'date:Y-m-d H:i:s',
+        'cancelled_at'   => 'date:Y-m-d H:i:s',
         'created_at'          => 'date:Y-m-d H:i:s',
         'updated_at'          => 'date:Y-m-d H:i:s',
     ];
-
-    public function personalTokens(): HasMany
-    {
-        return $this->hasMany(PersonalToken::class);
-    }
 
     public function plan(): BelongsTo
     {

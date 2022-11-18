@@ -47,16 +47,18 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
     }
 
-    public function GetSubscriptionLogs($subscription_id, string $search, int $page, int $limit)
+    public function GetSubscriptionLogs($subscription_id)
     {
-        $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $search, $page, $limit);
+        $subscription = $this->subscriptionRepository->Find($subscription_id);
+
+        $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $subscription->activated_at, $subscription->expires_at);
 
         if (!$logs === null) {
             return $logs;
@@ -70,49 +72,63 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
     }
 
-    public function GetSubscriptionLogsCount($subscription_id, $date)
+    public function GetSubscriptionLogsCount($subscription_id)
     {
-        return $this->logRepository->FindSubscriptionLogsCount($subscription_id, $date);
+        $subscription = $this->subscriptionRepository->Find($subscription_id);
+
+        return $this->logRepository->FindSubscriptionLogsCount($subscription_id, $subscription->activated_at, $subscription->expires_at);
     }
 
-    public function GetSubscriptionUsages($subscription_id, $date, $mode)
+    // This function requires rebuilding. discuss.
+    public function GetSubscriptionUsages($subscription_id, $mode)
     {
-        $groupedLogs = $this->logRepository->FindSubscriptionUsages($subscription_id, $date);
-
-        $specifiedDate = Carbon::parse($date);
-        $thisDate = Carbon::now();
-        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int) $specifiedDate->format('t');
-
-        $totalCount = 0;
-        $stats = [];
-        for ($i = 1; $i <= $lastDay; $i++) {
-            $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
-            if ($mode === 'focused' && $groupedCount === 0) {
-                continue;
-            }
-            $totalCount += $groupedCount;
-            $stats[] = [
-                'date'  => $specifiedDate->format('Y-m-').sprintf('%02d', $i),
-                'count' => $groupedCount,
-            ];
-        }
-
-        $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan()->first()->data['requests'];
+//        $subscription = $this->subscriptionRepository->Find($subscription_id);
+//
+//        $groupedLogs = $this->logRepository->FindSubscriptionUsages($subscription_id, $subscription->activated_at, $subscription->expires_at);
+//
+//        $specifiedDate = Carbon::parse($date);
+//        $thisDate = Carbon::now();
+//        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int)$specifiedDate->format('t');
+//
+//        $totalCount = 0;
+//        $stats = [];
+//        for ($i = 1; $i <= $lastDay; $i++) {
+//            $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
+//            if ($mode === 'focused' && $groupedCount === 0) {
+//                continue;
+//            }
+//            $totalCount += $groupedCount;
+//            $stats[] = [
+//                'date' => $specifiedDate->format('Y-m-') . sprintf('%02d', $i),
+//                'count' => $groupedCount,
+//            ];
+//        }
+//
+//        $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan()->first()->data['requests'];
+//
+//        return [
+//            'usages' => [
+//                'current' => $totalCount,
+//                'max' => (int)$requestsCount,
+//                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
+//            ],
+//            'details' => $stats,
+//        ];
 
         return [
             'usages' => [
-                'current' => $totalCount,
-                'max'     => (int) $requestsCount,
-                'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
+                'current' => 5,
+                'max' => 100,
+                'percent' => '0.05%'
             ],
-            'details' => $stats,
+            'details' => null,
         ];
     }
 }

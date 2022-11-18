@@ -19,7 +19,7 @@ class RequestsCountValidationRule extends ValidationRuleBase
 
     public function Validate(): bool|array
     {
-        $sub_id = $this->inputs['token']->subscription()->first()->id;
+        $sub_id = $this->inputs['subscription']->id;
         $plan = $this->inputs['plan'];
 
         if (isset($plan['data']['requests'])) {

@@ -22,7 +22,7 @@ class PersonalToken extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'subscription_id',
+        'user_id',
         'key',
         'secret',
         'secret_salt',
@@ -52,11 +52,6 @@ class PersonalToken extends Model
         'created_at'      => 'date:Y-m-d H:i:s',
         'updated_at'      => 'date:Y-m-d H:i:s',
     ];
-
-    public function subscription(): BelongsTo
-    {
-        return $this->belongsTo(Subscription::class);
-    }
 
     public function setCountryRangeAttribute($value)
     {

@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Laravel\Lumen\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
-use Volistx\FrameworkKernel\Console\Commands\SubscriptionCronCommand;
+use Volistx\FrameworkKernel\Console\Commands\SubscriptionStatusCronCommand;
 use Volistx\FrameworkKernel\Providers\AccessTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
 use Volistx\FrameworkKernel\Providers\GeoLocationServiceProvider;
@@ -19,6 +19,7 @@ use Volistx\FrameworkKernel\Providers\MessagesServiceProvider;
 use Volistx\FrameworkKernel\Providers\PermissionsServiceProvider;
 use Volistx\FrameworkKernel\Providers\PersonalTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\PlansServiceProvider;
+use Volistx\FrameworkKernel\Providers\SubscriptionServiceProvider;
 use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -32,6 +33,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // Register All Required Providers
         $serviceProvider = [
             AccessTokenServiceProvider::class,
+            SubscriptionServiceProvider::class,
             AdminLoggingServiceProvider::class,
             GeoLocationServiceProvider::class,
             HMACServiceProvider::class,
@@ -55,7 +57,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $this->commands([
                 AccessKeyDeleteCommand::class,
                 AccessKeyGenerateCommand::class,
-                SubscriptionCronCommand::class,
+                SubscriptionStatusCronCommand::class,
                 ScheduleListCommand::class,
                 ScheduleClearCacheCommand::class,
             ]);

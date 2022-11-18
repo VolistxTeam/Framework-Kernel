@@ -61,7 +61,7 @@ class RemoteUserLoggingService implements IUserLoggingService
         return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
-    public function GetSubscriptionLogs($subscription_id, string $search, int $page, int $limit)
+    public function GetSubscriptionLogs($subscription_id)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id", [
             'headers' => [
@@ -70,9 +70,9 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
             [
                 'query' => [
-                    'search' => $search,
-                    'page'   => $page,
-                    'limit'  => $limit,
+//                    'search' => $search,
+//                    'page'   => $page,
+//                    'limit'  => $limit,
                 ],
             ],
         ]);
@@ -80,7 +80,7 @@ class RemoteUserLoggingService implements IUserLoggingService
         return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
-    public function GetSubscriptionLogsCount($subscription_id, $date)
+    public function GetSubscriptionLogsCount($subscription_id)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id/count", [
             'headers' => [
@@ -89,7 +89,7 @@ class RemoteUserLoggingService implements IUserLoggingService
             ],
             [
                 'query' => [
-                    'date' => $date,
+//                    'date' => $date,
                 ],
             ],
         ]);
@@ -97,7 +97,7 @@ class RemoteUserLoggingService implements IUserLoggingService
         return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
     }
 
-    public function GetSubscriptionUsages($subscription_id, $date, $mode)
+    public function GetSubscriptionUsages($subscription_id, $mode)
     {
         $subscriptionRepo = new SubscriptionRepository();
 
@@ -107,9 +107,9 @@ class RemoteUserLoggingService implements IUserLoggingService
                 'Content-Type'  => 'application/json',
             ],
             'query' => [
-                'date'  => $date,
-                'mode'  => $mode,
-                'count' => $subscriptionRepo->Find($subscription_id)->plan()->first()->data['requests'],
+//                'date'  => $date,
+//                'mode'  => $mode,
+//                'count' => $subscriptionRepo->Find($subscription_id)->plan()->first()->data['requests'],
             ],
         ]);
 

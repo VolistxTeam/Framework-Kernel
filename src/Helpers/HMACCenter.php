@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\URL;
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
+use Volistx\FrameworkKernel\Facades\Subscriptions;
 
 class HMACCenter
 {
     public static function sign($content): array
     {
-        $key = PersonalTokens::getToken()->subscription()->first()->hmac_token;
+        $key = Subscriptions::getSubscription()->hmac_token;
         $method = Request::method();
         $url = urlencode(URL::full());
         $timestamp = Carbon::now()->getTimestamp();
@@ -39,9 +40,14 @@ class HMACCenter
 
     public static function verify($hmac_token, $method, $url, ResponseInterface $response)
     {
+        $timestamp = $response->getHeader('X-Hmac-Timestamp')[0];
+
+        if (Carbon::now()->greaterThan(Carbon::createFromTimestamp($timestamp)->addSeconds(3))) {
+            return false;
+        }
+
         $contentString = $response->getBody()->getContents();
         $nonce = $response->getHeader('X-Hmac-Nonce')[0];
-        $timestamp = $response->getHeader('X-Hmac-Timestamp')[0];
 
         $valueToSign = $method
             .$url

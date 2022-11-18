@@ -12,10 +12,10 @@ use Volistx\FrameworkKernel\Models\PersonalToken;
 
 class PersonalTokenRepository
 {
-    public function Create($subscription_id, array $inputs): Model|Builder
+    public function Create(array $inputs): Model|Builder
     {
         return PersonalToken::query()->create([
-            'subscription_id' => $subscription_id,
+            'user_id'         => $inputs['user_id'],
             'key'             => substr($inputs['key'], 0, 32),
             'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
             'secret_salt'     => $inputs['salt'],
@@ -32,9 +32,9 @@ class PersonalTokenRepository
         ]);
     }
 
-    public function Update($subscription_id, $token_id, array $inputs): ?object
+    public function Update($token_id, array $inputs): ?object
     {
-        $token = $this->Find($subscription_id, $token_id);
+        $token = $this->Find($token_id);
 
         if (!$token) {
             return null;
@@ -74,7 +74,7 @@ class PersonalTokenRepository
         }
 
         if ($duration !== null) {
-            $token->expires_at = $duration != null ? Carbon::createFromTimeString($token->activated_at)->addHours($duration) : null;
+            $token->expires_at =  Carbon::createFromTimeString($token->activated_at)->addHours($duration);
         }
 
         if ($disable_logging !== null) {
@@ -86,14 +86,14 @@ class PersonalTokenRepository
         return $token;
     }
 
-    public function Find($subscription_id, $token_id): ?object
+    public function Find($token_id): ?object
     {
-        return PersonalToken::with('subscription')->where('id', $token_id)->where('subscription_id', $subscription_id)->first();
+        return PersonalToken::query()->where('id', $token_id)->first();
     }
 
-    public function Reset($subscription_id, $token_id, array $inputs): ?object
+    public function Reset($token_id, array $inputs): ?object
     {
-        $token = $this->Find($subscription_id, $token_id);
+        $token = $this->Find($token_id);
 
         if (!$token) {
             return null;
@@ -107,9 +107,9 @@ class PersonalTokenRepository
         return $token;
     }
 
-    public function Delete($subscription_id, $token_id): ?bool
+    public function Delete($token_id): ?bool
     {
-        $toBeDeletedToken = $this->Find($subscription_id, $token_id);
+        $toBeDeletedToken = $this->Find($token_id);
 
         if (!$toBeDeletedToken) {
             return null;
@@ -120,7 +120,7 @@ class PersonalTokenRepository
         return true;
     }
 
-    public function FindAll($subscription_id, $search, $page, $limit): LengthAwarePaginator|null
+    public function FindAll($search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {
@@ -143,7 +143,6 @@ class PersonalTokenRepository
         $searchValue = strtolower(trim($values[1]));
 
         return PersonalToken::query()
-            ->where('subscription_id', $subscription_id)
             ->where('hidden', false)
             ->where($values[0], 'LIKE', "%$searchValue%")
             ->paginate($limit, ['*'], 'page', $page);
@@ -151,15 +150,15 @@ class PersonalTokenRepository
 
     public function AuthPersonalToken($token): ?object
     {
-        return PersonalToken::with('subscription')->where('key', substr($token, 0, 32))
+        return PersonalToken::query()->where('key', substr($token, 0, 32))
             ->get()->filter(function ($v) use ($token) {
                 return SHA256Hasher::check(substr($token, 32), $v->secret, ['salt' => $v->secret_salt]);
             })->first();
     }
 
-    public function DeleteHiddenTokens($subscription_id): bool
+    public function DeleteHiddenTokens($user_id): bool
     {
-        PersonalToken::query()->where('subscription_id', $subscription_id)->where('hidden', true)->delete();
+        PersonalToken::query()->where('user_id', $user_id)->where('hidden', true)->delete();
 
         return true;
     }

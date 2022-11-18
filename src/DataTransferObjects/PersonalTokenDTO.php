@@ -9,7 +9,7 @@ use Volistx\FrameworkKernel\Enums\RateLimitMode;
 class PersonalTokenDTO extends DataTransferObjectBase
 {
     public string $id;
-    public string $subscription_id;
+    public int $user_id;
     public int $rate_limit_mode;
     public array $permissions;
     public int $ip_rule;
@@ -32,7 +32,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
         $result = [
             'id'              => $this->id,
             'key'             => $key,
-            'subscription'    => SubscriptionDTO::fromModel($this->entity->subscription()->first())->GetDTO(),
+            'user_id'    => $this->user_id,
             'permissions'     => $this->permissions,
             'rate_limit_mode' => RateLimitMode::from($this->rate_limit_mode)->name,
             'geolocation'     => [
