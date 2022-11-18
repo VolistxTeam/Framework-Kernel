@@ -10,14 +10,13 @@ class GeoLocationCenter
     private Client $client;
     private string $httpBaseUrl;
     private string $remoteToken;
-    private string $verification_token;
+    private string $verification_key;
 
     public function __construct()
     {
         $this->client = new Client();
         $this->httpBaseUrl = config('volistx.geolocation.base_url');
         $this->remoteToken = config('volistx.geolocation.token');
-        $this->verification = config('volistx.geolocation.verification');
         $this->verification_key = config('volistx.geolocation.verification_key');
     }
 
@@ -31,7 +30,7 @@ class GeoLocationCenter
             ],
         ]);
 
-        if ($this->verification) {
+        if ($this->verification_key) {
             return $response->getStatusCode() == 200 && HMAC::verify($this->verification_key, 'GET', urlencode($url), $response)
                 ? json_decode($response->getBody()->getContents())
                 : null;
