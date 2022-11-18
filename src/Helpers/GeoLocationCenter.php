@@ -17,7 +17,8 @@ class GeoLocationCenter
         $this->client = new Client();
         $this->httpBaseUrl = config('volistx.geolocation.base_url');
         $this->remoteToken = config('volistx.geolocation.token');
-        $this->verification_token = config('volistx.geolocation.verification');
+        $this->verification = config('volistx.geolocation.verification');
+        $this->verification_key = config('volistx.geolocation.verification_key');
     }
 
     public function search(string $ip)
@@ -30,8 +31,12 @@ class GeoLocationCenter
             ],
         ]);
 
-        return $response->getStatusCode() == 200 && HMAC::verify($this->verification_token, 'GET', urlencode($url), $response)
-            ? json_decode($response->getBody()->getContents())
-            : null;
+        if ($this->verification) {
+            return $response->getStatusCode() == 200 && HMAC::verify($this->verification_key, 'GET', urlencode($url), $response)
+                ? json_decode($response->getBody()->getContents())
+                : null;
+        } else {
+            return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
+        }
     }
 }
