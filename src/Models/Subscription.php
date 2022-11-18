@@ -34,6 +34,7 @@ class Subscription extends Model
         'user_id',
         'plan_id',
         'hmac_token',
+        'status',
         'activated_at',
         'expires_at',
         'cancels_at',
