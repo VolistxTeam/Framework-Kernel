@@ -9,7 +9,7 @@ class PermissionsCenter
 
         'subscriptions:*',
         'subscriptions:create',
-        'subscriptions:update',
+        'subscriptions:mutate',
         'subscriptions:delete',
         'subscriptions:view',
         'subscriptions:view-all',

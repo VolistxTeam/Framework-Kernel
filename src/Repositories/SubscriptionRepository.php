@@ -36,11 +36,11 @@ class SubscriptionRepository
         return Subscription::query()->create([
             'user_id'           => $subscription->user_id,
             'plan_id'           => $inputs['plan_id'] ?? $subscription->plan_id,
-            'status'            => SubscriptionStatus::ACTIVE,
-            'activated_at'      => Carbon::now(),
+            'status'            => $inputs['status'] ?? $subscription->status,
+            'activated_at'      => $inputs['activated_at'] ?? $subscription->activated_at,
             'expires_at'        => $inputs['expires_at'] ?? $subscription->expires_at,
-            'cancels_at'        => $inputs['cancels_at'] ?? $subscription->expires_at,
-            'cancelled_at'      => $inputs['cancelled_at'] ?? $subscription->expires_at,
+            'cancels_at'        => $inputs['cancels_at'] ?? $subscription->cancels_at,
+            'cancelled_at'      => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
         ]);
     }
 
