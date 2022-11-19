@@ -165,7 +165,7 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E401(), 401);
         }
 
-        $cancels_at = $request->input('cancels_at', Carbon::now());
+        $cancels_at = $request->input('cancels_at');
 
         $validator = Validator::make([
             'subscription_id' => $subscription_id,
