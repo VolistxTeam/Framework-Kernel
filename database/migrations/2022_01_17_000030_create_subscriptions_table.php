@@ -24,7 +24,6 @@ class CreateSubscriptionsTable extends Migration
             $table->dateTime('cancels_at')->nullable();
             $table->dateTime('cancelled_at')->nullable();
             $table->dateTime('expired_at')->nullable();
-            $table->string('hmac_token', 255);
             $table->integer('status');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');

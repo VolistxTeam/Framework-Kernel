@@ -47,6 +47,7 @@ class PersonalTokenController extends Controller
                 'country_rule'       => ['bail', 'required', new Enum(AccessRule::class)],
                 'country_range'      => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
                 'disable_logging'    => ['bail', 'sometimes', 'nullable', 'boolean'],
+                'hmac_token'         => ['bail', 'sometimes', 'max:255'],
             ], [
                 'user_id.required'                  => 'The user ID is required.',
                 'duration.required'                 => 'The duration is required.',
@@ -65,6 +66,7 @@ class PersonalTokenController extends Controller
                 'country_range.array'               => 'The country range must be an array.',
                 'country_range.*.required_if'       => 'The country range item must be a valid country code.',
                 'disable_logging.boolean'           => 'The disable logging must be a boolean.',
+                'hmac_token.max'                    => 'HMac toke should be shorter than 255 letter.'
             ]);
 
             if ($validator->fails()) {
@@ -87,6 +89,7 @@ class PersonalTokenController extends Controller
                 'duration'        => $request->input('duration'),
                 'hidden'          => false,
                 'disable_logging' => $request->input('disable_logging') ?? false,
+                'hmac_token'      => $request->input('hmac_token') ?? Keys::randomKey(32)
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
@@ -116,6 +119,7 @@ class PersonalTokenController extends Controller
                 'country_rule'       => ['bail', 'sometimes', new Enum(AccessRule::class)],
                 'country_range'      => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
                 'disable_logging'    => ['bail', 'sometimes', 'nullable', 'boolean'],
+                'hmac_token'         => ['bail', 'sometimes', 'max:255'],
             ], [
                 'token_id.required'                 => 'The token ID is required.',
                 'token_id.uuid'                     => 'The token ID must be a valid uuid.',
@@ -136,6 +140,7 @@ class PersonalTokenController extends Controller
                 'country_range.array'               => 'The country range must be an array.',
                 'country_range.*.required_if'       => 'The country range item must be a valid country code.',
                 'disable_logging.boolean'           => 'The disable logging must be a boolean.',
+                'hmac_token.max'                    => 'HMac toke should be shorter than 255 letter.'
             ]);
 
             if ($validator->fails()) {
@@ -337,6 +342,7 @@ class PersonalTokenController extends Controller
                 'hidden'          => true,
                 'disable_logging' => true,
                 'rate_limit_mode' => RateLimitMode::SUBSCRIPTION,
+                'hmac_token'      => null
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);

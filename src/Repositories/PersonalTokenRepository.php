@@ -25,6 +25,7 @@ class PersonalTokenRepository
             'ip_range'        => $inputs['ip_range'],
             'country_rule'    => $inputs['country_rule'],
             'country_range'   => $inputs['country_range'],
+            'hmac_token'      => $inputs['hmac_token'],
             'activated_at'    => Carbon::now(),
             'expires_at'      => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
             'hidden'          => $inputs['hidden'],
@@ -48,6 +49,7 @@ class PersonalTokenRepository
         $country_range = $inputs['country_range'] ?? null;
         $duration = $inputs['duration'] ?? null;
         $disable_logging = $inputs['disable_logging'] ?? null;
+        $hmac_token = $inputs['hmac_token'] ?? null;
 
         if ($rate_limit_mode !== null) {
             $token->rate_limit_mode = $rate_limit_mode;
@@ -79,6 +81,10 @@ class PersonalTokenRepository
 
         if ($disable_logging !== null) {
             $token->disable_logging = $disable_logging;
+        }
+
+        if ($hmac_token !== null) {
+            $token->hmac_token = $hmac_token;
         }
 
         $token->save();

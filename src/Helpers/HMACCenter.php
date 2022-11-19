@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
 
 class HMACCenter
 {
     public static function sign($content): array
     {
-        $key = Subscriptions::getSubscription()->hmac_token;
+        $key = PersonalTokens::getToken()->hmac_token;
         $method = Request::method();
         $url = urlencode(URL::full());
         $timestamp = Carbon::now()->getTimestamp();

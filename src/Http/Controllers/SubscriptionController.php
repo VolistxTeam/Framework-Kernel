@@ -58,7 +58,6 @@ class SubscriptionController extends Controller
             $newSubscription = $this->subscriptionRepository->Create([
                 'user_id'    => $request->input('user_id'),
                 'plan_id'    => $request->input('plan_id'),
-                'hmac_token' => Keys::randomKey(32),
                 'expires_at' => $request->input('plan_expires_at'),
             ]);
 

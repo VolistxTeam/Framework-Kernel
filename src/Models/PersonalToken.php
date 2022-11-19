@@ -31,6 +31,7 @@ class PersonalToken extends Model
         'ip_range',
         'country_rule',
         'country_range',
+        'hmac_token',
         'activated_at',
         'expires_at',
         'hidden',

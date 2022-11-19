@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static setToken(object $token)
+ * @method static getToken()
  */
 class PersonalTokens extends Facade
 {

@@ -8,7 +8,6 @@ class SubscriptionDTO extends DataTransferObjectBase
 {
     public string $id;
     public int $user_id;
-    public string $hmac_token;
     public string $activated_at;
     public ?string $expires_at;
     public string $created_at;
@@ -28,7 +27,6 @@ class SubscriptionDTO extends DataTransferObjectBase
             'id'                 => $this->id,
             'user_id'            => $this->user_id,
             'plan'               => PlanDTO::fromModel($this->entity->plan()->first())->GetDTO(),
-            'hmac_token'         => $this->hmac_token,
             'status'             => SubscriptionStatus::from($this->status)->name,
             'status_information' => [
                 'activated_at' => $this->activated_at,

@@ -21,7 +21,7 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
                 $this->app->router->post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
             });
 
-            $this->app->router->post('/{subscription_id}/un-cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UncancelSubscription');
+            $this->app->router->post('/{subscription_id}/uncancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UncancelSubscription');
             $this->app->router->delete('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@DeleteSubscription');
             $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptions');
             $this->app->router->get('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscription');

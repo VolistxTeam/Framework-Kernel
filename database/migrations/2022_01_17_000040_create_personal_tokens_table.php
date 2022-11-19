@@ -26,6 +26,7 @@ class CreatePersonalTokensTable extends Migration
             $table->integer('country_rule');
             $table->json('country_range')->default('[]');
             $table->json('permissions')->default('[]');
+            $table->string('hmac_token', 255);
             $table->boolean('hidden')->default(false);
             $table->boolean('disable_logging')->default(false);
             $table->dateTime('activated_at')->nullable();

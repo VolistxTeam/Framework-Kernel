@@ -21,6 +21,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
     public ?string $expires_at;
     public string $created_at;
     public string $updated_at;
+    public string $hmac_token;
 
     public static function fromModel($personal_token): self
     {
@@ -47,6 +48,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
                 'expires_at'   => $this->expires_at,
             ],
             'disable_logging' => $this->disable_logging,
+            'hmac_token'      => $this->hmac_token,
             'created_at'      => $this->created_at,
             'updated_at'      => $this->updated_at,
         ];
