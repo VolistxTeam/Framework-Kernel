@@ -15,20 +15,20 @@ class PersonalTokenRepository
     public function Create(array $inputs): Model|Builder
     {
         return PersonalToken::query()->create([
-            'user_id' => $inputs['user_id'],
-            'key' => substr($inputs['key'], 0, 32),
-            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt' => $inputs['salt'],
-            'permissions' => $inputs['permissions'],
+            'user_id'         => $inputs['user_id'],
+            'key'             => substr($inputs['key'], 0, 32),
+            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt'     => $inputs['salt'],
+            'permissions'     => $inputs['permissions'],
             'rate_limit_mode' => $inputs['rate_limit_mode'],
-            'ip_rule' => $inputs['ip_rule'],
-            'ip_range' => $inputs['ip_range'],
-            'country_rule' => $inputs['country_rule'],
-            'country_range' => $inputs['country_range'],
-            'hmac_token' => $inputs['hmac_token'],
-            'activated_at' => Carbon::now(),
-            'expires_at' => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
-            'hidden' => $inputs['hidden'],
+            'ip_rule'         => $inputs['ip_rule'],
+            'ip_range'        => $inputs['ip_range'],
+            'country_rule'    => $inputs['country_rule'],
+            'country_range'   => $inputs['country_range'],
+            'hmac_token'      => $inputs['hmac_token'],
+            'activated_at'    => Carbon::now(),
+            'expires_at'      => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
+            'hidden'          => $inputs['hidden'],
             'disable_logging' => $inputs['disable_logging'],
         ]);
     }
@@ -50,7 +50,7 @@ class PersonalTokenRepository
         }
 
         if (array_key_exists('ip_rule', $inputs)) {
-            $token->ip_rule =  $inputs['ip_rule'];
+            $token->ip_rule = $inputs['ip_rule'];
         }
 
         if (array_key_exists('ip_range', $inputs)) {
@@ -62,19 +62,19 @@ class PersonalTokenRepository
         }
 
         if (array_key_exists('country_range', $inputs)) {
-            $token->country_range =  $inputs['country_range'] ;
+            $token->country_range = $inputs['country_range'];
         }
 
         if (array_key_exists('duration', $inputs)) {
-            $token->expires_at = Carbon::createFromTimeString($token->activated_at)->addHours($inputs['duration'] );
+            $token->expires_at = Carbon::createFromTimeString($token->activated_at)->addHours($inputs['duration']);
         }
 
         if (array_key_exists('disable_logging', $inputs)) {
-            $token->disable_logging = $inputs['disable_logging'] ;
+            $token->disable_logging = $inputs['disable_logging'];
         }
 
         if (array_key_exists('hmac_token', $inputs)) {
-            $token->hmac_token =  $inputs['hmac_token'] ;
+            $token->hmac_token = $inputs['hmac_token'];
         }
 
         $token->save();
