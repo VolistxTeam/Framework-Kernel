@@ -105,12 +105,6 @@ class SubscriptionController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $subscription = $this->subscriptionRepository->Find($subscription_id);
-
-            if ($subscription->status !== SubscriptionStatus::ACTIVE) {
-                return response()->json(Messages::E400('Can not mutate a non active subscription'), 400);
-            }
-
             $mutated_sub = $this->subscriptionRepository->Clone($subscription_id, $request->all());
 
             //if new sub created successfuly, set the old one status to INACTIVE so its not used

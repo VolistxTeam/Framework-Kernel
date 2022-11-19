@@ -342,7 +342,7 @@ class PersonalTokenController extends Controller
                 'hidden'          => true,
                 'disable_logging' => true,
                 'rate_limit_mode' => RateLimitMode::SUBSCRIPTION,
-                'hmac_token'      => null,
+                'hmac_token'      => Keys::randomKey(32),
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
