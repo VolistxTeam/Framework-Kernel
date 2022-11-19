@@ -32,6 +32,7 @@ class SubscriptionStatusCronCommand extends Command
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->expires_at))) {
                 $this->subscriptionRepository->Update($subscription->id, [
                     'status' => SubscriptionStatus::EXPIRED,
+                    'expired_at' => Carbon::now()
                 ]);
             }
 

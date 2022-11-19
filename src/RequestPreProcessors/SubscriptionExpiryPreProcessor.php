@@ -7,7 +7,7 @@ use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
-class SubscriptionStatusPreProcessor extends RequestPreProcessorBase
+class SubscriptionExpiryPreProcessor extends RequestPreProcessorBase
 {
     private SubscriptionRepository $subscriptionRepository;
 
@@ -21,10 +21,10 @@ class SubscriptionStatusPreProcessor extends RequestPreProcessorBase
     {
         $subscription = $this->inputs['subscription'];
 
-        if ($subscription->status === SubscriptionStatus::ACTIVE && !empty($subscription->cancels_at) && Carbon::now()->gte($subscription->plan_cancels_at)) {
+        if ($subscription->status === SubscriptionStatus::ACTIVE && !empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
-                'status'            => SubscriptionStatus::CANCELLED,
-                'cancelled_at'      => Carbon::now(),
+                'status'            => SubscriptionStatus::EXPIRED,
+                'expired_at'      => Carbon::now(),
             ]);
 
             if (!config('volistx.fallback_plan.id')) {

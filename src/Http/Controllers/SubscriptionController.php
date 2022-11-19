@@ -177,7 +177,7 @@ class SubscriptionController extends Controller
             'subscription_id.required' => 'The subscription ID is required.',
             'subscription_id.uuid' => 'The subscription ID must be a valid UUID.',
             'subscription_id.exists' => 'The subscription with the given ID was not found.',
-            'cancels_at.date' => 'The immediately flag must be a boolean value.',
+            'cancels_at.date' => 'Cancellation must be a valid date',
         ]);
 
         if ($validator->fails()) {
@@ -190,14 +190,12 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E400("Can't cancel a subscription"), 400);
         }
 
-        $this->subscriptionRepository->Update(
+        $updatedSub = $this->subscriptionRepository->Update(
             $subscription_id,
             [
                 'cancels_at' => $cancels_at,
             ]
         );
-
-        $updatedSub = $this->subscriptionRepository->Find($subscription_id);
 
         return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
     }
@@ -229,14 +227,12 @@ class SubscriptionController extends Controller
             return response()->json(Messages::E400("Can't un-cancel a subscription"), 400);
         }
 
-        $this->subscriptionRepository->Update(
+        $updatedSub =  $this->subscriptionRepository->Update(
             $subscription_id,
             [
                 'cancels_at' => null,
             ]
         );
-
-        $updatedSub = $this->subscriptionRepository->Find($subscription_id);
 
         return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
     }

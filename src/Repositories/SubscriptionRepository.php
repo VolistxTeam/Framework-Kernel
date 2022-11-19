@@ -37,7 +37,7 @@ class SubscriptionRepository
             'user_id'           => $subscription->user_id,
             'plan_id'           => $inputs['plan_id'] ?? $subscription->plan_id,
             'status'            => $inputs['status'] ?? $subscription->status,
-            'activated_at'      => $inputs['activated_at'] ?? $subscription->activated_at,
+            'activated_at'      => $inputs['activated_at'] ?? Carbon::now(),
             'expires_at'        => $inputs['expires_at'] ?? $subscription->expires_at,
             'cancels_at'        => $inputs['cancels_at'] ?? $subscription->cancels_at,
             'cancelled_at'      => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
@@ -57,11 +57,11 @@ class SubscriptionRepository
         }
 
         if (isset($inputs['cancels_at'])) {
-            $subscription->plan_cancels_at = $inputs['plan_cancels_at'];
+            $subscription->cancels_at = $inputs['cancels_at'];
         }
 
         if (isset($inputs['cancelled_at'])) {
-            $subscription->plan_cancelled_at = $inputs['plan_cancelled_at'];
+            $subscription->cancelled_at = $inputs['cancelled_at'];
         }
 
         $subscription->save();

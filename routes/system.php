@@ -12,6 +12,9 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
     $this->app->router->get('/ping', function () {
         return response('Hi!');
     });
+    $this->app->router->get('/timestamp', function () {
+        return response(time());
+    });
 
     $this->app->router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () {
         $this->app->router->group(['prefix' => 'subscriptions'], function () {
