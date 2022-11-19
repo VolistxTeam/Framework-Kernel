@@ -24,7 +24,7 @@ class SubscriptionExpiryPreProcessor extends RequestPreProcessorBase
         if ($subscription->status === SubscriptionStatus::ACTIVE && !empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
                 'status'            => SubscriptionStatus::EXPIRED,
-                'expired_at'      => Carbon::now(),
+                'expired_at'        => Carbon::now(),
             ]);
 
             if (!config('volistx.fallback_plan.id')) {
