@@ -52,15 +52,15 @@ class SubscriptionRepository
             return null;
         }
 
-        if (isset($inputs['status'])) {
+        if (array_key_exists('status',$inputs)) {
             $subscription->status = $inputs['status'];
         }
 
-        if (isset($inputs['cancels_at'])) {
+        if (array_key_exists('cancels_at',$inputs)) {
             $subscription->cancels_at = $inputs['cancels_at'];
         }
 
-        if (isset($inputs['cancelled_at'])) {
+        if (array_key_exists('cancelled_at', $inputs)) {
             $subscription->cancelled_at = $inputs['cancelled_at'];
         }
 

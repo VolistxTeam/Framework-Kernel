@@ -223,7 +223,7 @@ class SubscriptionController extends Controller
         $subscription = $this->subscriptionRepository->Find($subscription_id);
 
         if ($subscription->status !== SubscriptionStatus::ACTIVE || empty($subscription->cancels_at)) {
-            return response()->json(Messages::E400("Can't un-cancel a subscription"), 400);
+            return response()->json(Messages::E400("Can't uncancel a subscription"), 400);
         }
 
         $updatedSub = $this->subscriptionRepository->Update(

@@ -15,20 +15,20 @@ class PersonalTokenRepository
     public function Create(array $inputs): Model|Builder
     {
         return PersonalToken::query()->create([
-            'user_id'         => $inputs['user_id'],
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
+            'user_id' => $inputs['user_id'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
             'rate_limit_mode' => $inputs['rate_limit_mode'],
-            'ip_rule'         => $inputs['ip_rule'],
-            'ip_range'        => $inputs['ip_range'],
-            'country_rule'    => $inputs['country_rule'],
-            'country_range'   => $inputs['country_range'],
-            'hmac_token'      => $inputs['hmac_token'],
-            'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
-            'hidden'          => $inputs['hidden'],
+            'ip_rule' => $inputs['ip_rule'],
+            'ip_range' => $inputs['ip_range'],
+            'country_rule' => $inputs['country_rule'],
+            'country_range' => $inputs['country_range'],
+            'hmac_token' => $inputs['hmac_token'],
+            'activated_at' => Carbon::now(),
+            'expires_at' => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
+            'hidden' => $inputs['hidden'],
             'disable_logging' => $inputs['disable_logging'],
         ]);
     }
@@ -41,50 +41,40 @@ class PersonalTokenRepository
             return null;
         }
 
-        $rate_limit_mode = $inputs['rate_limit_mode'] ?? null;
-        $permissions = $inputs['permissions'] ?? null;
-        $ip_rule = $inputs['ip_rule'] ?? null;
-        $ip_range = $inputs['ip_range'] ?? null;
-        $country_rule = $inputs['country_rule'] ?? null;
-        $country_range = $inputs['country_range'] ?? null;
-        $duration = $inputs['duration'] ?? null;
-        $disable_logging = $inputs['disable_logging'] ?? null;
-        $hmac_token = $inputs['hmac_token'] ?? null;
-
-        if ($rate_limit_mode !== null) {
-            $token->rate_limit_mode = $rate_limit_mode;
+        if (array_key_exists('rate_limit_mode', $inputs)) {
+            $token->rate_limit_mode = $inputs['rate_limit_mode'];
         }
 
-        if ($permissions !== null) {
-            $token->permissions = $permissions;
+        if (array_key_exists('permissions', $inputs)) {
+            $token->permissions = $inputs['permissions'];
         }
 
-        if ($ip_rule !== null) {
-            $token->ip_rule = $ip_rule;
+        if (array_key_exists('ip_rule', $inputs)) {
+            $token->ip_rule =  $inputs['ip_rule'];
         }
 
-        if ($ip_range !== null) {
-            $token->ip_range = $ip_range;
+        if (array_key_exists('ip_range', $inputs)) {
+            $token->ip_range = $inputs['ip_range'];
         }
 
-        if ($country_rule !== null) {
-            $token->country_rule = $country_rule;
+        if (array_key_exists('country_rule', $inputs)) {
+            $token->country_rule = $inputs['country_rule'];
         }
 
-        if ($country_range !== null) {
-            $token->country_range = $country_range;
+        if (array_key_exists('country_range', $inputs)) {
+            $token->country_range =  $inputs['country_range'] ;
         }
 
-        if ($duration !== null) {
-            $token->expires_at = Carbon::createFromTimeString($token->activated_at)->addHours($duration);
+        if (array_key_exists('duration', $inputs)) {
+            $token->expires_at = Carbon::createFromTimeString($token->activated_at)->addHours($inputs['duration'] );
         }
 
-        if ($disable_logging !== null) {
-            $token->disable_logging = $disable_logging;
+        if (array_key_exists('disable_logging', $inputs)) {
+            $token->disable_logging = $inputs['disable_logging'] ;
         }
 
-        if ($hmac_token !== null) {
-            $token->hmac_token = $hmac_token;
+        if (array_key_exists('hmac_token', $inputs)) {
+            $token->hmac_token =  $inputs['hmac_token'] ;
         }
 
         $token->save();
