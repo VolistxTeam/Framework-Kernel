@@ -66,7 +66,7 @@ class PersonalTokenController extends Controller
                 'country_range.array'               => 'The country range must be an array.',
                 'country_range.*.required_if'       => 'The country range item must be a valid country code.',
                 'disable_logging.boolean'           => 'The disable logging must be a boolean.',
-                'hmac_token.max'                    => 'HMac toke should be shorter than 255 letter.'
+                'hmac_token.max'                    => 'HMac toke should be shorter than 255 letter.',
             ]);
 
             if ($validator->fails()) {
@@ -89,7 +89,7 @@ class PersonalTokenController extends Controller
                 'duration'        => $request->input('duration'),
                 'hidden'          => false,
                 'disable_logging' => $request->input('disable_logging') ?? false,
-                'hmac_token'      => $request->input('hmac_token') ?? Keys::randomKey(32)
+                'hmac_token'      => $request->input('hmac_token') ?? Keys::randomKey(32),
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
@@ -140,7 +140,7 @@ class PersonalTokenController extends Controller
                 'country_range.array'               => 'The country range must be an array.',
                 'country_range.*.required_if'       => 'The country range item must be a valid country code.',
                 'disable_logging.boolean'           => 'The disable logging must be a boolean.',
-                'hmac_token.max'                    => 'HMac toke should be shorter than 255 letter.'
+                'hmac_token.max'                    => 'HMac toke should be shorter than 255 letter.',
             ]);
 
             if ($validator->fails()) {
@@ -342,7 +342,7 @@ class PersonalTokenController extends Controller
                 'hidden'          => true,
                 'disable_logging' => true,
                 'rate_limit_mode' => RateLimitMode::SUBSCRIPTION,
-                'hmac_token'      => null
+                'hmac_token'      => null,
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
