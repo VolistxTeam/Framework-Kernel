@@ -31,8 +31,8 @@ class SubscriptionStatusCronCommand extends Command
         foreach ($subscriptions as $subscription) {
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->expires_at))) {
                 $this->subscriptionRepository->Update($subscription->id, [
-                    'status' => SubscriptionStatus::EXPIRED,
-                    'expired_at' => Carbon::now()
+                    'status'     => SubscriptionStatus::EXPIRED,
+                    'expired_at' => Carbon::now(),
                 ]);
             }
 
