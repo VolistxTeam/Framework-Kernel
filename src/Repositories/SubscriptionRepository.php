@@ -52,11 +52,11 @@ class SubscriptionRepository
             return null;
         }
 
-        if (array_key_exists('status',$inputs)) {
+        if (array_key_exists('status', $inputs)) {
             $subscription->status = $inputs['status'];
         }
 
-        if (array_key_exists('cancels_at',$inputs)) {
+        if (array_key_exists('cancels_at', $inputs)) {
             $subscription->cancels_at = $inputs['cancels_at'];
         }
 
