@@ -12,7 +12,7 @@ class SubscriptionCancellationPreProcessor extends RequestPreProcessorBase
 {
     private SubscriptionRepository $subscriptionRepository;
 
-    public function __construct(array $inputs, SubscriptionRepository $subscriptionRepository)
+    public function __construct(array $inputs)
     {
         parent::__construct($inputs);
         $this->subscriptionRepository = Container::getInstance()->make(SubscriptionRepository::class);
