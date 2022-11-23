@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\RequestPreProcessors;
 
 use Carbon\Carbon;
+use Illuminate\Container\Container;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
@@ -14,7 +15,7 @@ class SubscriptionExpiryPreProcessor extends RequestPreProcessorBase
     public function __construct(array $inputs, SubscriptionRepository $subscriptionRepository)
     {
         parent::__construct($inputs);
-        $this->subscriptionRepository = $subscriptionRepository;
+        $this->subscriptionRepository = Container::getInstance()->make(SubscriptionRepository::class);
     }
 
     public function Process(): bool|array

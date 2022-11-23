@@ -36,7 +36,7 @@ class UserAuthMiddleware
             return response()->json(Messages::E401(), 401);
         }
 
-        $plan = $activeSubscription->plan()->first();
+        $plan = $activeSubscription->plan;
 
         //prepare inputs array
         $ValidatorsInputs = [

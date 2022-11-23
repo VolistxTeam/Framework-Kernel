@@ -69,10 +69,10 @@ class UserLogRepository
         return $query->get();
     }
 
-    public function FindSubscriptionLogsCount($user_id, $start_date, $end_date): int
+    public function FindSubscriptionLogsCount($subscription_id, $start_date, $end_date): int
     {
         $start = Carbon::createFromFormat('date:Y-m-d H:i:s', $start_date);
-        $query = UserLog::query()->where('user_id', $user_id)
+        $query = UserLog::query()->where('subscription_id', $subscription_id)
             ->whereDate('created_at', '>=', $start);
 
         if ($end_date != null) {
