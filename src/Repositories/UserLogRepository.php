@@ -15,10 +15,10 @@ class UserLogRepository
     {
         return UserLog::query()->create([
             'subscription_id' => $inputs['subscription_id'],
-            'url'             => $inputs['url'],
-            'ip'              => $inputs['ip'],
-            'method'          => $inputs['method'],
-            'user_agent'      => $inputs['user_agent'],
+            'url' => $inputs['url'],
+            'ip' => $inputs['ip'],
+            'method' => $inputs['method'],
+            'user_agent' => $inputs['user_agent'],
         ]);
     }
 
@@ -55,14 +55,14 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogs($user_id, $start_date, $end_date): LengthAwarePaginator|null
+    public function FindSubscriptionLogs($subscription_id, $start_date, $end_date): LengthAwarePaginator|null
     {
-        $start = Carbon::createFromFormat('date:Y-m-d H:i:s', $start_date);
-        $query = UserLog::query()->where('user_id', $user_id)
+        $start = Carbon::createFromFormat('Y-m-d H:i:s', $start_date);
+        $query = UserLog::query()->where('subscription_id', $subscription_id)
             ->whereDate('created_at', '>=', $start);
 
         if ($end_date != null) {
-            $end = Carbon::createFromFormat('date:Y-m-d H:i:s', $end_date);
+            $end = Carbon::createFromFormat('Y-m-d H:i:s', $end_date);
             $query = $query->whereDate('created_at', '<=', $end);
         }
 
@@ -71,26 +71,26 @@ class UserLogRepository
 
     public function FindSubscriptionLogsCount($subscription_id, $start_date, $end_date): int
     {
-        $start = Carbon::createFromFormat('date:Y-m-d H:i:s', $start_date);
+        $start = Carbon::createFromFormat('Y-m-d H:i:s', $start_date);
         $query = UserLog::query()->where('subscription_id', $subscription_id)
             ->whereDate('created_at', '>=', $start);
 
         if ($end_date != null) {
-            $end = Carbon::createFromFormat('date:Y-m-d H:i:s', $end_date);
+            $end = Carbon::createFromFormat('Y-m-d H:i:s', $end_date);
             $query = $query->whereDate('created_at', '<=', $end);
         }
 
         return $query->count();
     }
 
-    public function FindSubscriptionUsages($user_id, $start_date, $end_date): ?object
+    public function FindSubscriptionUsages($subscription_id, $start_date, $end_date): ?object
     {
-        $start = Carbon::createFromFormat('date:Y-m-d H:i:s', $start_date);
-        $query = UserLog::query()->where('user_id', $user_id)
+        $start = Carbon::createFromFormat('Y-m-d H:i:s', $start_date);
+        $query = UserLog::query()->where('subscription_id', $subscription_id)
             ->whereDate('created_at', '>=', $start);
 
         if ($end_date != null) {
-            $end = Carbon::createFromFormat('date:Y-m-d H:i:s', $end_date);
+            $end = Carbon::createFromFormat('Y-m-d H:i:s', $end_date);
             $query = $query->whereDate('created_at', '<=', $end);
         }
 
