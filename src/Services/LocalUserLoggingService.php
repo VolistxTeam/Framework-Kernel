@@ -105,7 +105,7 @@ class LocalUserLoggingService implements IUserLoggingService
             $count = count($dayLogs);
             $totalCount += $count;
             $stats[] = [
-                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $daysLogs[0]->created_at)->format('Y-m-d'),
+                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
                 'count' =>  $count,
             ];
         }

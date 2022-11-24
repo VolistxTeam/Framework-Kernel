@@ -362,23 +362,14 @@ class SubscriptionController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $date = $request->input('date', Carbon::now()->format('Y-m'));
-            $mode = $request->input('mode', 'detailed');
-
             $validator = Validator::make([
                 'subscription_id' => $subscription_id,
-                'date'            => $date,
-                'mode'            => strtolower($mode),
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-                'date'            => ['bail', 'sometimes', 'date'],
-                'mode'            => ['bail', 'sometimes', Rule::in(['detailed', 'focused'])],
             ], [
                 'subscription_id.required' => 'The subscription ID is required.',
                 'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
                 'subscription_id.exists'   => 'The subscription with the given ID was not found.',
-                'date.date'                => 'The date must be a valid date.',
-                'mode.in'                  => 'The mode must be either "detailed" or "focused"',
             ]);
 
             if ($validator->fails()) {
