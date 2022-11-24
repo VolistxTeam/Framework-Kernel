@@ -97,7 +97,7 @@ class RemoteUserLoggingService implements IUserLoggingService
         return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
     }
 
-    public function GetSubscriptionUsages($subscription_id, $mode)
+    public function GetSubscriptionUsages($subscription_id)
     {
         $subscriptionRepo = new SubscriptionRepository();
 

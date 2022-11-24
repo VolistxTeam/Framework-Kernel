@@ -14,5 +14,5 @@ interface IUserLoggingService
 
     public function GetSubscriptionLogsCount($subscription_id);
 
-    public function GetSubscriptionUsages($subscription_id, $mode);
+    public function GetSubscriptionUsages($subscription_id);
 }

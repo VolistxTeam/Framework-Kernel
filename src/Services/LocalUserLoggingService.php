@@ -47,8 +47,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -72,8 +72,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -87,48 +87,38 @@ class LocalUserLoggingService implements IUserLoggingService
     }
 
     // This function requires rebuilding. discuss.
-    public function GetSubscriptionUsages($subscription_id, $mode)
+    public function GetSubscriptionUsages($subscription_id)
     {
-//        $subscription = $this->subscriptionRepository->Find($subscription_id);
-//
-//        $groupedLogs = $this->logRepository->FindSubscriptionUsages($subscription_id, $subscription->activated_at, $subscription->expires_at);
-//
-//        $specifiedDate = Carbon::parse($date);
-//        $thisDate = Carbon::now();
-//        $lastDay = $specifiedDate->format('Y-m') == $thisDate->format('Y-m') ? $thisDate->day : (int)$specifiedDate->format('t');
-//
-//        $totalCount = 0;
-//        $stats = [];
-//        for ($i = 1; $i <= $lastDay; $i++) {
-//            $groupedCount = isset($groupedLogs[$i]) ? count($groupedLogs[$i]) : 0;
-//            if ($mode === 'focused' && $groupedCount === 0) {
-//                continue;
-//            }
-//            $totalCount += $groupedCount;
-//            $stats[] = [
-//                'date' => $specifiedDate->format('Y-m-') . sprintf('%02d', $i),
-//                'count' => $groupedCount,
-//            ];
-//        }
-//
-//        $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan()->first()->data['requests'];
-//
-//        return [
-//            'usages' => [
-//                'current' => $totalCount,
-//                'max' => (int)$requestsCount,
-//                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
-//            ],
-//            'details' => $stats,
-//        ];
+        $subscription = $this->subscriptionRepository->Find($subscription_id);
+
+        $daysLogs = $this->logRepository->FindSubscriptionUsages($subscription_id, $subscription->activated_at, $subscription->expires_at);
+
+        $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $subscription->activated_at);
+        $end_date = $subscription->expired_at === null ? Carbon::now() : Carbon::createFromFormat('Y-m-d H:i:s', $subscription->expires_at);
+
+
+        $totalCount = 0;
+        $stats = [];
+
+
+        foreach ($daysLogs as $dayLogs) {
+            $count = count($dayLogs);
+            $totalCount += $count;
+            $stats[] = [
+                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $daysLogs[0]->created_at)->format('Y-m-d'),
+                'count' =>  $count,
+            ];
+        }
+
+        $requestsCount = $this->subscriptionRepository->Find($subscription_id)->plan->data['requests'];
 
         return [
             'usages' => [
-                'current' => 5,
-                'max'     => 100,
-                'percent' => '0.05%',
+                'current' => $totalCount,
+                'max' => (int)$requestsCount,
+                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
-            'details' => null,
+            'details' => $stats,
         ];
     }
 }

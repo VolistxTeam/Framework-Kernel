@@ -385,7 +385,7 @@ class SubscriptionController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $usages = $this->loggingService->GetSubscriptionUsages($subscription_id, $date, $mode);
+            $usages = $this->loggingService->GetSubscriptionUsages($subscription_id);
             if (!$usages) {
                 return response()->json(Messages::E500(), 500);
             }
