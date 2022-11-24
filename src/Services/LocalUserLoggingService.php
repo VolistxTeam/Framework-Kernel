@@ -47,8 +47,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -72,8 +72,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -96,17 +96,15 @@ class LocalUserLoggingService implements IUserLoggingService
         $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $subscription->activated_at);
         $end_date = $subscription->expired_at === null ? Carbon::now() : Carbon::createFromFormat('Y-m-d H:i:s', $subscription->expires_at);
 
-
         $totalCount = 0;
         $stats = [];
-
 
         foreach ($daysLogs as $dayLogs) {
             $count = count($dayLogs);
             $totalCount += $count;
             $stats[] = [
-                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
-                'count' =>  $count,
+                'date'  => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
+                'count' => $count,
             ];
         }
 
@@ -115,8 +113,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'usages' => [
                 'current' => $totalCount,
-                'max' => (int)$requestsCount,
-                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
+                'max'     => (int) $requestsCount,
+                'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
             'details' => $stats,
         ];
