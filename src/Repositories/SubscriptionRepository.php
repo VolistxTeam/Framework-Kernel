@@ -64,6 +64,14 @@ class SubscriptionRepository
             $subscription->cancelled_at = $inputs['cancelled_at'];
         }
 
+        if (array_key_exists('expires_at', $inputs)) {
+            $subscription->expires_at = $inputs['expires_at'];
+        }
+
+        if (array_key_exists('expired_at', $inputs)) {
+            $subscription->expired_at = $inputs['expired_at'];
+        }
+
         $subscription->save();
 
         return $subscription;
