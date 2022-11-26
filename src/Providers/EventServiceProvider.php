@@ -3,15 +3,19 @@
 namespace Volistx\FrameworkKernel\Providers;
 
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
+use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
+use Volistx\FrameworkKernel\Events\UserRequestCompleted;
+use Volistx\FrameworkKernel\Listeners\AdminRequestCompletedListener;
+use Volistx\FrameworkKernel\Listeners\UserRequestCompletedListener;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        'Volistx\FrameworkKernel\Events\UserRequestCompleted' => [
-            'Volistx\FrameworkKernel\Listeners\UserRequestCompletedListener',
+        UserRequestCompleted::class => [
+            UserRequestCompletedListener::class
         ],
-        'Volistx\FrameworkKernel\Events\AdminRequestCompleted' => [
-            'Volistx\FrameworkKernel\Listeners\AdminRequestCompletedListener',
+        AdminRequestCompleted::class => [
+            AdminRequestCompletedListener::class,
         ],
     ];
 
