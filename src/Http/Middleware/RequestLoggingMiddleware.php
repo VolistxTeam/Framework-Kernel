@@ -30,7 +30,7 @@ class RequestLoggingMiddleware
                     'method' => $request->method(),
                     'ip' => $request->ip(),
                     'user_agent' => $request->userAgent() ?? null,
-                    'subscription_id' => Subscriptions::getSubscription()->id,
+                    'subscription_id' => Subscriptions::getSubscription()->id ,
                 ];
                 Event::dispatch(new UserRequestCompleted($inputs));
             }
