@@ -41,20 +41,22 @@ class RequestLoggingMiddleware
 //                    'subscription_id' => PersonalTokens::getToken()->subscription()->first()->id,
 //                ];
 //                $this->userLoggingService->CreateUserLog($inputs);
-                Event::dispatch(new UserRequestCompleted(
+                Event::dispatch(
+                    new UserRequestCompleted(
                     $request->fullUrl(),
                     $request->method(),
                     $request->ip(),
                     $request->userAgent() ?? null,
-                    Subscriptions::getSubscription()->id)
+                    Subscriptions::getSubscription()->id
+                )
                 );
             }
         } elseif (AccessTokens::getToken()) {
             $inputs = [
-                'url' => $request->fullUrl(),
-                'method' => $request->method(),
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent() ?? null,
+                'url'             => $request->fullUrl(),
+                'method'          => $request->method(),
+                'ip'              => $request->ip(),
+                'user_agent'      => $request->userAgent() ?? null,
                 'access_token_id' => AccessTokens::getToken()->id,
             ];
             $this->adminLoggingService->CreateAdminLog($inputs);

@@ -10,7 +10,7 @@ class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         UserRequestCompleted::class => [
-            UserRequestCompletedListener::class
+            UserRequestCompletedListener::class,
         ],
     ];
 
