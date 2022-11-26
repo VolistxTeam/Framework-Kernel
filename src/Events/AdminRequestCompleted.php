@@ -7,7 +7,8 @@ use Illuminate\Queue\SerializesModels;
 
 class AdminRequestCompleted
 {
-    use  InteractsWithSockets, SerializesModels;
+    use  InteractsWithSockets;
+    use SerializesModels;
 
     public array $inputs;
 
