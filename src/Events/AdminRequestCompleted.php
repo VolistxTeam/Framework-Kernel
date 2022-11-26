@@ -5,7 +5,7 @@ namespace Volistx\FrameworkKernel\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Queue\SerializesModels;
 
-class UserRequestCompleted
+class AdminRequestCompleted
 {
     use  InteractsWithSockets, SerializesModels;
 

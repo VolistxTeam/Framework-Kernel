@@ -7,19 +7,20 @@ namespace Volistx\FrameworkKernel\Listeners;
 use Volistx\FrameworkKernel\Events\UserRequestCompleted;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Repositories\UserLogRepository;
+use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
-class UserRequestCompletedListener
+class AdminRequestCompletedListener
 {
-    private IUserLoggingService $userLoggingService;
+    private IAdminLoggingService $adminLoggingService;
 
-    public function __construct(IUserLoggingService $userLoggingService)
+    public function __construct(IAdminLoggingService $adminLoggingService)
     {
-        $this->userLoggingService = $userLoggingService;
+        $this->adminLoggingService = $adminLoggingService;
     }
 
     public function handle(UserRequestCompleted $event)
     {
-        $this->userLoggingService->CreateUserLog($event->inputs);
+        $this->adminLoggingService->CreateAdminLog($event->inputs);
     }
 }
