@@ -11,8 +11,6 @@ use Volistx\FrameworkKernel\Events\UserRequestCompleted;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
-use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
-use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class RequestLoggingMiddleware
 {
@@ -26,20 +24,20 @@ class RequestLoggingMiddleware
         if (PersonalTokens::getToken() && PersonalTokens::getToken()->hidden === false) {
             if (PersonalTokens::getToken()->disable_logging === false) {
                 $inputs = [
-                    'url' => $request->fullUrl(),
-                    'method' => $request->method(),
-                    'ip' => $request->ip(),
-                    'user_agent' => $request->userAgent() ?? null,
-                    'subscription_id' => Subscriptions::getSubscription()->id ,
+                    'url'             => $request->fullUrl(),
+                    'method'          => $request->method(),
+                    'ip'              => $request->ip(),
+                    'user_agent'      => $request->userAgent() ?? null,
+                    'subscription_id' => Subscriptions::getSubscription()->id,
                 ];
                 Event::dispatch(new UserRequestCompleted($inputs));
             }
         } elseif (AccessTokens::getToken()) {
             $inputs = [
-                'url' => $request->fullUrl(),
-                'method' => $request->method(),
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent() ?? null,
+                'url'             => $request->fullUrl(),
+                'method'          => $request->method(),
+                'ip'              => $request->ip(),
+                'user_agent'      => $request->userAgent() ?? null,
                 'access_token_id' => AccessTokens::getToken()->id,
             ];
             Event::dispatch(new AdminRequestCompleted($inputs));
