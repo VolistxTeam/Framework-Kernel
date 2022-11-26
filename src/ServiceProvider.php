@@ -12,6 +12,7 @@ use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
 use Volistx\FrameworkKernel\Console\Commands\SubscriptionStatusCronCommand;
 use Volistx\FrameworkKernel\Providers\AccessTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
+use Volistx\FrameworkKernel\Providers\EventServiceProvider;
 use Volistx\FrameworkKernel\Providers\GeoLocationServiceProvider;
 use Volistx\FrameworkKernel\Providers\HMACServiceProvider;
 use Volistx\FrameworkKernel\Providers\KeysServiceProvider;
@@ -43,6 +44,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PersonalTokenServiceProvider::class,
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
+            EventServiceProvider::class
         ];
 
         foreach ($serviceProvider as $provider) {
