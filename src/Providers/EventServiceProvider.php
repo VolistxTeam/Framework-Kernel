@@ -2,7 +2,7 @@
 
 namespace Volistx\FrameworkKernel\Providers;
 
-use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
 use Volistx\FrameworkKernel\Events\UserRequestCompleted;
 use Volistx\FrameworkKernel\Listeners\AdminRequestCompletedListener;
@@ -19,8 +19,19 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
+    public function register()
+    {
+        $this->boot();
+    }
+
     public function boot()
     {
-        parent::boot();
+        $events = app('events');
+
+        foreach ($this->listen as $event => $listeners) {
+            foreach ($listeners as $listener) {
+                $events->listen($event, $listener);
+            }
+        }
     }
 }
