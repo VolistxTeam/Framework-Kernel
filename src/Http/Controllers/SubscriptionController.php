@@ -56,7 +56,7 @@ class SubscriptionController extends Controller
             $newSubscription = $this->subscriptionRepository->Create([
                 'user_id'    => $request->input('user_id'),
                 'plan_id'    => $request->input('plan_id'),
-                'expires_at' => $request->input('plan_expires_at'),
+                'expires_at' => $request->input('expires_at'),
             ]);
 
             return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
