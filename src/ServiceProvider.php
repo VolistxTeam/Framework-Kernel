@@ -31,12 +31,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->booting(function () {
-            $this->app->register(EventServiceProvider::class);
-        });
-
         // Register All Required Providers
         $serviceProvider = [
+            EventServiceProvider::class,
             AccessTokenServiceProvider::class,
             SubscriptionServiceProvider::class,
             AdminLoggingServiceProvider::class,
@@ -74,8 +71,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             __DIR__.'/../database/migrations' => database_path('migrations'),
             __DIR__.'/../locales'             => resource_path('lang/vendor/volistx'),
         ]);
-
-        $this->app->
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('volistx-subscription:cron')->everyFiveMinutes();
