@@ -5,7 +5,6 @@ namespace Volistx\FrameworkKernel\AdminAuthValidationRules;
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
-use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\UserAuthValidationRules\ValidationRuleBase;
 use Wikimedia\IPSet;
 
