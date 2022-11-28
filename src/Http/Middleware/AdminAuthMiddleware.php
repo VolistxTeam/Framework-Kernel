@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Volistx\FrameworkKernel\AdminAuthValidationRules\AdminIPValidationRule;
 use function response;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
@@ -27,16 +28,12 @@ class AdminAuthMiddleware
             return response()->json(Messages::E401(), 401);
         }
 
-        //prepare inputs array
-        $inputs = [
-            'request' => $request,
-            'token'   => $token,
-        ];
+        AccessTokens::setToken($token);
 
         //add extra validators in the required order.
         //To be refactored to detect all classes with a base of ValidationRuleBase and create instance of them passing parameters, and ordering them by id
         $validators = [
-            new IPValidationRule($inputs),
+            new AdminIPValidationRule($request),
         ];
 
         foreach ($validators as $validator) {
