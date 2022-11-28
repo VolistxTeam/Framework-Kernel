@@ -27,8 +27,8 @@ class SubscriptionDTO extends DataTransferObjectBase
             'id'                 => $this->id,
             'user_id'            => $this->user_id,
             'plan'               => PlanDTO::fromModel($this->entity->plan()->first())->GetDTO(),
-            'status'             => SubscriptionStatus::from($this->status)->name,
-            'status_information' => [
+            'status' => [
+                'status'       => SubscriptionStatus::from($this->status)->name,
                 'activated_at' => $this->activated_at,
                 'expires_at'   => $this->expires_at,
                 'cancels_at'   => $this->cancels_at,
