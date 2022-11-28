@@ -3,6 +3,8 @@
 namespace Volistx\FrameworkKernel\Services;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 use Volistx\FrameworkKernel\Repositories\UserLogRepository;
@@ -24,7 +26,7 @@ class LocalUserLoggingService implements IUserLoggingService
         $this->logRepository->Create($inputs);
     }
 
-    public function GetLog($log_id)
+    public function GetLog($log_id): Model|array
     {
         $log = $this->logRepository->FindById($log_id);
 
@@ -47,18 +49,18 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
     }
 
-    public function GetSubscriptionLogs($subscription_id)
+    public function GetSubscriptionLogs($subscription_id, $search, $page, $limit): LengthAwarePaginator|array|null
     {
         $subscription = $this->subscriptionRepository->Find($subscription_id);
 
-        $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $subscription->activated_at, $subscription->expires_at);
+        $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $subscription->activated_at, $subscription->expires_at, $search, $page, $limit);
 
         if (!$logs === null) {
             return $logs;
@@ -72,14 +74,14 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
     }
 
-    public function GetSubscriptionLogsCount($subscription_id)
+    public function GetSubscriptionLogsCount($subscription_id): int
     {
         $subscription = $this->subscriptionRepository->Find($subscription_id);
 
@@ -87,14 +89,9 @@ class LocalUserLoggingService implements IUserLoggingService
     }
 
     // This function requires rebuilding. discuss.
-    public function GetSubscriptionUsages($subscription_id)
+    public function GetSubscriptionUsages($subscription_id) : array
     {
-        $subscription = $this->subscriptionRepository->Find($subscription_id);
-
-        $daysLogs = $this->logRepository->FindSubscriptionUsages($subscription_id, $subscription->activated_at, $subscription->expires_at);
-
-        $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $subscription->activated_at);
-        $end_date = $subscription->expired_at === null ? Carbon::now() : Carbon::createFromFormat('Y-m-d H:i:s', $subscription->expires_at);
+        $daysLogs = $this->logRepository->FindSubscriptionUsages($subscription_id);
 
         $totalCount = 0;
         $stats = [];
@@ -103,7 +100,7 @@ class LocalUserLoggingService implements IUserLoggingService
             $count = count($dayLogs);
             $totalCount += $count;
             $stats[] = [
-                'date'  => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
+                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
                 'count' => $count,
             ];
         }
@@ -113,8 +110,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'usages' => [
                 'current' => $totalCount,
-                'max'     => (int) $requestsCount,
-                'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
+                'max' => (int)$requestsCount,
+                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
             'details' => $stats,
         ];
