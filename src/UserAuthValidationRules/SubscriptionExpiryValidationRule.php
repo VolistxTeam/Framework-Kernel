@@ -3,13 +3,13 @@
 namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Carbon\Carbon;
+use function config;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
-use function config;
 
 class SubscriptionExpiryValidationRule extends ValidationRuleBase
 {
@@ -27,22 +27,22 @@ class SubscriptionExpiryValidationRule extends ValidationRuleBase
 
         if (!empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
-                'status' => SubscriptionStatus::EXPIRED,
+                'status'     => SubscriptionStatus::EXPIRED,
                 'expired_at' => Carbon::now(),
             ]);
 
             if (!config('volistx.fallback_plan.id')) {
                 return [
                     'message' => Messages::E403('Your plan has been expired. Please subscribe to a new plan if you want to continue using this service.'),
-                    'code' => 403,
+                    'code'    => 403,
                 ];
             }
 
             $updatedSub = $this->subscriptionRepository->Clone($subscription->id, [
-                'plan_id' => config('volistx.fallback_plan.id'),
-                'status' => SubscriptionStatus::ACTIVE,
-                'expires_at' => null,
-                'cancels_at' => null,
+                'plan_id'      => config('volistx.fallback_plan.id'),
+                'status'       => SubscriptionStatus::ACTIVE,
+                'expires_at'   => null,
+                'cancels_at'   => null,
                 'cancelled_at' => null,
             ]);
 
