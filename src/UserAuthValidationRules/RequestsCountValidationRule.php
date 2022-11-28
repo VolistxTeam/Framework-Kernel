@@ -21,7 +21,7 @@ class RequestsCountValidationRule extends ValidationRuleBase
 
     public function Validate(): bool|array
     {
-        $sub_id = Subscriptions::getSubscription();
+        $sub_id = Subscriptions::getSubscription()->id;
         $plan = Plans::getPlan();
 
         if (isset($plan['data']['requests'])) {
