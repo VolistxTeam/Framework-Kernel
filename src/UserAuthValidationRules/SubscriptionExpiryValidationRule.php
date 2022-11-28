@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Carbon\Carbon;
 use Illuminate\Container\Container;
+use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
@@ -14,9 +15,9 @@ class SubscriptionExpiryValidationRule extends ValidationRuleBase
 {
     private SubscriptionRepository $subscriptionRepository;
 
-    public function __construct(array $inputs)
+    public function __construct(Request $request)
     {
-        parent::__construct($inputs);
+        parent::__construct($request);
         $this->subscriptionRepository = Container::getInstance()->make(SubscriptionRepository::class);
     }
 

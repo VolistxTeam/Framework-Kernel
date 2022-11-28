@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Carbon\Carbon;
 use Illuminate\Container\Container;
+use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Plans;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
@@ -13,9 +14,9 @@ class RequestsCountValidationRule extends ValidationRuleBase
 {
     private IUserLoggingService $loggingService;
 
-    public function __construct(array $inputs)
+    public function __construct(Request $request)
     {
-        parent::__construct($inputs);
+        parent::__construct($request);
         $this->loggingService = Container::getInstance()->make(IUserLoggingService::class);
     }
 
@@ -25,7 +26,7 @@ class RequestsCountValidationRule extends ValidationRuleBase
         $plan = Plans::getPlan();
 
         if (isset($plan['data']['requests'])) {
-            $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id, Carbon::now());
+            $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id);
             $planRequestsLimit = $plan['data']['requests'] ?? null;
 
             if ($requestsMadeCount === null) {

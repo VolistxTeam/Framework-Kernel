@@ -8,7 +8,7 @@ abstract class ValidationRuleBase
 {
     protected Request $request;
 
-    public function __construct($request)
+    public function __construct(Request $request)
     {
         $this->request = $request;
     }
