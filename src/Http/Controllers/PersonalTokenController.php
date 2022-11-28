@@ -109,7 +109,7 @@ class PersonalTokenController extends Controller
                 'token_id' => $token_id,
             ]), [
                 'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
-                'duration'        => ['bail', 'sometimes', 'integer'],
+                'expires_at'        => ['bail', 'sometimes', 'date', 'nullable'],
                 'permissions'     => ['bail', 'sometimes', 'array'],
                 'rate_limit_mode' => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
                 'permissions.*'   => ['bail', 'required_if:permissions,array', 'string'],
@@ -124,8 +124,7 @@ class PersonalTokenController extends Controller
                 'token_id.required'           => 'The token ID is required.',
                 'token_id.uuid'               => 'The token ID must be a valid uuid.',
                 'token_id.exists'             => 'The token with the given ID was not found.',
-                'duration.required'           => 'The duration is required.',
-                'duration.integer'            => 'The duration must be an integer.',
+                'expires_at.date'               => 'The duration must be a valid date.',
                 'permissions.array'           => 'The permissions must be an array.',
                 'permissions.*.string'        => 'The permissions item must be a string.',
                 'rate_limit_mode.enum'        => 'The rate limit mode must be a valid type.',
