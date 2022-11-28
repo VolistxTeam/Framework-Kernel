@@ -40,7 +40,7 @@ class UserAuthMiddleware
 
         Subscriptions::setSubscription($activeSubscription);
 
-        Plans::setPlan($activeSubscription->plan) ;
+        Plans::setPlan($activeSubscription->plan);
 
         $validatorClasses = config('volistx.validators');
 
