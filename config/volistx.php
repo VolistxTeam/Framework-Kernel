@@ -21,17 +21,14 @@ return [
         'verification_key'  => env('GEOPOINT_API_HMAC_KEY'),
     ],
     'validators' => [
-        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionExpiryValidationRule::class,
+        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionExpiryValidationRule::class, // checks and update subscription for expiry date
+        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionCancellationValidationRule::class, // checks and update subscription for cancellation date
+        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionRateLimitValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\PersonalTokenExpiryValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\IPValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\CountryValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\RequestsCountValidationRule::class,
-        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionRateLimitValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\IPRateLimitValidationRule::class,
-    ],
-    'preprocessors' => [
-        Volistx\FrameworkKernel\RequestPreProcessors\SubscriptionExpiryPreProcessor::class,
-        Volistx\FrameworkKernel\RequestPreProcessors\SubscriptionCancellationPreProcessor::class,
     ],
     'services_permissions' => [
         '*',

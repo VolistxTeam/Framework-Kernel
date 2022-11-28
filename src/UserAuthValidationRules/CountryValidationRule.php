@@ -5,19 +5,19 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Facades\GeoLocation;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
 
 class CountryValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {
-        $token = $this->inputs['token'];
-        $request = $this->inputs['request'];
+        $token = PersonalTokens::getToken();
 
         if ($token->country_rule === AccessRule::NONE) {
             return true;
         }
 
-        $geolocation = GeoLocation::search($request->getClientIp());
+        $geolocation = GeoLocation::search($this->request->getClientIp());
 
         if (!$geolocation) {
             return [

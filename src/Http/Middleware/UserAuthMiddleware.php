@@ -30,29 +30,25 @@ class UserAuthMiddleware
             return response()->json(Messages::E401(), 401);
         }
 
+        PersonalTokens::setToken($token);
+
         $activeSubscription = $this->subscriptionRepository->FindUserActiveSubscription($token->user_id);
 
         if (!$activeSubscription) {
             return response()->json(Messages::E401(), 401);
         }
 
-        $plan = $activeSubscription->plan;
+        Subscriptions::setSubscription($activeSubscription);
 
-        //prepare inputs array
-        $ValidatorsInputs = [
-            'subscription' => $activeSubscription,
-            'request'      => $request,
-            'token'        => $token,
-            'plan'         => $plan,
-        ];
+        Plans::setPlan($activeSubscription->plan);
 
         //Request Validators : they are validating the request .. and they dont change in the base. invalid request shouldn't be anything in db
         $validatorClasses = config('volistx.validators');
 
         $validators = [];
 
-        foreach ($validatorClasses as $item) {
-            $validators[] = new $item($ValidatorsInputs);
+        foreach ($validatorClasses as $validatorClass) {
+            $validators[] = new $validatorClass($request);
         }
 
         foreach ($validators as $validator) {
@@ -72,9 +68,9 @@ class UserAuthMiddleware
 
         $preProcessors = [];
 
-        foreach ($preprocessorsClasses as $item) {
+        foreach ($preprocessorsClasses as $preprocessorsClass) {
             //prob need to change if we had more than single processor.
-            $preProcessors[] = new $item($ValidatorsInputs);
+            $preProcessors[] = new $preprocessorsClass($request);
         }
 
         foreach ($preProcessors as $processor) {
@@ -83,11 +79,6 @@ class UserAuthMiddleware
                 return response()->json($result['message'], $result['code']);
             }
         }
-
-        //We passed all validators, so request is valid, and also passed preprocessors so required db processing is made, now we can proceed with the request middleware chain
-        PersonalTokens::setToken($token);
-        Plans::setPlan($plan);
-        Subscriptions::setSubscription($activeSubscription);
 
         return $next($request);
     }

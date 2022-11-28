@@ -2,13 +2,15 @@
 
 namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
+use Illuminate\Http\Request;
+
 abstract class ValidationRuleBase
 {
-    protected array $inputs;
+    protected Request $request;
 
-    public function __construct(array $inputs)
+    public function __construct($request)
     {
-        $this->inputs = $inputs;
+        $this->request = $request;
     }
 
     abstract public function Validate(): bool|array;

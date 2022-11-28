@@ -5,6 +5,8 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 use Carbon\Carbon;
 use Illuminate\Container\Container;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\Plans;
+use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class RequestsCountValidationRule extends ValidationRuleBase
@@ -19,8 +21,8 @@ class RequestsCountValidationRule extends ValidationRuleBase
 
     public function Validate(): bool|array
     {
-        $sub_id = $this->inputs['subscription']->id;
-        $plan = $this->inputs['plan'];
+        $sub_id = Subscriptions::getSubscription();
+        $plan = Plans::getPlan();
 
         if (isset($plan['data']['requests'])) {
             $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id, Carbon::now());

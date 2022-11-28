@@ -4,14 +4,14 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Wikimedia\IPSet;
 
 class IPValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {
-        $token = $this->inputs['token'];
-        $request = $this->inputs['request'];
+        $token = PersonalTokens::getToken();
 
         if ($token->ip_rule === AccessRule::NONE) {
             return true;
@@ -19,8 +19,8 @@ class IPValidationRule extends ValidationRuleBase
 
         $ipSet = new IPSet($token->ip_range);
 
-        if ($token->ip_rule === AccessRule::BLACKLIST && $ipSet->match($request->getClientIp()) ||
-            ($token->ip_rule === AccessRule::WHITELIST && !$ipSet->match($request->getClientIp()))) {
+        if ($token->ip_rule === AccessRule::BLACKLIST && $ipSet->match($this->request->getClientIp()) ||
+            ($token->ip_rule === AccessRule::WHITELIST && !$ipSet->match($this->request->getClientIp()))) {
             return [
                 'message' => Messages::E403('This service is not allowed to access from your IP address.'),
                 'code'    => 403,

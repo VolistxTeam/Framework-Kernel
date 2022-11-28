@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static setPlan($plan)
+ * @method static getPlan()
  */
 class Plans extends Facade
 {

@@ -4,12 +4,13 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Carbon\Carbon;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
 
 class PersonalTokenExpiryValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {
-        $token = $this->inputs['token'];
+        $token = PersonalTokens::getToken();
 
         if ($token->expires_at && Carbon::now()->greaterThan(Carbon::createFromTimeString($token->expires_at))) {
             return [

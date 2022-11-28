@@ -27,7 +27,7 @@ class PersonalTokenRepository
             'country_range'   => $inputs['country_range'],
             'hmac_token'      => $inputs['hmac_token'],
             'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['duration'] != null ? Carbon::now()->addHours($inputs['duration']) : null,
+            'expires_at'      => $inputs['expires_at'],
             'hidden'          => $inputs['hidden'],
             'disable_logging' => $inputs['disable_logging'],
         ]);
@@ -65,8 +65,8 @@ class PersonalTokenRepository
             $token->country_range = $inputs['country_range'];
         }
 
-        if (array_key_exists('duration', $inputs)) {
-            $token->expires_at = Carbon::createFromTimeString($token->activated_at)->addHours($inputs['duration']);
+        if (array_key_exists('expires_at', $inputs)) {
+            $token->expires_at = $inputs['expires_at'];
         }
 
         if (array_key_exists('disable_logging', $inputs)) {

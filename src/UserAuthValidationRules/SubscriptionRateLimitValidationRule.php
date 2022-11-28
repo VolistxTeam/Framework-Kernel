@@ -5,18 +5,20 @@ namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 use Illuminate\Support\Facades\RateLimiter;
 use Volistx\FrameworkKernel\Enums\RateLimitMode;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
+use Volistx\FrameworkKernel\Facades\Plans;
 
 class SubscriptionRateLimitValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {
-        $token = $this->inputs['token'];
+        $token = PersonalTokens::getToken();
 
         if ($token->rate_limit_mode !== RateLimitMode::SUBSCRIPTION) {
             return true;
         }
 
-        $plan = $this->inputs['plan'];
+        $plan = Plans::getPlan();
 
         if (isset($plan['data']['rate_limit'])) {
             $executed = RateLimiter::attempt(
