@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 namespace Volistx\FrameworkKernel\Listeners;
 
-use Volistx\FrameworkKernel\Events\UserRequestCompleted;
+use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
 use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 
 class AdminRequestCompletedListener
@@ -16,7 +16,7 @@ class AdminRequestCompletedListener
         $this->adminLoggingService = $adminLoggingService;
     }
 
-    public function handle(UserRequestCompleted $event)
+    public function handle(AdminRequestCompleted $event)
     {
         $this->adminLoggingService->CreateAdminLog($event->inputs);
     }
