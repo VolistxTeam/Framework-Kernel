@@ -40,7 +40,7 @@ class UserAuthMiddleware
 
         Subscriptions::setSubscription($activeSubscription);
 
-        Plans::setPlan($activeSubscription->plan) ;
+        Plans::setPlan($activeSubscription->plan);
 
         //Request Validators : they are validating the request .. and they dont change in the base. invalid request shouldn't be anything in db
         $validatorClasses = config('volistx.validators');
