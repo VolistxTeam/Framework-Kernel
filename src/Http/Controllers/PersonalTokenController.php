@@ -124,7 +124,7 @@ class PersonalTokenController extends Controller
                 'token_id.required'           => 'The token ID is required.',
                 'token_id.uuid'               => 'The token ID must be a valid uuid.',
                 'token_id.exists'             => 'The token with the given ID was not found.',
-                'expires_at.date'               => 'The duration must be a valid date.',
+                'expires_at.date'               => 'Expiry must be a valid date.',
                 'permissions.array'           => 'The permissions must be an array.',
                 'permissions.*.string'        => 'The permissions item must be a string.',
                 'rate_limit_mode.enum'        => 'The rate limit mode must be a valid type.',
