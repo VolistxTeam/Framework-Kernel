@@ -4,12 +4,11 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Volistx\FrameworkKernel\AdminAuthValidationRules\AdminIPValidationRule;
 use function response;
+use Volistx\FrameworkKernel\AdminAuthValidationRules\AdminIPValidationRule;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
-use Volistx\FrameworkKernel\UserAuthValidationRules\IPValidationRule;
 
 class AdminAuthMiddleware
 {
