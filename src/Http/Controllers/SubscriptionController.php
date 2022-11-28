@@ -351,7 +351,7 @@ class SubscriptionController extends Controller
 
             $logs = $this->loggingService->GetSubscriptionLogs($subscription_id, $search, $page, $limit);
 
-            if (!$logs) {
+            if ($logs === null) {
                 return response()->json(Messages::E400('Invalid search column'), 400);
             }
 

@@ -58,12 +58,10 @@ class LocalUserLoggingService implements IUserLoggingService
 
     public function GetSubscriptionLogs($subscription_id, $search, $page, $limit): LengthAwarePaginator|array|null
     {
-        $subscription = $this->subscriptionRepository->Find($subscription_id);
+        $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $search, $page, $limit);
 
-        $logs = $this->logRepository->FindSubscriptionLogs($subscription_id, $subscription->activated_at, $subscription->expires_at, $search, $page, $limit);
-
-        if (!$logs === null) {
-            return $logs;
+        if ($logs === null) {
+            return [];
         }
 
         $logDTOs = [];
