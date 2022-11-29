@@ -28,7 +28,7 @@ class RequestLoggingMiddleware
                     'method'          => $request->method(),
                     'ip'              => $request->ip(),
                     'user_agent'      => $request->userAgent() ?? null,
-                    'subscription_id' => Subscriptions::getSubscription()->id,
+                    'subscription_id' => Subscriptions::getSubscription()?->id,
                 ];
                 Event::dispatch(new UserRequestCompleted($inputs));
             }
@@ -38,7 +38,7 @@ class RequestLoggingMiddleware
                 'method'          => $request->method(),
                 'ip'              => $request->ip(),
                 'user_agent'      => $request->userAgent() ?? null,
-                'access_token_id' => AccessTokens::getToken()->id,
+                'access_token_id' => AccessTokens::getToken()?->id,
             ];
             Event::dispatch(new AdminRequestCompleted($inputs));
         }
