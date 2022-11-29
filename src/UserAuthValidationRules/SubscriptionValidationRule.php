@@ -54,8 +54,8 @@ class SubscriptionValidationRule extends ValidationRuleBase
             $subStatusModified = $this->UpdateSubscriptionExpiryOrCancelStatus($inactiveSubscription);
 
             if ($subStatusModified === false) {
-                Subscriptions::setSubscription($activeSubscription);
-                Plans::setPlan($activeSubscription->plan);
+                Subscriptions::setSubscription($inactiveSubscription);
+                Plans::setPlan($inactiveSubscription->plan);
 
                 return true;
             }
