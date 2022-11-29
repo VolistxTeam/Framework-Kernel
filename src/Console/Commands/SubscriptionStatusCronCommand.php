@@ -31,26 +31,26 @@ class SubscriptionStatusCronCommand extends Command
         foreach ($subscriptions as $subscription) {
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->expires_at))) {
                 $this->subscriptionRepository->Update($subscription->id, [
-                    'status' => SubscriptionStatus::EXPIRED,
+                    'status'     => SubscriptionStatus::EXPIRED,
                     'expired_at' => Carbon::now(),
                 ]);
             }
 
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->cancels_at))) {
                 $this->subscriptionRepository->Update($subscription->id, [
-                    'status' => SubscriptionStatus::CANCELLED,
+                    'status'       => SubscriptionStatus::CANCELLED,
                     'cancelled_at' => Carbon::now(),
                 ]);
             }
 
             if (config('volistx.fallback_plan.id') !== null) {
                 $this->subscriptionRepository->Create([
-                    'user_id' => $subscription->user_id,
-                    'plan_id' => config('volistx.fallback_plan.id'),
-                    'status' => SubscriptionStatus::ACTIVE,
+                    'user_id'      => $subscription->user_id,
+                    'plan_id'      => config('volistx.fallback_plan.id'),
+                    'status'       => SubscriptionStatus::ACTIVE,
                     'activated_at' => Carbon::now(),
-                    'expires_at' => Carbon::now()->addDays(28),
-                    'cancels_at' => null,
+                    'expires_at'   => Carbon::now()->addDays(28),
+                    'cancels_at'   => null,
                     'cancelled_at' => null,
                 ]);
             }
