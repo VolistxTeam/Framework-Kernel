@@ -64,7 +64,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         //user dont have any valid active or inactive subscriptions so we resort to fall-back plan
         if (!config('volistx.fallback_plan.id')) {
             return [
-                'message' => Messages::E403('Your plan has been expired. Please subscribe to a new plan if you want to continue using this service.'),
+                'message' => Messages::E403('Your subscription has been expired. Please subscribe to a new plan if you want to continue using this service.'),
                 'code'    => 403,
             ];
         }
