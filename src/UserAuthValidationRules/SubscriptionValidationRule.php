@@ -3,13 +3,13 @@
 namespace Volistx\FrameworkKernel\UserAuthValidationRules;
 
 use Carbon\Carbon;
-use Volistx\FrameworkKernel\Facades\PersonalTokens;
-use Volistx\FrameworkKernel\Facades\Plans;
 use function config;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\Messages;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
+use Volistx\FrameworkKernel\Facades\Plans;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
@@ -36,6 +36,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
             if ($subStatusModified === false) {
                 Subscriptions::setSubscription($activeSubscription);
                 Plans::setPlan($activeSubscription->plan);
+
                 return true;
             }
         }
@@ -55,6 +56,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
             if ($subStatusModified === false) {
                 Subscriptions::setSubscription($activeSubscription);
                 Plans::setPlan($activeSubscription->plan);
+
                 return true;
             }
         }
@@ -63,17 +65,17 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if (!config('volistx.fallback_plan.id')) {
             return [
                 'message' => Messages::E403('Your plan has been expired. Please subscribe to a new plan if you want to continue using this service.'),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 
         $fall_back_subscription = $this->subscriptionRepository->Create([
-            'user_id' => $user_id,
-            'plan_id' => config('volistx.fallback_plan.id'),
-            'status' => SubscriptionStatus::ACTIVE,
+            'user_id'      => $user_id,
+            'plan_id'      => config('volistx.fallback_plan.id'),
+            'status'       => SubscriptionStatus::ACTIVE,
             'activated_at' => Carbon::now(),
-            'expires_at' => Carbon::now()->addDays(28),
-            'cancels_at' => null,
+            'expires_at'   => Carbon::now()->addDays(28),
+            'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
 
@@ -87,7 +89,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
     {
         if (!empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
-                'status' => SubscriptionStatus::EXPIRED,
+                'status'     => SubscriptionStatus::EXPIRED,
                 'expired_at' => Carbon::now(),
             ]);
 
@@ -96,7 +98,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
 
         if (!empty($subscription->cancels_at) && Carbon::now()->gte($subscription->cancels_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
-                'status' => SubscriptionStatus::CANCELLED,
+                'status'       => SubscriptionStatus::CANCELLED,
                 'cancelled_at' => Carbon::now(),
             ]);
 

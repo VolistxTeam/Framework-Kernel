@@ -2,15 +2,11 @@
 
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
-use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
-use Volistx\FrameworkKernel\Facades\Plans;
-use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Repositories\PersonalTokenRepository;
-use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
 class UserAuthMiddleware
 {
