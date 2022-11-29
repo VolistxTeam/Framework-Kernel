@@ -17,8 +17,8 @@ class SubscriptionRepository
         return Subscription::query()->create([
             'user_id'      => $inputs['user_id'],
             'plan_id'      => $inputs['plan_id'],
-            'status'       => SubscriptionStatus::ACTIVE,
-            'activated_at' => Carbon::now(),
+            'status'       => $inputs['status'],
+            'activated_at' => $inputs['activated_at'],
             'expires_at'   => $inputs['expires_at'],
             'cancels_at'   => null,
             'cancelled_at' => null,
@@ -87,6 +87,15 @@ class SubscriptionRepository
         return Subscription::with('plan')
             ->where('user_id', $user_id)
             ->where('status', SubscriptionStatus::ACTIVE)
+            ->first();
+    }
+
+    public function FindUserInactiveSubscription($user_id): Builder|Model|null
+    {
+        return Subscription::with('plan')
+            ->where('user_id', $user_id)
+            ->where('status', SubscriptionStatus::INACTIVE)
+            ->orderBy('activated_at', 'ASC')
             ->first();
     }
 

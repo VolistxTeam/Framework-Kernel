@@ -6,6 +6,7 @@ enum SubscriptionStatus: int
 {
     case ACTIVE = 0;
     case INACTIVE = 1;
-    case EXPIRED = 2;
-    case CANCELLED = 3;
+    case DEACTIVATED = 2;
+    case EXPIRED = 3;
+    case CANCELLED = 4;
 }

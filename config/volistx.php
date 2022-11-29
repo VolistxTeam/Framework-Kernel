@@ -21,8 +21,7 @@ return [
         'verification_key'  => env('GEOPOINT_API_HMAC_KEY'),
     ],
     'validators' => [
-        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionExpiryValidationRule::class, // checks and update subscription for expiry date
-        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionCancellationValidationRule::class, // checks and update subscription for cancellation date
+        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionValidationRule::class, //must always be #1 in order as it sets the subscription and the plan for current request
         Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionRateLimitValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\PersonalTokenExpiryValidationRule::class,
         Volistx\FrameworkKernel\UserAuthValidationRules\IPValidationRule::class,
