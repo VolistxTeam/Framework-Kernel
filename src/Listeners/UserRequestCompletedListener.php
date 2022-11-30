@@ -13,7 +13,7 @@ class UserRequestCompletedListener
 
     public function __construct(IUserLoggingService $userLoggingService)
     {
-        $this->userLoggingService = $userLoggingService;
+         $this->userLoggingService = $userLoggingService;
     }
 
     public function handle(UserRequestCompleted $event)
