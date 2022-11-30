@@ -25,7 +25,7 @@ class RequestsCountValidationRule extends ValidationRuleBase
         $plan = Plans::getPlan();
 
         if (isset($plan['data']['requests'])) {
-            $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCount($sub_id);
+            $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCountInPlanDuration($sub_id);
             $planRequestsLimit = $plan['data']['requests'] ?? null;
 
             if ($requestsMadeCount === null) {

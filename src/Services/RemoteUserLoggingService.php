@@ -61,7 +61,7 @@ class RemoteUserLoggingService implements IUserLoggingService
         return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
-    public function GetSubscriptionLogs($subscription_id)
+    public function GetSubscriptionLogs($subscription_id, $search, $page, $limit)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id", [
             'headers' => [
@@ -80,7 +80,7 @@ class RemoteUserLoggingService implements IUserLoggingService
         return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
     }
 
-    public function GetSubscriptionLogsCount($subscription_id)
+    public function GetSubscriptionLogsCountInPlanDuration($subscription_id)
     {
         $response = $this->client->get("$this->httpBaseUrl/$subscription_id/count", [
             'headers' => [

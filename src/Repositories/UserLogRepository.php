@@ -7,6 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
+use Volistx\FrameworkKernel\Facades\Plans;
 use Volistx\FrameworkKernel\Models\UserLog;
 
 class UserLogRepository
@@ -15,10 +16,10 @@ class UserLogRepository
     {
         return UserLog::query()->create([
             'subscription_id' => $inputs['subscription_id'],
-            'url'             => $inputs['url'],
-            'ip'              => $inputs['ip'],
-            'method'          => $inputs['method'],
-            'user_agent'      => $inputs['user_agent'],
+            'url' => $inputs['url'],
+            'ip' => $inputs['ip'],
+            'method' => $inputs['method'],
+            'user_agent' => $inputs['user_agent'],
         ]);
     }
 
@@ -84,11 +85,17 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogsCount($subscription_id): int
+    public function FindSubscriptionLogsCountInPeriod($subscription_id, $start_date, $end_date): int
     {
-        return UserLog::query()
+        $query = UserLog::query()
             ->where('subscription_id', $subscription_id)
-            ->count();
+            ->whereDate('created_at', '>=', $start_date);
+
+        if ($end_date) {
+            $query = $query->whereDate('created_at', '<=', $end_date);
+        }
+
+        return $query->count();
     }
 
     public function FindSubscriptionUsages($subscription_id): ?object

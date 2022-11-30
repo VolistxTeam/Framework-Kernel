@@ -12,7 +12,7 @@ interface IUserLoggingService
 
     public function GetSubscriptionLogs($subscription_id, $search, $page, $limit);
 
-    public function GetSubscriptionLogsCount($subscription_id);
+    public function GetSubscriptionLogsCountInPlanDuration($subscription_id);
 
     public function GetSubscriptionUsages($subscription_id);
 }

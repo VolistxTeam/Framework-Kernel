@@ -49,8 +49,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -72,18 +72,27 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
     }
 
-    public function GetSubscriptionLogsCount($subscription_id): int
+    public function GetSubscriptionLogsCountInPlanDuration($subscription_id): int
     {
         $subscription = $this->subscriptionRepository->Find($subscription_id);
+        $planDuration = $subscription->plan->data['duration'];
 
-        return $this->logRepository->FindSubscriptionLogsCount($subscription_id, $subscription->activated_at, $subscription->expires_at);
+        $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $subscription->activated_at);
+        $end_date = $start_date->addDays($planDuration);
+
+        while (!Carbon::now()->betweenIncluded($start_date, $end_date)) {
+            $start_date = $end_date;
+            $end_date = $end_date->addDays($planDuration);
+        }
+
+        return $this->logRepository->FindSubscriptionLogsCountInPeriod($subscription_id, $start_date, $end_date);
     }
 
     // This function requires rebuilding. discuss.
@@ -98,7 +107,7 @@ class LocalUserLoggingService implements IUserLoggingService
             $count = count($dayLogs);
             $totalCount += $count;
             $stats[] = [
-                'date'  => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
+                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
                 'count' => $count,
             ];
         }
@@ -108,8 +117,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'usages' => [
                 'current' => $totalCount,
-                'max'     => (int) $requestsCount,
-                'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
+                'max' => (int)$requestsCount,
+                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
             'details' => $stats,
         ];

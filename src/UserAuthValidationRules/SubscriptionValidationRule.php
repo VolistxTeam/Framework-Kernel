@@ -67,12 +67,13 @@ class SubscriptionValidationRule extends ValidationRuleBase
             ];
         }
 
+
         $fall_back_subscription = $this->subscriptionRepository->Create([
             'user_id' => $user_id,
             'plan_id' => config('volistx.fallback_plan.id'),
             'status' => SubscriptionStatus::ACTIVE,
             'activated_at' => Carbon::now(),
-            'expires_at' => Carbon::now()->addDays(28),
+            'expires_at' => null,
             'cancels_at' => null,
             'cancelled_at' => null,
         ]);
@@ -91,6 +92,10 @@ class SubscriptionValidationRule extends ValidationRuleBase
                 'expired_at' => Carbon::now(),
             ]);
 
+            if($this->IsInGracePeriod($subscription)){
+                return false;
+            }
+
             return true;
         }
 
@@ -104,5 +109,10 @@ class SubscriptionValidationRule extends ValidationRuleBase
         }
 
         return false;
+    }
+
+    private function IsInGracePeriod($subscription): bool
+    {
+        return Carbon::now()->lte(Carbon::createFromFormat('Y-m-d H:i:s', $subscription->expires_at)->addDays($subscription->plan->data['grace_period']));
     }
 }

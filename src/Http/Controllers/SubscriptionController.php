@@ -89,7 +89,7 @@ class SubscriptionController extends Controller
                 'plan_id'         => ['bail', 'sometimes', 'uuid', 'exists:plans,id'],
                 'status'          => ['bail', 'sometimes', new Enum(SubscriptionStatus::class)],
                 'activated_at'    => ['bail', 'sometimes', 'date'],
-                'expires_at'      => ['bail', 'sometimes', 'date'],
+                'expires_at'      => ['bail', 'present', 'date', 'nullable'],
                 'cancels_at'      => ['bail', 'sometimes', 'date'],
                 'cancelled_at'    => ['bail', 'sometimes', 'date'],
             ], [

@@ -49,7 +49,7 @@ class SubscriptionStatusCronCommand extends Command
                     'plan_id'      => config('volistx.fallback_plan.id'),
                     'status'       => SubscriptionStatus::ACTIVE,
                     'activated_at' => Carbon::now(),
-                    'expires_at'   => Carbon::now()->addDays(28),
+                    'expires_at'   => null,
                     'cancels_at'   => null,
                     'cancelled_at' => null,
                 ]);
