@@ -16,7 +16,7 @@ return [
     ],
     'geolocation' => [
         'token'             => env('GEOPOINT_API_KEY'),
-        'secure'          => env('GEOPOINT_API_SECURE', true),
+        'secure'            => env('GEOPOINT_API_SECURE', true),
     ],
     'validators' => [
         \Volistx\FrameworkKernel\AuthValidationRules\Users\SubscriptionValidationRule::class, //must always be #1 in order as it sets the subscription and the plan for current request
