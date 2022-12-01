@@ -35,24 +35,25 @@ class PlanController extends Controller
                 'description' => ['bail', 'required', 'string'],
                 'data'        => ['bail', 'required', 'array'],
                 'price'       => ['bail', 'required', 'numeric'],
-                'tier'        => ['bail', 'required', 'integer'],
+                'tier'        => ['bail', 'required', 'integer', 'unique:plans,tier'],
                 'custom'      => ['bail', 'required', 'boolean'],
             ], [
-                'name.required'          => 'The name is required.',
-                'name.string'            => 'The name must be a string.',
-                'tag.required'           => 'The tag is required.',
-                'tag.string'             => 'The tag must be a string.',
-                'tag.unique'             => 'The tag must be unique.',
-                'description.required'   => 'The description is required.',
-                'description.string'     => 'The description must be a string.',
-                'data.required'          => 'The data is required.',
-                'data.array'             => 'The data must be an array.',
-                'price.required'         => 'The price is required.',
-                'price.numeric'          => 'the price must be a numeric value',
-                'tier.required'          => 'The tier is required.',
-                'tier.integer'           => 'the tier must be a unique integer value value',
-                'custom.required'        => 'The custom is required.',
-                'custom.boolean'         => 'the custom must be a boolean value',
+                'name.required'          => __('name.required'),
+                'name.string'            => __('name.string'),
+                'tag.required'           => __('tag.required'),
+                'tag.string'             => __('tag.string'),
+                'tag.unique'             => __('tag.unique'),
+                'description.required'   => __('description.required'),
+                'description.string'     => __('description.string'),
+                'data.required'          => __('data.required'),
+                'data.array'             => __('data.array'),
+                'price.required'         => __('price.required'),
+                'price.numeric'          => __('price.numeric'),
+                'tier.required'          => __('tier.required'),
+                'tier.integer'           => __('tier.integer'),
+                'tier.unique'            => __('tier.unique'),
+                'custom.required'        => __('custom.required'),
+                'custom.boolean'         => __('custom.boolean'),
             ]);
 
             if ($validator->fails()) {
@@ -87,17 +88,17 @@ class PlanController extends Controller
                 'custom'      => ['bail', 'sometimes', 'boolean'],
                 'is_active'   => ['bail', 'sometimes', 'boolean'],
             ], [
-                'plan_id.required'       => 'The plan ID is required.',
-                'plan_id.uuid'           => 'The plan ID must be a valid uuid.',
-                'plan_id.exists'         => 'The plan with the given ID was not found.',
-                'name.string'            => 'The name must be a string.',
-                'tag.unique'             => 'The tag must be unique.',
-                'description.string'     => 'The description must be a string.',
-                'data.array'             => 'The data must be an array.',
-                'price.numeric'          => 'the price must be a numeric value',
-                'tier.integer'           => 'the tier must be a unique integer value value',
-                'custom.boolean'         => 'the custom must be a boolean value',
-                'is_active.boolean'      => 'the is_active must be a boolean value',
+                'plan_id.required'      => __('plan_id.required'),
+                'plan_id.uuid'          => __('plan_id.uuid'),
+                'plan_id.exists'        => __('plan_id.exists'),
+                'name.string'            => __('name.string'),
+                'tag.unique'             => __('tag.unique'),
+                'description.string'     => __('description.string'),
+                'data.array'             => __('data.array'),
+                'price.numeric'          => __('price.numeric'),
+                'tier.integer'           => __('tier.integer'),
+                'custom.boolean'         => __('custom.required'),
+                'is_active.boolean'      => __('is_active.boolean'),
             ]);
 
             if ($validator->fails()) {
@@ -128,9 +129,9 @@ class PlanController extends Controller
             ], [
                 'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
             ], [
-                'plan_id.required' => 'The plan ID is required.',
-                'plan_id.uuid'     => 'The plan ID must be a valid uuid.',
-                'plan_id.exists'   => 'The plan with the given ID was not found.',
+                'plan_id.required'      => __('plan_id.required'),
+                'plan_id.uuid'          => __('plan_id.uuid'),
+                'plan_id.exists'        => __('plan_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -163,9 +164,9 @@ class PlanController extends Controller
             ], [
                 'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
             ], [
-                'plan_id.required' => 'The plan ID is required.',
-                'plan_id.uuid'     => 'The plan ID must be a valid uuid.',
-                'plan_id.exists'   => 'The plan with the given ID was not found.',
+                'plan_id.required'      => __('plan_id.required'),
+                'plan_id.uuid'          => __('plan_id.uuid'),
+                'plan_id.exists'        => __('plan_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -202,8 +203,8 @@ class PlanController extends Controller
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'  => 'The page must be an integer.',
-                'limit.integer' => 'The limit must be an integer.',
+                'page.integer'  => __('page.integer'),
+                'limit.integer' => __('limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -213,7 +214,7 @@ class PlanController extends Controller
             $plans = $this->planRepository->FindAll($search, (int) $page, (int) $limit);
 
             if (!$plans) {
-                return response()->json(Messages::E400('Invalid search column'), 400);
+                return response()->json(Messages::E400(__('invalid_search_column')), 400);
             }
 
             $items = [];
