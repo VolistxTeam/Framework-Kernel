@@ -56,7 +56,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/../routes/system.php');
 
-        $this->loadTranslationsFrom(__DIR__.'/../locales', 'volistx');
+        $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
