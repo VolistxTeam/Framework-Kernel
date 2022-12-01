@@ -72,7 +72,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->publishes([
             __DIR__.'/../config/volistx.php'  => config_path('volistx.php'),
             __DIR__.'/../database/migrations' => database_path('migrations'),
-            __DIR__.'/../locales'             => resource_path('lang/vendor/volistx'),
+            __DIR__.'/../lang'             => resource_path('lang/vendor/volistx'),
         ]);
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
