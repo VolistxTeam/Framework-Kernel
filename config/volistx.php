@@ -16,18 +16,15 @@ return [
     ],
     'geolocation' => [
         'token'             => env('GEOPOINT_API_KEY'),
-        'base_url'          => env('GEOPOINT_API_URL'),
-        'verification'      => env('GEOPOINT_API_HMAC_VERIFICATION', false),
-        'verification_key'  => env('GEOPOINT_API_HMAC_KEY'),
     ],
     'validators' => [
-        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionValidationRule::class, //must always be #1 in order as it sets the subscription and the plan for current request
-        Volistx\FrameworkKernel\UserAuthValidationRules\SubscriptionRateLimitValidationRule::class,
-        Volistx\FrameworkKernel\UserAuthValidationRules\PersonalTokenExpiryValidationRule::class,
-        Volistx\FrameworkKernel\UserAuthValidationRules\IPValidationRule::class,
-        Volistx\FrameworkKernel\UserAuthValidationRules\CountryValidationRule::class,
-        Volistx\FrameworkKernel\UserAuthValidationRules\RequestsCountValidationRule::class,
-        Volistx\FrameworkKernel\UserAuthValidationRules\IPRateLimitValidationRule::class,
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\SubscriptionValidationRule::class, //must always be #1 in order as it sets the subscription and the plan for current request
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\SubscriptionRateLimitValidationRule::class,
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\PersonalTokenExpiryValidationRule::class,
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\IPValidationRule::class,
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\CountryValidationRule::class,
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\RequestsCountValidationRule::class,
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\IPRateLimitValidationRule::class,
     ],
     'services_permissions' => [
         '*',

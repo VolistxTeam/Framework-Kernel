@@ -1,6 +1,6 @@
 <?php
 
-namespace Volistx\FrameworkKernel\UserAuthValidationRules;
+namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Facades\GeoLocation;

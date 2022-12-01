@@ -1,6 +1,6 @@
 <?php
 
-namespace Volistx\FrameworkKernel\UserAuthValidationRules;
+namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Illuminate\Support\Facades\RateLimiter;
 use Volistx\FrameworkKernel\Enums\RateLimitMode;

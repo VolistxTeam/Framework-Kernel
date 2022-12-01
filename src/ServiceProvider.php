@@ -45,6 +45,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PersonalTokenServiceProvider::class,
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
+
+            \Torann\GeoIP\Facades\GeoIP::class
         ];
 
         foreach ($serviceProvider as $provider) {

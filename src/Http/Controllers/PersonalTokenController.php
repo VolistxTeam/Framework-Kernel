@@ -16,7 +16,7 @@ use Volistx\FrameworkKernel\Facades\Keys;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\PersonalTokenRepository;
-use Volistx\FrameworkKernel\RequestParameterValidators\CountryRequestValidationRule;
+use Volistx\FrameworkKernel\Rules\CountryRequest;
 
 class PersonalTokenController extends Controller
 {
@@ -45,7 +45,7 @@ class PersonalTokenController extends Controller
                 'ip_range'        => ['bail', 'required_if:ip_rule,1,2', 'array'],
                 'ip_range.*'      => ['bail', 'required_if:ip_rule,1,2', 'ip'],
                 'country_rule'    => ['bail', 'required', new Enum(AccessRule::class)],
-                'country_range'   => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
+                'country_range'   => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequest()],
                 'disable_logging' => ['bail', 'sometimes', 'nullable', 'boolean'],
                 'hmac_token'      => ['bail', 'sometimes', 'max:255'],
             ], [
@@ -117,7 +117,7 @@ class PersonalTokenController extends Controller
                 'ip_range'          => ['bail', 'required_if:ip_rule,1,2', 'array'],
                 'ip_range.*'        => ['bail', 'required_if:ip_rule,1,2', 'ip'],
                 'country_rule'      => ['bail', 'sometimes', new Enum(AccessRule::class)],
-                'country_range'     => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequestValidationRule()],
+                'country_range'     => ['bail', 'required_if:ip_rule,1,2', 'array', new CountryRequest()],
                 'disable_logging'   => ['bail', 'sometimes', 'nullable', 'boolean'],
                 'hmac_token'        => ['bail', 'sometimes', 'max:255'],
             ], [

@@ -1,11 +1,11 @@
 <?php
 
-namespace Volistx\FrameworkKernel\RequestParameterValidators;
+namespace Volistx\FrameworkKernel\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use MenaraSolutions\Geographer\Earth;
 
-class CountryRequestValidationRule implements Rule
+class CountryRequest implements Rule
 {
     private array $countries;
 

@@ -1,9 +1,8 @@
 <?php
 
-namespace Volistx\FrameworkKernel\UserAuthValidationRules;
+namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Carbon\Carbon;
-use function config;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
@@ -12,6 +11,7 @@ use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Plans;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
+use function config;
 
 class SubscriptionValidationRule extends ValidationRuleBase
 {

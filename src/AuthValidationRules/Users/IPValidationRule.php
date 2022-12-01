@@ -1,18 +1,17 @@
 <?php
 
-namespace Volistx\FrameworkKernel\AdminAuthValidationRules;
+namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Volistx\FrameworkKernel\Enums\AccessRule;
-use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
-use Volistx\FrameworkKernel\UserAuthValidationRules\ValidationRuleBase;
+use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Wikimedia\IPSet;
 
-class AdminIPValidationRule extends ValidationRuleBase
+class IPValidationRule extends ValidationRuleBase
 {
     public function Validate(): bool|array
     {
-        $token = AccessTokens::getToken();
+        $token = PersonalTokens::getToken();
 
         if ($token->ip_rule === AccessRule::NONE) {
             return true;
