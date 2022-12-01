@@ -23,12 +23,12 @@ class GeoPoint extends AbstractService
     public function boot()
     {
         $this->client = new HttpClient([
-            'base_uri' => ($this->config('secure') ? 'https' : 'http') . '://geopoint.api.volistx.io/',
-            'query' => [
+            'base_uri' => ($this->config('secure') ? 'https' : 'http').'://geopoint.api.volistx.io/',
+            'query'    => [
                 'some_option' => $this->config('some_option'),
             ],
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->config('key'),
+                'Authorization' => 'Bearer '.$this->config('key'),
             ],
         ]);
     }
@@ -45,7 +45,7 @@ class GeoPoint extends AbstractService
 
         // Verify server response
         if ($this->client->getErrors() !== null) {
-            throw new Exception('Request failed (' . $this->client->getErrors() . ')');
+            throw new Exception('Request failed ('.$this->client->getErrors().')');
         }
 
         return json_decode($data[0]) ?? null;

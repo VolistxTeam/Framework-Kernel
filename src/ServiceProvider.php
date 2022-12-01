@@ -46,7 +46,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
 
-            \Torann\GeoIP\Facades\GeoIP::class
+            \Torann\GeoIP\Facades\GeoIP::class,
         ];
 
         foreach ($serviceProvider as $provider) {
