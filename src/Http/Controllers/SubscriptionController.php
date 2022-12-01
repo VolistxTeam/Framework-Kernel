@@ -340,8 +340,8 @@ class SubscriptionController extends Controller
                 'subscription_id.required' => __('subscription_id.required'),
                 'subscription_id.uuid'     => __('subscription_id.uuid'),
                 'subscription_id.exists'   => __('subscription_id.exists'),
-                'page.integer'  => __('page.integer'),
-                'limit.integer' => __('limit.integer'),
+                'page.integer'             => __('page.integer'),
+                'limit.integer'            => __('limit.integer'),
             ]);
 
             if ($validator->fails()) {

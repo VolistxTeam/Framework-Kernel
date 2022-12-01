@@ -34,7 +34,7 @@ class UserLogController extends Controller
                 'log_id' => ['bail', 'required', 'uuid', 'exists:user_logs,id'],
             ], [
                 'log_id.required' => __('log_id.required'),
-                'log_id.uuid'     =>  __('log_id.uuid'),
+                'log_id.uuid'     => __('log_id.uuid'),
                 'log_id.exists'   => __('log_id.exists'),
             ]);
 
