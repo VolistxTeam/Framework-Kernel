@@ -63,18 +63,17 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if (!config('volistx.fallback_plan.id')) {
             return [
                 'message' => Messages::E403('Your subscription has been expired. Please subscribe to a new plan if you want to continue using this service.'),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 
-
         $fall_back_subscription = $this->subscriptionRepository->Create([
-            'user_id' => $user_id,
-            'plan_id' => config('volistx.fallback_plan.id'),
-            'status' => SubscriptionStatus::ACTIVE,
+            'user_id'      => $user_id,
+            'plan_id'      => config('volistx.fallback_plan.id'),
+            'status'       => SubscriptionStatus::ACTIVE,
             'activated_at' => Carbon::now(),
-            'expires_at' => null,
-            'cancels_at' => null,
+            'expires_at'   => null,
+            'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
 
@@ -88,11 +87,11 @@ class SubscriptionValidationRule extends ValidationRuleBase
     {
         if (!empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
-                'status' => SubscriptionStatus::EXPIRED,
+                'status'     => SubscriptionStatus::EXPIRED,
                 'expired_at' => Carbon::now(),
             ]);
 
-            if($this->IsInGracePeriod($subscription)){
+            if ($this->IsInGracePeriod($subscription)) {
                 return false;
             }
 
@@ -101,7 +100,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
 
         if (!empty($subscription->cancels_at) && Carbon::now()->gte($subscription->cancels_at)) {
             $this->subscriptionRepository->Update($subscription->id, [
-                'status' => SubscriptionStatus::CANCELLED,
+                'status'       => SubscriptionStatus::CANCELLED,
                 'cancelled_at' => Carbon::now(),
             ]);
 
