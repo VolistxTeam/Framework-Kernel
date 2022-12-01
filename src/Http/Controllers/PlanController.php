@@ -88,9 +88,9 @@ class PlanController extends Controller
                 'custom'      => ['bail', 'sometimes', 'boolean'],
                 'is_active'   => ['bail', 'sometimes', 'boolean'],
             ], [
-                'plan_id.required'      => __('plan_id.required'),
-                'plan_id.uuid'          => __('plan_id.uuid'),
-                'plan_id.exists'        => __('plan_id.exists'),
+                'plan_id.required'       => __('plan_id.required'),
+                'plan_id.uuid'           => __('plan_id.uuid'),
+                'plan_id.exists'         => __('plan_id.exists'),
                 'name.string'            => __('name.string'),
                 'tag.unique'             => __('tag.unique'),
                 'description.string'     => __('description.string'),
