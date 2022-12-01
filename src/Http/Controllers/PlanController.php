@@ -88,9 +88,9 @@ class PlanController extends Controller
                 'custom'      => ['bail', 'sometimes', 'boolean'],
                 'is_active'   => ['bail', 'sometimes', 'boolean'],
             ], [
-                'plan_id.required'      => trans('volistx::plan_id.required'),
-                'plan_id.uuid'          => trans('volistx::plan_id.uuid'),
-                'plan_id.exists'        => trans('volistx::plan_id.exists'),
+                'plan_id.required'       => trans('volistx::plan_id.required'),
+                'plan_id.uuid'           => trans('volistx::plan_id.uuid'),
+                'plan_id.exists'         => trans('volistx::plan_id.exists'),
                 'name.string'            => trans('volistx::name.string'),
                 'tag.unique'             => trans('volistx::tag.unique'),
                 'description.string'     => trans('volistx::description.string'),

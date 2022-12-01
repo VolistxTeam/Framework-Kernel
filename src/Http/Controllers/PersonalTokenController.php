@@ -270,17 +270,20 @@ class PersonalTokenController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = Validator::make([
-                'page'  => $page,
-                'limit' => $limit,
-            ], [
-                'page'  => ['bail', 'sometimes', 'integer'],
-                'limit' => ['bail', 'sometimes', 'integer'],
-            ],
-            [
-                'page.integer'  => trans('volistx::page.integer'),
-                'limit.integer' => trans('volistx::limit.integer'),
-            ]);
+            $validator = Validator::make(
+                [
+                    'page'  => $page,
+                    'limit' => $limit,
+                ],
+                [
+                    'page'  => ['bail', 'sometimes', 'integer'],
+                    'limit' => ['bail', 'sometimes', 'integer'],
+                ],
+                [
+                    'page.integer'  => trans('volistx::page.integer'),
+                    'limit.integer' => trans('volistx::limit.integer'),
+                ]
+            );
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
