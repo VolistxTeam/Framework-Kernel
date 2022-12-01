@@ -18,7 +18,7 @@ class SubscriptionRepository
             'user_id'      => $inputs['user_id'],
             'plan_id'      => $inputs['plan_id'],
             'status'       => $inputs['status'],
-            'activated_at' => $inputs['activated_at'],
+            'activated_at' => $inputs['activated_at'] ?? Carbon::now(),
             'expires_at'   => $inputs['expires_at'],
             'cancels_at'   => null,
             'cancelled_at' => null,
