@@ -97,7 +97,7 @@ return [
         'geopoint' => [
             'class'  => \Volistx\FrameworkKernel\GeoIP\Services\GeoPoint::class,
             'key'    => env('GEOPOINT_API_KEY'),
-            'secure' => true,
+            'secure' => env('GEOPOINT_API_SECURE', true),
             'locales' => ['en'],
         ],
     ],

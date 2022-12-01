@@ -24,9 +24,6 @@ class GeoPoint extends AbstractService
     {
         $this->client = new HttpClient([
             'base_uri' => ($this->config('secure') ? 'https' : 'http') . '://geopoint.api.volistx.io/',
-            'query' => [
-                'some_option' => $this->config('some_option'),
-            ],
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->config('key'),
             ],
