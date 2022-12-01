@@ -62,4 +62,11 @@
   "custom.required": "The custom is required.",
   "custom.boolean": "The custom must be a boolean.",
   "is_active.boolean": "The activation status must be a boolean.",
+  "service.not_allowed_to_access_from_your_ip": "This service is not allowed to access from your IP address.",
+  "service.not_allowed_to_access_from_your_country": "This service is not allowed to access from your country.",
+  "token.expired": "Your token has been expired.",
+  "request_count.can_not_retrieve": "The request count could not be retrieved.",
+  "request_count.exceeded_limit": "You have reached the limit of requests for this plan.",
+  "subscription.expired": "Your subscription has been expired.",
+  "subscription.can_not_uncancel": "You cannot uncancel the subscription."
 }

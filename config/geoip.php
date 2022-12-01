@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'log_failures' => true,
+    'log_failures' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ return [
     |
     */
 
-    'include_currency' => true,
+    'include_currency' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -56,42 +56,6 @@ return [
             'database_path' => storage_path('app/geoip.mmdb'),
             'update_url'    => sprintf('https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=%s&suffix=tar.gz', env('MAXMIND_LICENSE_KEY')),
             'locales'       => ['en'],
-        ],
-
-        'maxmind_api' => [
-            'class'       => \Torann\GeoIP\Services\MaxMindWebService::class,
-            'user_id'     => env('MAXMIND_USER_ID'),
-            'license_key' => env('MAXMIND_LICENSE_KEY'),
-            'locales'     => ['en'],
-        ],
-
-        'ipapi' => [
-            'class'          => \Torann\GeoIP\Services\IPApi::class,
-            'secure'         => true,
-            'key'            => env('IPAPI_KEY'),
-            'continent_path' => storage_path('app/continents.json'),
-            'lang'           => 'en',
-        ],
-
-        'ipgeolocation' => [
-            'class'          => \Torann\GeoIP\Services\IPGeoLocation::class,
-            'secure'         => true,
-            'key'            => env('IPGEOLOCATION_KEY'),
-            'continent_path' => storage_path('app/continents.json'),
-            'lang'           => 'en',
-        ],
-
-        'ipdata' => [
-            'class'  => \Torann\GeoIP\Services\IPData::class,
-            'key'    => env('IPDATA_API_KEY'),
-            'secure' => true,
-        ],
-
-        'ipfinder' => [
-            'class'   => \Torann\GeoIP\Services\IPFinder::class,
-            'key'     => env('IPFINDER_API_KEY'),
-            'secure'  => true,
-            'locales' => ['en'],
         ],
 
         'geopoint' => [
@@ -130,7 +94,7 @@ return [
     |
     */
 
-    'cache_tags' => ['torann-geoip-location'],
+    'cache_tags' => ['geoip-location'],
 
     /*
     |--------------------------------------------------------------------------
@@ -167,5 +131,4 @@ return [
         'default'     => true,
         'currency'    => 'USD',
     ],
-
 ];

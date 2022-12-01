@@ -3,6 +3,8 @@
 namespace Volistx\FrameworkKernel\Tests;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -43,7 +45,7 @@ class SubscriptionControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken(string $key): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function GenerateAccessToken(string $key): Collection|Model
     {
         $salt = Str::random(16);
 
@@ -122,7 +124,7 @@ class SubscriptionControllerTest extends BaseTestCase
         );
     }
 
-    private function GenerateSub(int $userID, $tokenCount = 5, $logs = 25): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function GenerateSub(int $userID, $tokenCount = 5, $logs = 25): Collection|Model
     {
         $sub = Subscription::factory()
             ->has(PersonalToken::factory()->count($tokenCount))

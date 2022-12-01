@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\DataTransferObjects;
 
 use ReflectionClass;
 use ReflectionProperty;
+use stdClass;
 
 abstract class DataTransferObjectBase
 {
@@ -15,7 +16,7 @@ abstract class DataTransferObjectBase
 
         $class = new ReflectionClass(static::class);
 
-        $parameters = $entity instanceof \stdClass ? get_object_vars($entity) : (is_array($entity) ? $entity : $entity->toArray());
+        $parameters = $entity instanceof stdClass ? get_object_vars($entity) : (is_array($entity) ? $entity : $entity->toArray());
 
         foreach ($class->getProperties(ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
             $property = $reflectionProperty->getName();

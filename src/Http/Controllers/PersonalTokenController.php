@@ -49,24 +49,24 @@ class PersonalTokenController extends Controller
                 'disable_logging' => ['bail', 'sometimes', 'nullable', 'boolean'],
                 'hmac_token'      => ['bail', 'sometimes', 'max:255'],
             ], [
-                'user_id.required'            => __('user_id.required'),
-                'duration.required'           => __('duration.required'),
-                'expires_at.date'             => __('expires_at.date'),
-                'rate_limit_mode.required'    => __('rate_limit_mode.required'),
-                'rate_limit_mode.enum'        => __('rate_limit_mode.enum'),
-                'permissions.array'           => __('permissions.array'),
-                'permissions.*.string'        => __('permissions.*.string'),
-                'ip_rule.enum'                => __('ip_rule.enum'),
-                'ip_range.required_if'        => __('ip_range.required_if'),
-                'ip_range.array'              => __('ip_range.array'),
-                'ip_range.*.ip'               => __('ip_range.*.ip'),
-                'country_rule.required'       => __('country_rule.required'),
-                'country_rule.enum'           => __('country_rule.enum'),
-                'country_range.required_if'   => __('country_range.required_if'),
-                'country_range.array'         => __('country_range.array'),
-                'country_range.*.required_if' => __('country_range.*.required_if'),
-                'disable_logging.boolean'     => __('disable_logging.boolean'),
-                'hmac_token.max'              => __('hmac_token.max'),
+                'user_id.required'            => trans('volistx::user_id.required'),
+                'duration.required'           => trans('volistx::duration.required'),
+                'expires_at.date'             => trans('volistx::expires_at.date'),
+                'rate_limit_mode.required'    => trans('volistx::rate_limit_mode.required'),
+                'rate_limit_mode.enum'        => trans('volistx::rate_limit_mode.enum'),
+                'permissions.array'           => trans('volistx::permissions.array'),
+                'permissions.*.string'        => trans('volistx::permissions.*.string'),
+                'ip_rule.enum'                => trans('volistx::ip_rule.enum'),
+                'ip_range.required_if'        => trans('volistx::ip_range.required_if'),
+                'ip_range.array'              => trans('volistx::ip_range.array'),
+                'ip_range.*.ip'               => trans('volistx::ip_range.*.ip'),
+                'country_rule.required'       => trans('volistx::country_rule.required'),
+                'country_rule.enum'           => trans('volistx::country_rule.enum'),
+                'country_range.required_if'   => trans('volistx::country_range.required_if'),
+                'country_range.array'         => trans('volistx::country_range.array'),
+                'country_range.*.required_if' => trans('volistx::country_range.*.required_if'),
+                'disable_logging.boolean'     => trans('volistx::disable_logging.boolean'),
+                'hmac_token.max'              => trans('volistx::hmac_token.max'),
             ]);
 
             if ($validator->fails()) {
@@ -121,25 +121,25 @@ class PersonalTokenController extends Controller
                 'disable_logging'   => ['bail', 'sometimes', 'nullable', 'boolean'],
                 'hmac_token'        => ['bail', 'sometimes', 'max:255'],
             ], [
-                'token_id.required'             => __('token_id.required'),
-                'token_id.uuid'                 => __('token_id.uuid'),
-                'token_id.exists'               => __('token_id.exists'),
-                'expires_at.date'               => __('expires_at.date'),
-                'permissions.array'             => __('permissions.array'),
-                'permissions.*.string'          => __('permissions.*.string'),
-                'rate_limit_mode.enum'          => __('rate_limit_mode.enum'),
-                'ip_rule.required'              => __('ip_rule.required'),
-                'ip_rule.enum'                  => __('ip_rule.enum'),
-                'ip_range.required_if'          => __('ip_range.required_if'),
-                'ip_range.array'                => __('ip_range.array'),
-                'ip_range.*.ip'                 => __('ip_range.*.ip'),
-                'country_rule.required'         => __('country_rule.required'),
-                'country_rule.enum'             => __('country_rule.enum'),
-                'country_range.required_if'     => __('country_range.required_if'),
-                'country_range.array'           => __('country_range.array'),
-                'country_range.*.required_if'   => __('country_range.*.required_if'),
-                'disable_logging.boolean'       => __('disable_logging.boolean'),
-                'hmac_token.max'                => __('hmac_token.max'),
+                'token_id.required'             => trans('volistx::token_id.required'),
+                'token_id.uuid'                 => trans('volistx::token_id.uuid'),
+                'token_id.exists'               => trans('volistx::token_id.exists'),
+                'expires_at.date'               => trans('volistx::expires_at.date'),
+                'permissions.array'             => trans('volistx::permissions.array'),
+                'permissions.*.string'          => trans('volistx::permissions.*.string'),
+                'rate_limit_mode.enum'          => trans('volistx::rate_limit_mode.enum'),
+                'ip_rule.required'              => trans('volistx::ip_rule.required'),
+                'ip_rule.enum'                  => trans('volistx::ip_rule.enum'),
+                'ip_range.required_if'          => trans('volistx::ip_range.required_if'),
+                'ip_range.array'                => trans('volistx::ip_range.array'),
+                'ip_range.*.ip'                 => trans('volistx::ip_range.*.ip'),
+                'country_rule.required'         => trans('volistx::country_rule.required'),
+                'country_rule.enum'             => trans('volistx::country_rule.enum'),
+                'country_range.required_if'     => trans('volistx::country_range.required_if'),
+                'country_range.array'           => trans('volistx::country_range.array'),
+                'country_range.*.required_if'   => trans('volistx::country_range.*.required_if'),
+                'disable_logging.boolean'       => trans('volistx::disable_logging.boolean'),
+                'hmac_token.max'                => trans('volistx::hmac_token.max'),
             ]);
 
             if ($validator->fails()) {
@@ -169,9 +169,9 @@ class PersonalTokenController extends Controller
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'token_id.required'             => __('token_id.required'),
-                'token_id.uuid'                 => __('token_id.uuid'),
-                'token_id.exists'               => __('token_id.exists'),
+                'token_id.required'             => trans('volistx::token_id.required'),
+                'token_id.uuid'                 => trans('volistx::token_id.uuid'),
+                'token_id.exists'               => trans('volistx::token_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -206,9 +206,9 @@ class PersonalTokenController extends Controller
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'token_id.required'             => __('token_id.required'),
-                'token_id.uuid'                 => __('token_id.uuid'),
-                'token_id.exists'               => __('token_id.exists'),
+                'token_id.required'             => trans('volistx::token_id.required'),
+                'token_id.uuid'                 => trans('volistx::token_id.uuid'),
+                'token_id.exists'               => trans('volistx::token_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -238,9 +238,9 @@ class PersonalTokenController extends Controller
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'token_id.required'             => __('token_id.required'),
-                'token_id.uuid'                 => __('token_id.uuid'),
-                'token_id.exists'               => __('token_id.exists'),
+                'token_id.required'             => trans('volistx::token_id.required'),
+                'token_id.uuid'                 => trans('volistx::token_id.uuid'),
+                'token_id.exists'               => trans('volistx::token_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -276,6 +276,10 @@ class PersonalTokenController extends Controller
             ], [
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
+            ],
+            [
+                'page.integer'  => trans('volistx::page.integer'),
+                'limit.integer' => trans('volistx::limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -285,7 +289,7 @@ class PersonalTokenController extends Controller
             $tokens = $this->personalTokenRepository->FindAll($search, $page, $limit);
 
             if (!$tokens) {
-                return response()->json(Messages::E400(__('invalid_search_column')), 400);
+                return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);
             }
 
             $userTokens = [];
@@ -316,7 +320,7 @@ class PersonalTokenController extends Controller
             $validator = Validator::make($request->all(), [
                 'user_id' => ['required', 'integer', 'bail'],
             ], [
-                'user_id.required' => __('user_id.required'),
+                'user_id.required' => trans('volistx::user_id.required'),
             ]);
 
             if ($validator->fails()) {

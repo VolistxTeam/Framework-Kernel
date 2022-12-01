@@ -43,14 +43,14 @@ class SubscriptionController extends Controller
                     'expires_at'   => ['bail', 'present', 'date', 'nullable'],
                 ],
                 [
-                    'user_id.required'      => __('user_id.required'),
-                    'user_id.integer'       => __('user_id.integer'),
-                    'plan_id.required'      => __('plan_id.required'),
-                    'plan_id.uuid'          => __('plan_id.uuid'),
-                    'plan_id.exists'        => __('plan_id.exists'),
-                    'activated_at.date'     => __('activated_at.date'),
-                    'activated_at.required' => __('activated_at.required'),
-                    'expires_at.date'       => __('expires_at.date'),
+                    'user_id.required'      => trans('volistx::user_id.required'),
+                    'user_id.integer'       => trans('volistx::user_id.integer'),
+                    'plan_id.required'      => trans('volistx::plan_id.required'),
+                    'plan_id.uuid'          => trans('volistx::plan_id.uuid'),
+                    'plan_id.exists'        => trans('volistx::plan_id.exists'),
+                    'activated_at.date'     => trans('volistx::activated_at.date'),
+                    'activated_at.required' => trans('volistx::activated_at.required'),
+                    'expires_at.date'       => trans('volistx::expires_at.date'),
                 ]
             );
 
@@ -93,16 +93,16 @@ class SubscriptionController extends Controller
                 'cancels_at'      => ['bail', 'sometimes', 'date'],
                 'cancelled_at'    => ['bail', 'sometimes', 'date'],
             ], [
-                'subscription_id.required' => __('subscription_id.required'),
-                'subscription_id.uuid'     => __('subscription_id.uuid'),
-                'subscription_id.exists'   => __('subscription_id.exists'),
-                'hmac_token.max'           => __('hmac_token.max'),
-                'user_id.integer'          => __('user_id.integer'),
-                'plan_id.uuid'             => __('plan_id.uuid'),
-                'activated_at.date'        => __('activated_at.date'),
-                'expires_at.date'          => __('expires_at.date'),
-                'cancels_at.date'          => __('cancels_at.date'),
-                'cancelled_at.date'        => __('cancelled_at.date'),
+                'subscription_id.required' => trans('volistx::subscription_id.required'),
+                'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
+                'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
+                'hmac_token.max'           => trans('volistx::hmac_token.max'),
+                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'plan_id.uuid'             => trans('volistx::plan_id.uuid'),
+                'activated_at.date'        => trans('volistx::activated_at.date'),
+                'expires_at.date'          => trans('volistx::expires_at.date'),
+                'cancels_at.date'          => trans('volistx::cancels_at.date'),
+                'cancelled_at.date'        => trans('volistx::cancelled_at.date'),
             ]);
 
             if ($validator->fails()) {
@@ -136,9 +136,9 @@ class SubscriptionController extends Controller
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
-                'subscription_id.required' => __('subscription_id.required'),
-                'subscription_id.uuid'     => __('subscription_id.uuid'),
-                'subscription_id.exists'   => __('subscription_id.exists'),
+                'subscription_id.required' => trans('volistx::subscription_id.required'),
+                'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
+                'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -171,10 +171,10 @@ class SubscriptionController extends Controller
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             'cancels_at'      => ['bail', 'sometimes', 'date'],
         ], [
-            'subscription_id.required' => __('subscription_id.required'),
-            'subscription_id.uuid'     => __('subscription_id.uuid'),
-            'subscription_id.exists'   => __('subscription_id.exists'),
-            'cancels_at.date'          => __('cancels_at.date'),
+            'subscription_id.required' => trans('volistx::subscription_id.required'),
+            'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
+            'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
+            'cancels_at.date'          => trans('volistx::cancels_at.date'),
         ]);
 
         if ($validator->fails()) {
@@ -208,10 +208,10 @@ class SubscriptionController extends Controller
         ], [
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
         ], [
-            'subscription_id.required' => __('subscription_id.required'),
-            'subscription_id.uuid'     => __('subscription_id.uuid'),
-            'subscription_id.exists'   => __('subscription_id.exists'),
-            'cancels_at.date'          => __('cancels_at.date'),
+            'subscription_id.required' => trans('volistx::subscription_id.required'),
+            'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
+            'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
+            'cancels_at.date'          => trans('volistx::cancels_at.date'),
         ]);
 
         if ($validator->fails()) {
@@ -221,7 +221,7 @@ class SubscriptionController extends Controller
         $subscription = $this->subscriptionRepository->Find($subscription_id);
 
         if ($subscription->status !== SubscriptionStatus::ACTIVE || empty($subscription->cancels_at)) {
-            return response()->json(Messages::E400("Can't uncancel a subscription"), 400);
+            return response()->json(Messages::E400(trans('volistx::subscription.can_not_uncancel')), 400);
         }
 
         $updatedSub = $this->subscriptionRepository->Update(
@@ -246,9 +246,9 @@ class SubscriptionController extends Controller
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
-                'subscription_id.required' => __('subscription_id.required'),
-                'subscription_id.uuid'     => __('subscription_id.uuid'),
-                'subscription_id.exists'   => __('subscription_id.exists'),
+                'subscription_id.required' => trans('volistx::subscription_id.required'),
+                'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
+                'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -285,8 +285,8 @@ class SubscriptionController extends Controller
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'  => __('page.integer'),
-                'limit.integer' => __('limit.integer'),
+                'page.integer'  => trans('volistx::page.integer'),
+                'limit.integer' => trans('volistx::limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -296,7 +296,7 @@ class SubscriptionController extends Controller
             $subs = $this->subscriptionRepository->FindAll($search, $page, $limit);
 
             if (!$subs) {
-                return response()->json(Messages::E400(__('invalid_search_column')), 400);
+                return response()->json(Messages::E400(trans('invalid_search_column')), 400);
             }
 
             $items = [];
@@ -337,11 +337,11 @@ class SubscriptionController extends Controller
                 'page'            => ['bail', 'sometimes', 'integer'],
                 'limit'           => ['bail', 'sometimes', 'integer'],
             ], [
-                'subscription_id.required' => __('subscription_id.required'),
-                'subscription_id.uuid'     => __('subscription_id.uuid'),
-                'subscription_id.exists'   => __('subscription_id.exists'),
-                'page.integer'             => __('page.integer'),
-                'limit.integer'            => __('limit.integer'),
+                'subscription_id.required' => trans('volistx::subscription_id.required'),
+                'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
+                'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
+                'page.integer'             => trans('volistx::page.integer'),
+                'limit.integer'            => trans('volistx::limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -351,7 +351,7 @@ class SubscriptionController extends Controller
             $logs = $this->loggingService->GetSubscriptionLogs($subscription_id, $search, $page, $limit);
 
             if ($logs === null) {
-                return response()->json(Messages::E400(__('invalid_search_column')), 400);
+                return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);
             }
 
             return response()->json($logs);
@@ -372,9 +372,9 @@ class SubscriptionController extends Controller
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
-                'subscription_id.required' => __('subscription_id.required'),
-                'subscription_id.uuid'     => __('subscription_id.uuid'),
-                'subscription_id.exists'   => __('subscription_id.exists'),
+                'subscription_id.required' => trans('volistx::subscription_id.required'),
+                'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
+                'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
             ]);
 
             if ($validator->fails()) {

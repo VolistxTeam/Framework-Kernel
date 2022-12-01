@@ -30,7 +30,7 @@ class SubscriptionRateLimitValidationRule extends ValidationRuleBase
 
             if (!$executed) {
                 return [
-                    'message' => Messages::E429('You have exceeded the rate limit.'),
+                    'message' => Messages::E429(),
                     'code'    => 429,
                 ];
             }

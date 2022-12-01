@@ -30,6 +30,7 @@ class RequestLoggingMiddleware
                     'user_agent'      => $request->userAgent() ?? null,
                     'subscription_id' => Subscriptions::getSubscription()?->id,
                 ];
+
                 Event::dispatch(new UserRequestCompleted($inputs));
             }
         } elseif (AccessTokens::getToken()) {
@@ -40,6 +41,7 @@ class RequestLoggingMiddleware
                 'user_agent'      => $request->userAgent() ?? null,
                 'access_token_id' => AccessTokens::getToken()?->id,
             ];
+
             Event::dispatch(new AdminRequestCompleted($inputs));
         }
     }

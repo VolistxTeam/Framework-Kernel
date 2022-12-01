@@ -33,9 +33,9 @@ class UserLogController extends Controller
             ], [
                 'log_id' => ['bail', 'required', 'uuid', 'exists:user_logs,id'],
             ], [
-                'log_id.required' => __('log_id.required'),
-                'log_id.uuid'     => __('log_id.uuid'),
-                'log_id.exists'   => __('log_id.exists'),
+                'log_id.required' => trans('volistx::log_id.required'),
+                'log_id.uuid'     => trans('volistx::log_id.uuid'),
+                'log_id.exists'   => trans('volistx::log_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -72,8 +72,8 @@ class UserLogController extends Controller
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'  => __('page.integer'),
-                'limit.integer' => __('limit.integer'),
+                'page.integer'  => trans('volistx::page.integer'),
+                'limit.integer' => trans('volistx::limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -83,7 +83,7 @@ class UserLogController extends Controller
             $logs = $this->userLoggingService->GetLogs($search, $page, $limit);
 
             if (!$logs) {
-                return response()->json(Messages::E400(__('invalid_search_column')), 400);
+                return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);
             }
 
             return response()->json($logs);

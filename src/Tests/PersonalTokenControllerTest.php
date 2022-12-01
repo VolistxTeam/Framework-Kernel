@@ -2,6 +2,8 @@
 
 namespace Volistx\FrameworkKernel\Tests;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
@@ -43,7 +45,7 @@ class PersonalTokenControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken(string $key): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function GenerateAccessToken(string $key): Collection|Model
     {
         $salt = Str::random(16);
 
@@ -54,7 +56,7 @@ class PersonalTokenControllerTest extends BaseTestCase
                 'permissions' => ['personal-tokens:*'], ]);
     }
 
-    private function GenerateSub(int $userID, int $tokenCount, $logs = 50): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function GenerateSub(int $userID, int $tokenCount, $logs = 50): Collection|Model
     {
         $sub = Subscription::factory()
             ->has(PersonalToken::factory()->count($tokenCount))

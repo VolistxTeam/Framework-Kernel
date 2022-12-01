@@ -22,7 +22,7 @@ class IPValidationRule extends ValidationRuleBase
         if ($token->ip_rule === AccessRule::BLACKLIST && $ipSet->match($this->request->getClientIp()) ||
             ($token->ip_rule === AccessRule::WHITELIST && !$ipSet->match($this->request->getClientIp()))) {
             return [
-                'message' => Messages::E403('This service is not allowed to access from your IP address.'),
+                'message' => Messages::E403(trans('volistx::service.not_allowed_to_access_from_your_ip')),
                 'code'    => 403,
             ];
         }

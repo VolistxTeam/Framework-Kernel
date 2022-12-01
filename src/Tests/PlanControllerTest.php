@@ -2,6 +2,8 @@
 
 namespace Volistx\FrameworkKernel\Tests;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -53,7 +55,7 @@ class PlanControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken(string $key): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function GenerateAccessToken(string $key): Collection|Model
     {
         $salt = Str::random(16);
 
@@ -132,7 +134,7 @@ class PlanControllerTest extends BaseTestCase
         );
     }
 
-    private function GeneratePlan(int $subCount = 0): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function GeneratePlan(int $subCount = 0): Collection|Model
     {
         return Plan::factory()->has(Subscription::factory()->count($subCount))->create();
     }

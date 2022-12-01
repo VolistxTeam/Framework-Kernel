@@ -7,6 +7,7 @@ use Illuminate\Console\Scheduling\ScheduleClearCacheCommand;
 use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Laravel\Lumen\Routing\Router;
+use Torann\GeoIP\Facades\GeoIP;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
 use Volistx\FrameworkKernel\Console\Commands\SubscriptionStatusCronCommand;
@@ -46,7 +47,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
 
-            \Torann\GeoIP\Facades\GeoIP::class,
+            GeoIP::class,
         ];
 
         foreach ($serviceProvider as $provider) {

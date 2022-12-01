@@ -2,11 +2,13 @@
 
 namespace Volistx\FrameworkKernel\Facades;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static getSubscription()
- * @method static setSubscription(\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model $activeSubscription)
+ * @method static setSubscription(Builder|Model $activeSubscription)
  */
 class Subscriptions extends Facade
 {

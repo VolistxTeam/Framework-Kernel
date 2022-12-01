@@ -2,6 +2,8 @@
 
 namespace Volistx\FrameworkKernel\Tests;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -35,7 +37,7 @@ class AdminLogControllerTest extends BaseTestCase
         ]);
     }
 
-    private function GenerateAccessToken(string $key, int $logsCount): \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function GenerateAccessToken(string $key, int $logsCount): Collection|Model
     {
         $salt = Str::random(16);
         $token = AccessToken::factory()

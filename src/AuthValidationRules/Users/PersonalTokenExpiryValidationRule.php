@@ -14,7 +14,7 @@ class PersonalTokenExpiryValidationRule extends ValidationRuleBase
 
         if ($token->expires_at && Carbon::now()->greaterThan(Carbon::createFromTimeString($token->expires_at))) {
             return [
-                'message' => Messages::E403('Your token has been expired. Please generate a new token if you want to continue using this service.'),
+                'message' => Messages::E403(trans('volistx::token.expired')),
                 'code'    => 403,
             ];
         }

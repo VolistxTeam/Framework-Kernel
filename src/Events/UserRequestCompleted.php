@@ -7,7 +7,7 @@ use Illuminate\Queue\SerializesModels;
 
 class UserRequestCompleted
 {
-    use  InteractsWithSockets;
+    use InteractsWithSockets;
     use SerializesModels;
 
     public array $inputs;

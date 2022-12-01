@@ -16,36 +16,36 @@ class MessagesCenter
 
     public function E400($error = null): array
     {
-        return self::Error('InvalidParameter', $error ?? __('error.e400'));
+        return self::Error('InvalidParameter', $error ?? trans('volistx::error.e400'));
     }
 
     public function E401($error = null): array
     {
-        return self::Error('Unauthorized', $error ?? __('error.e401'));
+        return self::Error('Unauthorized', $error ?? trans('volistx::error.e401'));
     }
 
     public function E403($error = null): array
     {
-        return self::Error('Forbidden', $error ?? __('error.e403'));
+        return self::Error('Forbidden', $error ?? trans('volistx::error.e403'));
     }
 
     public function E404($error = null): array
     {
-        return self::Error('NotFound', $error ?? __('error.e404'));
+        return self::Error('NotFound', $error ?? trans('volistx::error.e404'));
     }
 
     public function E409($error = null): array
     {
-        return self::Error('Conflict', $error ?? __('error.e409'));
+        return self::Error('Conflict', $error ?? trans('volistx::error.e409'));
     }
 
     public function E429($error = null): array
     {
-        return self::Error('RateLimitReached', $error ?? __('error.e429'));
+        return self::Error('RateLimitReached', $error ?? trans('volistx::error.e429'));
     }
 
     public function E500($error = null): array
     {
-        return self::Error('Unknown', $error ?? __('error.e500'));
+        return self::Error('Unknown', $error ?? trans('volistx::error.e500'));
     }
 }
