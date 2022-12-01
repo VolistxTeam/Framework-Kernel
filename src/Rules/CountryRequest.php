@@ -27,6 +27,6 @@ class CountryRequest implements Rule
 
     public function message(): string
     {
-        return 'The country range item must be a valid country short name.';
+        return __('country_range.*.required_if');
     }
 }

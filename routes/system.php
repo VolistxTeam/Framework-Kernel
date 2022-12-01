@@ -12,6 +12,7 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
     $this->app->router->get('/ping', function () {
         return response('Hi!');
     });
+
     $this->app->router->get('/timestamp', function () {
         return response(time());
     });

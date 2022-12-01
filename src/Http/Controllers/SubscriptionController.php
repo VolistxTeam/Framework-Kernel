@@ -43,14 +43,14 @@ class SubscriptionController extends Controller
                     'expires_at'   => ['bail', 'present', 'date', 'nullable'],
                 ],
                 [
-                    'user_id.required'      => 'The user ID is required.',
-                    'user_id.integer'       => 'The user ID must be an integer.',
-                    'plan_id.required'      => 'The plan ID is required.',
-                    'plan_id.uuid'          => 'The plan ID must be a UUID.',
-                    'plan_id.exists'        => 'The plan with the given ID was not found.',
-                    'activated_at.date'     => 'Activation must be a valid date.',
-                    'activated_at.required' => 'Activation must be a valid date.',
-                    'expires_at.date'       => 'Expiration at must be a valid date.',
+                    'user_id.required'      => __('user_id.required'),
+                    'user_id.integer'       => __('user_id.integer'),
+                    'plan_id.required'      => __('plan_id.required'),
+                    'plan_id.uuid'          => __('plan_id.uuid'),
+                    'plan_id.exists'        => __('plan_id.exists'),
+                    'activated_at.date'     => __('activated_at.date'),
+                    'activated_at.required' => __('activated_at.required'),
+                    'expires_at.date'       => __('expires_at.date'),
                 ]
             );
 
@@ -93,16 +93,16 @@ class SubscriptionController extends Controller
                 'cancels_at'      => ['bail', 'sometimes', 'date'],
                 'cancelled_at'    => ['bail', 'sometimes', 'date'],
             ], [
-                'subscription_id.required' => 'Subscription ID is required.',
-                'subscription_id.uuid'     => 'Subscription ID must be a valid UUID.',
-                'hmac_token.max'           => 'Hmac_Token must not exceed 255 chars',
-                'subscription_id.exists'   => 'Subscription with the given ID was not found.',
-                'user_id.integer'          => 'User ID must be a number',
-                'plan_id.uuid'             => 'Plan ID must be a uuid',
-                'activated_at.date'        => 'Activation should be a valid date',
-                'expires_at.date'          => 'Expiration should be a valid date',
-                'cancels_at.date'          => 'Cancellation should be a valid date',
-                'cancelled_at.date'        => 'Cancellation should be a valid date',
+                'subscription_id.required' => __('subscription_id.required'),
+                'subscription_id.uuid'     => __('subscription_id.uuid'),
+                'subscription_id.exists'   => __('subscription_id.exists'),
+                'hmac_token.max'           => __('hmac_token.max'),
+                'user_id.integer'          => __('user_id.integer'),
+                'plan_id.uuid'             => __('plan_id.uuid'),
+                'activated_at.date'        => __('activated_at.date'),
+                'expires_at.date'          => __('expires_at.date'),
+                'cancels_at.date'          => __('cancels_at.date'),
+                'cancelled_at.date'        => __('cancelled_at.date'),
             ]);
 
             if ($validator->fails()) {
@@ -136,9 +136,9 @@ class SubscriptionController extends Controller
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'subscription_id.required' => __('subscription_id.required'),
+                'subscription_id.uuid'     => __('subscription_id.uuid'),
+                'subscription_id.exists'   => __('subscription_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -171,10 +171,10 @@ class SubscriptionController extends Controller
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             'cancels_at'      => ['bail', 'sometimes', 'date'],
         ], [
-            'subscription_id.required' => 'The subscription ID is required.',
-            'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-            'subscription_id.exists'   => 'The subscription with the given ID was not found.',
-            'cancels_at.date'          => 'Cancellation must be a valid date',
+            'subscription_id.required' => __('subscription_id.required'),
+            'subscription_id.uuid'     => __('subscription_id.uuid'),
+            'subscription_id.exists'   => __('subscription_id.exists'),
+            'cancels_at.date'          => __('cancels_at.date'),
         ]);
 
         if ($validator->fails()) {
@@ -199,7 +199,7 @@ class SubscriptionController extends Controller
 
     public function UncancelSubscription(Request $request, $subscription_id): JsonResponse
     {
-        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'un-cancel')) {
+        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'uncancel')) {
             return response()->json(Messages::E401(), 401);
         }
 
@@ -208,10 +208,10 @@ class SubscriptionController extends Controller
         ], [
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
         ], [
-            'subscription_id.required' => 'The subscription ID is required.',
-            'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-            'subscription_id.exists'   => 'The subscription with the given ID was not found.',
-            'cancels_at.date'          => 'Cancellation must be a valid date.',
+            'subscription_id.required' => __('subscription_id.required'),
+            'subscription_id.uuid'     => __('subscription_id.uuid'),
+            'subscription_id.exists'   => __('subscription_id.exists'),
+            'cancels_at.date'          => __('cancels_at.date'),
         ]);
 
         if ($validator->fails()) {
@@ -246,9 +246,9 @@ class SubscriptionController extends Controller
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'subscription_id.required' => __('subscription_id.required'),
+                'subscription_id.uuid'     => __('subscription_id.uuid'),
+                'subscription_id.exists'   => __('subscription_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -285,8 +285,8 @@ class SubscriptionController extends Controller
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'  => 'The page must be an integer.',
-                'limit.integer' => 'The limit must be an integer.',
+                'page.integer'  => __('page.integer'),
+                'limit.integer' => __('limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -296,7 +296,7 @@ class SubscriptionController extends Controller
             $subs = $this->subscriptionRepository->FindAll($search, $page, $limit);
 
             if (!$subs) {
-                return response()->json(Messages::E400('Invalid search column'), 400);
+                return response()->json(Messages::E400(__('invalid_search_column')), 400);
             }
 
             $items = [];
@@ -337,11 +337,11 @@ class SubscriptionController extends Controller
                 'page'            => ['bail', 'sometimes', 'integer'],
                 'limit'           => ['bail', 'sometimes', 'integer'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
-                'page.integer'             => 'The page must be an integer.',
-                'limit.integer'            => 'The limit must be an integer.',
+                'subscription_id.required' => __('subscription_id.required'),
+                'subscription_id.uuid'     => __('subscription_id.uuid'),
+                'subscription_id.exists'   => __('subscription_id.exists'),
+                'page.integer'  => __('page.integer'),
+                'limit.integer' => __('limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -351,7 +351,7 @@ class SubscriptionController extends Controller
             $logs = $this->loggingService->GetSubscriptionLogs($subscription_id, $search, $page, $limit);
 
             if ($logs === null) {
-                return response()->json(Messages::E400('Invalid search column'), 400);
+                return response()->json(Messages::E400(__('invalid_search_column')), 400);
             }
 
             return response()->json($logs);
@@ -372,9 +372,9 @@ class SubscriptionController extends Controller
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
             ], [
-                'subscription_id.required' => 'The subscription ID is required.',
-                'subscription_id.uuid'     => 'The subscription ID must be a valid UUID.',
-                'subscription_id.exists'   => 'The subscription with the given ID was not found.',
+                'subscription_id.required' => __('subscription_id.required'),
+                'subscription_id.uuid'     => __('subscription_id.uuid'),
+                'subscription_id.exists'   => __('subscription_id.exists'),
             ]);
 
             if ($validator->fails()) {

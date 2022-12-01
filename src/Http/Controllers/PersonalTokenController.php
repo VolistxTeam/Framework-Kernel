@@ -49,24 +49,24 @@ class PersonalTokenController extends Controller
                 'disable_logging' => ['bail', 'sometimes', 'nullable', 'boolean'],
                 'hmac_token'      => ['bail', 'sometimes', 'max:255'],
             ], [
-                'user_id.required'            => 'The user ID is required.',
-                'duration.required'           => 'The duration is required.',
-                'expires_at.date'             => 'Expiry date must be a valid date',
-                'rate_limit_mode.required'    => 'The rate limit mode is required.',
-                'rate_limit_mode.enum'        => 'The rate limit mode must be a valid type.',
-                'permissions.array'           => 'The permissions must be an array.',
-                'permissions.*.string'        => 'The permissions item must be a string.',
-                'ip_rule.enum'                => 'The ip rule must be a valid type.',
-                'ip_range.required_if'        => 'The IP range is required when the IP rule is 1 or 2.',
-                'ip_range.array'              => 'The IP range must be an array.',
-                'ip_range.*.ip'               => 'The IP range item must be a valid IP address.',
-                'country_rule.required'       => 'The country rule is required.',
-                'country_rule.enum'           => 'The country rule must be a valid type.',
-                'country_range.required_if'   => 'The country range is required when the country rule is 1 or 2.',
-                'country_range.array'         => 'The country range must be an array.',
-                'country_range.*.required_if' => 'The country range item must be a valid country code.',
-                'disable_logging.boolean'     => 'The disable logging must be a boolean.',
-                'hmac_token.max'              => 'HMac toke should be shorter than 255 letter.',
+                'user_id.required'            => __('user_id.required'),
+                'duration.required'           => __('duration.required'),
+                'expires_at.date'             => __('expires_at.date'),
+                'rate_limit_mode.required'    => __('rate_limit_mode.required'),
+                'rate_limit_mode.enum'        => __('rate_limit_mode.enum'),
+                'permissions.array'           => __('permissions.array'),
+                'permissions.*.string'        => __('permissions.*.string'),
+                'ip_rule.enum'                => __('ip_rule.enum'),
+                'ip_range.required_if'        => __('ip_range.required_if'),
+                'ip_range.array'              => __('ip_range.array'),
+                'ip_range.*.ip'               => __('ip_range.*.ip'),
+                'country_rule.required'       => __('country_rule.required'),
+                'country_rule.enum'           => __('country_rule.enum'),
+                'country_range.required_if'   => __('country_range.required_if'),
+                'country_range.array'         => __('country_range.array'),
+                'country_range.*.required_if' => __('country_range.*.required_if'),
+                'disable_logging.boolean'     => __('disable_logging.boolean'),
+                'hmac_token.max'              => __('hmac_token.max'),
             ]);
 
             if ($validator->fails()) {
@@ -121,25 +121,25 @@ class PersonalTokenController extends Controller
                 'disable_logging'   => ['bail', 'sometimes', 'nullable', 'boolean'],
                 'hmac_token'        => ['bail', 'sometimes', 'max:255'],
             ], [
-                'token_id.required'             => 'The token ID is required.',
-                'token_id.uuid'                 => 'The token ID must be a valid uuid.',
-                'token_id.exists'               => 'The token with the given ID was not found.',
-                'expires_at.date'               => 'Expiry must be a valid date.',
-                'permissions.array'             => 'The permissions must be an array.',
-                'permissions.*.string'          => 'The permissions item must be a string.',
-                'rate_limit_mode.enum'          => 'The rate limit mode must be a valid type.',
-                'ip_rule.required'              => 'The ip rule is required.',
-                'ip_rule.enum'                  => 'The ip rule must be a valid type.',
-                'ip_range.required_if'          => 'The IP range is required when the IP rule is 1 or 2.',
-                'ip_range.array'                => 'The ID range must be an array.',
-                'ip_range.*.ip'                 => 'The IP range item must be a valid IP address.',
-                'country_rule.required'         => 'The country rule is required.',
-                'country_rule.enum'             => 'The country rule must be a valid type.',
-                'country_range.required_if'     => 'The country range is required when the country rule is 1 or 2.',
-                'country_range.array'           => 'The country range must be an array.',
-                'country_range.*.required_if'   => 'The country range item must be a valid country code.',
-                'disable_logging.boolean'       => 'The disable logging must be a boolean.',
-                'hmac_token.max'                => 'HMac toke should be shorter than 255 letter.',
+                'token_id.required'             => __('token_id.required'),
+                'token_id.uuid'                 => __('token_id.uuid'),
+                'token_id.exists'               => __('token_id.exists'),
+                'expires_at.date'             => __('expires_at.date'),
+                'permissions.array'           => __('permissions.array'),
+                'permissions.*.string'        => __('permissions.*.string'),
+                'rate_limit_mode.enum'          => __('rate_limit_mode.enum'),
+                'ip_rule.required'              => __('ip_rule.required'),
+                'ip_rule.enum'                  => __('ip_rule.enum'),
+                'ip_range.required_if'        => __('ip_range.required_if'),
+                'ip_range.array'              => __('ip_range.array'),
+                'ip_range.*.ip'               => __('ip_range.*.ip'),
+                'country_rule.required'       => __('country_rule.required'),
+                'country_rule.enum'           => __('country_rule.enum'),
+                'country_range.required_if'   => __('country_range.required_if'),
+                'country_range.array'         => __('country_range.array'),
+                'country_range.*.required_if' => __('country_range.*.required_if'),
+                'disable_logging.boolean'     => __('disable_logging.boolean'),
+                'hmac_token.max'              => __('hmac_token.max'),
             ]);
 
             if ($validator->fails()) {
@@ -169,9 +169,9 @@ class PersonalTokenController extends Controller
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'token_id.required' => 'The token ID is required.',
-                'token_id.uuid'     => 'The token ID must be a valid uuid.',
-                'token_id.exists'   => 'The token ID does not found in the database.',
+                'token_id.required'             => __('token_id.required'),
+                'token_id.uuid'                 => __('token_id.uuid'),
+                'token_id.exists'               => __('token_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -206,9 +206,9 @@ class PersonalTokenController extends Controller
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'token_id.required' => 'The token ID is required.',
-                'token_id.uuid'     => 'The token ID must be a valid uuid.',
-                'token_id.exists'   => 'The token ID does not found in the database.',
+                'token_id.required'             => __('token_id.required'),
+                'token_id.uuid'                 => __('token_id.uuid'),
+                'token_id.exists'               => __('token_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -238,9 +238,9 @@ class PersonalTokenController extends Controller
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
             ], [
-                'token_id.required' => 'The token ID is required.',
-                'token_id.uuid'     => 'The token ID must be a valid uuid.',
-                'token_id.exists'   => 'The token with the given ID was not found.',
+                'token_id.required'             => __('token_id.required'),
+                'token_id.uuid'                 => __('token_id.uuid'),
+                'token_id.exists'               => __('token_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -285,7 +285,7 @@ class PersonalTokenController extends Controller
             $tokens = $this->personalTokenRepository->FindAll($search, $page, $limit);
 
             if (!$tokens) {
-                return response()->json(Messages::E400('Invalid search column'), 400);
+                return response()->json(Messages::E400(__('invalid_search_column')), 400);
             }
 
             $userTokens = [];
@@ -316,7 +316,7 @@ class PersonalTokenController extends Controller
             $validator = Validator::make($request->all(), [
                 'user_id' => ['required', 'integer', 'bail'],
             ], [
-                'user_id.required' => 'The user ID is required.',
+                'user_id.required' => __('user_id.required'),
             ]);
 
             if ($validator->fails()) {

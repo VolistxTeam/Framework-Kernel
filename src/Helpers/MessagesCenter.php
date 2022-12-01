@@ -4,12 +4,7 @@ namespace Volistx\FrameworkKernel\Helpers;
 
 class MessagesCenter
 {
-    public function E400($error = 'One or more invalid parameters were specified.'): array
-    {
-        return self::Error('InvalidParameter', $error);
-    }
-
-    public function Error(string $type, $info): array
+    public function Error($type, $info): array
     {
         return [
             'error' => [
@@ -19,33 +14,38 @@ class MessagesCenter
         ];
     }
 
-    public function E401($error = 'You have insufficient permissions to access this resource.'): array
+    public function E400($error = null): array
     {
-        return self::Error('Unauthorized', $error);
+        return self::Error('InvalidParameter', $error ?? __('error.e400'));
     }
 
-    public function E403($error = 'You don\'t have permission to access this resource.'): array
+    public function E401($error = null): array
     {
-        return self::Error('Forbidden', $error);
+        return self::Error('Unauthorized', $error ?? __('error.e401'));
     }
 
-    public function E404($error = 'The requested item is not found in the server.'): array
+    public function E403($error = null): array
     {
-        return self::Error('NotFound', $error);
+        return self::Error('Forbidden', $error ?? __('error.e403'));
     }
 
-    public function E409($error = 'The request could not be completed due to a conflict with the current state of the resource.'): array
+    public function E404($error = null): array
     {
-        return self::Error('Conflict', $error);
+        return self::Error('NotFound', $error ?? __('error.e404'));
     }
 
-    public function E429($error = 'The user has exceeded subscription\'s rate limit.'): array
+    public function E409($error = null): array
     {
-        return self::Error('RateLimitReached', $error);
+        return self::Error('Conflict', $error ?? __('error.e409'));
     }
 
-    public function E500($error = 'Something went wrong with the server. Please try later.'): array
+    public function E429($error = null): array
     {
-        return self::Error('Unknown', $error);
+        return self::Error('RateLimitReached', $error ?? __('error.e429'));
+    }
+
+    public function E500($error = null): array
+    {
+        return self::Error('Unknown', $error ?? __('error.e500'));
     }
 }

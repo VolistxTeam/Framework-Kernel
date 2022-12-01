@@ -16,7 +16,7 @@ class PermissionsCenter
         'subscriptions:logs',
         'subscriptions:stats',
         'subscriptions:cancel',
-        'subscriptions:un-cancel',
+        'subscriptions:uncancel',
 
         'personal-tokens:*',
         'personal-tokens:create',

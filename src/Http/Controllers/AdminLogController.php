@@ -33,9 +33,9 @@ class AdminLogController extends Controller
             ], [
                 'log_id' => ['bail', 'required', 'uuid', 'exists:admin_logs,id'],
             ], [
-                'log_id.required' => 'The log ID is required.',
-                'log_id.uuid'     => 'The log ID must be a valid uuid.',
-                'log_id.exists'   => 'The log with the given ID was not found.',
+                'log_id.required' => __('log_id.required'),
+                'log_id.uuid'     =>  __('log_id.uuid'),
+                'log_id.exists'   => __('log_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -72,8 +72,8 @@ class AdminLogController extends Controller
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'  => 'The page must be an integer.',
-                'limit.integer' => 'The limit must be an integer.',
+                'page.integer'  => __('page.integer'),
+                'limit.integer' => __('limit.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -83,7 +83,7 @@ class AdminLogController extends Controller
             $logs = $this->adminLoggingService->GetAdminLogs($search, $page, $limit);
 
             if (!$logs) {
-                return response()->json(Messages::E400('Invalid search column'), 400);
+                return response()->json(Messages::E400(__('invalid_search_column')), 400);
             }
 
             return response()->json($logs);
