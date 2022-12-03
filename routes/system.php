@@ -18,6 +18,15 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
     });
 
     $this->app->router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () {
+        $this->app->router->group(['prefix' => 'users'], function () {
+            $this->app->router->group(['middleware' => ['filter.json']], function () {
+                $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\UserController@CreateUser');
+                $this->app->router->patch('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@UpdateUser');
+            });
+            $this->app->router->delete('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@DeleteUser');
+            $this->app->router->get('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@GetUser');
+        });
+
         $this->app->router->group(['prefix' => 'subscriptions'], function () {
             $this->app->router->group(['middleware' => ['filter.json']], function () {
                 $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');

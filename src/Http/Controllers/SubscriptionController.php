@@ -39,7 +39,7 @@ class SubscriptionController extends Controller
                 [
                     'user_id'      => ['bail', 'required', 'integer'],
                     'plan_id'      => ['bail', 'required', 'uuid', 'exists:plans,id'],
-                    'activated_at' => ['bail', 'date'],
+                    'activated_at' => ['bail', "required",'date'],
                     'expires_at'   => ['bail', 'present', 'date', 'nullable'],
                 ],
                 [
@@ -49,6 +49,7 @@ class SubscriptionController extends Controller
                     'plan_id.uuid'          => trans('volistx::plan_id.uuid'),
                     'plan_id.exists'        => trans('volistx::plan_id.exists'),
                     'activated_at.date'     => trans('volistx::activated_at.date'),
+                    'activated_at.required'     => trans('volistx::activated_at.required'),
                     'expires_at.date'       => trans('volistx::expires_at.date'),
                 ]
             );

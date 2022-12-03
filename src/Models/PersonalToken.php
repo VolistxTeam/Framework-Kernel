@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Enums\RateLimitMode;
 use Volistx\FrameworkKernel\Helpers\UuidForKey;
@@ -56,5 +57,10 @@ class PersonalToken extends Model
     public function setCountryRangeAttribute($value)
     {
         $this->attributes['country_range'] = json_encode(array_map('strtoupper', $value));
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
