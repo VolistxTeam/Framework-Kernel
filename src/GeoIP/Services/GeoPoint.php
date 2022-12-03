@@ -2,7 +2,6 @@
 
 namespace Volistx\FrameworkKernel\GeoIP\Services;
 
-use Exception;
 use Torann\GeoIP\Services\AbstractService;
 use Torann\GeoIP\Support\HttpClient;
 
