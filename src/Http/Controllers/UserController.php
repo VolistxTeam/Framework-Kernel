@@ -6,12 +6,10 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Volistx\FrameworkKernel\DataTransferObjects\PlanDTO;
 use Volistx\FrameworkKernel\DataTransferObjects\UserDTO;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
-use Volistx\FrameworkKernel\Repositories\PlanRepository;
 use Volistx\FrameworkKernel\Repositories\UserRepository;
 
 class UserController extends Controller
@@ -35,7 +33,7 @@ class UserController extends Controller
                 'user_id' => ['bail', 'required', 'integer'],
             ], [
                 'user_id.required' => trans('volistx::user_id.required'),
-                'user_id.integer' => trans('volistx::user_id.integer'),
+                'user_id.integer'  => trans('volistx::user_id.integer'),
             ]);
 
             if ($validator->fails()) {
@@ -58,11 +56,11 @@ class UserController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'user_id' => ['bail', 'required', 'integer'],
+                'user_id'   => ['bail', 'required', 'integer'],
                 'is_active' => ['bail', 'sometimes', 'boolean'],
             ], [
-                'user_id.required' => trans('volistx::user_id.required'),
-                'user_id.integer' => trans('volistx::user_id.integer'),
+                'user_id.required'  => trans('volistx::user_id.required'),
+                'user_id.integer'   => trans('volistx::user_id.integer'),
                 'is_active.boolean' => trans('volistx::is_active.boolean'),
             ]);
 
@@ -95,7 +93,6 @@ class UserController extends Controller
                 'user_id.required' => trans('volistx::user_id.required'),
             ]);
 
-
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
@@ -126,7 +123,6 @@ class UserController extends Controller
             ], [
                 'user_id.required' => trans('volistx::user_id.required'),
             ]);
-
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);

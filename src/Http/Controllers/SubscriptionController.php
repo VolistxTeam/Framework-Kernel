@@ -39,18 +39,18 @@ class SubscriptionController extends Controller
                 [
                     'user_id'      => ['bail', 'required', 'integer'],
                     'plan_id'      => ['bail', 'required', 'uuid', 'exists:plans,id'],
-                    'activated_at' => ['bail', "required",'date'],
+                    'activated_at' => ['bail', 'required', 'date'],
                     'expires_at'   => ['bail', 'present', 'date', 'nullable'],
                 ],
                 [
-                    'user_id.required'      => trans('volistx::user_id.required'),
-                    'user_id.integer'       => trans('volistx::user_id.integer'),
-                    'plan_id.required'      => trans('volistx::plan_id.required'),
-                    'plan_id.uuid'          => trans('volistx::plan_id.uuid'),
-                    'plan_id.exists'        => trans('volistx::plan_id.exists'),
-                    'activated_at.date'     => trans('volistx::activated_at.date'),
+                    'user_id.required'          => trans('volistx::user_id.required'),
+                    'user_id.integer'           => trans('volistx::user_id.integer'),
+                    'plan_id.required'          => trans('volistx::plan_id.required'),
+                    'plan_id.uuid'              => trans('volistx::plan_id.uuid'),
+                    'plan_id.exists'            => trans('volistx::plan_id.exists'),
+                    'activated_at.date'         => trans('volistx::activated_at.date'),
                     'activated_at.required'     => trans('volistx::activated_at.required'),
-                    'expires_at.date'       => trans('volistx::expires_at.date'),
+                    'expires_at.date'           => trans('volistx::expires_at.date'),
                 ]
             );
 
