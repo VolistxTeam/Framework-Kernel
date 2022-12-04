@@ -34,6 +34,6 @@ class AccessKeyGenerateCommand extends Command
             'country_range'   => [],
         ]);
 
-        $this->info('Your access key is created: '.$saltedKey['key']);
+        $this->components->info('Your access key is created: '.$saltedKey['key']);
     }
 }

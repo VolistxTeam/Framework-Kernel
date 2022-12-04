@@ -25,7 +25,6 @@
     "cryental/larasupport": "^1.7",
     "nesbot/carbon": "^2.60",
     "menarasolutions/geographer": "^0.3.13",
-    "torann/geoip": "^3.0",
     "paragonie/random-lib": "^2.0"
   },
   "require-dev": {

@@ -27,7 +27,7 @@ class AccessKeyDeleteCommand extends Command
         $token = $this->option('key');
 
         if (empty($token)) {
-            $this->error('Please specify your access key to delete.');
+            $this->components->error('Please specify your access key to delete.');
 
             return;
         }
@@ -35,13 +35,13 @@ class AccessKeyDeleteCommand extends Command
         $accessToken = $this->accessTokenRepository->AuthAccessToken($token);
 
         if (!$accessToken) {
-            $this->error('The specified access key is invalid.');
+            $this->components->error('The specified access key is invalid.');
 
             return;
         }
 
         $this->accessTokenRepository->Delete($accessToken->id);
 
-        $this->info('Your access key is deleted: '.$token);
+        $this->components->info('Your access key is deleted: '.$token);
     }
 }

@@ -56,6 +56,6 @@ class SubscriptionStatusCronCommand extends Command
             }
         }
 
-        $this->info('Subscription cron job has been completed.');
+        $this->components->info('Subscription cron job has been completed.');
     }
 }
