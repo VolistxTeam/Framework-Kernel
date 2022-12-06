@@ -27,7 +27,6 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
             $this->app->router->delete('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@DeleteUser');
             $this->app->router->get('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@GetUser');
 
-
             $this->app->router->group(['prefix' => '/{user_id}/'], function () {
 
                 // Subscriptions
@@ -60,7 +59,6 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
                 });
             });
         });
-
 
         $this->app->router->group(['prefix' => 'plans'], function () {
             $this->app->router->group(['middleware' => ['filter.json']], function () {
