@@ -68,5 +68,7 @@
   "volistx::request_count.can_not_retrieve": "Не удалось получить количество запросов.",
   "volistx::request_count.exceeded_limit": "Вы достигли лимита на количество запросов в этом плане.",
   "volistx::subscription.expired": "Срок действия вашей подписки истек.",
-  "volistx::subscription.can_not_uncancel": "Вы не можете отказаться от отмены подписки."
+  "volistx::subscription.can_not_uncancel": "Вы не можете отказаться от отмены подписки.",
+  "volistx::user_id.exist": "Поле идентификатора пользователя должно присутствовать.",
+  "volistx::expires_at.present" : "Поле с датой истечения срока действия должно присутствовать."
 }
