@@ -15,10 +15,10 @@ class UserLogRepository
     {
         return UserLog::query()->create([
             'subscription_id' => $inputs['subscription_id'],
-            'url'             => $inputs['url'],
-            'ip'              => $inputs['ip'],
-            'method'          => $inputs['method'],
-            'user_agent'      => $inputs['user_agent'],
+            'url' => $inputs['url'],
+            'ip' => $inputs['ip'],
+            'method' => $inputs['method'],
+            'user_agent' => $inputs['user_agent'],
         ]);
     }
 
@@ -55,7 +55,7 @@ class UserLogRepository
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogs($subscription_id, $search, $page, $limit): LengthAwarePaginator|null
+    public function FindSubscriptionLogs($user_id, $subscription_id, $search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {
@@ -79,15 +79,17 @@ class UserLogRepository
 
         return UserLog::query()
             ->where('subscription_id', $subscription_id)
+            ->where('user_id', $user_id)
             ->where($values[0], 'LIKE', "%$searchValue%")
             ->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function FindSubscriptionLogsCountInPeriod($subscription_id, $start_date, $end_date): int
+    public function FindSubscriptionLogsCountInPeriod($user_id, $subscription_id, $start_date, $end_date): int
     {
         $query = UserLog::query()
             ->where('subscription_id', $subscription_id)
+            ->where('user_id', $user_id)
             ->whereDate('created_at', '>=', $start_date);
 
         if ($end_date) {
@@ -97,9 +99,11 @@ class UserLogRepository
         return $query->count();
     }
 
-    public function FindSubscriptionUsages($subscription_id): ?object
+    public function FindSubscriptionUsages($user_id, $subscription_id): ?object
     {
-        return UserLog::query()->where('subscription_id', $subscription_id)
+        return UserLog::query()
+            ->where('subscription_id', $subscription_id)
+            ->where('user_id', $user_id)
             ->get()
             ->groupBy(function ($log) {
                 return Carbon::parse($log->created_at)->format('j'); // grouping by days

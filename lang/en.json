@@ -68,5 +68,9 @@
   "volistx::request_count.can_not_retrieve": "The request count could not be retrieved.",
   "volistx::request_count.exceeded_limit": "You have reached the limit of requests for this plan.",
   "volistx::subscription.expired": "Your subscription has been expired.",
-  "volistx::subscription.can_not_uncancel": "You cannot uncancel the subscription."
+  "volistx::subscription.can_not_uncancel": "You cannot uncancel the subscription.",
+
+
+  "volistx::user_id.exist": "Must Implement Error Msg",
+  "volistx::expires_at.present" : "Must Implmement Error Msg"
 }

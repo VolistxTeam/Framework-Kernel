@@ -10,9 +10,9 @@ interface IUserLoggingService
 
     public function GetLogs($search, $page, $limit);
 
-    public function GetSubscriptionLogs($subscription_id, $search, $page, $limit);
+    public function GetSubscriptionLogs($user_id, $subscription_id, $search, $page, $limit);
 
-    public function GetSubscriptionLogsCountInPlanDuration($subscription_id);
+    public function GetSubscriptionLogsCountInPlanDuration($user_id, $subscription_id);
 
-    public function GetSubscriptionUsages($subscription_id);
+    public function GetSubscriptionUsages($user_id, $subscription_id);
 }

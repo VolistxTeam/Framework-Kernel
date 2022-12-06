@@ -15,38 +15,38 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'      => $inputs['user_id'],
-            'plan_id'      => $inputs['plan_id'],
-            'status'       => $inputs['status'],
+            'user_id' => $inputs['user_id'],
+            'plan_id' => $inputs['plan_id'],
+            'status' => $inputs['status'],
             'activated_at' => $inputs['activated_at'] ?? Carbon::now(),
-            'expires_at'   => $inputs['expires_at'],
-            'cancels_at'   => null,
+            'expires_at' => $inputs['expires_at'],
+            'cancels_at' => null,
             'cancelled_at' => null,
         ]);
     }
 
-    public function Clone($subscriptionID, $inputs): Builder|Model|null
+    public function Clone($user_id, $subscription_id, $inputs): Builder|Model|null
     {
-        $subscription = $this->Find($subscriptionID);
+        $subscription = $this->Find($user_id, $subscription_id);
 
         if (!$subscription) {
             return null;
         }
 
         return Subscription::query()->create([
-            'user_id'           => $subscription->user_id,
-            'plan_id'           => $inputs['plan_id'] ?? $subscription->plan_id,
-            'status'            => $inputs['status'] ?? $subscription->status,
-            'activated_at'      => $inputs['activated_at'] ?? Carbon::now(),
-            'expires_at'        => $inputs['expires_at'] ?? $subscription->expires_at,
-            'cancels_at'        => $inputs['cancels_at'] ?? $subscription->cancels_at,
-            'cancelled_at'      => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
+            'user_id' => $user_id,
+            'plan_id' => $inputs['plan_id'] ?? $subscription->plan_id,
+            'status' => $inputs['status'] ?? $subscription->status,
+            'activated_at' => $inputs['activated_at'] ?? Carbon::now(),
+            'expires_at' => $inputs['expires_at'] ?? $subscription->expires_at,
+            'cancels_at' => $inputs['cancels_at'] ?? $subscription->cancels_at,
+            'cancelled_at' => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
         ]);
     }
 
-    public function Update($subscriptionID, array $inputs): ?object
+    public function Update($user_id, $subscription_id, array $inputs): ?object
     {
-        $subscription = $this->Find($subscriptionID);
+        $subscription = $this->Find($user_id, $subscription_id);
 
         if (!$subscription) {
             return null;
@@ -77,9 +77,11 @@ class SubscriptionRepository
         return $subscription;
     }
 
-    public function Find($subscriptionID): ?object
+    public function Find($user_id, $subscription_id): ?object
     {
-        return Subscription::with('plan')->where('id', $subscriptionID)->first();
+        return Subscription::with('plan')
+            ->where('id', $subscription_id)
+            ->where('user_id', $user_id)->first();
     }
 
     public function FindUserActiveSubscription($user_id): Builder|Model|null
@@ -99,9 +101,9 @@ class SubscriptionRepository
             ->first();
     }
 
-    public function Delete($subscriptionID): ?bool
+    public function Delete($user_id, $subscription_id): ?bool
     {
-        $toBeDeletedSub = $this->Find($subscriptionID);
+        $toBeDeletedSub = $this->Find($user_id, $subscription_id);
 
         if (!$toBeDeletedSub) {
             return null;
