@@ -15,12 +15,12 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id' => $inputs['user_id'],
-            'plan_id' => $inputs['plan_id'],
-            'status' => $inputs['status'],
+            'user_id'      => $inputs['user_id'],
+            'plan_id'      => $inputs['plan_id'],
+            'status'       => $inputs['status'],
             'activated_at' => $inputs['activated_at'] ?? Carbon::now(),
-            'expires_at' => $inputs['expires_at'],
-            'cancels_at' => null,
+            'expires_at'   => $inputs['expires_at'],
+            'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
     }
@@ -34,12 +34,12 @@ class SubscriptionRepository
         }
 
         return Subscription::query()->create([
-            'user_id' => $user_id,
-            'plan_id' => $inputs['plan_id'] ?? $subscription->plan_id,
-            'status' => $inputs['status'] ?? $subscription->status,
+            'user_id'      => $user_id,
+            'plan_id'      => $inputs['plan_id'] ?? $subscription->plan_id,
+            'status'       => $inputs['status'] ?? $subscription->status,
             'activated_at' => $inputs['activated_at'] ?? Carbon::now(),
-            'expires_at' => $inputs['expires_at'] ?? $subscription->expires_at,
-            'cancels_at' => $inputs['cancels_at'] ?? $subscription->cancels_at,
+            'expires_at'   => $inputs['expires_at'] ?? $subscription->expires_at,
+            'cancels_at'   => $inputs['cancels_at'] ?? $subscription->cancels_at,
             'cancelled_at' => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
         ]);
     }
