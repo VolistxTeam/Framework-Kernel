@@ -21,24 +21,24 @@ class RequestsCountValidationRule extends ValidationRuleBase
 
     public function Validate(): bool|array
     {
-        $sub_id = Subscriptions::getSubscription()->id;
+        $subscription = Subscriptions::getSubscription();
         $plan = Plans::getPlan();
 
         if (isset($plan['data']['requests'])) {
-            $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCountInPlanDuration($sub_id);
+            $requestsMadeCount = $this->loggingService->GetSubscriptionLogsCountInPlanDuration($subscription->user_id, $subscription->id);
             $planRequestsLimit = $plan['data']['requests'] ?? null;
 
             if ($requestsMadeCount === null) {
                 return [
                     'message' => Messages::E500(trans('volistx::request_count.can_not_retrieve')),
-                    'code'    => 500,
+                    'code' => 500,
                 ];
             }
 
             if (!$planRequestsLimit || ($planRequestsLimit != -1 && $requestsMadeCount >= $planRequestsLimit)) {
                 return [
                     'message' => Messages::E403(trans('volistx::request_count.exceeded_limit')),
-                    'code'    => 429,
+                    'code' => 429,
                 ];
             }
         }
