@@ -18,6 +18,8 @@ class User extends Model
      */
     public $timestamps = true;
 
+    public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *
