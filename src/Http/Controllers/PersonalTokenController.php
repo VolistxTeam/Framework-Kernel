@@ -28,15 +28,17 @@ class PersonalTokenController extends Controller
         $this->personalTokenRepository = $personalTokenRepository;
     }
 
-    public function CreatePersonalToken(Request $request): JsonResponse
+    public function CreatePersonalToken(Request $request,$user_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'create')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make($request->all(), [
-                'user_id'         => ['required', 'integer', 'bail'],
+            $validator = Validator::make(  array_merge($request->all(), [
+                'user_id' => $user_id,
+            ]),[
+                'user_id'         => ['required', 'integer', 'bail', 'exists:users,id'],
                 'expires_at'      => ['bail', 'present', 'nullable', 'date'],
                 'rate_limit_mode' => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
                 'permissions'     => ['bail', 'sometimes', 'array'],
@@ -49,7 +51,9 @@ class PersonalTokenController extends Controller
                 'disable_logging' => ['bail', 'sometimes', 'nullable', 'boolean'],
                 'hmac_token'      => ['bail', 'sometimes', 'max:255'],
             ], [
-                'user_id.required'            => trans('volistx::user_id.required'),
+                'user_id.required'             => trans('volistx::user_id.required'),
+                'user_id.integer'              => trans('volistx::user_id.integer'),
+                'user_id.exists'              => trans('volistx::user_id.exists'),
                 'duration.required'           => trans('volistx::duration.required'),
                 'expires_at.date'             => trans('volistx::expires_at.date'),
                 'rate_limit_mode.required'    => trans('volistx::rate_limit_mode.required'),
@@ -76,7 +80,7 @@ class PersonalTokenController extends Controller
             $saltedKey = Keys::randomSaltedKey();
 
             $newPersonalToken = $this->personalTokenRepository->Create([
-                'user_id'         => $request->input('user_id'),
+                'user_id'         => $user_id,
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
                 'rate_limit_mode' => $request->input('rate_limit_mode') ?? RateLimitMode::SUBSCRIPTION,
@@ -98,7 +102,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function UpdatePersonalToken(Request $request, $token_id): JsonResponse
+    public function UpdatePersonalToken(Request $request, $user_id, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'update')) {
@@ -107,8 +111,10 @@ class PersonalTokenController extends Controller
 
             $validator = Validator::make(array_merge($request->all(), [
                 'token_id' => $token_id,
+                'user_id'         => $user_id,
             ]), [
                 'token_id'          => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
                 'expires_at'        => ['bail', 'sometimes', 'date', 'nullable'],
                 'permissions'       => ['bail', 'sometimes', 'array'],
                 'rate_limit_mode'   => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
@@ -124,6 +130,9 @@ class PersonalTokenController extends Controller
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
+                'user_id.required'         => trans('volistx::user_id.required'),
+                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'user_id.exists'           => trans('volistx::user_id.exists'),
                 'expires_at.date'               => trans('volistx::expires_at.date'),
                 'permissions.array'             => trans('volistx::permissions.array'),
                 'permissions.*.string'          => trans('volistx::permissions.*.string'),
@@ -146,7 +155,7 @@ class PersonalTokenController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $updatedToken = $this->personalTokenRepository->Update($token_id, $request->all());
+            $updatedToken = $this->personalTokenRepository->Update($user_id, $token_id, $request->all());
             if (!$updatedToken) {
                 return response()->json(Messages::E404(), 404);
             }
@@ -157,7 +166,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function ResetPersonalToken(Request $request, $token_id): JsonResponse
+    public function ResetPersonalToken(Request $request, $user_id ,$token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'reset')) {
@@ -166,12 +175,19 @@ class PersonalTokenController extends Controller
 
             $validator = Validator::make(array_merge($request->all(), [
                 'token_id' => $token_id,
+                'user_id'  => $user_id,
+
             ]), [
-                'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'token_id' => ['bail', 'required', 'uuid', 'exists:personal_tokens,id'],
+                'user_id'  => ['bail', 'required', 'integer', 'exists:users,id'],
+
             ], [
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
+                'user_id.required'         => trans('volistx::user_id.required'),
+                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -180,7 +196,7 @@ class PersonalTokenController extends Controller
 
             $saltedKey = Keys::randomSaltedKey();
 
-            $resetToken = $this->personalTokenRepository->Reset(
+            $resetToken = $this->personalTokenRepository->Reset($user_id,
                 $token_id,
                 $saltedKey
             );
@@ -195,7 +211,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function DeletePersonalToken(Request $request, $token_id): JsonResponse
+    public function DeletePersonalToken(Request $request,$user_id, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
@@ -203,19 +219,26 @@ class PersonalTokenController extends Controller
             }
             $validator = Validator::make(array_merge($request->all(), [
                 'token_id' => $token_id,
+                'user_id'  => $user_id,
+
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'user_id'  => ['bail', 'required', 'integer', 'exists:users,id'],
+
             ], [
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
+                'user_id.required'         => trans('volistx::user_id.required'),
+                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $result = $this->personalTokenRepository->Delete($token_id);
+            $result = $this->personalTokenRepository->Delete($user_id, $token_id);
             if (!$result) {
                 return response()->json(Messages::E404(), 404);
             }
@@ -226,7 +249,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function GetPersonalToken(Request $request, $token_id): JsonResponse
+    public function GetPersonalToken(Request $request, $user_id, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
@@ -235,19 +258,26 @@ class PersonalTokenController extends Controller
 
             $validator = Validator::make(array_merge($request->all(), [
                 'token_id' => $token_id,
+                'user_id'         => $user_id,
+
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
+
             ], [
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
+                'user_id.required'         => trans('volistx::user_id.required'),
+                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $token = $this->personalTokenRepository->Find($token_id);
+            $token = $this->personalTokenRepository->Find($user_id, $token_id);
 
             if (!$token) {
                 return response()->json(Messages::E404(), 404);
@@ -313,17 +343,21 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function Sync(Request $request)
+    public function Sync(Request $request, $user_id)
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'sync')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make($request->all(), [
-                'user_id' => ['required', 'integer', 'bail'],
+            $validator = Validator::make([
+                'user_id'=>$user_id
             ], [
-                'user_id.required' => trans('volistx::user_id.required'),
+                'user_id' => ['required', 'integer', 'bail','exists:users,id'],
+            ], [
+                'user_id.required'         => trans('volistx::user_id.required'),
+                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -335,7 +369,7 @@ class PersonalTokenController extends Controller
             $saltedKey = Keys::randomSaltedKey();
 
             $newPersonalToken = $this->personalTokenRepository->Create([
-                'user_id'         => $request->input('user_id'),
+                'user_id'         => $user_id,
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
                 'permissions'     => ['*'],

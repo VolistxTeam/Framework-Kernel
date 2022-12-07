@@ -15,27 +15,27 @@ class PersonalTokenRepository
     public function Create(array $inputs): Model|Builder
     {
         return PersonalToken::query()->create([
-            'user_id'         => $inputs['user_id'],
-            'key'             => substr($inputs['key'], 0, 32),
-            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt'     => $inputs['salt'],
-            'permissions'     => $inputs['permissions'],
+            'user_id' => $inputs['user_id'],
+            'key' => substr($inputs['key'], 0, 32),
+            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt' => $inputs['salt'],
+            'permissions' => $inputs['permissions'],
             'rate_limit_mode' => $inputs['rate_limit_mode'],
-            'ip_rule'         => $inputs['ip_rule'],
-            'ip_range'        => $inputs['ip_range'],
-            'country_rule'    => $inputs['country_rule'],
-            'country_range'   => $inputs['country_range'],
-            'hmac_token'      => $inputs['hmac_token'],
-            'activated_at'    => Carbon::now(),
-            'expires_at'      => $inputs['expires_at'],
-            'hidden'          => $inputs['hidden'],
+            'ip_rule' => $inputs['ip_rule'],
+            'ip_range' => $inputs['ip_range'],
+            'country_rule' => $inputs['country_rule'],
+            'country_range' => $inputs['country_range'],
+            'hmac_token' => $inputs['hmac_token'],
+            'activated_at' => Carbon::now(),
+            'expires_at' => $inputs['expires_at'],
+            'hidden' => $inputs['hidden'],
             'disable_logging' => $inputs['disable_logging'],
         ]);
     }
 
-    public function Update($token_id, array $inputs): ?object
+    public function Update($user_id, $token_id, array $inputs): ?object
     {
-        $token = $this->Find($token_id);
+        $token = $this->Find($user_id, $token_id);
 
         if (!$token) {
             return null;
@@ -82,14 +82,17 @@ class PersonalTokenRepository
         return $token;
     }
 
-    public function Find($token_id): ?object
+    public function Find($user_id, $token_id): ?object
     {
-        return PersonalToken::query()->where('id', $token_id)->first();
+        return PersonalToken::query()
+            ->where('id', $token_id)
+            ->where('user_id', $user_id)
+            ->first();
     }
 
-    public function Reset($token_id, array $inputs): ?object
+    public function Reset($user_id, $token_id, array $inputs): ?object
     {
-        $token = $this->Find($token_id);
+        $token = $this->Find($user_id, $token_id);
 
         if (!$token) {
             return null;
@@ -103,9 +106,9 @@ class PersonalTokenRepository
         return $token;
     }
 
-    public function Delete($token_id): ?bool
+    public function Delete($user_id, $token_id): ?bool
     {
-        $toBeDeletedToken = $this->Find($token_id);
+        $toBeDeletedToken = $this->Find($user_id, $token_id);
 
         if (!$toBeDeletedToken) {
             return null;
