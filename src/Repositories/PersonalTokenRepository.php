@@ -15,20 +15,20 @@ class PersonalTokenRepository
     public function Create(array $inputs): Model|Builder
     {
         return PersonalToken::query()->create([
-            'user_id' => $inputs['user_id'],
-            'key' => substr($inputs['key'], 0, 32),
-            'secret' => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
-            'secret_salt' => $inputs['salt'],
-            'permissions' => $inputs['permissions'],
+            'user_id'         => $inputs['user_id'],
+            'key'             => substr($inputs['key'], 0, 32),
+            'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
+            'secret_salt'     => $inputs['salt'],
+            'permissions'     => $inputs['permissions'],
             'rate_limit_mode' => $inputs['rate_limit_mode'],
-            'ip_rule' => $inputs['ip_rule'],
-            'ip_range' => $inputs['ip_range'],
-            'country_rule' => $inputs['country_rule'],
-            'country_range' => $inputs['country_range'],
-            'hmac_token' => $inputs['hmac_token'],
-            'activated_at' => Carbon::now(),
-            'expires_at' => $inputs['expires_at'],
-            'hidden' => $inputs['hidden'],
+            'ip_rule'         => $inputs['ip_rule'],
+            'ip_range'        => $inputs['ip_range'],
+            'country_rule'    => $inputs['country_rule'],
+            'country_range'   => $inputs['country_range'],
+            'hmac_token'      => $inputs['hmac_token'],
+            'activated_at'    => Carbon::now(),
+            'expires_at'      => $inputs['expires_at'],
+            'hidden'          => $inputs['hidden'],
             'disable_logging' => $inputs['disable_logging'],
         ]);
     }
