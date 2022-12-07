@@ -28,16 +28,16 @@ class PersonalTokenController extends Controller
         $this->personalTokenRepository = $personalTokenRepository;
     }
 
-    public function CreatePersonalToken(Request $request,$user_id): JsonResponse
+    public function CreatePersonalToken(Request $request, $user_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'create')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make(  array_merge($request->all(), [
+            $validator = Validator::make(array_merge($request->all(), [
                 'user_id' => $user_id,
-            ]),[
+            ]), [
                 'user_id'         => ['required', 'integer', 'bail', 'exists:users,id'],
                 'expires_at'      => ['bail', 'present', 'nullable', 'date'],
                 'rate_limit_mode' => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
@@ -53,24 +53,24 @@ class PersonalTokenController extends Controller
             ], [
                 'user_id.required'             => trans('volistx::user_id.required'),
                 'user_id.integer'              => trans('volistx::user_id.integer'),
-                'user_id.exists'              => trans('volistx::user_id.exists'),
-                'duration.required'           => trans('volistx::duration.required'),
-                'expires_at.date'             => trans('volistx::expires_at.date'),
-                'rate_limit_mode.required'    => trans('volistx::rate_limit_mode.required'),
-                'rate_limit_mode.enum'        => trans('volistx::rate_limit_mode.enum'),
-                'permissions.array'           => trans('volistx::permissions.array'),
-                'permissions.*.string'        => trans('volistx::permissions.*.string'),
-                'ip_rule.enum'                => trans('volistx::ip_rule.enum'),
-                'ip_range.required_if'        => trans('volistx::ip_range.required_if'),
-                'ip_range.array'              => trans('volistx::ip_range.array'),
-                'ip_range.*.ip'               => trans('volistx::ip_range.*.ip'),
-                'country_rule.required'       => trans('volistx::country_rule.required'),
-                'country_rule.enum'           => trans('volistx::country_rule.enum'),
-                'country_range.required_if'   => trans('volistx::country_range.required_if'),
-                'country_range.array'         => trans('volistx::country_range.array'),
-                'country_range.*.required_if' => trans('volistx::country_range.*.required_if'),
-                'disable_logging.boolean'     => trans('volistx::disable_logging.boolean'),
-                'hmac_token.max'              => trans('volistx::hmac_token.max'),
+                'user_id.exists'               => trans('volistx::user_id.exists'),
+                'duration.required'            => trans('volistx::duration.required'),
+                'expires_at.date'              => trans('volistx::expires_at.date'),
+                'rate_limit_mode.required'     => trans('volistx::rate_limit_mode.required'),
+                'rate_limit_mode.enum'         => trans('volistx::rate_limit_mode.enum'),
+                'permissions.array'            => trans('volistx::permissions.array'),
+                'permissions.*.string'         => trans('volistx::permissions.*.string'),
+                'ip_rule.enum'                 => trans('volistx::ip_rule.enum'),
+                'ip_range.required_if'         => trans('volistx::ip_range.required_if'),
+                'ip_range.array'               => trans('volistx::ip_range.array'),
+                'ip_range.*.ip'                => trans('volistx::ip_range.*.ip'),
+                'country_rule.required'        => trans('volistx::country_rule.required'),
+                'country_rule.enum'            => trans('volistx::country_rule.enum'),
+                'country_range.required_if'    => trans('volistx::country_range.required_if'),
+                'country_range.array'          => trans('volistx::country_range.array'),
+                'country_range.*.required_if'  => trans('volistx::country_range.*.required_if'),
+                'disable_logging.boolean'      => trans('volistx::disable_logging.boolean'),
+                'hmac_token.max'               => trans('volistx::hmac_token.max'),
             ]);
 
             if ($validator->fails()) {
@@ -110,11 +110,11 @@ class PersonalTokenController extends Controller
             }
 
             $validator = Validator::make(array_merge($request->all(), [
-                'token_id' => $token_id,
+                'token_id'        => $token_id,
                 'user_id'         => $user_id,
             ]), [
                 'token_id'          => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
-                'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
+                'user_id'           => ['bail', 'required', 'integer', 'exists:users,id'],
                 'expires_at'        => ['bail', 'sometimes', 'date', 'nullable'],
                 'permissions'       => ['bail', 'sometimes', 'array'],
                 'rate_limit_mode'   => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
@@ -130,9 +130,9 @@ class PersonalTokenController extends Controller
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
-                'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.integer'          => trans('volistx::user_id.integer'),
-                'user_id.exists'           => trans('volistx::user_id.exists'),
+                'user_id.required'              => trans('volistx::user_id.required'),
+                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.exists'                => trans('volistx::user_id.exists'),
                 'expires_at.date'               => trans('volistx::expires_at.date'),
                 'permissions.array'             => trans('volistx::permissions.array'),
                 'permissions.*.string'          => trans('volistx::permissions.*.string'),
@@ -166,7 +166,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function ResetPersonalToken(Request $request, $user_id ,$token_id): JsonResponse
+    public function ResetPersonalToken(Request $request, $user_id, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'reset')) {
@@ -185,9 +185,9 @@ class PersonalTokenController extends Controller
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
-                'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.integer'          => trans('volistx::user_id.integer'),
-                'user_id.exists'           => trans('volistx::user_id.exists'),
+                'user_id.required'              => trans('volistx::user_id.required'),
+                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -196,7 +196,8 @@ class PersonalTokenController extends Controller
 
             $saltedKey = Keys::randomSaltedKey();
 
-            $resetToken = $this->personalTokenRepository->Reset($user_id,
+            $resetToken = $this->personalTokenRepository->Reset(
+                $user_id,
                 $token_id,
                 $saltedKey
             );
@@ -211,7 +212,7 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function DeletePersonalToken(Request $request,$user_id, $token_id): JsonResponse
+    public function DeletePersonalToken(Request $request, $user_id, $token_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
@@ -229,9 +230,9 @@ class PersonalTokenController extends Controller
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
-                'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.integer'          => trans('volistx::user_id.integer'),
-                'user_id.exists'           => trans('volistx::user_id.exists'),
+                'user_id.required'              => trans('volistx::user_id.required'),
+                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -257,20 +258,20 @@ class PersonalTokenController extends Controller
             }
 
             $validator = Validator::make(array_merge($request->all(), [
-                'token_id' => $token_id,
+                'token_id'        => $token_id,
                 'user_id'         => $user_id,
 
             ]), [
-                'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
                 'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
 
             ], [
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
-                'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.integer'          => trans('volistx::user_id.integer'),
-                'user_id.exists'           => trans('volistx::user_id.exists'),
+                'user_id.required'              => trans('volistx::user_id.required'),
+                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -351,9 +352,9 @@ class PersonalTokenController extends Controller
             }
 
             $validator = Validator::make([
-                'user_id'=>$user_id
+                'user_id'=> $user_id,
             ], [
-                'user_id' => ['required', 'integer', 'bail','exists:users,id'],
+                'user_id' => ['required', 'integer', 'bail', 'exists:users,id'],
             ], [
                 'user_id.required'         => trans('volistx::user_id.required'),
                 'user_id.integer'          => trans('volistx::user_id.integer'),
