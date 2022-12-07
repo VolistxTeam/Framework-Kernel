@@ -20,6 +20,7 @@ return [
     ],
     'validators' => [
         \Volistx\FrameworkKernel\AuthValidationRules\Users\SubscriptionValidationRule::class, //must always be #1 in order as it sets the subscription and the plan for current request
+        \Volistx\FrameworkKernel\AuthValidationRules\Users\IsActiveUserValidationRule::class,
         \Volistx\FrameworkKernel\AuthValidationRules\Users\SubscriptionRateLimitValidationRule::class,
         \Volistx\FrameworkKernel\AuthValidationRules\Users\PersonalTokenExpiryValidationRule::class,
         \Volistx\FrameworkKernel\AuthValidationRules\Users\IPValidationRule::class,

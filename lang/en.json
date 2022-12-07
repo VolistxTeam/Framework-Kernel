@@ -70,5 +70,8 @@
   "volistx::subscription.expired": "Your subscription has been expired.",
   "volistx::subscription.can_not_uncancel": "You cannot uncancel the subscription.",
   "volistx::user_id.exist": "The user ID field must be present.",
-  "volistx::expires_at.present" : "The expiry date field must be present."
+  "volistx::expires_at.present" : "The expiry date field must be present.",
+
+
+  "volistx::user:inactive_user" : "Must implement msg"
 }
