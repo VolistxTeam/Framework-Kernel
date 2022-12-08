@@ -370,7 +370,7 @@ class SubscriptionController extends Controller
                 'limit'           => $limit,
             ]), [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-                'user_id'         => ['bail', 'required', 'uuid', 'exists:users,id'],
+                'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
                 'page'            => ['bail', 'sometimes', 'integer'],
                 'limit'           => ['bail', 'sometimes', 'integer'],
             ], [
@@ -411,7 +411,7 @@ class SubscriptionController extends Controller
                 'user_id'         => $user_id,
                 'subscription_id' => $subscription_id,
             ], [
-                'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
+                'subscription_id' => ['bail', 'required', 'integer', 'exists:subscriptions,id'],
                 'user_id'         => ['bail', 'required', 'uuid', 'exists:users,id'],
             ], [
                 'subscription_id.required' => trans('volistx::subscription_id.required'),

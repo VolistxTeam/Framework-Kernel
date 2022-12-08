@@ -78,9 +78,11 @@ class UserLogRepository
         $searchValue = strtolower(trim($values[1]));
 
         return UserLog::query()
-            ->where('subscription_id', $subscription_id)
-            ->where('user_id', $user_id)
-            ->where($values[0], 'LIKE', "%$searchValue%")
+            ->where('user_logs.subscription_id', $subscription_id)
+            ->join('subscriptions', 'subscriptions.id', '=', 'user_logs.subscription_id')
+            ->where('subscriptions.user_id', $user_id)
+            ->select('user_logs.*')
+            ->where("user_logs.$values[0]", 'LIKE', "%$searchValue%")
             ->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
     }
@@ -88,12 +90,14 @@ class UserLogRepository
     public function FindSubscriptionLogsCountInPeriod($user_id, $subscription_id, $start_date, $end_date): int
     {
         $query = UserLog::query()
-            ->where('subscription_id', $subscription_id)
-            ->where('user_id', $user_id)
-            ->whereDate('created_at', '>=', $start_date);
+            ->where('user_logs.subscription_id', $subscription_id)
+            ->join('subscriptions', 'subscriptions.id', '=', 'user_logs.subscription_id')
+            ->where('subscriptions.user_id', $user_id)
+            ->select('user_logs.*')
+            ->whereDate('user_logs.created_at', '>=', $start_date);
 
         if ($end_date) {
-            $query = $query->whereDate('created_at', '<=', $end_date);
+            $query = $query->whereDate('user_logs.created_at', '<=', $end_date);
         }
 
         return $query->count();
@@ -102,11 +106,13 @@ class UserLogRepository
     public function FindSubscriptionUsages($user_id, $subscription_id): ?object
     {
         return UserLog::query()
-            ->where('subscription_id', $subscription_id)
-            ->where('user_id', $user_id)
+            ->where('user_logs.subscription_id', $subscription_id)
+            ->join('subscriptions', 'subscriptions.id', '=', 'user_logs.subscription_id')
+            ->where('subscriptions.user_id', $user_id)
+            ->select('user_logs.*')
             ->get()
             ->groupBy(function ($log) {
-                return Carbon::parse($log->created_at)->format('j'); // grouping by days
+                return Carbon::parse($log->created_at)->format('d F Y'); // grouping by days
             });
     }
 }

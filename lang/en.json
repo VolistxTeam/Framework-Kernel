@@ -69,7 +69,7 @@
   "volistx::request_count.exceeded_limit": "You have reached the limit of requests for this plan.",
   "volistx::subscription.expired": "Your subscription has been expired.",
   "volistx::subscription.can_not_uncancel": "You cannot uncancel the subscription.",
-  "volistx::user_id.exist": "The user ID field must be present.",
+  "volistx::user_id.exists": "The user does not exist",
   "volistx::expires_at.present" : "The expiry date field must be present.",
 
 
