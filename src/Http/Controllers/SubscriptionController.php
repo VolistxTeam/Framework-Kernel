@@ -271,7 +271,7 @@ class SubscriptionController extends Controller
                 'subscription_id' => $subscription_id,
             ], [
                 'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-                'user_id'         => ['bail', 'required', 'uuid', 'exists:users,id'],
+                'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
             ], [
                 'subscription_id.required' => trans('volistx::subscription_id.required'),
                 'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
@@ -297,7 +297,7 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function GetSubscriptions(Request $request): JsonResponse
+    public function GetSubscriptions(Request $request, $user_id): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view-all')) {
@@ -309,12 +309,17 @@ class SubscriptionController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
+                'user_id' => $user_id,
                 'page'  => $page,
                 'limit' => $limit,
             ], [
+                'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
                 'page'  => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
+                'user_id.required'         => trans('volistx::user_id.required'),
+                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'user_id.exists'           => trans('volistx::user_id.exists'),
                 'page.integer'  => trans('volistx::page.integer'),
                 'limit.integer' => trans('volistx::limit.integer'),
             ]);
@@ -323,7 +328,7 @@ class SubscriptionController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $subs = $this->subscriptionRepository->FindAll($search, $page, $limit);
+            $subs = $this->subscriptionRepository->FindAll($user_id ,$search, $page, $limit);
 
             if (!$subs) {
                 return response()->json(Messages::E400(trans('invalid_search_column')), 400);

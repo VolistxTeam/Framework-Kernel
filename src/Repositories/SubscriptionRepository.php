@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\Repositories;
 
 use Carbon\Carbon;
+use http\Client\Curl\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -114,7 +115,7 @@ class SubscriptionRepository
         return true;
     }
 
-    public function FindAll($search, $page, $limit): LengthAwarePaginator|null
+    public function FindAll($user_id, $search, $page, $limit): LengthAwarePaginator|null
     {
         //handle empty search
         if ($search === '') {
@@ -137,6 +138,7 @@ class SubscriptionRepository
         $searchValue = strtolower(trim($values[1]));
 
         return Subscription::query()
+            ->where('user_id', $user_id)
             ->where($values[0], 'LIKE', "%$searchValue%")
             ->paginate($limit, ['*'], 'page', $page);
     }
