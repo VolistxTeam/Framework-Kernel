@@ -73,5 +73,6 @@
   "volistx::expires_at.present" : "The expiry date field must be present.",
 
 
-  "volistx::user:inactive_user" : "Must implement msg"
+  "volistx::user:inactive_user" : "Must implement msg",
+  "volistx::subscriptions.can_not_cancel_subscription" : "Cannot cancel subscription"
 }

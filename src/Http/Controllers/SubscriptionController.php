@@ -184,7 +184,7 @@ class SubscriptionController extends Controller
             'cancels_at'      => $cancels_at,
         ], [
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-            'user_id'         => ['bail', 'required', 'uuid', 'exists:users,id'],
+            'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
             'cancels_at'      => ['bail', 'sometimes', 'date'],
         ], [
             'subscription_id.required' => trans('volistx::subscription_id.required'),
@@ -202,8 +202,8 @@ class SubscriptionController extends Controller
 
         $subscription = $this->subscriptionRepository->Find($user_id, $subscription_id);
 
-        if ($subscription->status !== SubscriptionStatus::ACTIVE) {
-            return response()->json(Messages::E400("Can't cancel a subscription"), 400);
+        if ($subscription->status !== SubscriptionStatus::ACTIVE && $subscription->status !== SubscriptionStatus::INACTIVE) {
+            return response()->json(Messages::E400(trans('volistx::subscriptions.can_not_cancel_subscription')), 400);
         }
 
         $updatedSub = $this->subscriptionRepository->Update(
@@ -228,7 +228,7 @@ class SubscriptionController extends Controller
             'subscription_id' => $subscription_id,
         ], [
             'subscription_id' => ['bail', 'required', 'uuid', 'exists:subscriptions,id'],
-            'user_id'         => ['bail', 'required', 'uuid', 'exists:users,id'],
+            'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
         ], [
             'subscription_id.required' => trans('volistx::subscription_id.required'),
             'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
@@ -244,7 +244,7 @@ class SubscriptionController extends Controller
 
         $subscription = $this->subscriptionRepository->Find($user_id, $subscription_id);
 
-        if ($subscription->status !== SubscriptionStatus::ACTIVE || empty($subscription->cancels_at)) {
+        if (($subscription->status !== SubscriptionStatus::ACTIVE && $subscription->status !== SubscriptionStatus::INACTIVE) || empty($subscription->cancels_at)) {
             return response()->json(Messages::E400(trans('volistx::subscription.can_not_uncancel')), 400);
         }
 
