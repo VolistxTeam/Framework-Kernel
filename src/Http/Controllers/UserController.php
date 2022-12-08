@@ -55,8 +55,8 @@ class UserController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make(array_merge($request->all(),[
-                'user_id' =>$user_id
+            $validator = Validator::make(array_merge($request->all(), [
+                'user_id' => $user_id,
             ]), [
                 'user_id'   => ['bail', 'required', 'integer'],
                 'is_active' => ['bail', 'sometimes', 'boolean'],
@@ -90,7 +90,7 @@ class UserController extends Controller
             }
 
             $validator = Validator::make([
-                'user_id' =>$user_id
+                'user_id' => $user_id,
             ], [
                 'user_id'   => ['bail', 'required', 'integer'],
                 'is_active' => ['bail', 'sometimes', 'boolean'],
