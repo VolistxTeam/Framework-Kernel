@@ -310,25 +310,25 @@ class SubscriptionController extends Controller
 
             $validator = Validator::make([
                 'user_id' => $user_id,
-                'page'  => $page,
-                'limit' => $limit,
+                'page'    => $page,
+                'limit'   => $limit,
             ], [
                 'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
-                'page'  => ['bail', 'sometimes', 'integer'],
-                'limit' => ['bail', 'sometimes', 'integer'],
+                'page'            => ['bail', 'sometimes', 'integer'],
+                'limit'           => ['bail', 'sometimes', 'integer'],
             ], [
                 'user_id.required'         => trans('volistx::user_id.required'),
                 'user_id.integer'          => trans('volistx::user_id.integer'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
-                'page.integer'  => trans('volistx::page.integer'),
-                'limit.integer' => trans('volistx::limit.integer'),
+                'page.integer'             => trans('volistx::page.integer'),
+                'limit.integer'            => trans('volistx::limit.integer'),
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $subs = $this->subscriptionRepository->FindAll($user_id ,$search, $page, $limit);
+            $subs = $this->subscriptionRepository->FindAll($user_id, $search, $page, $limit);
 
             if (!$subs) {
                 return response()->json(Messages::E400(trans('invalid_search_column')), 400);
