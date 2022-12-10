@@ -365,7 +365,7 @@ class PersonalTokenController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $this->personalTokenRepository->DeleteHiddenTokens($request->input('user_id'));
+            $this->personalTokenRepository->DeleteHiddenTokens($user_id);
 
             $saltedKey = Keys::randomSaltedKey();
 
@@ -379,6 +379,7 @@ class PersonalTokenController extends Controller
                 'country_rule'    => AccessRule::NONE,
                 'country_range'   => [],
                 'activated_at'    => Carbon::now(),
+                'expires_at'      => null,
                 'duration'        => null,
                 'hidden'          => true,
                 'disable_logging' => true,
