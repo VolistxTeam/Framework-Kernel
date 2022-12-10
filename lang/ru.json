@@ -70,5 +70,7 @@
   "volistx::subscription.expired": "Срок действия вашей подписки истек.",
   "volistx::subscription.can_not_uncancel": "Вы не можете отказаться от отмены подписки.",
   "volistx::user_id.exist": "Поле идентификатора пользователя должно присутствовать.",
-  "volistx::expires_at.present" : "Поле с датой истечения срока действия должно присутствовать."
+  "volistx::expires_at.present" : "Поле с датой истечения срока действия должно присутствовать.",
+  "volistx::user:inactive_user" : "Пользователь неактивен.",
+  "volistx::subscriptions.can_not_cancel_subscription" : "Подписка не может быть отменена."
 }

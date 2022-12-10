@@ -69,6 +69,8 @@
   "volistx::request_count.exceeded_limit": "このプランのリクエスト数の上限に達しています",
   "volistx::subscription.expired": "サブスクリプションの有効期限が切れました",
   "volistx::subscription.can_not_uncancel": "サブスクリプションを取り消すことはできません",
-  "volistx::user_id.exist": "ユーザーIDフィールドが存在する必要があります。",
-  "volistx::expires_at.present" : "有効期限フィールドが存在する必要があります。"
+  "volistx::user_id.exist": "ユーザーIDフィールドが存在する必要があります",
+  "volistx::expires_at.present" : "有効期限フィールドが存在する必要があります",
+  "volistx::user:inactive_user" : "ユーザーは非アクティブです",
+  "volistx::subscriptions.can_not_cancel_subscription" : "サブスクリプションはキャンセルできません"
 }

@@ -70,5 +70,7 @@
   "volistx::subscription.expired": "您的订阅已过期。",
   "volistx::subscription.can_not_uncancel": "无法撤回取消订阅。",
   "volistx::user_id.exist": "用户ID字段必须存在。",
-  "volistx::expires_at.present" : "到期日期字段必须存在。"
+  "volistx::expires_at.present" : "到期日期字段必须存在。",
+  "volistx::user:inactive_user" : "用户不活跃。",
+  "volistx::subscriptions.can_not_cancel_subscription" : "订阅无法取消。"
 }

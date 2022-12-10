@@ -71,8 +71,6 @@
   "volistx::subscription.can_not_uncancel": "You cannot uncancel the subscription.",
   "volistx::user_id.exists": "The user does not exist",
   "volistx::expires_at.present" : "The expiry date field must be present.",
-
-
-  "volistx::user:inactive_user" : "Must implement msg",
-  "volistx::subscriptions.can_not_cancel_subscription" : "Cannot cancel subscription"
+  "volistx::user:inactive_user" : "The user is inactive.",
+  "volistx::subscriptions.can_not_cancel_subscription" : "The subscription cannot be cancelled."
 }
