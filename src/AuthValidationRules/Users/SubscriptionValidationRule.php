@@ -32,7 +32,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if ($activeSubscription) {
             $subStatusModified = $this->UpdateSubscriptionExpiryOrCancelStatus($user_id, $activeSubscription);
 
-            //Current active sub is totally valid, set facades and proceed with next validation rules
+            // Current active sub is totally valid, set facades and proceed with next validation rules
             if ($subStatusModified === false) {
                 Subscriptions::setSubscription($activeSubscription);
                 Plans::setPlan($activeSubscription->plan);
@@ -44,7 +44,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         $inactiveSubscription = $this->subscriptionRepository->FindUserInactiveSubscription($user_id);
 
         if ($inactiveSubscription && Carbon::now()->gte($inactiveSubscription->activated_at)) {
-            //update the sub to active if activation date is in the past
+            // Update the sub to active if activation date is in the past
             $this->subscriptionRepository->Update($user_id, $inactiveSubscription->id, [
                 'status' => SubscriptionStatus::ACTIVE,
             ]);
@@ -59,7 +59,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
             }
         }
 
-        //user dont have any valid active or inactive subscriptions so we resort to fall-back plan
+        // The user don't have any valid active or inactive subscriptions, so we resort to fall-back plan
         if (!config('volistx.fallback_plan.id')) {
             return [
                 'message' => Messages::E403(trans('volistx::subscription.expired')),

@@ -1,24 +1,21 @@
 <?php
 
-/** @var Router $router */
-
 /*
 Please DO NOT touch any routes here!!
 */
 
-use Laravel\Lumen\Routing\Router;
-
 $this->app->router->group(['prefix' => 'sys-bin'], function () {
-    $this->app->router->get('/ping', function () {
-        return response('Hi!');
-    });
+    $this->app->router->group(['middleware' => 'throttle:100,1'], function () {
+        $this->app->router->get('/ping', function () {
+            return response('Hi!');
+        });
 
-    $this->app->router->get('/timestamp', function () {
-        return response(time());
+        $this->app->router->get('/timestamp', function () {
+            return response(time());
+        });
     });
 
     $this->app->router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () {
-        // Users
         $this->app->router->group(['prefix' => 'users'], function () {
             $this->app->router->group(['middleware' => ['filter.json']], function () {
                 $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\UserController@CreateUser');
@@ -28,8 +25,6 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
             $this->app->router->get('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@GetUser');
 
             $this->app->router->group(['prefix' => '/{user_id}/'], function () {
-
-                // Subscriptions
                 $this->app->router->group(['prefix' => 'subscriptions'], function () {
                     $this->app->router->group(['middleware' => ['filter.json']], function () {
                         $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
@@ -45,7 +40,6 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
                     $this->app->router->get('/{subscription_id}/usages', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionUsages');
                 });
 
-                // Personal tokens
                 $this->app->router->group(['prefix' => 'personal-tokens'], function () {
                     $this->app->router->group(['middleware' => ['filter.json']], function () {
                         $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@CreatePersonalToken');

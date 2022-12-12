@@ -20,9 +20,8 @@ class SubscriptionStatusCronCommand extends Command
 
     protected $signature = 'volistx-subscription:cron';
 
-    protected $description = 'Check subscriptions and update them';
+    protected $description = 'Check all subscriptions and update them if needed';
 
-    //this function should be written directly in SQL to optimize and reduce server headache.
     public function handle(): void
     {
         $subscriptions = Subscription::query()
