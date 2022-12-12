@@ -4,6 +4,8 @@
 Please DO NOT touch any routes here!!
 */
 
+use Carbon\Carbon;
+
 $this->app->router->group(['prefix' => 'sys-bin'], function () {
     $this->app->router->group(['middleware' => 'throttle:100,1'], function () {
         $this->app->router->get('/ping', function () {
@@ -11,7 +13,11 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
         });
 
         $this->app->router->get('/timestamp', function () {
-            return response(time());
+            return response(Carbon::now()->timestamp);
+        });
+
+        $this->app->router->get('/datetime', function () {
+            return response(Carbon::now()->toDateTimeString());
         });
     });
 
