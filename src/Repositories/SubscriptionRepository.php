@@ -39,6 +39,7 @@ class SubscriptionRepository
             'status'       => $inputs['status'] ?? $subscription->status,
             'activated_at' => $inputs['activated_at'] ?? $subscription->activated_at,
             'expires_at'   => $inputs['expires_at'] ?? $subscription->expires_at,
+            'expired_at'   => $inputs['expired_at'] ?? $subscription->expired_at,
             'cancels_at'   => $inputs['cancels_at'] ?? $subscription->cancels_at,
             'cancelled_at' => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
         ]);
