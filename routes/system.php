@@ -34,7 +34,7 @@ $this->app->router->group(['prefix' => 'sys-bin'], function () {
                 $this->app->router->group(['prefix' => 'subscriptions'], function () {
                     $this->app->router->group(['middleware' => ['filter.json']], function () {
                         $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
-                        $this->app->router->patch('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@MutateSubscription');
+                        $this->app->router->post('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@MutateSubscription');
                         $this->app->router->post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
                     });
 
