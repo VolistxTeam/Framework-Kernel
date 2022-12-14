@@ -47,7 +47,9 @@ class SubscriptionStatusCronCommand extends Command
 
         $this->components->info('Subscription cron job has been completed.');
     }
-    private function CreateFreeSubscriptionIfExist($subscription){
+
+    private function CreateFreeSubscriptionIfExist($subscription)
+    {
         if (config('volistx.fallback_plan.id') !== null) {
             $this->subscriptionRepository->Create([
                 'user_id'      => $subscription->user_id,
