@@ -33,6 +33,7 @@ class SubscriptionStatusCronCommand extends Command
                     'status'     => SubscriptionStatus::EXPIRED,
                     'expired_at' => Carbon::now(),
                 ]);
+                $this->CreateFreeSubscriptionIfExist($subscription);
             }
 
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->cancels_at))) {
@@ -40,21 +41,23 @@ class SubscriptionStatusCronCommand extends Command
                     'status'       => SubscriptionStatus::CANCELLED,
                     'cancelled_at' => Carbon::now(),
                 ]);
-            }
-
-            if (config('volistx.fallback_plan.id') !== null) {
-                $this->subscriptionRepository->Create([
-                    'user_id'      => $subscription->user_id,
-                    'plan_id'      => config('volistx.fallback_plan.id'),
-                    'status'       => SubscriptionStatus::ACTIVE,
-                    'activated_at' => Carbon::now(),
-                    'expires_at'   => null,
-                    'cancels_at'   => null,
-                    'cancelled_at' => null,
-                ]);
+                $this->CreateFreeSubscriptionIfExist($subscription);
             }
         }
 
         $this->components->info('Subscription cron job has been completed.');
+    }
+    private function CreateFreeSubscriptionIfExist($subscription){
+        if (config('volistx.fallback_plan.id') !== null) {
+            $this->subscriptionRepository->Create([
+                'user_id'      => $subscription->user_id,
+                'plan_id'      => config('volistx.fallback_plan.id'),
+                'status'       => SubscriptionStatus::ACTIVE,
+                'activated_at' => Carbon::now(),
+                'expires_at'   => null,
+                'cancels_at'   => null,
+                'cancelled_at' => null,
+            ]);
+        }
     }
 }
