@@ -25,7 +25,8 @@ class SubscriptionStatusCronCommand extends Command
     public function handle(): void
     {
         $subscriptions = Subscription::query()
-            ->where('status', '=', SubscriptionStatus::ACTIVE->value);
+            ->where('status', '=', SubscriptionStatus::ACTIVE->value)
+            ->orWhere('status', '=', SubscriptionStatus::INACTIVE->value);
 
         foreach ($subscriptions as $subscription) {
             if (Carbon::now()->greaterThan(Carbon::createFromTimeString($subscription->expires_at))) {
