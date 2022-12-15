@@ -62,6 +62,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 SubscriptionStatusCronCommand::class,
                 ScheduleListCommand::class,
                 ScheduleClearCacheCommand::class,
+                Console\Commands\Volistx\CheckSubscriptionCancelled::class,
+                Console\Commands\Volistx\CheckSubscriptionExpired::class,
+                Console\Commands\Volistx\WebhookSend::class,
             ]);
         }
 

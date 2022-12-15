@@ -35,4 +35,12 @@ return [
     'fallback_plan' => [
         'id' => env('FALLBACK_PLAN_ID'),
     ],
+    'webhooks' => [
+        'subscription' => [
+            'expires_soon' => [
+                'url' => env('SUBSCRIPTION_EXPIRES_SOON_WEBHOOK_URL'),
+                'token' => env('SUBSCRIPTION_EXPIRES_SOON_WEBHOOK_TOKEN'),
+            ]
+        ],
+    ]
 ];

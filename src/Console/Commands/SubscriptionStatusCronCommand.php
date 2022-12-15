@@ -4,7 +4,10 @@ namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Event;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
+use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
+use Volistx\FrameworkKernel\Events\SubscriptionUpdated;
 use Volistx\FrameworkKernel\Models\Subscription;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
@@ -42,6 +45,9 @@ class SubscriptionStatusCronCommand extends Command
                     'status'       => SubscriptionStatus::CANCELLED,
                     'cancelled_at' => Carbon::now(),
                 ]);
+
+                Event::dispatch(new SubscriptionCancelled($subscription->id));
+
                 $this->CreateFreeSubscriptionIfExist($subscription);
             }
         }

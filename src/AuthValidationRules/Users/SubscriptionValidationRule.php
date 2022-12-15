@@ -3,6 +3,9 @@
 namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
+use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
+use Volistx\FrameworkKernel\Events\SubscriptionExpired;
 use function config;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
@@ -44,7 +47,6 @@ class SubscriptionValidationRule extends ValidationRuleBase
         $inactiveSubscription = $this->subscriptionRepository->FindUserInactiveSubscription($user_id);
 
         if ($inactiveSubscription && Carbon::now()->gte($inactiveSubscription->activated_at)) {
-            // Update the sub to active if activation date is in the past
             $this->subscriptionRepository->Update($user_id, $inactiveSubscription->id, [
                 'status' => SubscriptionStatus::ACTIVE,
             ]);
@@ -86,32 +88,23 @@ class SubscriptionValidationRule extends ValidationRuleBase
     private function UpdateSubscriptionExpiryOrCancelStatus($user_id, $subscription): bool
     {
         if (!empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
-            $this->subscriptionRepository->Update($user_id, $subscription->id, [
-                'status'     => SubscriptionStatus::EXPIRED,
-                'expired_at' => Carbon::now(),
+            Event::dispatch(SubscriptionExpired::class, [
+                'subscription_id' => $subscription->id,
+                'user_id'         => $user_id,
             ]);
-
-            if ($this->IsInGracePeriod($subscription)) {
-                return false;
-            }
 
             return true;
         }
 
         if (!empty($subscription->cancels_at) && Carbon::now()->gte($subscription->cancels_at)) {
-            $this->subscriptionRepository->Update($user_id, $subscription->id, [
-                'status'       => SubscriptionStatus::CANCELLED,
-                'cancelled_at' => Carbon::now(),
+            Event::dispatch(SubscriptionCancelled::class, [
+                'subscription_id' => $subscription->id,
+                'user_id'         => $user_id,
             ]);
 
             return true;
         }
 
         return false;
-    }
-
-    private function IsInGracePeriod($subscription): bool
-    {
-        return Carbon::now()->lte(Carbon::createFromFormat('Y-m-d H:i:s', $subscription->expires_at)->addDays($subscription->plan->data['grace_period']));
     }
 }

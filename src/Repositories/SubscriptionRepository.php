@@ -6,15 +6,18 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
+use Volistx\FrameworkKernel\Events\SubscriptionCreated;
+use Volistx\FrameworkKernel\Events\SubscriptionUpdated;
 use Volistx\FrameworkKernel\Models\Subscription;
 
 class SubscriptionRepository
 {
     public function Create(array $inputs): Model|Builder
     {
-        return Subscription::query()->create([
+        $result = Subscription::query()->create([
             'user_id'      => $inputs['user_id'],
             'plan_id'      => $inputs['plan_id'],
             'status'       => $inputs['status'],
@@ -23,6 +26,12 @@ class SubscriptionRepository
             'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
+
+        if ($result) {
+            Event::dispatch(new SubscriptionCreated($result->id));
+        }
+
+        return $result;
     }
 
     public function Clone($user_id, $subscription_id, $inputs): Builder|Model|null
@@ -74,6 +83,8 @@ class SubscriptionRepository
         }
 
         $subscription->save();
+
+        Event::dispatch(new SubscriptionUpdated($subscription_id));
 
         return $subscription;
     }
