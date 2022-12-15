@@ -73,7 +73,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         ]);
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command('volistx-subscription:cron')->everyFiveMinutes();
+            $schedule->command('volistx-subscription:cron')->everyFiveMinutes()->onOneServer()->withoutOverlapping();
         });
     }
 }

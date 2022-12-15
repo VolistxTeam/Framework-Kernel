@@ -25,7 +25,7 @@ class GeoLocationCenter
         }
 
         $this->client = new Client([
-            'base_uri' => (config('volistx.geolocation.secure') ? 'https' : 'http').'://geopoint.api.volistx.io/',
+            'base_uri' => (config('volistx.geolocation.secure') ? 'https' : 'http').'://' . config('volistx.geolocation.base_url') . '/',
             'headers'  => [
                 'Authorization' => 'Bearer '.config('volistx.geolocation.token'),
                 'Content-Type'  => 'application/json',

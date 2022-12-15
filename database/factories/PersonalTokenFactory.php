@@ -5,6 +5,7 @@ namespace Volistx\FrameworkKernel\Database\Factories;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Volistx\FrameworkKernel\Helpers\KeysCenter;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\PersonalToken;
 
@@ -24,8 +25,8 @@ class PersonalTokenFactory extends Factory
      */
     public function definition()
     {
-        $key = Str::random(64);
-        $salt = Str::random(16);
+        $key = KeysCenter::randomKey(64);
+        $salt = KeysCenter::randomKey(16);
 
         return [
             'key'             => substr($key, 0, 32),
