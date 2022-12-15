@@ -38,9 +38,9 @@ return [
     'webhooks' => [
         'subscription' => [
             'expires_soon' => [
-                'url' => env('SUBSCRIPTION_EXPIRES_SOON_WEBHOOK_URL'),
+                'url'   => env('SUBSCRIPTION_EXPIRES_SOON_WEBHOOK_URL'),
                 'token' => env('SUBSCRIPTION_EXPIRES_SOON_WEBHOOK_TOKEN'),
-            ]
+            ],
         ],
-    ]
+    ],
 ];

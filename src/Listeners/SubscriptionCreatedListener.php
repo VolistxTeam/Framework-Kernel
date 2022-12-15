@@ -10,6 +10,5 @@ class SubscriptionCreatedListener
 {
     public function handle(SubscriptionCreated $event)
     {
-
     }
 }

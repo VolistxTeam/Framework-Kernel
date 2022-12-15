@@ -3,13 +3,13 @@
 namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Event;
-use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
-use Volistx\FrameworkKernel\Events\SubscriptionExpired;
 use function config;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
+use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
+use Volistx\FrameworkKernel\Events\SubscriptionExpired;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Plans;

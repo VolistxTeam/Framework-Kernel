@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Event;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
-use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
 use Volistx\FrameworkKernel\Events\SubscriptionExpired;
 use Volistx\FrameworkKernel\Models\Subscription;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
@@ -37,7 +36,7 @@ class CheckSubscriptionExpired extends Command
         foreach ($subscriptions as $subscription) {
             Event::dispatch(SubscriptionExpired::class, [
                 'subscription_id' => $subscription->id,
-                'user_id' => $subscription->user_id,
+                'user_id'         => $subscription->user_id,
             ]);
         }
     }

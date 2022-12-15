@@ -36,7 +36,7 @@ class CheckSubscriptionCancelled extends Command
         foreach ($subscriptions as $subscription) {
             Event::dispatch(SubscriptionCancelled::class, [
                 'subscription_id' => $subscription->id,
-                'user_id' => $subscription->user_id,
+                'user_id'         => $subscription->user_id,
             ]);
         }
     }

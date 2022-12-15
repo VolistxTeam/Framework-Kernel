@@ -7,7 +7,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Event;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
-use Volistx\FrameworkKernel\Events\SubscriptionUpdated;
 use Volistx\FrameworkKernel\Models\Subscription;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 

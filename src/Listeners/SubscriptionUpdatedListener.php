@@ -10,6 +10,5 @@ class SubscriptionUpdatedListener
 {
     public function handle(SubscriptionUpdated $event)
     {
-
     }
 }

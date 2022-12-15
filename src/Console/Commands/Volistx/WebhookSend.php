@@ -35,7 +35,7 @@ class WebhookSend extends Command
 
         $subscriptions = Subscription::query()
             ->where('status', '=', SubscriptionStatus::ACTIVE->value)
-            ->where('expires_at','<', Carbon::tomorrow())
+            ->where('expires_at', '<', Carbon::tomorrow())
             ->get();
 
         foreach ($subscriptions as $subscription) {
@@ -44,7 +44,7 @@ class WebhookSend extends Command
 
             $data = [
                 'eventType' => 'subscription.expire_soon',
-                'payload'  => [
+                'payload'   => [
                     'subscription' => $subscription,
                 ],
             ];
@@ -52,10 +52,10 @@ class WebhookSend extends Command
             $ch = curl_init(config('volistx.webhooks.subscription.expires_soon.url'));
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer ' . config('volistx.webhooks.subscription.expires_soon.token'),
-                'Content-Type: application/json'
-            ));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Authorization: Bearer '.config('volistx.webhooks.subscription.expires_soon.token'),
+                'Content-Type: application/json',
+            ]);
 
             curl_exec($ch);
         }
