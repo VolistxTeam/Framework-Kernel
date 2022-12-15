@@ -15,7 +15,7 @@ return [
         'userLogHttpToken'  => env('LOG_AUTH_USER_HTTP_TOKEN'),
     ],
     'geolocation' => [
-        'base_url' => env('GEOPOINT_API_BASEURL', 'geopoint.api.volistx.io'),
+        'base_url'          => env('GEOPOINT_API_BASEURL', 'geopoint.api.volistx.io'),
         'token'             => env('GEOPOINT_API_KEY'),
         'secure'            => env('GEOPOINT_API_SECURE', true),
     ],
