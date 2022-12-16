@@ -3,6 +3,8 @@
 namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Carbon\Carbon;
+use Volistx\FrameworkKernel\Events\SubscriptionCreated;
+use Volistx\FrameworkKernel\Events\SubscriptionUpdated;
 use function config;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
@@ -51,6 +53,8 @@ class SubscriptionValidationRule extends ValidationRuleBase
                 'status' => SubscriptionStatus::ACTIVE,
             ]);
 
+            Event::dispatch(new SubscriptionUpdated($inactiveSubscription->id));
+
             $subStatusModified = $this->UpdateSubscriptionExpiryOrCancelStatus($user_id, $inactiveSubscription);
 
             if ($subStatusModified === false) {
@@ -69,7 +73,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
             ];
         }
 
-        $fall_back_subscription = $this->subscriptionRepository->Create([
+        $freeSubscription = $this->subscriptionRepository->Create([
             'user_id'      => $user_id,
             'plan_id'      => config('volistx.fallback_plan.id'),
             'status'       => SubscriptionStatus::ACTIVE,
@@ -79,8 +83,10 @@ class SubscriptionValidationRule extends ValidationRuleBase
             'cancelled_at' => null,
         ]);
 
-        Subscriptions::setSubscription($fall_back_subscription);
-        Plans::setPlan($fall_back_subscription->plan);
+        Event::dispatch(new SubscriptionCreated($freeSubscription->id));
+
+        Subscriptions::setSubscription($freeSubscription);
+        Plans::setPlan($freeSubscription->plan);
 
         return true;
     }
@@ -88,19 +94,23 @@ class SubscriptionValidationRule extends ValidationRuleBase
     private function UpdateSubscriptionExpiryOrCancelStatus($user_id, $subscription): bool
     {
         if (!empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
-            Event::dispatch(SubscriptionExpired::class, [
-                'subscription_id' => $subscription->id,
-                'user_id'         => $user_id,
+            $this->subscriptionRepository->Update($user_id,$subscription->id, [
+                'status' => SubscriptionStatus::EXPIRED,
+                'expires_at' => Carbon::now()
             ]);
+
+            Event::dispatch(new SubscriptionExpired($subscription->id));
 
             return true;
         }
 
         if (!empty($subscription->cancels_at) && Carbon::now()->gte($subscription->cancels_at)) {
-            Event::dispatch(SubscriptionCancelled::class, [
-                'subscription_id' => $subscription->id,
-                'user_id'         => $user_id,
+            $this->subscriptionRepository->Update($user_id,$subscription->id, [
+                'status' => SubscriptionStatus::CANCELLED,
+                'cancelled_at' => Carbon::now()
             ]);
+
+            Event::dispatch(new SubscriptionCancelled($subscription->id));
 
             return true;
         }

@@ -7,6 +7,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Event;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
+use Volistx\FrameworkKernel\Events\SubscriptionCreated;
+use Volistx\FrameworkKernel\Events\SubscriptionUpdated;
 use Volistx\FrameworkKernel\Models\Subscription;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
@@ -36,6 +38,9 @@ class SubscriptionStatusCronCommand extends Command
                     'status'     => SubscriptionStatus::EXPIRED,
                     'expired_at' => Carbon::now(),
                 ]);
+
+                Event::dispatch(new SubscriptionUpdated($subscription->id));
+
                 $this->CreateFreeSubscriptionIfExist($subscription);
             }
 
@@ -57,7 +62,7 @@ class SubscriptionStatusCronCommand extends Command
     private function CreateFreeSubscriptionIfExist($subscription)
     {
         if (config('volistx.fallback_plan.id') !== null) {
-            $this->subscriptionRepository->Create([
+            $freeSubscription = $this->subscriptionRepository->Create([
                 'user_id'      => $subscription->user_id,
                 'plan_id'      => config('volistx.fallback_plan.id'),
                 'status'       => SubscriptionStatus::ACTIVE,
@@ -66,6 +71,8 @@ class SubscriptionStatusCronCommand extends Command
                 'cancels_at'   => null,
                 'cancelled_at' => null,
             ]);
+
+            Event::dispatch(new SubscriptionCreated($freeSubscription->id));
         }
     }
 }

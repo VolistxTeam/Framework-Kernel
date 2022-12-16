@@ -11,11 +11,9 @@ class SubscriptionExpired
     use SerializesModels;
 
     public int $subscription_id;
-    public int $user_id;
 
-    public function __construct($array)
+    public function __construct(int $subscription_id)
     {
-        $this->subscription_id = $array['subscription_id'];
-        $this->user_id = $array['user_id'];
+        $this->subscription_id = $subscription_id;
     }
 }

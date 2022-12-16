@@ -12,7 +12,7 @@ class SubscriptionCreated
 
     public int $subscription_id;
 
-    public function __construct($subscription_id)
+    public function __construct(int $subscription_id)
     {
         $this->subscription_id = $subscription_id;
     }
