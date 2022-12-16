@@ -3,15 +3,15 @@
 namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Carbon\Carbon;
-use Volistx\FrameworkKernel\Events\SubscriptionCreated;
-use Volistx\FrameworkKernel\Events\SubscriptionUpdated;
 use function config;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
+use Volistx\FrameworkKernel\Events\SubscriptionCreated;
 use Volistx\FrameworkKernel\Events\SubscriptionExpired;
+use Volistx\FrameworkKernel\Events\SubscriptionUpdated;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Facades\Plans;
@@ -94,9 +94,9 @@ class SubscriptionValidationRule extends ValidationRuleBase
     private function UpdateSubscriptionExpiryOrCancelStatus($user_id, $subscription): bool
     {
         if (!empty($subscription->expires_at) && Carbon::now()->gte($subscription->expires_at)) {
-            $this->subscriptionRepository->Update($user_id,$subscription->id, [
-                'status' => SubscriptionStatus::EXPIRED,
-                'expires_at' => Carbon::now()
+            $this->subscriptionRepository->Update($user_id, $subscription->id, [
+                'status'     => SubscriptionStatus::EXPIRED,
+                'expires_at' => Carbon::now(),
             ]);
 
             Event::dispatch(new SubscriptionExpired($subscription->id));
@@ -105,9 +105,9 @@ class SubscriptionValidationRule extends ValidationRuleBase
         }
 
         if (!empty($subscription->cancels_at) && Carbon::now()->gte($subscription->cancels_at)) {
-            $this->subscriptionRepository->Update($user_id,$subscription->id, [
-                'status' => SubscriptionStatus::CANCELLED,
-                'cancelled_at' => Carbon::now()
+            $this->subscriptionRepository->Update($user_id, $subscription->id, [
+                'status'       => SubscriptionStatus::CANCELLED,
+                'cancelled_at' => Carbon::now(),
             ]);
 
             Event::dispatch(new SubscriptionCancelled($subscription->id));
