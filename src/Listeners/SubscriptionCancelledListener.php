@@ -7,7 +7,6 @@ namespace Volistx\FrameworkKernel\Listeners;
 use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
 use Volistx\FrameworkKernel\Events\SubscriptionExpired;
 use Volistx\FrameworkKernel\Facades\Requests;
-use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
 class SubscriptionCancelledListener
 {
@@ -22,7 +21,7 @@ class SubscriptionCancelledListener
 
         $response = Requests::Post($url, $token, [
             'subscription_id' => $event->subscription_id,
-            'user_id' => $event->user_id
+            'user_id'         => $event->user_id,
         ]);
 
         if ($response->isError) {

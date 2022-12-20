@@ -31,6 +31,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if ($active_subscription) {
             Subscriptions::setSubscription($active_subscription);
             Plans::setPlan($active_subscription->plan);
+
             return true;
         }
 
@@ -38,6 +39,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if ($inactive_subscription) {
             Subscriptions::setSubscription($inactive_subscription);
             Plans::setPlan($inactive_subscription->plan);
+
             return true;
         }
 
@@ -45,17 +47,17 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if (!config('volistx.fallback_plan.id')) {
             return [
                 'message' => Messages::E403(trans('volistx::subscription.expired')),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 
         $freeSubscription = $this->subscriptionRepository->Create([
-            'user_id' => $user_id,
-            'plan_id' => config('volistx.fallback_plan.id'),
-            'status' => SubscriptionStatus::ACTIVE,
+            'user_id'      => $user_id,
+            'plan_id'      => config('volistx.fallback_plan.id'),
+            'status'       => SubscriptionStatus::ACTIVE,
             'activated_at' => Carbon::now(),
-            'expires_at' => null,
-            'cancels_at' => null,
+            'expires_at'   => null,
+            'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
 

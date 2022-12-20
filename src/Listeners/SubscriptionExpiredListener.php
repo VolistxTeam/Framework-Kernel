@@ -20,7 +20,7 @@ class SubscriptionExpiredListener
 
         $response = Requests::Post($url, $token, [
             'subscription_id' => $event->subscription_id,
-            'user_id' => $event->user_id
+            'user_id'         => $event->user_id,
         ]);
 
         if ($response->isError) {
