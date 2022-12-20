@@ -20,6 +20,7 @@ use Volistx\FrameworkKernel\Providers\MessagesServiceProvider;
 use Volistx\FrameworkKernel\Providers\PermissionsServiceProvider;
 use Volistx\FrameworkKernel\Providers\PersonalTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\PlansServiceProvider;
+use Volistx\FrameworkKernel\Providers\RequestsServiceProvider;
 use Volistx\FrameworkKernel\Providers\SubscriptionServiceProvider;
 use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
 
@@ -45,6 +46,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PersonalTokenServiceProvider::class,
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
+            RequestsServiceProvider::class
         ];
 
         foreach ($serviceProvider as $provider) {
@@ -62,9 +64,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 SubscriptionStatusCronCommand::class,
                 ScheduleListCommand::class,
                 ScheduleClearCacheCommand::class,
-                Console\Commands\Volistx\CheckSubscriptionCancelled::class,
-                Console\Commands\Volistx\CheckSubscriptionExpired::class,
-                Console\Commands\Volistx\WebhookSend::class,
             ]);
         }
 

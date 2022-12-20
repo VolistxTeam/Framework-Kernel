@@ -37,9 +37,13 @@ return [
     ],
     'webhooks' => [
         'subscription' => [
-            'expires_soon' => [
-                'url'   => env('SUBSCRIPTION_EXPIRES_SOON_WEBHOOK_URL'),
-                'token' => env('SUBSCRIPTION_EXPIRES_SOON_WEBHOOK_TOKEN'),
+            'expired' => [
+                'url'   => env('SUBSCRIPTION_EXPIRED_WEBHOOK_URL'),
+                'token' => env('SUBSCRIPTION_EXPIRED_WEBHOOK_TOKEN'),
+            ],
+            'cancelled' => [
+                'url'   => env('SUBSCRIPTION_CANCELLED_WEBHOOK_URL'),
+                'token' => env('SUBSCRIPTION_CANCELLED_WEBHOOK_TOKEN'),
             ],
         ],
     ],
