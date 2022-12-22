@@ -19,11 +19,11 @@ class SubscriptionStatusCronCommand extends Command
         $subscriptions = Subscription::query()
             ->where([
                 ['status', '=', SubscriptionStatus::ACTIVE->value],
-                ['expires_at', '<', Carbon::now()->format("Y-m-d H:i:s")],
+                ['expires_at', '<', Carbon::now()->format('Y-m-d H:i:s')],
             ])
             ->orWhere([
                 ['status', '=', SubscriptionStatus::INACTIVE->value],
-                ['cancels_at', '<', Carbon::now()->format("Y-m-d H:i:s")],
+                ['cancels_at', '<', Carbon::now()->format('Y-m-d H:i:s')],
             ]);
 
         foreach ($subscriptions as $subscription) {

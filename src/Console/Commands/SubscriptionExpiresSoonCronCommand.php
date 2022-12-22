@@ -5,7 +5,6 @@ namespace Volistx\FrameworkKernel\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
-use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Jobs\SubscriptionExpiresSoon;
 use Volistx\FrameworkKernel\Models\Subscription;
 
@@ -21,11 +20,11 @@ class SubscriptionExpiresSoonCronCommand extends Command
         $subscriptions = Subscription::query()
             ->where([
                 ['status', '=', SubscriptionStatus::ACTIVE->value],
-                ['expires_at', '<', Carbon::now()->subDay()->format("Y-m-d H:i:s")],
+                ['expires_at', '<', Carbon::now()->subDay()->format('Y-m-d H:i:s')],
             ]);
 
         foreach ($subscriptions as $subscription) {
-           dispatch(new SubscriptionExpiresSoon($subscription->id,$subscription->user_id));
+            dispatch(new SubscriptionExpiresSoon($subscription->id, $subscription->user_id));
         }
 
         $this->components->info('Subscription cron job has been completed.');

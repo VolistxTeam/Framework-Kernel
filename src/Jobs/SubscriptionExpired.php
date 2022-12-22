@@ -3,14 +3,16 @@
 namespace Volistx\FrameworkKernel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Volistx\FrameworkKernel\Facades\Requests;
 
 class SubscriptionExpired implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public int $subscription_id;
     public int $attempt_number;
@@ -34,7 +36,7 @@ class SubscriptionExpired implements ShouldQueue
 
         $response = Requests::Post($url, $token, [
             'subscription_id' => $this->subscription_id,
-            'user_id' => $this->user_id
+            'user_id'         => $this->user_id,
         ]);
 
         if ($response->isError) {

@@ -17,6 +17,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if ($active_subscription) {
             Subscriptions::setSubscription($active_subscription);
             Plans::setPlan($active_subscription->plan);
+
             return true;
         }
 
@@ -24,12 +25,13 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if ($inactive_subscription) {
             Subscriptions::setSubscription($inactive_subscription);
             Plans::setPlan($inactive_subscription->plan);
+
             return true;
         }
 
         return [
             'message' => Messages::E403(trans('volistx::subscription.expired')),
-            'code' => 403,
+            'code'    => 403,
         ];
     }
 }
