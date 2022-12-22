@@ -46,7 +46,7 @@ class SubscriptionCenter
         if ($this->ShouldSubscriptionBeExpired($subscription)) {
             $this->subscriptionRepository->Update($user_id, $subscription->id, [
                 'status'     => SubscriptionStatus::EXPIRED,
-                'expires_at' => Carbon::now(),
+                'expired_at' => Carbon::now(),
             ]);
 
             dispatch(new SubscriptionExpired($subscription->id, $subscription->user_id));

@@ -19,9 +19,10 @@ class SubscriptionExpiresSoonCronCommand extends Command
     {
         $subscriptions = Subscription::query()
             ->where([
-                ['status', '=', SubscriptionStatus::ACTIVE->value],
-                ['expires_at', '<', Carbon::now()->subDay()->format('Y-m-d H:i:s')],
-            ]);
+                ['status', SubscriptionStatus::ACTIVE->value],
+                ['expires_at', '<', Carbon::now()->addDay()],
+            ])
+            ->get();
 
         foreach ($subscriptions as $subscription) {
             dispatch(new SubscriptionExpiresSoon($subscription->id, $subscription->user_id));

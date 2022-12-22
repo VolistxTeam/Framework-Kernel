@@ -14,11 +14,11 @@ class SubscriptionCancelled implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public int $subscription_id;
+    public string $subscription_id;
     public int $attempt_number;
-    public string $user_id;
+    public int $user_id;
 
-    public function __construct(int $subscription_id, string $user_id, int $attempt_number = 1)
+    public function __construct(string $subscription_id, int $user_id, int $attempt_number = 1)
     {
         $this->subscription_id = $subscription_id;
         $this->user_id = $user_id;
@@ -27,16 +27,19 @@ class SubscriptionCancelled implements ShouldQueue
 
     public function handle()
     {
-        $url = config('webhooks.subscription.cancelled.url');
-        $token = config('webhooks.subscription.cancelled.token');
+        $url = config('volistx.webhooks.subscription.cancelled.url');
+        $token = config('volistx.webhooks.subscription.cancelled.token');
 
         if ($this->attempt_number > 3 || !$url || !$token) {
             return;
         }
 
         $response = Requests::Post($url, $token, [
-            'subscription_id' => $this->subscription_id,
-            'user_id'         => $this->user_id,
+            'type' => 'subscription_cancelled',
+            'payload' => [
+                'subscription_id' => $this->subscription_id,
+                'user_id'         => $this->user_id,
+            ]
         ]);
 
         if ($response->isError) {
