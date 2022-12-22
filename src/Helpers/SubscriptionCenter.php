@@ -6,10 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Event;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
-use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
-use Volistx\FrameworkKernel\Events\SubscriptionExpired;
-use Volistx\FrameworkKernel\Facades\Plans;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
+use Volistx\FrameworkKernel\Jobs\SubscriptionCancelled;
+use Volistx\FrameworkKernel\Jobs\SubscriptionExpired;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
 class SubscriptionCenter
@@ -51,7 +50,7 @@ class SubscriptionCenter
                 'expires_at' => Carbon::now(),
             ]);
 
-            Event::dispatch(new SubscriptionExpired($subscription->id, $subscription->user_id));
+            dispatch(new SubscriptionExpired($subscription->id, $subscription->user_id));
 
             return true;
         }
@@ -68,7 +67,7 @@ class SubscriptionCenter
                 'cancelled_at' => Carbon::now(),
             ]);
 
-            Event::dispatch(new SubscriptionCancelled($subscription->id,$subscription->user_id));
+            dispatch(new SubscriptionCancelled($subscription->id,$subscription->user_id));
 
             return true;
         }

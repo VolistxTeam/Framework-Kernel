@@ -4,12 +4,8 @@ namespace Volistx\FrameworkKernel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
-use Volistx\FrameworkKernel\Events\SubscriptionCancelled;
-use Volistx\FrameworkKernel\Events\SubscriptionExpired;
 use Volistx\FrameworkKernel\Events\UserRequestCompleted;
 use Volistx\FrameworkKernel\Listeners\AdminRequestCompletedListener;
-use Volistx\FrameworkKernel\Listeners\SubscriptionCancelledListener;
-use Volistx\FrameworkKernel\Listeners\SubscriptionExpiredListener;
 use Volistx\FrameworkKernel\Listeners\UserRequestCompletedListener;
 
 class EventServiceProvider extends ServiceProvider
@@ -20,12 +16,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         AdminRequestCompleted::class => [
             AdminRequestCompletedListener::class,
-        ],
-        SubscriptionCancelled::class => [
-            SubscriptionCancelledListener::class,
-        ],
-        SubscriptionExpired::class => [
-            SubscriptionExpiredListener::class,
         ],
     ];
 

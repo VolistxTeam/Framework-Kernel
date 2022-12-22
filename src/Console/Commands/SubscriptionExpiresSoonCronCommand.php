@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
+use Volistx\FrameworkKernel\Jobs\SubscriptionExpiresSoon;
 use Volistx\FrameworkKernel\Models\Subscription;
 
-class SubscriptionStatusCronCommand extends Command
+//should run once daily and will notify user than his sub expiring in one day
+class SubscriptionExpiresSoonCronCommand extends Command
 {
     protected $signature = 'volistx-subscription:cron';
 
@@ -19,16 +21,11 @@ class SubscriptionStatusCronCommand extends Command
         $subscriptions = Subscription::query()
             ->where([
                 ['status', '=', SubscriptionStatus::ACTIVE->value],
-                ['expires_at', '<', Carbon::now()->format("Y-m-d H:i:s")],
-            ])
-            ->orWhere([
-                ['status', '=', SubscriptionStatus::INACTIVE->value],
-                ['cancels_at', '<', Carbon::now()->format("Y-m-d H:i:s")],
+                ['expires_at', '<', Carbon::now()->subDay()->format("Y-m-d H:i:s")],
             ]);
 
         foreach ($subscriptions as $subscription) {
-            Subscriptions::UpdateSubscriptionExpiryStatus($subscription->user_id, $subscription);
-            Subscriptions::UpdateSubscriptionCancellationStatus($subscription->user_id, $subscription);
+           dispatch(new SubscriptionExpiresSoon($subscription->id,$subscription->user_id));
         }
 
         $this->components->info('Subscription cron job has been completed.');
