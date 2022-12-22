@@ -35,11 +35,11 @@ class SubscriptionExpiresSoon implements ShouldQueue
         }
 
         $response = Requests::Post($url, $token, [
-            'type' => 'subscription_expires_soon',
+            'type'    => 'subscription_expires_soon',
             'payload' => [
                 'subscription_id' => $this->subscription_id,
                 'user_id'         => $this->user_id,
-            ]
+            ],
         ]);
 
         if ($response->isError) {

@@ -35,11 +35,11 @@ class SubscriptionCancelled implements ShouldQueue
         }
 
         $response = Requests::Post($url, $token, [
-            'type' => 'subscription_cancelled',
+            'type'    => 'subscription_cancelled',
             'payload' => [
                 'subscription_id' => $this->subscription_id,
                 'user_id'         => $this->user_id,
-            ]
+            ],
         ]);
 
         if ($response->isError) {
