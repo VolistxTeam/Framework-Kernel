@@ -46,7 +46,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PersonalTokenServiceProvider::class,
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
-            RequestsServiceProvider::class
+            RequestsServiceProvider::class,
         ];
 
         foreach ($serviceProvider as $provider) {

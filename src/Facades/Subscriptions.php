@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static ProcessUserActiveSubscriptionsStatus($user_id)
  * @method static ProcessUserInactiveSubscriptionsStatus($user_id)
  */
-
 class Subscriptions extends Facade
 {
     protected static function getFacadeAccessor(): string
