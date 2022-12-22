@@ -64,6 +64,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 SubscriptionStatusCronCommand::class,
                 ScheduleListCommand::class,
                 ScheduleClearCacheCommand::class,
+                SubscriptionExpiresSoonCronCommand::class,
             ]);
         }
 
