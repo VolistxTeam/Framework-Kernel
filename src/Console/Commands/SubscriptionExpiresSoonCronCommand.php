@@ -11,9 +11,9 @@ use Volistx\FrameworkKernel\Models\Subscription;
 //should run once daily and will notify user than his sub expiring in one day
 class SubscriptionExpiresSoonCronCommand extends Command
 {
-    protected $signature = 'volistx-subscription:cron';
+    protected $signature = 'volistx-subscription:expire-soon';
 
-    protected $description = 'Check all subscriptions and update them if needed';
+    protected $description = 'Check subscriptions that expire soon and send webhooks to them';
 
     public function handle(): void
     {
