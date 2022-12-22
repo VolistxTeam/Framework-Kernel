@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Laravel\Lumen\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
+use Volistx\FrameworkKernel\Console\Commands\SubscriptionExpiresSoonCronCommand;
 use Volistx\FrameworkKernel\Console\Commands\SubscriptionStatusCronCommand;
 use Volistx\FrameworkKernel\Providers\AccessTokenServiceProvider;
 use Volistx\FrameworkKernel\Providers\AdminLoggingServiceProvider;
