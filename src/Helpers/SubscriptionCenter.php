@@ -41,7 +41,7 @@ class SubscriptionCenter
     }
 
     //returns true in case of update happened
-    private function UpdateSubscriptionExpiryStatus($user_id, $subscription): bool
+    public function UpdateSubscriptionExpiryStatus($user_id, $subscription): bool
     {
         if ($this->ShouldSubscriptionBeExpired($subscription)) {
             $this->subscriptionRepository->Update($user_id, $subscription->id, [
@@ -58,7 +58,7 @@ class SubscriptionCenter
     }
 
     //returns true in case of update happened
-    private function UpdateSubscriptionCancellationStatus($user_id, $subscription): bool
+    public function UpdateSubscriptionCancellationStatus($user_id, $subscription): bool
     {
         if ($this->ShouldSubscriptionBeCancelled($subscription)) {
             $this->subscriptionRepository->Update($user_id, $subscription->id, [
@@ -75,7 +75,7 @@ class SubscriptionCenter
     }
 
     //return the active sun id if its valid, otherwise returns false
-    private function ProcessUserActiveSubscriptionsStatus($user_id)
+    public function ProcessUserActiveSubscriptionsStatus($user_id)
     {
         $activeSubscription = $this->subscriptionRepository->FindUserActiveSubscription($user_id);
 
@@ -95,7 +95,7 @@ class SubscriptionCenter
     }
 
     //Returns the sub id if it get activated, otherwise returns false
-    private function ProcessUserInactiveSubscriptionsStatus($user_id)
+    public function ProcessUserInactiveSubscriptionsStatus($user_id)
     {
         $inactiveSubscription = $this->subscriptionRepository->FindUserInactiveSubscription($user_id);
 
