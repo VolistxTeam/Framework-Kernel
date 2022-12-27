@@ -39,6 +39,7 @@ class PersonalTokenController extends Controller
                 'user_id' => $user_id,
             ]), [
                 'user_id'         => ['required', 'integer', 'bail', 'exists:users,id'],
+                'name'            => ['required', 'string', 'max:255'],
                 'expires_at'      => ['bail', 'present', 'nullable', 'date'],
                 'rate_limit_mode' => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
                 'permissions'     => ['bail', 'sometimes', 'array'],
@@ -52,6 +53,8 @@ class PersonalTokenController extends Controller
                 'hmac_token'      => ['bail', 'sometimes', 'max:255'],
             ], [
                 'user_id.required'             => trans('volistx::user_id.required'),
+                'name.required'                => trans('volistx::name.required'),
+                'name.max'                     => trans('volistx::name.max'),
                 'user_id.integer'              => trans('volistx::user_id.integer'),
                 'user_id.exists'               => trans('volistx::user_id.exists'),
                 'duration.required'            => trans('volistx::duration.required'),
@@ -81,6 +84,7 @@ class PersonalTokenController extends Controller
 
             $newPersonalToken = $this->personalTokenRepository->Create([
                 'user_id'         => $user_id,
+                'name'            => $request->input('name')?? "",
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
                 'rate_limit_mode' => $request->input('rate_limit_mode') ?? RateLimitMode::SUBSCRIPTION,
@@ -114,6 +118,7 @@ class PersonalTokenController extends Controller
                 'user_id'         => $user_id,
             ]), [
                 'token_id'          => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
+                'name'              => ['bail', 'sometimes','max:255'],
                 'user_id'           => ['bail', 'required', 'integer', 'exists:users,id'],
                 'expires_at'        => ['bail', 'sometimes', 'date', 'nullable'],
                 'permissions'       => ['bail', 'sometimes', 'array'],
@@ -133,6 +138,8 @@ class PersonalTokenController extends Controller
                 'user_id.required'              => trans('volistx::user_id.required'),
                 'user_id.integer'               => trans('volistx::user_id.integer'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
+                'name.required'                 => trans('volistx::name.required'),
+                'name.max'                      => trans('volistx::name.max'),
                 'expires_at.date'               => trans('volistx::expires_at.date'),
                 'permissions.array'             => trans('volistx::permissions.array'),
                 'permissions.*.string'          => trans('volistx::permissions.*.string'),

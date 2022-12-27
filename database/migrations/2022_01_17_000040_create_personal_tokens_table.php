@@ -18,6 +18,7 @@ class CreatePersonalTokensTable extends Migration
             $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id')->index('personal_token_user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('name', 255);
             $table->string('key', 32);
             $table->string('secret', 64);
             $table->string('secret_salt', 16);

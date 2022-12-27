@@ -9,6 +9,7 @@ use Volistx\FrameworkKernel\Enums\RateLimitMode;
 class PersonalTokenDTO extends DataTransferObjectBase
 {
     public string $id;
+    public string $name;
     public int $user_id;
     public int $rate_limit_mode;
     public array $permissions;
@@ -32,6 +33,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
     {
         $result = [
             'id'              => $this->id,
+            'name'            => $this->name,
             'key'             => $key,
             'user_id'         => $this->user_id,
             'permissions'     => $this->permissions,

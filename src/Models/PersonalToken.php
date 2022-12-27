@@ -23,6 +23,7 @@ class PersonalToken extends Model
 
     protected $fillable = [
         'user_id',
+        'name',
         'key',
         'secret',
         'secret_salt',

@@ -16,6 +16,7 @@ class PersonalTokenRepository
     {
         return PersonalToken::query()->create([
             'user_id'         => $inputs['user_id'],
+            'name'            => $inputs['name'],
             'key'             => substr($inputs['key'], 0, 32),
             'secret'          => SHA256Hasher::make(substr($inputs['key'], 32), ['salt' => $inputs['salt']]),
             'secret_salt'     => $inputs['salt'],
@@ -39,6 +40,10 @@ class PersonalTokenRepository
 
         if (!$token) {
             return null;
+        }
+
+        if (array_key_exists('name', $inputs)) {
+            $token->name = $inputs['name'];
         }
 
         if (array_key_exists('rate_limit_mode', $inputs)) {

@@ -72,5 +72,8 @@
   "volistx::user_id.exists": "The user does not exist",
   "volistx::expires_at.present" : "The expiry date field must be present.",
   "volistx::user:inactive_user" : "The user is inactive.",
-  "volistx::subscriptions.can_not_cancel_subscription" : "The subscription cannot be cancelled."
+  "volistx::subscriptions.can_not_cancel_subscription" : "The subscription cannot be cancelled.",
+
+
+ "volistx::name.max" : "need to implement message"
 }
