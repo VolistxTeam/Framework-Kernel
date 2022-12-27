@@ -84,7 +84,7 @@ class PersonalTokenController extends Controller
 
             $newPersonalToken = $this->personalTokenRepository->Create([
                 'user_id'         => $user_id,
-                'name'            => $request->input('name')?? "",
+                'name'            => $request->input('name') ?? '',
                 'key'             => $saltedKey['key'],
                 'salt'            => $saltedKey['salt'],
                 'rate_limit_mode' => $request->input('rate_limit_mode') ?? RateLimitMode::SUBSCRIPTION,
@@ -118,7 +118,7 @@ class PersonalTokenController extends Controller
                 'user_id'         => $user_id,
             ]), [
                 'token_id'          => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
-                'name'              => ['bail', 'sometimes','max:255'],
+                'name'              => ['bail', 'sometimes', 'max:255'],
                 'user_id'           => ['bail', 'required', 'integer', 'exists:users,id'],
                 'expires_at'        => ['bail', 'sometimes', 'date', 'nullable'],
                 'permissions'       => ['bail', 'sometimes', 'array'],
