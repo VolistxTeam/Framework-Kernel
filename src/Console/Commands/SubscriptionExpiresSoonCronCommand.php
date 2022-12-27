@@ -21,6 +21,7 @@ class SubscriptionExpiresSoonCronCommand extends Command
             ->where([
                 ['status', SubscriptionStatus::ACTIVE->value],
                 ['expires_at', '<', Carbon::now()->addDay()],
+                ['expires_at', '>', Carbon::now()],
             ])
             ->get();
 
