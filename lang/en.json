@@ -75,5 +75,5 @@
   "volistx::subscriptions.can_not_cancel_subscription" : "The subscription cannot be cancelled.",
 
 
- "volistx::name.max" : "need to implement message"
+ "volistx::name.max" : "Name can not exceed 255 characters."
 }
