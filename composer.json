@@ -18,18 +18,16 @@
     "ext-curl": "*",
     "ext-json": "*",
     "fakerphp/faker": "^1.20",
-    "laravel/lumen-framework": "^9.1",
-    "rogervila/lumen-rate-limiting": "^1.1",
     "wikimedia/ip-set": "^3.1",
     "guzzlehttp/guzzle": "^7.5",
-    "cryental/larasupport": "^1.7",
     "nesbot/carbon": "^2.64",
     "menarasolutions/geographer": "^0.3.13",
     "paragonie/random-lib": "^2.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "laravel/framework": "^6|^7|^8|^9"
   },
   "autoload": {
     "psr-4": {
@@ -44,7 +42,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Volistx\\FrameworkKernel\\VolistxServiceProvider"
+        "Volistx\\FrameworkKernel\\ServiceProvider"
       ]
     }
   }

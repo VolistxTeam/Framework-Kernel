@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Console\Scheduling\ScheduleClearCacheCommand;
 use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Laravel\Lumen\Routing\Router;
+use Illuminate\Routing\Router;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
 use Volistx\FrameworkKernel\Console\Commands\SubscriptionExpiresSoonCronCommand;
@@ -79,8 +79,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('volistx-subscription:cron')->everyFiveMinutes()->onOneServer()->withoutOverlapping();
             $schedule->command('volistx-subscription:expire-soon')->dailyAt('00:00')->onOneServer()->withoutOverlapping();
-
-            $schedule->command('queue:work --tries=3 --timeout=90 --stop-when-empty')->everyMinute()->runInBackground()->onOneServer()->withoutOverlapping();
         });
     }
 }

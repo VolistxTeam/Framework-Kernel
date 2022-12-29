@@ -72,5 +72,6 @@
   "volistx::user_id.exist": "ユーザーIDフィールドが存在する必要があります",
   "volistx::expires_at.present" : "有効期限フィールドが存在する必要があります",
   "volistx::user:inactive_user" : "ユーザーは非アクティブです",
-  "volistx::subscriptions.can_not_cancel_subscription" : "サブスクリプションはキャンセルできません"
+  "volistx::subscriptions.can_not_cancel_subscription" : "サブスクリプションはキャンセルできません",
+  "volistx::name.max" : "名前は255文字を超えることはできません"
 }

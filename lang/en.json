@@ -73,7 +73,5 @@
   "volistx::expires_at.present" : "The expiry date field must be present.",
   "volistx::user:inactive_user" : "The user is inactive.",
   "volistx::subscriptions.can_not_cancel_subscription" : "The subscription cannot be cancelled.",
-
-
- "volistx::name.max" : "Name can not exceed 255 characters."
+  "volistx::name.max" : "The name may not be greater than 255 characters."
 }

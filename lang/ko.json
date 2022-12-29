@@ -72,5 +72,6 @@
   "volistx::user_id.exist": "사용자 ID 필드가 있어야 합니다.",
   "volistx::expires_at.present" : "만료 날짜 필드가 있어야 합니다.",
   "volistx::user:inactive_user" : "사용자가 비활성 상태입니다.",
-  "volistx::subscriptions.can_not_cancel_subscription" : "구독을 취소할 수 없습니다."
+  "volistx::subscriptions.can_not_cancel_subscription" : "구독을 취소할 수 없습니다.",
+  "volistx::name.max" : "이름은 255자를 초과할 수 없습니다."
 }

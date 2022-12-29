@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\Helpers;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 
 class GeoLocationCenter
@@ -33,17 +34,21 @@ class GeoLocationCenter
         ]);
 
         // Get data from client
-        $response = $this->client->get('lookup', [
-            'ip' => $ip,
-        ]);
+        try {
+            $response = $this->client->get('lookup', [
+                'ip' => $ip,
+            ]);
 
-        if ($response->getStatusCode() == 200) {
-            $data = json_decode($response->getBody()->getContents());
+            if ($response->getStatusCode() == 200) {
+                $data = json_decode($response->getBody()->getContents());
 
-            Cache::put($uniqueCacheID, $data, 60 * 60 * 24 * 5);
+                Cache::put($uniqueCacheID, $data, 60 * 60 * 24 * 5);
 
-            return $data;
-        } else {
+                return $data;
+            } else {
+                return null;
+            }
+        } catch (GuzzleException $e) {
             return null;
         }
     }

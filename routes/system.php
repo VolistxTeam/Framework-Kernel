@@ -5,79 +5,82 @@ Please DO NOT touch any routes here!!
 */
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
 
-$this->app->router->group(['prefix' => 'sys-bin'], function () {
-    $this->app->router->group(['middleware' => 'throttle:100,1'], function () {
-        $this->app->router->get('/ping', function () {
-            return response('Hi!');
+Route::prefix('sys-bin')->group(function () {
+    Route::middleware(['throttle:100,1'])->group(function () {
+        Route::get('ping', function () {
+            return response()->json([
+                'status' => 'ok',
+                'time'   => Carbon::now()->toDateTimeString(),
+            ]);
         });
 
-        $this->app->router->get('/timestamp', function () {
+        Route::get('timestamp', function () {
             return response(Carbon::now()->timestamp);
-        });
-
-        $this->app->router->get('/datetime', function () {
-            return response(Carbon::now()->toDateTimeString());
         });
     });
 
-    $this->app->router->group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function () {
-        $this->app->router->group(['prefix' => 'users'], function () {
-            $this->app->router->group(['middleware' => ['filter.json']], function () {
-                $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\UserController@CreateUser');
-                $this->app->router->patch('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@UpdateUser');
+    Route::prefix('admin')->middleware('auth.admin')->group(function () {
+        Route::prefix('users')->group(function () {
+            Route::middleware('filter.json')->group(function () {
+                Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'CreateUser']);
+                Route::patch('/{user_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'UpdateUser']);
             });
-            $this->app->router->delete('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@DeleteUser');
-            $this->app->router->get('/{user_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserController@GetUser');
 
-            $this->app->router->group(['prefix' => '/{user_id}/'], function () {
-                $this->app->router->group(['prefix' => 'subscriptions'], function () {
-                    $this->app->router->group(['middleware' => ['filter.json']], function () {
-                        $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CreateSubscription');
-                        $this->app->router->post('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@MutateSubscription');
-                        $this->app->router->post('/{subscription_id}/cancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@CancelSubscription');
+            Route::delete('/{user_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'DeleteUser']);
+            Route::get('/{user_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'GetUser']);
+
+            Route::prefix('/{user_id}/')->group(function () {
+                Route::prefix('subscriptions')->group(function () {
+                    Route::middleware('filter.json')->group(function () {
+                        Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'CreateSubscription']);
+                        Route::post('/{subscription_id}', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'MutateSubscription']);
+                        Route::post('/{subscription_id}/cancel', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'CancelSubscription']);
                     });
 
-                    $this->app->router->post('/{subscription_id}/uncancel', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@UncancelSubscription');
-                    $this->app->router->delete('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@DeleteSubscription');
-                    $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptions');
-                    $this->app->router->get('/{subscription_id}', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscription');
-                    $this->app->router->get('/{subscription_id}/logs', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionLogs');
-                    $this->app->router->get('/{subscription_id}/usages', 'Volistx\FrameworkKernel\Http\Controllers\SubscriptionController@GetSubscriptionUsages');
+                    Route::post('/{subscription_id}/uncancel', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'UncancelSubscription']);
+                    Route::delete('/{subscription_id}', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'DeleteSubscription']);
+                    Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscriptions']);
+                    Route::get('/{subscription_id}', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscription']);
+                    Route::get('/{subscription_id}/logs', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscriptionLogs']);
+                    Route::get('/{subscription_id}/usages', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscriptionUsages']);
                 });
 
-                $this->app->router->group(['prefix' => 'personal-tokens'], function () {
-                    $this->app->router->group(['middleware' => ['filter.json']], function () {
-                        $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@CreatePersonalToken');
-                        $this->app->router->patch('/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@UpdatePersonalToken');
+                Route::prefix('personal-tokens')->group(function () {
+                    Route::middleware('filter.json')->group(function () {
+                        Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'CreatePersonalToken']);
+                        Route::patch('/{token_id}', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'UpdatePersonalToken']);
                     });
-                    $this->app->router->delete('/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@DeletePersonalToken');
-                    $this->app->router->patch('/{token_id}/reset', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@ResetPersonalToken');
-                    $this->app->router->get('/{token_id}', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@GetPersonalToken');
-                    $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@GetPersonalTokens');
-                    $this->app->router->post('/sync', 'Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController@Sync');
+
+                    Route::delete('/{token_id}', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'DeletePersonalToken']);
+                    Route::patch('/{token_id}/reset', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'ResetPersonalToken']);
+                    Route::get('/{token_id}', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'GetPersonalToken']);
+                    Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'GetPersonalTokens']);
+                    Route::post('/sync', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'Sync']);
                 });
             });
         });
 
-        $this->app->router->group(['prefix' => 'plans'], function () {
-            $this->app->router->group(['middleware' => ['filter.json']], function () {
-                $this->app->router->post('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@CreatePlan');
-                $this->app->router->patch('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@UpdatePlan');
+        Route::prefix('plans')->group(function () {
+            Route::middleware('filter.json')->group(function () {
+                Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'CreatePlan']);
+                Route::patch('/{plan_id}', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'UpdatePlan']);
             });
-            $this->app->router->delete('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@DeletePlan');
-            $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlans');
-            $this->app->router->get('/{plan_id}', 'Volistx\FrameworkKernel\Http\Controllers\PlanController@GetPlan');
+
+            Route::delete('/{plan_id}', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'DeletePlan']);
+            Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'GetPlans']);
+            Route::get('/{plan_id}', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'GetPlan']);
         });
 
-        $this->app->router->group(['prefix' => 'logs'], function () {
-            $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLogs');
-            $this->app->router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\AdminLogController@GetAdminLog');
+        Route::prefix('logs')->group(function () {
+            Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\AdminLogController::class, 'GetAdminLogs']);
+            Route::get('/{log_id}', [\Volistx\FrameworkKernel\Http\Controllers\AdminLogController::class, 'GetAdminLog']);
         });
 
-        $this->app->router->group(['prefix' => 'user-logs'], function () {
-            $this->app->router->get('/', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLogs');
-            $this->app->router->get('/{log_id}', 'Volistx\FrameworkKernel\Http\Controllers\UserLogController@GetUserLog');
+        Route::prefix('user-logs')->group(function () {
+            Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\UserLogController::class, 'GetUserLogs']);
+            Route::get('/{log_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserLogController::class, 'GetUserLog']);
         });
     });
 });
