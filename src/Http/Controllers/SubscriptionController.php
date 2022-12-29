@@ -13,7 +13,6 @@ use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Facades\Subscriptions;
-use Volistx\FrameworkKernel\Models\Subscription;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 

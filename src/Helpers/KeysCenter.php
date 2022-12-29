@@ -12,7 +12,7 @@ class KeysCenter
         $factory = new Factory();
         $generator = $factory->getGenerator(new Strength(Strength::HIGH));
 
-        return $generator->generateString($length);
+        return $generator->generateString($length, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     }
 
     public static function randomSaltedKey(int $keyLength = 64, int $saltLength = 16): array

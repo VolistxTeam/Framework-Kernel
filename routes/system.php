@@ -6,6 +6,12 @@ Please DO NOT touch any routes here!!
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use Volistx\FrameworkKernel\Http\Controllers\AdminLogController;
+use Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController;
+use Volistx\FrameworkKernel\Http\Controllers\PlanController;
+use Volistx\FrameworkKernel\Http\Controllers\SubscriptionController;
+use Volistx\FrameworkKernel\Http\Controllers\UserController;
+use Volistx\FrameworkKernel\Http\Controllers\UserLogController;
 
 Route::prefix('sys-bin')->group(function () {
     Route::middleware(['throttle:100,1'])->group(function () {
@@ -24,63 +30,63 @@ Route::prefix('sys-bin')->group(function () {
     Route::prefix('admin')->middleware('auth.admin')->group(function () {
         Route::prefix('users')->group(function () {
             Route::middleware('filter.json')->group(function () {
-                Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'CreateUser']);
-                Route::patch('/{user_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'UpdateUser']);
+                Route::post('/', [UserController::class, 'CreateUser']);
+                Route::patch('/{user_id}', [UserController::class, 'UpdateUser']);
             });
 
-            Route::delete('/{user_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'DeleteUser']);
-            Route::get('/{user_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserController::class, 'GetUser']);
+            Route::delete('/{user_id}', [UserController::class, 'DeleteUser']);
+            Route::get('/{user_id}', [UserController::class, 'GetUser']);
 
             Route::prefix('/{user_id}/')->group(function () {
                 Route::prefix('subscriptions')->group(function () {
                     Route::middleware('filter.json')->group(function () {
-                        Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'CreateSubscription']);
-                        Route::post('/{subscription_id}', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'MutateSubscription']);
-                        Route::post('/{subscription_id}/cancel', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'CancelSubscription']);
+                        Route::post('/', [SubscriptionController::class, 'CreateSubscription']);
+                        Route::post('/{subscription_id}', [SubscriptionController::class, 'MutateSubscription']);
+                        Route::post('/{subscription_id}/cancel', [SubscriptionController::class, 'CancelSubscription']);
                     });
 
-                    Route::post('/{subscription_id}/uncancel', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'UncancelSubscription']);
-                    Route::delete('/{subscription_id}', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'DeleteSubscription']);
-                    Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscriptions']);
-                    Route::get('/{subscription_id}', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscription']);
-                    Route::get('/{subscription_id}/logs', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscriptionLogs']);
-                    Route::get('/{subscription_id}/usages', [\Volistx\FrameworkKernel\Http\Controllers\SubscriptionController::class, 'GetSubscriptionUsages']);
+                    Route::post('/{subscription_id}/uncancel', [SubscriptionController::class, 'UncancelSubscription']);
+                    Route::delete('/{subscription_id}', [SubscriptionController::class, 'DeleteSubscription']);
+                    Route::get('/', [SubscriptionController::class, 'GetSubscriptions']);
+                    Route::get('/{subscription_id}', [SubscriptionController::class, 'GetSubscription']);
+                    Route::get('/{subscription_id}/logs', [SubscriptionController::class, 'GetSubscriptionLogs']);
+                    Route::get('/{subscription_id}/usages', [SubscriptionController::class, 'GetSubscriptionUsages']);
                 });
 
                 Route::prefix('personal-tokens')->group(function () {
                     Route::middleware('filter.json')->group(function () {
-                        Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'CreatePersonalToken']);
-                        Route::patch('/{token_id}', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'UpdatePersonalToken']);
+                        Route::post('/', [PersonalTokenController::class, 'CreatePersonalToken']);
+                        Route::patch('/{token_id}', [PersonalTokenController::class, 'UpdatePersonalToken']);
                     });
 
-                    Route::delete('/{token_id}', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'DeletePersonalToken']);
-                    Route::patch('/{token_id}/reset', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'ResetPersonalToken']);
-                    Route::get('/{token_id}', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'GetPersonalToken']);
-                    Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'GetPersonalTokens']);
-                    Route::post('/sync', [\Volistx\FrameworkKernel\Http\Controllers\PersonalTokenController::class, 'Sync']);
+                    Route::delete('/{token_id}', [PersonalTokenController::class, 'DeletePersonalToken']);
+                    Route::patch('/{token_id}/reset', [PersonalTokenController::class, 'ResetPersonalToken']);
+                    Route::get('/{token_id}', [PersonalTokenController::class, 'GetPersonalToken']);
+                    Route::get('/', [PersonalTokenController::class, 'GetPersonalTokens']);
+                    Route::post('/sync', [PersonalTokenController::class, 'Sync']);
                 });
             });
         });
 
         Route::prefix('plans')->group(function () {
             Route::middleware('filter.json')->group(function () {
-                Route::post('/', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'CreatePlan']);
-                Route::patch('/{plan_id}', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'UpdatePlan']);
+                Route::post('/', [PlanController::class, 'CreatePlan']);
+                Route::patch('/{plan_id}', [PlanController::class, 'UpdatePlan']);
             });
 
-            Route::delete('/{plan_id}', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'DeletePlan']);
-            Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'GetPlans']);
-            Route::get('/{plan_id}', [\Volistx\FrameworkKernel\Http\Controllers\PlanController::class, 'GetPlan']);
+            Route::delete('/{plan_id}', [PlanController::class, 'DeletePlan']);
+            Route::get('/', [PlanController::class, 'GetPlans']);
+            Route::get('/{plan_id}', [PlanController::class, 'GetPlan']);
         });
 
         Route::prefix('logs')->group(function () {
-            Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\AdminLogController::class, 'GetAdminLogs']);
-            Route::get('/{log_id}', [\Volistx\FrameworkKernel\Http\Controllers\AdminLogController::class, 'GetAdminLog']);
+            Route::get('/', [AdminLogController::class, 'GetAdminLogs']);
+            Route::get('/{log_id}', [AdminLogController::class, 'GetAdminLog']);
         });
 
         Route::prefix('user-logs')->group(function () {
-            Route::get('/', [\Volistx\FrameworkKernel\Http\Controllers\UserLogController::class, 'GetUserLogs']);
-            Route::get('/{log_id}', [\Volistx\FrameworkKernel\Http\Controllers\UserLogController::class, 'GetUserLog']);
+            Route::get('/', [UserLogController::class, 'GetUserLogs']);
+            Route::get('/{log_id}', [UserLogController::class, 'GetUserLog']);
         });
     });
 });
