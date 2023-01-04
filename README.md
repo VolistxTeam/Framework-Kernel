@@ -1,19 +1,16 @@
 # Volistx Framework Kernel
 
-This is a part of Volistx Framework. Only use with [Volistx Framework](https://github.com/VolistxTeam/Framework).
+This is a part of Volistx Framework.
 
 ### Requirements
-- PHP 8.1 or Above
-- MySQL or PostgreSQL
-- All Required Extensions for Laravel/Lumen
-- Composer 2.x
+- Laravel 9.x or Above
+- PHP 8.1.2 or Above
+- MariaDB 10.5.x
 
-### Functions
-- Subscription and Plan Controls
-- Detailed Logs for All API calls
-- Caching Functions
-- Access Control and Limiters with Custom Functions
-- HMAC Sign Support
+### Installation
+```shell
+composer create-project volistx/framework-kernel
+```
 
 ### Warnings
-- This kernel is not compatible with normal Laravel or Laravel/Lumen. Built for [Volistx Framework](https://github.com/VolistxTeam/Framework) only.
+- This kernel is optimized for [Volistx Framework](https://github.com/VolistxTeam/Framework) only. We do not guarantee that it will work with standard laravel framework.
