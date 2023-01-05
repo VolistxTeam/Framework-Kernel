@@ -13,7 +13,6 @@
   "volistx::limit.integer":"制限値は整数値でなければなりません。",
   "volistx::invalid_search_column": "指定されたパラメータで検索できません",
   "volistx::user_id.required":"ユーザーIDは必須です",
-  "volistx::user_id.integer":"ユーザーIDは整数でなければなりません",
   "volistx::duration.required":"継続時間は必須です。",
   "volistx::expires_at.date":"有効期限は有効な日付でなければなりません",
   "volistx::rate_limit_mode.required":"レートリミットモードが必須です",

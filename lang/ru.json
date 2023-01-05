@@ -13,7 +13,6 @@
   "volistx::limit.integer": "Ограничение должно быть целым числом.",
   "volistx::invalid_search_column": "Невозможно выполнить поиск с заданными параметрами.",
   "volistx::user_id.required": "Необходимо указать ID пользователя.",
-  "volistx::user_id.integer": "ID пользователя должен быть целым числом.",
   "volistx::duration.required": "Необходимо указать продолжительность.",
   "volistx::expires_at.date": "Дата истечения срока действия должна быть действительной.",
   "volistx::rate_limit_mode.required": "Необходим режим ограничения скорости.",

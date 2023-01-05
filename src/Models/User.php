@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
+use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
 class User extends Model
 {
     use HasFactory;
+    use UuidForKey;
 
     /**
      * Indicates if the model should be timestamped.

@@ -16,7 +16,7 @@ class CreateSubscriptionsTable extends Migration
         Schema::enableForeignKeyConstraints();
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('user_id')->index('subscription_user_id');
+            $table->uuid('user_id')->index('subscription_user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->uuid('plan_id')->index('sub_plan_id');
             $table->foreign('plan_id')->references('id')->on('plans');

@@ -13,7 +13,6 @@
   "volistx::limit.integer": "The limit must be an integer.",
   "volistx::invalid_search_column": "Not able to search with the given parameters.",
   "volistx::user_id.required": "The user ID is required.",
-  "volistx::user_id.integer": "The user ID must be an integer.",
   "volistx::duration.required": "The duration is required.",
   "volistx::expires_at.date": "The expiry date must be a valid date.",
   "volistx::rate_limit_mode.required": "The rate limit mode is required.",
@@ -73,5 +72,12 @@
   "volistx::expires_at.present" : "The expiry date field must be present.",
   "volistx::user:inactive_user" : "The user is inactive.",
   "volistx::subscriptions.can_not_cancel_subscription" : "The subscription cannot be cancelled.",
-  "volistx::name.max" : "The name may not be greater than 255 characters."
+  "volistx::name.max" : "The name may not be greater than 255 characters.",
+
+
+
+
+
+
+  "volistx::user_id.uuid": "The user ID must be a valid uuid."
 }

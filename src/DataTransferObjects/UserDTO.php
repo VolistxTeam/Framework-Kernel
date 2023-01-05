@@ -4,7 +4,7 @@ namespace Volistx\FrameworkKernel\DataTransferObjects;
 
 class UserDTO extends DataTransferObjectBase
 {
-    public int $id;
+    public string $id;
     public bool $is_active;
 
     public static function fromModel($user): self

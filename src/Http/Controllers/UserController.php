@@ -30,10 +30,10 @@ class UserController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'user_id' => ['bail', 'required', 'integer'],
+                'user_id' => ['bail', 'required', 'uuid'],
             ], [
                 'user_id.required' => trans('volistx::user_id.required'),
-                'user_id.integer'  => trans('volistx::user_id.integer'),
+                'user_id.uuid'  => trans('volistx::user_id.uuid'),
             ]);
 
             if ($validator->fails()) {
@@ -58,10 +58,10 @@ class UserController extends Controller
             $validator = Validator::make(array_merge($request->all(), [
                 'user_id' => $user_id,
             ]), [
-                'user_id'   => ['bail', 'required', 'integer'],
+                'user_id'   => ['bail', 'required', 'uuid'],
                 'is_active' => ['bail', 'sometimes', 'boolean'],
             ], [
-                'user_id.required'  => trans('volistx::user_id.required'),
+                'user_id.uuid'  => trans('volistx::user_id.uuid'),
                 'user_id.integer'   => trans('volistx::user_id.integer'),
                 'is_active.boolean' => trans('volistx::is_active.boolean'),
             ]);
@@ -92,10 +92,10 @@ class UserController extends Controller
             $validator = Validator::make([
                 'user_id' => $user_id,
             ], [
-                'user_id'   => ['bail', 'required', 'integer'],
+                'user_id'   => ['bail', 'required', 'uuid'],
                 'is_active' => ['bail', 'sometimes', 'boolean'],
             ], [
-                'user_id.required'  => trans('volistx::user_id.required'),
+                'user_id.uuid'  => trans('volistx::user_id.uuid'),
                 'user_id.integer'   => trans('volistx::user_id.integer'),
                 'is_active.boolean' => trans('volistx::is_active.boolean'),
             ]);
@@ -128,9 +128,9 @@ class UserController extends Controller
             $validator = Validator::make([
                 'user_id' => $user_id,
             ], [
-                'user_id' => ['bail', 'required', 'integer'],
+                'user_id' => ['bail', 'required', 'uuid'],
             ], [
-                'user_id.required' => trans('volistx::user_id.required'),
+                'user_id.uuid' => trans('volistx::user_id.uuid'),
             ]);
 
             if ($validator->fails()) {

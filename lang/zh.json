@@ -13,7 +13,6 @@
   "volistx::limit.integer": "限制必须是整数。",
   "volistx::invalid_search_column": "无法使用给定参数进行搜索。",
   "volistx::user_id.required": "需要填写用户ID。",
-  "volistx::user_id.integer": "用户ID必须是整数。",
   "volistx::duration.required": "需要填写持续时间。",
   "volistx::expires_at.date": "到期日期必须是有效日期。",
   "volistx::rate_limit_mode.required": "需要速率限制模式。",

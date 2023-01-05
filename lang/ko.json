@@ -13,7 +13,6 @@
   "volistx::limit.integer": "제한은 정수로 입력해야 합니다.",
   "volistx::invalid_search_column": "지정된 매개 변수를 사용하여 검색할 수 없습니다.",
   "volistx::user_id.required": "사용자 ID는 필수 항목입니다.",
-  "volistx::user_id.integer": "사용자 ID는 정수로 입력해야 합니다.",
   "volistx::duration.required": "기간은 필수 항목입니다.",
   "volistx::expires_at.date": "만료 날짜는 유효한 날짜를 입력해야 합니다.",
   "volistx::rate_limit_mode.required": "속도 제한 모드는 필수 항목입니다.",

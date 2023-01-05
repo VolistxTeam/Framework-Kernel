@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::enableForeignKeyConstraints();
         Schema::create('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->uuid('id')->primary();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
