@@ -32,9 +32,6 @@ return [
     'services_permissions' => [
         '*',
     ],
-    'fallback_plan' => [
-        'id' => env('FALLBACK_PLAN_ID'),
-    ],
     'webhooks' => [
         'subscription' => [
             'expired' => [
