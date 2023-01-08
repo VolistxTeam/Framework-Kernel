@@ -72,5 +72,6 @@
   "volistx::expires_at.present" : "Поле с датой истечения срока действия должно присутствовать.",
   "volistx::user:inactive_user" : "Пользователь неактивен.",
   "volistx::subscriptions.can_not_cancel_subscription" : "Подписка не может быть отменена.",
-  "volistx::name.max" : "Длина имени не может превышать 255 символов."
+  "volistx::name.max" : "Длина имени не может превышать 255 символов.",
+  "volistx::user_id.uuid": "Идентификатор пользователя должен быть допустимым UUID."
 }
