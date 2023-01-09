@@ -9,7 +9,7 @@ This is a part of Volistx Framework.
 
 ### Installation
 ```shell
-composer create-project volistx/framework-kernel
+composer require volistx/framework-kernel
 ```
 
 ### Warnings
