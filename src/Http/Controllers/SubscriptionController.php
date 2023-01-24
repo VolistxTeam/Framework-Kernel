@@ -47,7 +47,7 @@ class SubscriptionController extends Controller
                 ],
                 [
                     'user_id.required'      => trans('volistx::user_id.required'),
-                    'user_id.uuid'       => trans('volistx::user_id.uuid'),
+                    'user_id.uuid'          => trans('volistx::user_id.uuid'),
                     'user_id.exists'        => trans('volistx::user_id.exists'),
                     'plan_id.required'      => trans('volistx::plan_id.required'),
                     'plan_id.uuid'          => trans('volistx::plan_id.uuid'),
@@ -109,7 +109,7 @@ class SubscriptionController extends Controller
                 'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
                 'hmac_token.max'           => trans('volistx::hmac_token.max'),
                 'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.uuid'          => trans('volistx::user_id.uuid'),
+                'user_id.uuid'             => trans('volistx::user_id.uuid'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
                 'plan_id.uuid'             => trans('volistx::plan_id.uuid'),
                 'activated_at.date'        => trans('volistx::activated_at.date'),
@@ -155,7 +155,7 @@ class SubscriptionController extends Controller
                 'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
                 'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
                 'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.uuid'          => trans('volistx::user_id.uuid'),
+                'user_id.uuid'             => trans('volistx::user_id.uuid'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
@@ -196,7 +196,7 @@ class SubscriptionController extends Controller
             'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
             'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
             'user_id.required'         => trans('volistx::user_id.required'),
-            'user_id.uuid'          => trans('volistx::user_id.uuid'),
+            'user_id.uuid'             => trans('volistx::user_id.uuid'),
             'user_id.exists'           => trans('volistx::user_id.exists'),
             'cancels_at.date'          => trans('volistx::cancels_at.date'),
         ]);
@@ -239,7 +239,7 @@ class SubscriptionController extends Controller
             'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
             'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
             'user_id.required'         => trans('volistx::user_id.required'),
-            'user_id.uuid'          => trans('volistx::user_id.uuid'),
+            'user_id.uuid'             => trans('volistx::user_id.uuid'),
             'user_id.exists'           => trans('volistx::user_id.exists'),
         ]);
 
@@ -282,7 +282,7 @@ class SubscriptionController extends Controller
                 'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
                 'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
                 'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.uuid'          => trans('volistx::user_id.uuid'),
+                'user_id.uuid'             => trans('volistx::user_id.uuid'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
@@ -323,7 +323,7 @@ class SubscriptionController extends Controller
                 'limit'   => ['bail', 'sometimes', 'integer'],
             ], [
                 'user_id.required' => trans('volistx::user_id.required'),
-                'user_id.uuid'  => trans('volistx::user_id.uuid'),
+                'user_id.uuid'     => trans('volistx::user_id.uuid'),
                 'user_id.exists'   => trans('volistx::user_id.exists'),
                 'page.integer'     => trans('volistx::page.integer'),
                 'limit.integer'    => trans('volistx::limit.integer'),
@@ -383,7 +383,7 @@ class SubscriptionController extends Controller
                 'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
                 'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
                 'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.uuid'          => trans('volistx::user_id.uuid'),
+                'user_id.uuid'             => trans('volistx::user_id.uuid'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
                 'page.integer'             => trans('volistx::page.integer'),
                 'limit.integer'            => trans('volistx::limit.integer'),
@@ -423,7 +423,7 @@ class SubscriptionController extends Controller
                 'subscription_id.uuid'     => trans('volistx::subscription_id.uuid'),
                 'subscription_id.exists'   => trans('volistx::subscription_id.exists'),
                 'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.uuid'          => trans('volistx::user_id.uuid'),
+                'user_id.uuid'             => trans('volistx::user_id.uuid'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 

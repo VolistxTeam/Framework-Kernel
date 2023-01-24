@@ -55,7 +55,7 @@ class PersonalTokenController extends Controller
                 'user_id.required'             => trans('volistx::user_id.required'),
                 'name.required'                => trans('volistx::name.required'),
                 'name.max'                     => trans('volistx::name.max'),
-                'user_id.uuid'              => trans('volistx::user_id.uuid'),
+                'user_id.uuid'                 => trans('volistx::user_id.uuid'),
                 'user_id.exists'               => trans('volistx::user_id.exists'),
                 'duration.required'            => trans('volistx::duration.required'),
                 'expires_at.date'              => trans('volistx::expires_at.date'),
@@ -136,7 +136,7 @@ class PersonalTokenController extends Controller
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.uuid'               => trans('volistx::user_id.uuid'),
+                'user_id.uuid'                  => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
                 'name.required'                 => trans('volistx::name.required'),
                 'name.max'                      => trans('volistx::name.max'),
@@ -193,7 +193,7 @@ class PersonalTokenController extends Controller
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.uuid'               => trans('volistx::user_id.uuid'),
+                'user_id.uuid'                  => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
@@ -238,7 +238,7 @@ class PersonalTokenController extends Controller
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.uuid'               => trans('volistx::user_id.uuid'),
+                'user_id.uuid'                  => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
@@ -277,7 +277,7 @@ class PersonalTokenController extends Controller
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.uuid'               => trans('volistx::user_id.uuid'),
+                'user_id.uuid'                  => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
@@ -364,7 +364,7 @@ class PersonalTokenController extends Controller
                 'user_id' => ['required', 'uuid', 'bail', 'exists:users,id'],
             ], [
                 'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.uuid'          => trans('volistx::user_id.uuid'),
+                'user_id.uuid'             => trans('volistx::user_id.uuid'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
