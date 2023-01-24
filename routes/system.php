@@ -30,10 +30,10 @@ Route::prefix('sys-bin')->group(function () {
     Route::prefix('admin')->middleware('auth.admin')->group(function () {
         Route::prefix('users')->group(function () {
             Route::middleware('filter.json')->group(function () {
-                Route::post('/', [UserController::class, 'CreateUser']);
                 Route::patch('/{user_id}', [UserController::class, 'UpdateUser']);
             });
 
+            Route::post('/', [UserController::class, 'CreateUser']);
             Route::delete('/{user_id}', [UserController::class, 'DeleteUser']);
             Route::get('/{user_id}', [UserController::class, 'GetUser']);
 
