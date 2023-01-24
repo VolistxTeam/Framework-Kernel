@@ -10,7 +10,7 @@ class PersonalTokenDTO extends DataTransferObjectBase
 {
     public string $id;
     public string $name;
-    public int $user_id;
+    public string $user_id;
     public int $rate_limit_mode;
     public array $permissions;
     public int $ip_rule;

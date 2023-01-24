@@ -7,7 +7,7 @@ use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 class SubscriptionDTO extends DataTransferObjectBase
 {
     public string $id;
-    public int $user_id;
+    public string $user_id;
     public string $activated_at;
     public ?string $expires_at;
     public string $created_at;
