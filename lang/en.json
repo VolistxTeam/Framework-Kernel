@@ -73,11 +73,5 @@
   "volistx::user:inactive_user" : "The user is inactive.",
   "volistx::subscriptions.can_not_cancel_subscription" : "The subscription cannot be cancelled.",
   "volistx::name.max" : "The name may not be greater than 255 characters.",
-
-
-
-
-
-
-  "volistx::user_id.uuid": "The user ID must be a valid uuid."
+  "volistx::user_id.uuid": "The user ID must be a valid UUID."
 }

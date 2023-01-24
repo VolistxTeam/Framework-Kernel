@@ -60,7 +60,7 @@
   "volistx::tier.unique": "ティアはすでに取られています",
   "volistx::custom.required": "このカスタムは必須です",
   "volistx::custom.boolean": "このカスタムはブーリアンでなければなりません",
-  "volistx::is_active.boolean": "活性化状態は boolean でなければなりません",
+  "volistx::is_active.boolean": "活性化状態はBooleanßでなければなりません",
   "volistx::service.not_allowed_to_access_from_your_ip": "このサービスは、あなたのIPアドレスからのアクセスを許可されていません",
   "volistx::service.not_allowed_to_access_from_your_country": "このサービスは、あなたのIPアドレスからのアクセスを許可されていません",
   "volistx::token.expired": "トークンの有効期限が切れました",
@@ -72,5 +72,6 @@
   "volistx::expires_at.present" : "有効期限フィールドが存在する必要があります",
   "volistx::user:inactive_user" : "ユーザーは非アクティブです",
   "volistx::subscriptions.can_not_cancel_subscription" : "サブスクリプションはキャンセルできません",
-  "volistx::name.max" : "名前は255文字を超えることはできません"
+  "volistx::name.max" : "名前は255文字を超えることはできません",
+  "volistx::user_id.uuid": "ユーザーIDは有効なUUIDでなければなりません。"
 }

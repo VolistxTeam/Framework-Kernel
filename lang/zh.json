@@ -72,5 +72,6 @@
   "volistx::expires_at.present" : "到期日期字段必须存在。",
   "volistx::user:inactive_user" : "用户不活跃。",
   "volistx::subscriptions.can_not_cancel_subscription" : "订阅无法取消。",
-  "volistx::name.max" : "名称不得超过255个字符。"
+  "volistx::name.max" : "名称不得超过255个字符。",
+  "volistx::user_id.uuid": "用户ID必须是有效的UUID。"
 }
