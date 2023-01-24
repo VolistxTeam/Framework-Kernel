@@ -14,7 +14,6 @@ class UserRepository
     public function Create(array $inputs): Model|Builder
     {
         return User::query()->create([
-            'id'        => $inputs['user_id'],
             'is_active' => true,
         ]);
     }

@@ -29,17 +29,6 @@ class UserController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make($request->all(), [
-                'user_id' => ['bail', 'required', 'uuid'],
-            ], [
-                'user_id.required' => trans('volistx::user_id.required'),
-                'user_id.uuid'     => trans('volistx::user_id.uuid'),
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(Messages::E400($validator->errors()->first()), 400);
-            }
-
             $new_user = $this->userRepository->Create($request->all());
 
             return response()->json(UserDTO::fromModel($new_user)->GetDTO(), 201);
