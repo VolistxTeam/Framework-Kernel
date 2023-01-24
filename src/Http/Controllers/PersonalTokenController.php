@@ -38,7 +38,7 @@ class PersonalTokenController extends Controller
             $validator = Validator::make(array_merge($request->all(), [
                 'user_id' => $user_id,
             ]), [
-                'user_id'         => ['required', 'integer', 'bail', 'exists:users,id'],
+                'user_id'         => ['required', 'uuid', 'bail', 'exists:users,id'],
                 'name'            => ['required', 'string', 'max:255'],
                 'expires_at'      => ['bail', 'present', 'nullable', 'date'],
                 'rate_limit_mode' => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
@@ -55,7 +55,7 @@ class PersonalTokenController extends Controller
                 'user_id.required'             => trans('volistx::user_id.required'),
                 'name.required'                => trans('volistx::name.required'),
                 'name.max'                     => trans('volistx::name.max'),
-                'user_id.integer'              => trans('volistx::user_id.integer'),
+                'user_id.uuid'              => trans('volistx::user_id.uuid'),
                 'user_id.exists'               => trans('volistx::user_id.exists'),
                 'duration.required'            => trans('volistx::duration.required'),
                 'expires_at.date'              => trans('volistx::expires_at.date'),
@@ -119,7 +119,7 @@ class PersonalTokenController extends Controller
             ]), [
                 'token_id'          => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
                 'name'              => ['bail', 'sometimes', 'max:255'],
-                'user_id'           => ['bail', 'required', 'integer', 'exists:users,id'],
+                'user_id'           => ['bail', 'required', 'uuid', 'exists:users,id'],
                 'expires_at'        => ['bail', 'sometimes', 'date', 'nullable'],
                 'permissions'       => ['bail', 'sometimes', 'array'],
                 'rate_limit_mode'   => ['bail', 'sometimes', new Enum(RateLimitMode::class)],
@@ -136,7 +136,7 @@ class PersonalTokenController extends Controller
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.uuid'               => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
                 'name.required'                 => trans('volistx::name.required'),
                 'name.max'                      => trans('volistx::name.max'),
@@ -186,14 +186,14 @@ class PersonalTokenController extends Controller
 
             ]), [
                 'token_id' => ['bail', 'required', 'uuid', 'exists:personal_tokens,id'],
-                'user_id'  => ['bail', 'required', 'integer', 'exists:users,id'],
+                'user_id'  => ['bail', 'required', 'uuid', 'exists:users,id'],
 
             ], [
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.uuid'               => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
@@ -231,14 +231,14 @@ class PersonalTokenController extends Controller
 
             ]), [
                 'token_id' => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
-                'user_id'  => ['bail', 'required', 'integer', 'exists:users,id'],
+                'user_id'  => ['bail', 'required', 'uuid', 'exists:users,id'],
 
             ], [
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.uuid'               => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
@@ -270,14 +270,14 @@ class PersonalTokenController extends Controller
 
             ]), [
                 'token_id'        => ['required', 'uuid', 'bail', 'exists:personal_tokens,id'],
-                'user_id'         => ['bail', 'required', 'integer', 'exists:users,id'],
+                'user_id'         => ['bail', 'required', 'uuid', 'exists:users,id'],
 
             ], [
                 'token_id.required'             => trans('volistx::token_id.required'),
                 'token_id.uuid'                 => trans('volistx::token_id.uuid'),
                 'token_id.exists'               => trans('volistx::token_id.exists'),
                 'user_id.required'              => trans('volistx::user_id.required'),
-                'user_id.integer'               => trans('volistx::user_id.integer'),
+                'user_id.uuid'               => trans('volistx::user_id.uuid'),
                 'user_id.exists'                => trans('volistx::user_id.exists'),
             ]);
 
@@ -361,10 +361,10 @@ class PersonalTokenController extends Controller
             $validator = Validator::make([
                 'user_id'=> $user_id,
             ], [
-                'user_id' => ['required', 'integer', 'bail', 'exists:users,id'],
+                'user_id' => ['required', 'uuid', 'bail', 'exists:users,id'],
             ], [
                 'user_id.required'         => trans('volistx::user_id.required'),
-                'user_id.integer'          => trans('volistx::user_id.integer'),
+                'user_id.uuid'          => trans('volistx::user_id.uuid'),
                 'user_id.exists'           => trans('volistx::user_id.exists'),
             ]);
 
