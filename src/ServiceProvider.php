@@ -7,6 +7,7 @@ use Illuminate\Console\Scheduling\ScheduleClearCacheCommand;
 use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Routing\Router;
+use InteractionDesignFoundation\GeoIP\GeoIPServiceProvider;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyDeleteCommand;
 use Volistx\FrameworkKernel\Console\Commands\AccessKeyGenerateCommand;
 use Volistx\FrameworkKernel\Console\Commands\SubscriptionExpiresSoonCronCommand;
@@ -35,6 +36,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // Register All Required Providers
         $serviceProvider = [
+            GeoIPServiceProvider::class,
             EventServiceProvider::class,
             AccessTokenServiceProvider::class,
             SubscriptionServiceProvider::class,

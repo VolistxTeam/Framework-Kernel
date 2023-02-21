@@ -22,7 +22,8 @@
     "guzzlehttp/guzzle": "^7.5",
     "nesbot/carbon": "^2.64",
     "menarasolutions/geographer": "^0.3.13",
-    "paragonie/random-lib": "^2.0"
+    "paragonie/random-lib": "^2.0",
+    "interaction-design-foundation/laravel-geoip": "^3.3"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",
