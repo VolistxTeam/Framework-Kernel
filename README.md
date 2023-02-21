@@ -1,9 +1,9 @@
-# Volistx Framework Kernel
+# Kernel of Volistx Framework
 
 This is a part of Volistx Framework.
 
 ### Requirements
-- Laravel 9.x or Above
+- Laravel 10.x or Above
 - PHP 8.1.2 or Above
 - MariaDB 10.5.x
 
