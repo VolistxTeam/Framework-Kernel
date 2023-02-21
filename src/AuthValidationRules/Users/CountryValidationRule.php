@@ -18,7 +18,7 @@ class CountryValidationRule extends ValidationRuleBase
 
         $geolocation = geoip($this->request->getClientIp());
 
-        if ($geolocation->ip === '127.0.0.0') {
+        if ($geolocation->default) {
             return [
                 'message' => Messages::E403(trans('volistx::service.not_allowed_to_access_from_your_country')),
                 'code'    => 403,
