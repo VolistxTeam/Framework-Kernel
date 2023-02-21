@@ -23,11 +23,6 @@ return [
         'userLogHttpUrl'    => env('LOG_AUTH_USER_HTTP_URL'),
         'userLogHttpToken'  => env('LOG_AUTH_USER_HTTP_TOKEN'),
     ],
-    'geolocation' => [
-        'base_url'          => env('GEOPOINT_API_BASEURL', 'geopoint.api.volistx.io'),
-        'token'             => env('GEOPOINT_API_KEY'),
-        'secure'            => env('GEOPOINT_API_SECURE', true),
-    ],
     'validators' => [
         SubscriptionValidationRule::class, //must always be #1 in order as it sets the subscription and the plan for current request
         IsActiveUserValidationRule::class,
