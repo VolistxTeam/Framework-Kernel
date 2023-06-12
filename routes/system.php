@@ -42,10 +42,10 @@ Route::prefix('sys-bin')->group(function () {
                     Route::middleware('filter.json')->group(function () {
                         Route::post('/', [SubscriptionController::class, 'CreateSubscription']);
                         Route::post('/{subscription_id}', [SubscriptionController::class, 'MutateSubscription']);
-                        Route::post('/{subscription_id}/cancel', [SubscriptionController::class, 'CancelSubscription']);
+                        Route::patch('/{subscription_id}/cancel', [SubscriptionController::class, 'CancelSubscription']);
                     });
 
-                    Route::post('/{subscription_id}/uncancel', [SubscriptionController::class, 'UncancelSubscription']);
+                    Route::patch('/{subscription_id}/uncancel', [SubscriptionController::class, 'UncancelSubscription']);
                     Route::delete('/{subscription_id}', [SubscriptionController::class, 'DeleteSubscription']);
                     Route::get('/', [SubscriptionController::class, 'GetSubscriptions']);
                     Route::get('/{subscription_id}', [SubscriptionController::class, 'GetSubscription']);
@@ -56,11 +56,11 @@ Route::prefix('sys-bin')->group(function () {
                 Route::prefix('personal-tokens')->group(function () {
                     Route::middleware('filter.json')->group(function () {
                         Route::post('/', [PersonalTokenController::class, 'CreatePersonalToken']);
-                        Route::patch('/{token_id}', [PersonalTokenController::class, 'UpdatePersonalToken']);
+                        Route::post('/{token_id}', [PersonalTokenController::class, 'UpdatePersonalToken']);
                     });
 
                     Route::delete('/{token_id}', [PersonalTokenController::class, 'DeletePersonalToken']);
-                    Route::patch('/{token_id}/reset', [PersonalTokenController::class, 'ResetPersonalToken']);
+                    Route::post('/{token_id}/reset', [PersonalTokenController::class, 'ResetPersonalToken']);
                     Route::get('/{token_id}', [PersonalTokenController::class, 'GetPersonalToken']);
                     Route::get('/', [PersonalTokenController::class, 'GetPersonalTokens']);
                     Route::post('/sync', [PersonalTokenController::class, 'Sync']);
