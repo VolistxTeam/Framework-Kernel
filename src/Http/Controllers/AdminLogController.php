@@ -17,7 +17,7 @@ class AdminLogController extends Controller
 
     public function __construct(IAdminLoggingService $adminLoggingService)
     {
-        $this->module = 'logs';
+        $this->module = 'admin-logs';
         $this->adminLoggingService = $adminLoggingService;
     }
 

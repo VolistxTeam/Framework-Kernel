@@ -17,7 +17,7 @@ class UserLogController extends Controller
 
     public function __construct(IUserLoggingService $userLoggingService)
     {
-        $this->module = 'logs';
+        $this->module = 'user-logs';
         $this->userLoggingService = $userLoggingService;
     }
 
@@ -34,8 +34,8 @@ class UserLogController extends Controller
                 'log_id' => ['bail', 'required', 'uuid', 'exists:user_logs,id'],
             ], [
                 'log_id.required' => trans('volistx::log_id.required'),
-                'log_id.uuid'     => trans('volistx::log_id.uuid'),
-                'log_id.exists'   => trans('volistx::log_id.exists'),
+                'log_id.uuid' => trans('volistx::log_id.uuid'),
+                'log_id.exists' => trans('volistx::log_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -66,13 +66,13 @@ class UserLogController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
-                'page'  => $page,
+                'page' => $page,
                 'limit' => $limit,
             ], [
-                'page'  => ['bail', 'sometimes', 'integer'],
+                'page' => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'  => trans('volistx::page.integer'),
+                'page.integer' => trans('volistx::page.integer'),
                 'limit.integer' => trans('volistx::limit.integer'),
             ]);
 
