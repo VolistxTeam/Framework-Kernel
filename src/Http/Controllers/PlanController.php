@@ -11,9 +11,12 @@ use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\PlanRepository;
+use Volistx\Validation\Traits\HasKernelValidation;
 
 class PlanController extends Controller
 {
+    use HasKernelValidation;
+
     private PlanRepository $planRepository;
 
     public function __construct(PlanRepository $planRepository)
@@ -29,32 +32,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make($request->all(), [
-                'name'        => ['bail', 'required', 'string'],
-                'tag'         => ['bail', 'required', 'string', 'unique:plans,tag'],
-                'description' => ['bail', 'required', 'string'],
-                'data'        => ['bail', 'required', 'array'],
-                'price'       => ['bail', 'required', 'numeric'],
-                'tier'        => ['bail', 'required', 'integer', 'unique:plans,tier'],
-                'custom'      => ['bail', 'required', 'boolean'],
-            ], [
-                'name.required'          => trans('volistx::name.required'),
-                'name.string'            => trans('volistx::name.string'),
-                'tag.required'           => trans('volistx::tag.required'),
-                'tag.string'             => trans('volistx::tag.string'),
-                'tag.unique'             => trans('volistx::tag.unique'),
-                'description.required'   => trans('volistx::description.required'),
-                'description.string'     => trans('volistx::description.string'),
-                'data.required'          => trans('volistx::data.required'),
-                'data.array'             => trans('volistx::data.array'),
-                'price.required'         => trans('volistx::price.required'),
-                'price.numeric'          => trans('volistx::price.numeric'),
-                'tier.required'          => trans('volistx::tier.required'),
-                'tier.integer'           => trans('volistx::tier.integer'),
-                'tier.unique'            => trans('volistx::tier.unique'),
-                'custom.required'        => trans('volistx::custom.required'),
-                'custom.boolean'         => trans('volistx::custom.boolean'),
-            ]);
+            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation($request->all());
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
@@ -78,27 +56,27 @@ class PlanController extends Controller
             $validator = Validator::make(array_merge($request->all(), [
                 'plan_id' => $plan_id,
             ]), [
-                'plan_id'     => ['bail', 'required', 'uuid', 'exists:plans,id'],
-                'name'        => ['bail', 'sometimes', 'string'],
-                'tag'         => ['bail', 'sometimes', 'string', 'unique:plans,tag'],
+                'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
+                'name' => ['bail', 'sometimes', 'string'],
+                'tag' => ['bail', 'sometimes', 'string', 'unique:plans,tag'],
                 'description' => ['bail', 'sometimes', 'string'],
-                'data'        => ['bail', 'sometimes', 'array'],
-                'price'       => ['bail', 'sometimes', 'numeric'],
-                'tier'        => ['bail', 'sometimes', 'integer'],
-                'custom'      => ['bail', 'sometimes', 'boolean'],
-                'is_active'   => ['bail', 'sometimes', 'boolean'],
+                'data' => ['bail', 'sometimes', 'array'],
+                'price' => ['bail', 'sometimes', 'numeric'],
+                'tier' => ['bail', 'sometimes', 'integer'],
+                'custom' => ['bail', 'sometimes', 'boolean'],
+                'is_active' => ['bail', 'sometimes', 'boolean'],
             ], [
-                'plan_id.required'       => trans('volistx::plan_id.required'),
-                'plan_id.uuid'           => trans('volistx::plan_id.uuid'),
-                'plan_id.exists'         => trans('volistx::plan_id.exists'),
-                'name.string'            => trans('volistx::name.string'),
-                'tag.unique'             => trans('volistx::tag.unique'),
-                'description.string'     => trans('volistx::description.string'),
-                'data.array'             => trans('volistx::data.array'),
-                'price.numeric'          => trans('volistx::price.numeric'),
-                'tier.integer'           => trans('volistx::tier.integer'),
-                'custom.boolean'         => trans('volistx::custom.required'),
-                'is_active.boolean'      => trans('volistx::is_active.boolean'),
+                'plan_id.required' => trans('volistx::plan_id.required'),
+                'plan_id.uuid' => trans('volistx::plan_id.uuid'),
+                'plan_id.exists' => trans('volistx::plan_id.exists'),
+                'name.string' => trans('volistx::name.string'),
+                'tag.unique' => trans('volistx::tag.unique'),
+                'description.string' => trans('volistx::description.string'),
+                'data.array' => trans('volistx::data.array'),
+                'price.numeric' => trans('volistx::price.numeric'),
+                'tier.integer' => trans('volistx::tier.integer'),
+                'custom.boolean' => trans('volistx::custom.required'),
+                'is_active.boolean' => trans('volistx::is_active.boolean'),
             ]);
 
             if ($validator->fails()) {
@@ -129,9 +107,9 @@ class PlanController extends Controller
             ], [
                 'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
             ], [
-                'plan_id.required'      => trans('volistx::plan_id.required'),
-                'plan_id.uuid'          => trans('volistx::plan_id.uuid'),
-                'plan_id.exists'        => trans('volistx::plan_id.exists'),
+                'plan_id.required' => trans('volistx::plan_id.required'),
+                'plan_id.uuid' => trans('volistx::plan_id.uuid'),
+                'plan_id.exists' => trans('volistx::plan_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -164,9 +142,9 @@ class PlanController extends Controller
             ], [
                 'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
             ], [
-                'plan_id.required'      => trans('volistx::plan_id.required'),
-                'plan_id.uuid'          => trans('volistx::plan_id.uuid'),
-                'plan_id.exists'        => trans('volistx::plan_id.exists'),
+                'plan_id.required' => trans('volistx::plan_id.required'),
+                'plan_id.uuid' => trans('volistx::plan_id.uuid'),
+                'plan_id.exists' => trans('volistx::plan_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -197,13 +175,13 @@ class PlanController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = Validator::make([
-                'page'  => $page,
+                'page' => $page,
                 'limit' => $limit,
             ], [
-                'page'  => ['bail', 'sometimes', 'integer'],
+                'page' => ['bail', 'sometimes', 'integer'],
                 'limit' => ['bail', 'sometimes', 'integer'],
             ], [
-                'page.integer'  => trans('volistx::page.integer'),
+                'page.integer' => trans('volistx::page.integer'),
                 'limit.integer' => trans('volistx::limit.integer'),
             ]);
 
@@ -211,7 +189,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $plans = $this->planRepository->FindAll($search, (int) $page, (int) $limit);
+            $plans = $this->planRepository->FindAll($search, (int)$page, (int)$limit);
 
             if (!$plans) {
                 return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);
@@ -225,8 +203,8 @@ class PlanController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $plans->perPage(),
-                    'current'  => $plans->currentPage(),
-                    'total'    => $plans->lastPage(),
+                    'current' => $plans->currentPage(),
+                    'total' => $plans->lastPage(),
                 ],
                 'items' => $items,
             ]);

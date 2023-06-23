@@ -23,7 +23,8 @@
     "nesbot/carbon": "^2.64",
     "menarasolutions/geographer": "^0.3.13",
     "paragonie/random-lib": "^2.0",
-    "interaction-design-foundation/laravel-geoip": "^3.3"
+    "interaction-design-foundation/laravel-geoip": "^3.3",
+    "volistx/validation": "dev-master"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",
@@ -46,5 +47,11 @@
         "Volistx\\FrameworkKernel\\ServiceProvider"
       ]
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/VolistxTeam/Validator"
+    }
+  ]
 }
