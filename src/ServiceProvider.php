@@ -25,6 +25,7 @@ use Volistx\FrameworkKernel\Providers\PlansServiceProvider;
 use Volistx\FrameworkKernel\Providers\RequestsServiceProvider;
 use Volistx\FrameworkKernel\Providers\SubscriptionServiceProvider;
 use Volistx\FrameworkKernel\Providers\UserLoggingServiceProvider;
+use Volistx\Validation\ValidationProvider;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -50,6 +51,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
             RequestsServiceProvider::class,
+            ValidationProvider::class
         ];
 
         foreach ($serviceProvider as $provider) {
