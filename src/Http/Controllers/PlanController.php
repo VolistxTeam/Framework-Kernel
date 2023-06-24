@@ -11,11 +11,11 @@ use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\PlanRepository;
-use Volistx\Validation\Traits\HasKernelValidation;
+use Volistx\Validation\Traits\HasKernelValidations;
 
 class PlanController extends Controller
 {
-    use HasKernelValidation;
+    use HasKernelValidations;
 
     private PlanRepository $planRepository;
 
