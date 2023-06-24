@@ -5,7 +5,6 @@ namespace Volistx\FrameworkKernel\Http\Controllers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Volistx\FrameworkKernel\DataTransferObjects\UserDTO;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
@@ -44,16 +43,9 @@ class UserController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make(array_merge($request->all(), [
+            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
                 'user_id' => $user_id,
-            ]), [
-                'user_id'   => ['bail', 'required', 'uuid'],
-                'is_active' => ['bail', 'sometimes', 'boolean'],
-            ], [
-                'user_id.uuid'      => trans('volistx::user_id.uuid'),
-                'user_id.integer'   => trans('volistx::user_id.integer'),
-                'is_active.boolean' => trans('volistx::is_active.boolean'),
-            ]);
+            ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
@@ -78,15 +70,8 @@ class UserController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make([
+            $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation([
                 'user_id' => $user_id,
-            ], [
-                'user_id'   => ['bail', 'required', 'uuid'],
-                'is_active' => ['bail', 'sometimes', 'boolean'],
-            ], [
-                'user_id.uuid'      => trans('volistx::user_id.uuid'),
-                'user_id.integer'   => trans('volistx::user_id.integer'),
-                'is_active.boolean' => trans('volistx::is_active.boolean'),
             ]);
 
             if ($validator->fails()) {
@@ -114,12 +99,8 @@ class UserController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make([
+            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'user_id' => $user_id,
-            ], [
-                'user_id' => ['bail', 'required', 'uuid'],
-            ], [
-                'user_id.uuid' => trans('volistx::user_id.uuid'),
             ]);
 
             if ($validator->fails()) {

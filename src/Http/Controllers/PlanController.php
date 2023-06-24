@@ -5,17 +5,14 @@ namespace Volistx\FrameworkKernel\Http\Controllers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Volistx\FrameworkKernel\DataTransferObjects\PlanDTO;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Repositories\PlanRepository;
-use Volistx\Validation\Traits\HasKernelValidations;
 
 class PlanController extends Controller
 {
-    use HasKernelValidations;
 
     private PlanRepository $planRepository;
 
@@ -53,31 +50,9 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make(array_merge($request->all(), [
+            $validator = $this->GetModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
                 'plan_id' => $plan_id,
-            ]), [
-                'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
-                'name' => ['bail', 'sometimes', 'string'],
-                'tag' => ['bail', 'sometimes', 'string', 'unique:plans,tag'],
-                'description' => ['bail', 'sometimes', 'string'],
-                'data' => ['bail', 'sometimes', 'array'],
-                'price' => ['bail', 'sometimes', 'numeric'],
-                'tier' => ['bail', 'sometimes', 'integer'],
-                'custom' => ['bail', 'sometimes', 'boolean'],
-                'is_active' => ['bail', 'sometimes', 'boolean'],
-            ], [
-                'plan_id.required' => trans('volistx::plan_id.required'),
-                'plan_id.uuid' => trans('volistx::plan_id.uuid'),
-                'plan_id.exists' => trans('volistx::plan_id.exists'),
-                'name.string' => trans('volistx::name.string'),
-                'tag.unique' => trans('volistx::tag.unique'),
-                'description.string' => trans('volistx::description.string'),
-                'data.array' => trans('volistx::data.array'),
-                'price.numeric' => trans('volistx::price.numeric'),
-                'tier.integer' => trans('volistx::tier.integer'),
-                'custom.boolean' => trans('volistx::custom.required'),
-                'is_active.boolean' => trans('volistx::is_active.boolean'),
-            ]);
+            ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
@@ -102,14 +77,8 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make([
+            $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation([
                 'plan_id' => $plan_id,
-            ], [
-                'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
-            ], [
-                'plan_id.required' => trans('volistx::plan_id.required'),
-                'plan_id.uuid' => trans('volistx::plan_id.uuid'),
-                'plan_id.exists' => trans('volistx::plan_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -137,14 +106,8 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make([
+            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'plan_id' => $plan_id,
-            ], [
-                'plan_id' => ['bail', 'required', 'uuid', 'exists:plans,id'],
-            ], [
-                'plan_id.required' => trans('volistx::plan_id.required'),
-                'plan_id.uuid' => trans('volistx::plan_id.uuid'),
-                'plan_id.exists' => trans('volistx::plan_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -174,15 +137,9 @@ class PlanController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = Validator::make([
+            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
                 'page' => $page,
                 'limit' => $limit,
-            ], [
-                'page' => ['bail', 'sometimes', 'integer'],
-                'limit' => ['bail', 'sometimes', 'integer'],
-            ], [
-                'page.integer' => trans('volistx::page.integer'),
-                'limit.integer' => trans('volistx::limit.integer'),
             ]);
 
             if ($validator->fails()) {

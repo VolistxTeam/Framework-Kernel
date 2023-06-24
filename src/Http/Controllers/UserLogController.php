@@ -5,11 +5,11 @@ namespace Volistx\FrameworkKernel\Http\Controllers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
+use Volistx\Validation\Traits\HasKernelValidations;
 
 class UserLogController extends Controller
 {
@@ -28,14 +28,9 @@ class UserLogController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = Validator::make([
+
+            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'log_id' => $log_id,
-            ], [
-                'log_id' => ['bail', 'required', 'uuid', 'exists:user_logs,id'],
-            ], [
-                'log_id.required' => trans('volistx::log_id.required'),
-                'log_id.uuid' => trans('volistx::log_id.uuid'),
-                'log_id.exists' => trans('volistx::log_id.exists'),
             ]);
 
             if ($validator->fails()) {
@@ -65,15 +60,9 @@ class UserLogController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = Validator::make([
+            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
                 'page' => $page,
                 'limit' => $limit,
-            ], [
-                'page' => ['bail', 'sometimes', 'integer'],
-                'limit' => ['bail', 'sometimes', 'integer'],
-            ], [
-                'page.integer' => trans('volistx::page.integer'),
-                'limit.integer' => trans('volistx::limit.integer'),
             ]);
 
             if ($validator->fails()) {
