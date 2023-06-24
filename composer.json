@@ -35,8 +35,7 @@
     "psr-4": {
       "Volistx\\FrameworkKernel\\": "src",
       "Volistx\\FrameworkKernel\\Database\\Factories\\": "database/factories",
-      "Volistx\\FrameworkKernel\\Database\\Seeders\\": "database/seeders",
-      "Volistx\\Validation\\Traits\\": "vendor/volistx/validation/src/Traits"
+      "Volistx\\FrameworkKernel\\Database\\Seeders\\": "database/seeders"
     },
     "classmap": [
       "src/Helpers"
