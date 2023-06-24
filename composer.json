@@ -48,11 +48,5 @@
         "Volistx\\FrameworkKernel\\ServiceProvider"
       ]
     }
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/VolistxTeam/Validator"
-    }
-  ]
+  }
 }
