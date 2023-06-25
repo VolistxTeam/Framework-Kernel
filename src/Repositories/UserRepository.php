@@ -15,7 +15,7 @@ class UserRepository
     public function Create(array $inputs): Model|Builder
     {
         return User::query()->create([
-            'id' => $inputs['id'] ?? Uuid::uuid4(),
+            'user_id' => $inputs['id'] ?? Uuid::uuid4(),
             'is_active' => true,
         ]);
     }
