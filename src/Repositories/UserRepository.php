@@ -7,6 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
+use Ramsey\Uuid\Uuid;
 use Volistx\FrameworkKernel\Models\User;
 
 class UserRepository
@@ -14,6 +15,7 @@ class UserRepository
     public function Create(array $inputs): Model|Builder
     {
         return User::query()->create([
+            'id' => $inputs['id'] ?? Uuid::uuid4(),
             'is_active' => true,
         ]);
     }
