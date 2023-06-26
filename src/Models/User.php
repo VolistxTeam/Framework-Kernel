@@ -10,9 +10,6 @@ use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
 class User extends Model
 {
-    use HasFactory;
-    use UuidForKey;
-
     /**
      * Indicates if the model should be timestamped.
      *

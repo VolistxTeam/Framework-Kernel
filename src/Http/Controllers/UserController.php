@@ -28,6 +28,12 @@ class UserController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
+            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation($request->all());
+
+            if ($validator->fails()) {
+                return response()->json(Messages::E400($validator->errors()->first()), 400);
+            }
+
             $new_user = $this->userRepository->Create($request->all());
 
             return response()->json(UserDTO::fromModel($new_user)->GetDTO(), 201);
