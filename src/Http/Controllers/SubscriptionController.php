@@ -229,7 +229,7 @@ class SubscriptionController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
                 'user_id' => $user_id,
                 'page' => $page,
                 'limit' => $limit,
