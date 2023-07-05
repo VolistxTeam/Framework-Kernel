@@ -56,7 +56,7 @@ Route::prefix('sys-bin')->group(function () {
                 Route::prefix('personal-tokens')->group(function () {
                     Route::middleware('filter.json')->group(function () {
                         Route::post('/', [PersonalTokenController::class, 'CreatePersonalToken']);
-                        Route::post('/{token_id}', [PersonalTokenController::class, 'UpdatePersonalToken']);
+                        Route::patch('/{token_id}', [PersonalTokenController::class, 'UpdatePersonalToken']);
                     });
 
                     Route::delete('/{token_id}', [PersonalTokenController::class, 'DeletePersonalToken']);
