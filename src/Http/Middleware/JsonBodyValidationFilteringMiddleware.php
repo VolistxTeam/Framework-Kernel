@@ -4,8 +4,9 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use function response;
 use Volistx\FrameworkKernel\Facades\Messages;
+
+use function response;
 
 class JsonBodyValidationFilteringMiddleware
 {

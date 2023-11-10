@@ -9,7 +9,6 @@ use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Facades\Permissions;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
-use Volistx\Validation\Traits\HasKernelValidations;
 
 class UserLogController extends Controller
 {
@@ -27,7 +26,6 @@ class UserLogController extends Controller
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
-
 
             $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'log_id' => $log_id,
@@ -61,7 +59,7 @@ class UserLogController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
-                'page' => $page,
+                'page'  => $page,
                 'limit' => $limit,
             ]);
 

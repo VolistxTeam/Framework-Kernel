@@ -69,7 +69,7 @@ class PlanControllerTest extends BaseTestCase
     /**
      * @test
      *
-     * @param int[] $permissions
+     * @param int[]            $permissions
      * @param (int[]|string)[] $input
      *
      * @psalm-param array{'plans:*'?: 200|201|204, ''?: 401, 'plans:create'?: 201, 'plans:update'?: 200, 'plans:delete'?: 204, 'plans:view'?: 200, 'plans:view-all'?: 200} $permissions

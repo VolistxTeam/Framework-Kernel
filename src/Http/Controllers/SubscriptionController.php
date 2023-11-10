@@ -5,8 +5,6 @@ namespace Volistx\FrameworkKernel\Http\Controllers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Enum;
 use Volistx\FrameworkKernel\DataTransferObjects\SubscriptionDTO;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
@@ -48,11 +46,11 @@ class SubscriptionController extends Controller
                 ? SubscriptionStatus::INACTIVE : SubscriptionStatus::ACTIVE;
 
             $newSubscription = $this->subscriptionRepository->Create([
-                'user_id' => $user_id,
-                'plan_id' => $request->input('plan_id'),
+                'user_id'      => $user_id,
+                'plan_id'      => $request->input('plan_id'),
                 'activated_at' => $request->input('activated_at'),
-                'expires_at' => $request->input('expires_at'),
-                'status' => $status
+                'expires_at'   => $request->input('expires_at'),
+                'status'       => $status,
             ]);
 
             return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
@@ -73,7 +71,7 @@ class SubscriptionController extends Controller
 
             $validator = $this->GetModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
-                'user_id' => $user_id
+                'user_id'         => $user_id,
             ]));
 
             if ($validator->fails()) {
@@ -104,7 +102,7 @@ class SubscriptionController extends Controller
 
             $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation(array_merge($request->all(), [
                 'subscription_id' => $subscription_id,
-                'user_id' => $user_id
+                'user_id'         => $user_id,
             ]));
 
             if ($validator->fails()) {
@@ -132,9 +130,9 @@ class SubscriptionController extends Controller
         $cancels_at = $request->input('cancels_at');
 
         $validator = $this->GetModuleValidation($this->module)->generateCancelValidation(array_merge($request->all(), [
-            'user_id' => $user_id,
+            'user_id'         => $user_id,
             'subscription_id' => $subscription_id,
-            'cancels_at' => $cancels_at,
+            'cancels_at'      => $cancels_at,
         ]));
 
         if ($validator->fails()) {
@@ -165,7 +163,7 @@ class SubscriptionController extends Controller
         }
 
         $validator = $this->GetModuleValidation($this->module)->generateUncancelValidation([
-            'user_id' => $user_id,
+            'user_id'         => $user_id,
             'subscription_id' => $subscription_id,
         ]);
 
@@ -198,7 +196,7 @@ class SubscriptionController extends Controller
             }
 
             $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
-                'user_id' => $user_id,
+                'user_id'         => $user_id,
                 'subscription_id' => $subscription_id,
             ]);
 
@@ -231,8 +229,8 @@ class SubscriptionController extends Controller
 
             $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
                 'user_id' => $user_id,
-                'page' => $page,
-                'limit' => $limit,
+                'page'    => $page,
+                'limit'   => $limit,
             ]);
 
             if ($validator->fails()) {
@@ -253,8 +251,8 @@ class SubscriptionController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $subs->perPage(),
-                    'current' => $subs->currentPage(),
-                    'total' => $subs->lastPage(),
+                    'current'  => $subs->currentPage(),
+                    'total'    => $subs->lastPage(),
                 ],
                 'items' => $items,
             ]);
@@ -276,9 +274,9 @@ class SubscriptionController extends Controller
 
             $validator = $this->GetModuleValidation($this->module)->generateGetLogsValidation([
                 'subscription_id' => $subscription_id,
-                'user_id' => $user_id,
-                'page' => $page,
-                'limit' => $limit,
+                'user_id'         => $user_id,
+                'page'            => $page,
+                'limit'           => $limit,
             ]);
 
             if ($validator->fails()) {
@@ -305,7 +303,7 @@ class SubscriptionController extends Controller
             }
 
             $validator = $this->GetModuleValidation($this->module)->generateGetUsageValidation([
-                'user_id' => $user_id,
+                'user_id'         => $user_id,
                 'subscription_id' => $subscription_id,
             ]);
 
