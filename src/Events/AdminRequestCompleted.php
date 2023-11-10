@@ -1,5 +1,4 @@
 <?php
-
 namespace Volistx\FrameworkKernel\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -12,6 +11,11 @@ class AdminRequestCompleted
 
     public array $inputs;
 
+    /**
+     * Create a new AdminRequestCompleted event instance.
+     *
+     * @param array $inputs The inputs for the admin request.
+     */
     public function __construct(array $inputs)
     {
         $this->inputs = $inputs;
