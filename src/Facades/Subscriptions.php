@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static getSubscription()
  * @method static setSubscription(Builder|Model $activeSubscription)
- * @method static ShouldSubscriptionBeExpired($subscription)
- * @method static ShouldSubscriptionBeCancelled($subscription)
- * @method static UpdateSubscriptionExpiryStatus($user_id, Builder|Model $activeSubscription)
- * @method static UpdateSubscriptionCancellationStatus($user_id, Builder|Model $activeSubscription)
- * @method static ProcessUserActiveSubscriptionsStatus($user_id)
- * @method static ProcessUserInactiveSubscriptionsStatus($user_id)
+ * @method static ShouldSubscriptionBeExpired(object $subscription)
+ * @method static ShouldSubscriptionBeCancelled(object $subscription)
+ * @method static UpdateSubscriptionExpiryStatus(string $user_id, Builder|Model $activeSubscription)
+ * @method static UpdateSubscriptionCancellationStatus(string $user_id, Builder|Model $activeSubscription)
+ * @method static ProcessUserActiveSubscriptionsStatus(string $user_id)
+ * @method static ProcessUserInactiveSubscriptionsStatus(string $user_id)
  */
 class Subscriptions extends Facade
 {
