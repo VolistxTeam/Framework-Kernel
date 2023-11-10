@@ -51,7 +51,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             PlansServiceProvider::class,
             UserLoggingServiceProvider::class,
             RequestsServiceProvider::class,
-            ValidationProvider::class
+            ValidationProvider::class,
         ];
 
         foreach ($serviceProvider as $provider) {
@@ -74,7 +74,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // publish config and migration
         $this->publishes([
             __DIR__.'/../config/volistx.php'  => config_path('volistx.php'),
-            __DIR__.'/../database/migrations' => database_path('migrations')
+            __DIR__.'/../database/migrations' => database_path('migrations'),
         ]);
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {

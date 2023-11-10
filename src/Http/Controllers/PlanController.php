@@ -13,7 +13,6 @@ use Volistx\FrameworkKernel\Repositories\PlanRepository;
 
 class PlanController extends Controller
 {
-
     private PlanRepository $planRepository;
 
     public function __construct(PlanRepository $planRepository)
@@ -138,7 +137,7 @@ class PlanController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
-                'page' => $page,
+                'page'  => $page,
                 'limit' => $limit,
             ]);
 
@@ -146,7 +145,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $plans = $this->planRepository->FindAll($search, (int)$page, (int)$limit);
+            $plans = $this->planRepository->FindAll($search, (int) $page, (int) $limit);
 
             if (!$plans) {
                 return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);
@@ -160,8 +159,8 @@ class PlanController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $plans->perPage(),
-                    'current' => $plans->currentPage(),
-                    'total' => $plans->lastPage(),
+                    'current'  => $plans->currentPage(),
+                    'total'    => $plans->lastPage(),
                 ],
                 'items' => $items,
             ]);

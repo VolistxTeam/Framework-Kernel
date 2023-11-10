@@ -12,7 +12,6 @@ use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 
 class AdminLogController extends Controller
 {
-
     private IAdminLoggingService $adminLoggingService;
 
     public function __construct(IAdminLoggingService $adminLoggingService)
@@ -60,7 +59,7 @@ class AdminLogController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
-                'page' => $page,
+                'page'  => $page,
                 'limit' => $limit,
             ]);
 
