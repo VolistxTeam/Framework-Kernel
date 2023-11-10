@@ -59,7 +59,7 @@ class SubscriptionControllerTest extends BaseTestCase
     /**
      * @test
      *
-     * @param int[] $permissions
+     * @param int[]                     $permissions
      * @param (Carbon|int|mixed|null)[] $input
      *
      * @psalm-param array{'subscriptions:*'?: 200|201|204, 'subscriptions:create'?: 201, ''?: 401, 'subscriptions:update'?: 200, 'subscriptions:delete'?: 204, 'subscriptions:view'?: 200, 'subscriptions:view-all'?: 200, 'subscriptions:logs'?: 200} $permissions

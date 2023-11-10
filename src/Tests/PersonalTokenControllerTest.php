@@ -103,7 +103,7 @@ class PersonalTokenControllerTest extends BaseTestCase
         self::assertSame($sub->id, json_decode($request->response->getContent())->subscription->id);
         self::assertSame(['*'], json_decode($request->response->getContent())->permissions);
         self::assertSame(['127.0.0.0'], json_decode($request->response->getContent())->whitelist_range);
-        self::assertSame(Carbon::createFromTimeString((json_decode($request->response->getContent())->token_status->activated_at))->addHours(500)->format('Y-m-d H:i:s'), json_decode($request->response->getContent())->token_status->expires_at);
+        self::assertSame(Carbon::createFromTimeString(json_decode($request->response->getContent())->token_status->activated_at)->addHours(500)->format('Y-m-d H:i:s'), json_decode($request->response->getContent())->token_status->expires_at);
     }
 
     /**
