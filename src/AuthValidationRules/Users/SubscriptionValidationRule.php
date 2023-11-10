@@ -1,5 +1,4 @@
 <?php
-
 namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Volistx\FrameworkKernel\Facades\Messages;
@@ -9,26 +8,34 @@ use Volistx\FrameworkKernel\Facades\Subscriptions;
 
 class SubscriptionValidationRule extends ValidationRuleBase
 {
+    /**
+     * Validates the user's subscription status.
+     *
+     * @return bool|array Returns true if the user has an active subscription, otherwise returns an array with error message and code.
+     */
     public function Validate(): bool|array
     {
-        $user_id = PersonalTokens::getToken()->user_id;
+        $userId = PersonalTokens::getToken()->user_id;
 
-        $active_subscription = Subscriptions::ProcessUserActiveSubscriptionsStatus($user_id);
-        if ($active_subscription) {
-            Subscriptions::setSubscription($active_subscription);
-            Plans::setPlan($active_subscription->plan);
+        // Process the user's active subscriptions status
+        $activeSubscription = Subscriptions::ProcessUserActiveSubscriptionsStatus($userId);
 
+        if ($activeSubscription) {
+            Subscriptions::setSubscription($activeSubscription);
+            Plans::setPlan($activeSubscription->plan);
             return true;
         }
 
-        $inactive_subscription = Subscriptions::ProcessUserInactiveSubscriptionsStatus($user_id);
-        if ($inactive_subscription) {
-            Subscriptions::setSubscription($inactive_subscription);
-            Plans::setPlan($inactive_subscription->plan);
+        // Process the user's inactive subscriptions status
+        $inactiveSubscription = Subscriptions::ProcessUserInactiveSubscriptionsStatus($userId);
 
+        if ($inactiveSubscription) {
+            Subscriptions::setSubscription($inactiveSubscription);
+            Plans::setPlan($inactiveSubscription->plan);
             return true;
         }
 
+        // If the user does not have an active or inactive subscription, deny access
         return [
             'message' => Messages::E403(trans('volistx::subscription.expired')),
             'code'    => 403,
