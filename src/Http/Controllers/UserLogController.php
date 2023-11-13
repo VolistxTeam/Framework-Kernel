@@ -20,22 +20,29 @@ class UserLogController extends Controller
         $this->userLoggingService = $userLoggingService;
     }
 
-    public function GetUserLog(Request $request, $log_id): JsonResponse
+    /**
+     * Get a user log.
+     *
+     * @param  Request  $request
+     * @param  string  $logId
+     * @return JsonResponse
+     */
+    public function getUserLog(Request $request, string $logId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
-                'log_id' => $log_id,
+            $validator = $this->getModuleValidation($this->module)->generateGetValidation([
+                'log_id' => $logId,
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $log = $this->userLoggingService->GetLog($log_id);
+            $log = $this->userLoggingService->getLog($logId);
 
             if (!$log) {
                 return response()->json(Messages::E404(), 404);
@@ -47,7 +54,13 @@ class UserLogController extends Controller
         }
     }
 
-    public function GetUserLogs(Request $request): JsonResponse
+    /**
+     * Get all user logs.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function getUserLogs(Request $request): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view-all')) {
@@ -58,7 +71,7 @@ class UserLogController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
+            $validator = $this->getModuleValidation($this->module)->generateGetAllValidation([
                 'page'  => $page,
                 'limit' => $limit,
             ]);
@@ -67,7 +80,7 @@ class UserLogController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $logs = $this->userLoggingService->GetLogs($search, $page, $limit);
+            $logs = $this->userLoggingService->getLogs($search, $page, $limit);
 
             if (!$logs) {
                 return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);

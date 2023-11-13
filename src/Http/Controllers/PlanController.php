@@ -21,6 +21,13 @@ class PlanController extends Controller
         $this->planRepository = $planRepository;
     }
 
+    /**
+     * Create a new plan.
+     *
+     * @param Request $request The HTTP request
+     *
+     * @return JsonResponse The JSON response
+     */
     public function CreatePlan(Request $request): JsonResponse
     {
         try {
@@ -28,7 +35,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation($request->all());
+            $validator = $this->getModuleValidation($this->module)->generateCreateValidation($request->all());
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
@@ -42,22 +49,30 @@ class PlanController extends Controller
         }
     }
 
-    public function UpdatePlan(Request $request, $plan_id): JsonResponse
+    /**
+     * Update a plan.
+     *
+     * @param Request $request The HTTP request
+     * @param string $planId The plan ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function UpdatePlan(Request $request, string $planId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'update')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
-                'plan_id' => $plan_id,
+            $validator = $this->getModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
+                'plan_id' => $planId,
             ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $updatedPlan = $this->planRepository->Update($plan_id, $request->all());
+            $updatedPlan = $this->planRepository->Update($planId, $request->all());
 
             if (!$updatedPlan) {
                 return response()->json(Messages::E404(), 404);
@@ -69,25 +84,35 @@ class PlanController extends Controller
         }
     }
 
-    public function DeletePlan(Request $request, $plan_id): JsonResponse
+    /**
+     * Delete a plan.
+     *
+     * @param Request $request The HTTP request
+     * @param string $planId The plan ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function DeletePlan(Request $request, string $planId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation([
-                'plan_id' => $plan_id,
+            $validator = $this->getModuleValidation($this->module)->generateDeleteValidation([
+                'plan_id' => $planId,
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $result = $this->planRepository->Delete($plan_id);
+            $result = $this->planRepository->Delete($planId);
+
             if ($result === null) {
                 return response()->json(Messages::E404(), 404);
             }
+
             if ($result === false) {
                 return response()->json(Messages::E409(), 409);
             }
@@ -98,22 +123,30 @@ class PlanController extends Controller
         }
     }
 
-    public function GetPlan(Request $request, $plan_id): JsonResponse
+    /**
+     * Get a plan.
+     *
+     * @param Request $request The HTTP request
+     * @param string $planId The plan ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function GetPlan(Request $request, string $planId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
-                'plan_id' => $plan_id,
+            $validator = $this->getModuleValidation($this->module)->generateGetValidation([
+                'plan_id' => $planId,
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $plan = $this->planRepository->Find($plan_id);
+            $plan = $this->planRepository->Find($planId);
 
             if (!$plan) {
                 return response()->json(Messages::E404(), 404);
@@ -125,6 +158,13 @@ class PlanController extends Controller
         }
     }
 
+    /**
+     * Get all plans.
+     *
+     * @param Request $request The HTTP request
+     *
+     * @return JsonResponse The JSON response
+     */
     public function GetPlans(Request $request): JsonResponse
     {
         try {
@@ -136,7 +176,7 @@ class PlanController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
+            $validator = $this->getModuleValidation($this->module)->generateGetAllValidation([
                 'page'  => $page,
                 'limit' => $limit,
             ]);
@@ -152,6 +192,7 @@ class PlanController extends Controller
             }
 
             $items = [];
+
             foreach ($plans->items() as $item) {
                 $items[] = PlanDTO::fromModel($item)->GetDTO();
             }

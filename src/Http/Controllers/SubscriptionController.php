@@ -1,5 +1,4 @@
 <?php
-
 namespace Volistx\FrameworkKernel\Http\Controllers;
 
 use Exception;
@@ -26,90 +25,109 @@ class SubscriptionController extends Controller
         $this->loggingService = $loggingService;
     }
 
-    public function CreateSubscription(Request $request, $user_id): JsonResponse
+    /**
+     * Create a new subscription.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @return JsonResponse
+     */
+    public function createSubscription(Request $request, string $userId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'create')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
-                'user_id' => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
+                'user_id' => $userId,
             ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $status = Subscriptions::ProcessUserActiveSubscriptionsStatus($user_id)
-            || Subscriptions::ProcessUserInactiveSubscriptionsStatus($user_id)
+            $status = Subscriptions::processUserActiveSubscriptionsStatus($userId) || Subscriptions::processUserInactiveSubscriptionsStatus($userId)
                 ? SubscriptionStatus::INACTIVE : SubscriptionStatus::ACTIVE;
 
-            $newSubscription = $this->subscriptionRepository->Create([
-                'user_id'      => $user_id,
+            $newSubscription = $this->subscriptionRepository->create([
+                'user_id'      => $userId,
                 'plan_id'      => $request->input('plan_id'),
                 'activated_at' => $request->input('activated_at'),
                 'expires_at'   => $request->input('expires_at'),
                 'status'       => $status,
             ]);
 
-            return response()->json(SubscriptionDTO::fromModel($newSubscription)->GetDTO(), 201);
+            return response()->json(SubscriptionDTO::fromModel($newSubscription)->getDTO(), 201);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
     }
 
-    //This will create a new subscription while overriding the requested inputs. and then
-    //Set the previous subscription status to MUTATED aka no longer in use
-    //USE WITH CAUTION, IT CAN PUT THE SYSTEM IN INVALID STATE.
-    public function MutateSubscription(Request $request, $user_id, $subscription_id): JsonResponse
+    /**
+     * Mutate a subscription by creating a new one and setting the previous subscription status to MUTATED.
+     * USE WITH CAUTION, as it can put the system in an invalid state.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @param  string  $subscriptionId
+     * @return JsonResponse
+     */
+    public function mutateSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'mutate')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
-                'user_id'         => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
+                'subscription_id' => $subscriptionId,
+                'user_id'         => $userId,
             ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $mutated_sub = $this->subscriptionRepository->Clone($user_id, $subscription_id, $request->all());
+            $mutatedSub = $this->subscriptionRepository->clone($userId, $subscriptionId, $request->all());
 
-            //if new sub created successfuly, set the old one status to INACTIVE so its not used
-            if ($mutated_sub) {
-                $this->subscriptionRepository->Update($user_id, $subscription_id, [
+            if ($mutatedSub) {
+                $this->subscriptionRepository->update($userId, $subscriptionId, [
                     'status' => SubscriptionStatus::DEACTIVATED,
                 ]);
             }
 
-            return response()->json(SubscriptionDTO::fromModel($mutated_sub)->GetDTO());
+            return response()->json(SubscriptionDTO::fromModel($mutatedSub)->getDTO());
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
     }
 
-    public function DeleteSubscription(Request $request, $user_id, $subscription_id): JsonResponse
+    /**
+     * Delete a subscription.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @param  string  $subscriptionId
+     * @return JsonResponse
+     */
+    public function deleteSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation(array_merge($request->all(), [
-                'subscription_id' => $subscription_id,
-                'user_id'         => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateDeleteValidation(array_merge($request->all(), [
+                'subscription_id' => $subscriptionId,
+                'user_id'         => $userId,
             ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $result = $this->subscriptionRepository->Delete($user_id, $subscription_id);
+            $result = $this->subscriptionRepository->delete($userId, $subscriptionId);
 
             if (!$result) {
                 return response()->json(Messages::E404(), 404);
@@ -121,102 +139,133 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function CancelSubscription(Request $request, $user_id, $subscription_id): JsonResponse
+    /**
+     * Cancel a subscription.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @param  string  $subscriptionId
+     * @return JsonResponse
+     */
+    public function cancelSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
         if (!Permissions::check(AccessTokens::getToken(), $this->module, 'cancel')) {
             return response()->json(Messages::E401(), 401);
         }
 
-        $cancels_at = $request->input('cancels_at');
+        $cancelsAt = $request->input('cancels_at');
 
-        $validator = $this->GetModuleValidation($this->module)->generateCancelValidation(array_merge($request->all(), [
-            'user_id'         => $user_id,
-            'subscription_id' => $subscription_id,
-            'cancels_at'      => $cancels_at,
+        $validator = $this->getModuleValidation($this->module)->generateCancelValidation(array_merge($request->all(), [
+            'user_id'         => $userId,
+            'subscription_id' => $subscriptionId,
+            'cancels_at'      => $cancelsAt,
         ]));
 
         if ($validator->fails()) {
             return response()->json(Messages::E400($validator->errors()->first()), 400);
         }
 
-        $subscription = $this->subscriptionRepository->Find($user_id, $subscription_id);
+        $subscription = $this->subscriptionRepository->find($userId, $subscriptionId);
 
         if ($subscription->status !== SubscriptionStatus::ACTIVE && $subscription->status !== SubscriptionStatus::INACTIVE) {
             return response()->json(Messages::E400(trans('volistx::subscriptions.can_not_cancel_subscription')), 400);
         }
 
-        $updatedSub = $this->subscriptionRepository->Update(
-            $user_id,
-            $subscription_id,
+        $updatedSub = $this->subscriptionRepository->update(
+            $userId,
+            $subscriptionId,
             [
-                'cancels_at' => $cancels_at,
+                'cancels_at' => $cancelsAt,
             ]
         );
 
-        return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
+        return response()->json(SubscriptionDTO::fromModel($updatedSub)->getDTO());
     }
 
-    public function UncancelSubscription(Request $request, $user_id, $subscription_id): JsonResponse
+    /**
+     * Uncancel a subscription.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @param  string  $subscriptionId
+     * @return JsonResponse
+     */
+    public function uncancelSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
         if (!Permissions::check(AccessTokens::getToken(), $this->module, 'uncancel')) {
             return response()->json(Messages::E401(), 401);
         }
 
-        $validator = $this->GetModuleValidation($this->module)->generateUncancelValidation([
-            'user_id'         => $user_id,
-            'subscription_id' => $subscription_id,
+        $validator = $this->getModuleValidation($this->module)->generateUncancelValidation([
+            'user_id'         => $userId,
+            'subscription_id' => $subscriptionId,
         ]);
 
         if ($validator->fails()) {
             return response()->json(Messages::E400($validator->errors()->first()), 400);
         }
 
-        $subscription = $this->subscriptionRepository->Find($user_id, $subscription_id);
+        $subscription = $this->subscriptionRepository->find($userId, $subscriptionId);
 
         if (($subscription->status !== SubscriptionStatus::ACTIVE && $subscription->status !== SubscriptionStatus::INACTIVE) || empty($subscription->cancels_at)) {
             return response()->json(Messages::E400(trans('volistx::subscription.can_not_uncancel')), 400);
         }
 
-        $updatedSub = $this->subscriptionRepository->Update(
-            $user_id,
-            $subscription_id,
+        $updatedSub = $this->subscriptionRepository->update(
+            $userId,
+            $subscriptionId,
             [
                 'cancels_at' => null,
             ]
         );
 
-        return response()->json(SubscriptionDTO::fromModel($updatedSub)->GetDTO());
+        return response()->json(SubscriptionDTO::fromModel($updatedSub)->getDTO());
     }
 
-    public function GetSubscription(Request $request, $user_id, $subscription_id): JsonResponse
+    /**
+     * Get a subscription.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @param  string  $subscriptionId
+     * @return JsonResponse
+     */
+    public function getSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
-                'user_id'         => $user_id,
-                'subscription_id' => $subscription_id,
+            $validator = $this->getModuleValidation($this->module)->generateGetValidation([
+                'user_id'         => $userId,
+                'subscription_id' => $subscriptionId,
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $subscription = $this->subscriptionRepository->Find($user_id, $subscription_id);
+            $subscription = $this->subscriptionRepository->find($userId, $subscriptionId);
 
             if (!$subscription) {
                 return response()->json(Messages::E404(), 404);
             }
 
-            return response()->json(SubscriptionDTO::fromModel($subscription)->GetDTO());
+            return response()->json(SubscriptionDTO::fromModel($subscription)->getDTO());
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
     }
 
-    public function GetSubscriptions(Request $request, $user_id): JsonResponse
+    /**
+     * Get all subscriptions of a user.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @return JsonResponse
+     */
+    public function getSubscriptions(Request $request, string $userId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view-all')) {
@@ -227,8 +276,8 @@ class SubscriptionController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
-                'user_id' => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateGetAllValidation([
+                'user_id' => $userId,
                 'page'    => $page,
                 'limit'   => $limit,
             ]);
@@ -237,7 +286,7 @@ class SubscriptionController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $subs = $this->subscriptionRepository->FindAll($user_id, $search, $page, $limit);
+            $subs = $this->subscriptionRepository->findAll($userId, $search, $page, $limit);
 
             if (!$subs) {
                 return response()->json(Messages::E400(trans('invalid_search_column')), 400);
@@ -245,7 +294,7 @@ class SubscriptionController extends Controller
 
             $items = [];
             foreach ($subs->items() as $item) {
-                $items[] = SubscriptionDTO::fromModel($item)->GetDTO();
+                $items[] = SubscriptionDTO::fromModel($item)->getDTO();
             }
 
             return response()->json([
@@ -261,7 +310,15 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function GetSubscriptionLogs(Request $request, $user_id, $subscription_id): JsonResponse
+    /**
+     * Get the logs of a subscription.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @param  string  $subscriptionId
+     * @return JsonResponse
+     */
+    public function getSubscriptionLogs(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'logs')) {
@@ -272,9 +329,9 @@ class SubscriptionController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetLogsValidation([
-                'subscription_id' => $subscription_id,
-                'user_id'         => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateGetLogsValidation([
+                'subscription_id' => $subscriptionId,
+                'user_id'         => $userId,
                 'page'            => $page,
                 'limit'           => $limit,
             ]);
@@ -283,7 +340,7 @@ class SubscriptionController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $logs = $this->loggingService->GetSubscriptionLogs($user_id, $subscription_id, $search, $page, $limit);
+            $logs = $this->loggingService->getSubscriptionLogs($userId, $subscriptionId, $search, $page, $limit);
 
             if ($logs === null) {
                 return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);
@@ -295,23 +352,31 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function GetSubscriptionUsages(Request $request, $user_id, $subscription_id): JsonResponse
+    /**
+     * Get the usages of a subscription.
+     *
+     * @param  Request  $request
+     * @param  string  $userId
+     * @param  string  $subscriptionId
+     * @return JsonResponse
+     */
+    public function getSubscriptionUsages(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'stats')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetUsageValidation([
-                'user_id'         => $user_id,
-                'subscription_id' => $subscription_id,
+            $validator = $this->getModuleValidation($this->module)->generateGetUsageValidation([
+                'user_id'         => $userId,
+                'subscription_id' => $subscriptionId,
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $usages = $this->loggingService->GetSubscriptionUsages($user_id, $subscription_id);
+            $usages = $this->loggingService->getSubscriptionUsages($userId, $subscriptionId);
 
             if (!$usages) {
                 return response()->json(Messages::E500(), 500);

@@ -19,21 +19,34 @@ class PersonalTokenController extends Controller
 {
     private PersonalTokenRepository $personalTokenRepository;
 
+    /**
+     * PersonalTokenController constructor.
+     *
+     * @param PersonalTokenRepository $personalTokenRepository The personal token repository
+     */
     public function __construct(PersonalTokenRepository $personalTokenRepository)
     {
         $this->module = 'personal-tokens';
         $this->personalTokenRepository = $personalTokenRepository;
     }
 
-    public function CreatePersonalToken(Request $request, $user_id): JsonResponse
+    /**
+     * Create a personal token.
+     *
+     * @param Request $request The HTTP request
+     * @param string $userId The user ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function CreatePersonalToken(Request $request, string $userId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'create')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
-                'user_id' => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
+                'user_id' => $userId,
             ]));
 
             if ($validator->fails()) {
@@ -41,23 +54,22 @@ class PersonalTokenController extends Controller
             }
 
             $saltedKey = Keys::randomSaltedKey();
-
             $newPersonalToken = $this->personalTokenRepository->Create([
-                'user_id'         => $user_id,
-                'name'            => $request->input('name') ?? '',
-                'key'             => $saltedKey['key'],
-                'salt'            => $saltedKey['salt'],
+                'user_id' => $userId,
+                'name' => $request->input('name') ?? '',
+                'key' => $saltedKey['key'],
+                'salt' => $saltedKey['salt'],
                 'rate_limit_mode' => $request->input('rate_limit_mode') ?? RateLimitMode::SUBSCRIPTION,
-                'permissions'     => $request->input('permissions') ?? [],
-                'ip_rule'         => $request->input('ip_rule') ?? AccessRule::NONE,
-                'ip_range'        => $request->input('ip_range') ?? [],
-                'country_rule'    => $request->input('country_rule') ?? AccessRule::NONE,
-                'country_range'   => $request->input('country_range') ?? [],
-                'activated_at'    => Carbon::now(),
-                'expires_at'      => $request->input('expires_at'),
-                'hidden'          => false,
+                'permissions' => $request->input('permissions') ?? [],
+                'ip_rule' => $request->input('ip_rule') ?? AccessRule::NONE,
+                'ip_range' => $request->input('ip_range') ?? [],
+                'country_rule' => $request->input('country_rule') ?? AccessRule::NONE,
+                'country_range' => $request->input('country_range') ?? [],
+                'activated_at' => Carbon::now(),
+                'expires_at' => $request->input('expires_at'),
+                'hidden' => false,
                 'disable_logging' => $request->input('disable_logging') ?? false,
-                'hmac_token'      => $request->input('hmac_token') ?? Keys::randomKey(32),
+                'hmac_token' => $request->input('hmac_token') ?? Keys::randomKey(32),
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
@@ -66,23 +78,33 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function UpdatePersonalToken(Request $request, $user_id, $token_id): JsonResponse
+    /**
+     * Update a personal token.
+     *
+     * @param Request $request The HTTP request
+     * @param string $userId The user ID
+     * @param string $tokenId The token ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function UpdatePersonalToken(Request $request, string $userId, string $tokenId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'update')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
-                'token_id'        => $token_id,
-                'user_id'         => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
+                'token_id' => $tokenId,
+                'user_id' => $userId,
             ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $updatedToken = $this->personalTokenRepository->Update($user_id, $token_id, $request->all());
+            $updatedToken = $this->personalTokenRepository->Update($userId, $tokenId, $request->all());
+
             if (!$updatedToken) {
                 return response()->json(Messages::E404(), 404);
             }
@@ -93,16 +115,25 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function ResetPersonalToken(Request $request, $user_id, $token_id): JsonResponse
+    /**
+     * Reset a personal token.
+     *
+     * @param Request $request The HTTP request
+     * @param string $userId The user ID
+     * @param string $tokenId The token ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function ResetPersonalToken(Request $request, string $userId, string $tokenId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'reset')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateResetValidation(array_merge($request->all(), [
-                'token_id'        => $token_id,
-                'user_id'         => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateResetValidation(array_merge($request->all(), [
+                'token_id' => $tokenId,
+                'user_id' => $userId,
             ]));
 
             if ($validator->fails()) {
@@ -110,12 +141,7 @@ class PersonalTokenController extends Controller
             }
 
             $saltedKey = Keys::randomSaltedKey();
-
-            $resetToken = $this->personalTokenRepository->Reset(
-                $user_id,
-                $token_id,
-                $saltedKey
-            );
+            $resetToken = $this->personalTokenRepository->Reset($userId, $tokenId, $saltedKey);
 
             if (!$resetToken) {
                 return response()->json(Messages::E404(), 404);
@@ -127,23 +153,33 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function DeletePersonalToken(Request $request, $user_id, $token_id): JsonResponse
+    /**
+     * Delete a personal token.
+     *
+     * @param Request $request The HTTP request
+     * @param string $userId The user ID
+     * @param string $tokenId The token ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function DeletePersonalToken(Request $request, string $userId, string $tokenId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation(array_merge($request->all(), [
-                'token_id'        => $token_id,
-                'user_id'         => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateDeleteValidation(array_merge($request->all(), [
+                'token_id' => $tokenId,
+                'user_id' => $userId,
             ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $result = $this->personalTokenRepository->Delete($user_id, $token_id);
+            $result = $this->personalTokenRepository->Delete($userId, $tokenId);
+
             if (!$result) {
                 return response()->json(Messages::E404(), 404);
             }
@@ -154,23 +190,32 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function GetPersonalToken(Request $request, $user_id, $token_id): JsonResponse
+    /**
+     * Get a personal token.
+     *
+     * @param Request $request The HTTP request
+     * @param string $userId The user ID
+     * @param string $tokenId The token ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function GetPersonalToken(Request $request, string $userId, string $tokenId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetValidation(array_merge($request->all(), [
-                'token_id'        => $token_id,
-                'user_id'         => $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateGetValidation(array_merge($request->all(), [
+                'token_id' => $tokenId,
+                'user_id' => $userId,
             ]));
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $token = $this->personalTokenRepository->Find($user_id, $token_id);
+            $token = $this->personalTokenRepository->Find($userId, $tokenId);
 
             if (!$token) {
                 return response()->json(Messages::E404(), 404);
@@ -182,6 +227,13 @@ class PersonalTokenController extends Controller
         }
     }
 
+    /**
+     * Get all personal tokens.
+     *
+     * @param Request $request The HTTP request
+     *
+     * @return JsonResponse The JSON response
+     */
     public function GetPersonalTokens(Request $request): JsonResponse
     {
         try {
@@ -193,8 +245,8 @@ class PersonalTokenController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
-                'page'  => $page,
+            $validator = $this->getModuleValidation($this->module)->generateGetAllValidation([
+                'page' => $page,
                 'limit' => $limit,
             ]);
 
@@ -209,6 +261,7 @@ class PersonalTokenController extends Controller
             }
 
             $userTokens = [];
+
             foreach ($tokens->items() as $item) {
                 $userTokens[] = PersonalTokenDTO::fromModel($item)->GetDTO();
             }
@@ -216,8 +269,8 @@ class PersonalTokenController extends Controller
             return response()->json([
                 'pagination' => [
                     'per_page' => $tokens->perPage(),
-                    'current'  => $tokens->currentPage(),
-                    'total'    => $tokens->lastPage(),
+                    'current' => $tokens->currentPage(),
+                    'total' => $tokens->lastPage(),
                 ],
                 'items' => $userTokens,
             ]);
@@ -226,41 +279,47 @@ class PersonalTokenController extends Controller
         }
     }
 
-    public function Sync(Request $request, $user_id)
+    /**
+     * Sync personal tokens.
+     *
+     * @param Request $request The HTTP request
+     * @param string $userId The user ID
+     *
+     * @return JsonResponse The JSON response
+     */
+    public function Sync(Request $request, string $userId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'sync')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateSyncValidation([
-                'user_id'=> $user_id,
+            $validator = $this->getModuleValidation($this->module)->generateSyncValidation([
+                'user_id' => $userId,
             ]);
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $this->personalTokenRepository->DeleteHiddenTokens($user_id);
-
+            $this->personalTokenRepository->DeleteHiddenTokens($userId);
             $saltedKey = Keys::randomSaltedKey();
-
             $newPersonalToken = $this->personalTokenRepository->Create([
-                'user_id'         => $user_id,
-                'key'             => $saltedKey['key'],
-                'salt'            => $saltedKey['salt'],
-                'permissions'     => ['*'],
-                'ip_rule'         => AccessRule::NONE,
-                'ip_range'        => [],
-                'country_rule'    => AccessRule::NONE,
-                'country_range'   => [],
-                'activated_at'    => Carbon::now(),
-                'expires_at'      => null,
-                'duration'        => null,
-                'hidden'          => true,
+                'user_id' => $userId,
+                'key' => $saltedKey['key'],
+                'salt' => $saltedKey['salt'],
+                'permissions' => ['*'],
+                'ip_rule' => AccessRule::NONE,
+                'ip_range' => [],
+                'country_rule' => AccessRule::NONE,
+                'country_range' => [],
+                'activated_at' => Carbon::now(),
+                'expires_at' => null,
+                'duration' => null,
+                'hidden' => true,
                 'disable_logging' => true,
                 'rate_limit_mode' => RateLimitMode::SUBSCRIPTION,
-                'hmac_token'      => Keys::randomKey(32),
+                'hmac_token' => Keys::randomKey(32),
             ]);
 
             return response()->json(PersonalTokenDTO::fromModel($newPersonalToken)->GetDTO($saltedKey['key']), 201);
