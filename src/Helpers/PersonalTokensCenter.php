@@ -4,14 +4,26 @@ namespace Volistx\FrameworkKernel\Helpers;
 
 class PersonalTokensCenter
 {
-    private $token;
+    private mixed $token;
 
-    public function setToken($token)
+    /**
+     * Set the personal token.
+     *
+     * @param mixed $token The personal token
+     *
+     * @return void
+     */
+    public function setToken(mixed $token): void
     {
         $this->token = $token;
     }
 
-    public function getToken()
+    /**
+     * Get the personal token.
+     *
+     * @return mixed The personal token
+     */
+    public function getToken(): mixed
     {
         return $this->token;
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Facades;
 
 use Illuminate\Support\Facades\Facade;
@@ -6,7 +7,9 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Facade for accessing the Permissions service.
  *
- * @method static check($getToken, string $module, string $operation) Check if the user has permission for a specific module and string.
+ * @method static bool check(mixed $key, string $module, string $operation) Checks if a key has the required permissions for a module and operation.
+ * @method static array getAdminPermissions() Get the admin permissions.
+ * @method static array getServicesPermissions() Get the services permissions.
  */
 class Permissions extends Facade
 {

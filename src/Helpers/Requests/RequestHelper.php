@@ -10,12 +10,24 @@ class RequestHelper
 {
     private Client $client;
 
+    /**
+     * RequestHelper constructor.
+     */
     public function __construct()
     {
         $this->client = new Client();
     }
 
-    public function Get($url, $token, array $query = []): ProcessedResponse
+    /**
+     * Sends a GET request.
+     *
+     * @param string $url    The URL to send the request to
+     * @param string $token  The authorization token
+     * @param array  $query  The query parameters
+     *
+     * @return ProcessedResponse The processed response
+     */
+    public function get(string $url, string $token, array $query = []): ProcessedResponse
     {
         try {
             $response = $this->client->request('GET', $url, [
@@ -24,14 +36,22 @@ class RequestHelper
                 ],
                 'query' => $query,
             ]);
-
             return new ProcessedResponse($response);
         } catch (ClientException|GuzzleException $ex) {
             return new ProcessedResponse($ex);
         }
     }
 
-    public function Post($url, $token, array $query = []): ProcessedResponse
+    /**
+     * Sends a POST request.
+     *
+     * @param string $url    The URL to send the request to
+     * @param string $token  The authorization token
+     * @param array  $query  The request body
+     *
+     * @return ProcessedResponse The processed response
+     */
+    public function post(string $url, string $token, array $query = []): ProcessedResponse
     {
         try {
             $response = $this->client->request('POST', $url, [
@@ -40,14 +60,22 @@ class RequestHelper
                 ],
                 'json' => $query,
             ]);
-
             return new ProcessedResponse($response);
         } catch (ClientException|GuzzleException $ex) {
             return new ProcessedResponse($ex);
         }
     }
 
-    public function Put($url, $token, array $query = []): ProcessedResponse
+    /**
+     * Sends a PUT request.
+     *
+     * @param string $url    The URL to send the request to
+     * @param string $token  The authorization token
+     * @param array  $query  The request body
+     *
+     * @return ProcessedResponse The processed response
+     */
+    public function put(string $url, string $token, array $query = []): ProcessedResponse
     {
         try {
             $response = $this->client->request('PUT', $url, [
@@ -56,14 +84,22 @@ class RequestHelper
                 ],
                 'json' => $query,
             ]);
-
             return new ProcessedResponse($response);
         } catch (ClientException|GuzzleException $ex) {
             return new ProcessedResponse($ex);
         }
     }
 
-    public function Patch($url, $token, array $query = []): ProcessedResponse
+    /**
+     * Sends a PATCH request.
+     *
+     * @param string $url    The URL to send the request to
+     * @param string $token  The authorization token
+     * @param array  $query  The request body
+     *
+     * @return ProcessedResponse The processed response
+     */
+    public function patch(string $url, string $token, array $query = []): ProcessedResponse
     {
         try {
             $response = $this->client->request('PATCH', $url, [
@@ -72,14 +108,21 @@ class RequestHelper
                 ],
                 'json' => $query,
             ]);
-
             return new ProcessedResponse($response);
         } catch (ClientException|GuzzleException $ex) {
             return new ProcessedResponse($ex);
         }
     }
 
-    public function Delete($url, $token): ProcessedResponse
+    /**
+     * Sends a DELETE request.
+     *
+     * @param string $url    The URL to send the request to
+     * @param string $token  The authorization token
+     *
+     * @return ProcessedResponse The processed response
+     */
+    public function delete(string $url, string $token): ProcessedResponse
     {
         try {
             $response = $this->client->request('DELETE', $url, [
@@ -87,7 +130,6 @@ class RequestHelper
                     'Authorization' => "Bearer {$token}",
                 ],
             ]);
-
             return new ProcessedResponse($response);
         } catch (ClientException|GuzzleException $ex) {
             return new ProcessedResponse($ex);
