@@ -14,15 +14,15 @@ class SubscriptionExpired implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public string $subscription_id;
-    public int $attempt_number;
-    public int $user_id;
+    public string $subscriptionId;
+    public int $attemptNumber;
+    public string $userId;
 
-    public function __construct(string $subscription_id, int $user_id, int $attempt_number = 1)
+    public function __construct(string $subscriptionId, string $userId, int $attemptNumber = 1)
     {
-        $this->subscription_id = $subscription_id;
-        $this->user_id = $user_id;
-        $this->attempt_number = $attempt_number;
+        $this->subscriptionId = $subscriptionId;
+        $this->userId = $userId;
+        $this->attemptNumber = $attemptNumber;
     }
 
     public function handle()
@@ -30,20 +30,20 @@ class SubscriptionExpired implements ShouldQueue
         $url = config('volistx.webhooks.subscription.expired.url');
         $token = config('volistx.webhooks.subscription.expired.token');
 
-        if ($this->attempt_number > 3 || !$url || !$token) {
+        if ($this->attemptNumber > 3 || !$url || !$token) {
             return;
         }
 
         $response = Requests::Post($url, $token, [
-            'type'    => 'subscription_expired',
+            'type' => 'subscription_expired',
             'payload' => [
-                'subscription_id' => $this->subscription_id,
-                'user_id'         => $this->user_id,
+                'subscription_id' => $this->subscriptionId,
+                'user_id' => $this->userId,
             ],
         ]);
 
         if ($response->isError) {
-            dispatch(new SubscriptionExpired($this->subscription_id, $this->user_id, $this->attempt_number + 1));
+            dispatch(new SubscriptionExpired($this->subscriptionId, $this->userId, $this->attemptNumber + 1));
         }
     }
 }
