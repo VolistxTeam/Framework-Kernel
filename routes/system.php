@@ -30,38 +30,38 @@ Route::prefix('sys-bin')->group(function () {
     Route::prefix('admin')->middleware('auth.admin')->group(function () {
         Route::prefix('users')->group(function () {
             Route::middleware('filter.json')->group(function () {
-                Route::patch('/{user_id}', [UserController::class, 'UpdateUser']);
+                Route::patch('/{userId}', [UserController::class, 'UpdateUser']);
             });
 
             Route::post('/', [UserController::class, 'CreateUser']);
-            Route::delete('/{user_id}', [UserController::class, 'DeleteUser']);
-            Route::get('/{user_id}', [UserController::class, 'GetUser']);
+            Route::delete('/{userId}', [UserController::class, 'DeleteUser']);
+            Route::get('/{userId}', [UserController::class, 'GetUser']);
 
-            Route::prefix('/{user_id}/')->group(function () {
+            Route::prefix('/{userId}/')->group(function () {
                 Route::prefix('subscriptions')->group(function () {
                     Route::middleware('filter.json')->group(function () {
                         Route::post('/', [SubscriptionController::class, 'CreateSubscription']);
-                        Route::post('/{subscription_id}', [SubscriptionController::class, 'MutateSubscription']);
-                        Route::patch('/{subscription_id}/cancel', [SubscriptionController::class, 'CancelSubscription']);
+                        Route::post('/{subscriptionId}', [SubscriptionController::class, 'MutateSubscription']);
+                        Route::patch('/{subscriptionId}/cancel', [SubscriptionController::class, 'CancelSubscription']);
                     });
 
-                    Route::patch('/{subscription_id}/uncancel', [SubscriptionController::class, 'UncancelSubscription']);
-                    Route::delete('/{subscription_id}', [SubscriptionController::class, 'DeleteSubscription']);
+                    Route::patch('/{subscriptionId}/uncancel', [SubscriptionController::class, 'UncancelSubscription']);
+                    Route::delete('/{subscriptionId}', [SubscriptionController::class, 'DeleteSubscription']);
                     Route::get('/', [SubscriptionController::class, 'GetSubscriptions']);
-                    Route::get('/{subscription_id}', [SubscriptionController::class, 'GetSubscription']);
-                    Route::get('/{subscription_id}/logs', [SubscriptionController::class, 'GetSubscriptionLogs']);
-                    Route::get('/{subscription_id}/usages', [SubscriptionController::class, 'GetSubscriptionUsages']);
+                    Route::get('/{subscriptionId}', [SubscriptionController::class, 'GetSubscription']);
+                    Route::get('/{subscriptionId}/logs', [SubscriptionController::class, 'GetSubscriptionLogs']);
+                    Route::get('/{subscriptionId}/usages', [SubscriptionController::class, 'GetSubscriptionUsages']);
                 });
 
                 Route::prefix('personal-tokens')->group(function () {
                     Route::middleware('filter.json')->group(function () {
                         Route::post('/', [PersonalTokenController::class, 'CreatePersonalToken']);
-                        Route::patch('/{token_id}', [PersonalTokenController::class, 'UpdatePersonalToken']);
+                        Route::patch('/{tokenId}', [PersonalTokenController::class, 'UpdatePersonalToken']);
                     });
 
-                    Route::delete('/{token_id}', [PersonalTokenController::class, 'DeletePersonalToken']);
-                    Route::post('/{token_id}/reset', [PersonalTokenController::class, 'ResetPersonalToken']);
-                    Route::get('/{token_id}', [PersonalTokenController::class, 'GetPersonalToken']);
+                    Route::delete('/{tokenId}', [PersonalTokenController::class, 'DeletePersonalToken']);
+                    Route::post('/{tokenId}/reset', [PersonalTokenController::class, 'ResetPersonalToken']);
+                    Route::get('/{tokenId}', [PersonalTokenController::class, 'GetPersonalToken']);
                     Route::get('/', [PersonalTokenController::class, 'GetPersonalTokens']);
                     Route::post('/sync', [PersonalTokenController::class, 'Sync']);
                 });
@@ -71,22 +71,22 @@ Route::prefix('sys-bin')->group(function () {
         Route::prefix('plans')->group(function () {
             Route::middleware('filter.json')->group(function () {
                 Route::post('/', [PlanController::class, 'CreatePlan']);
-                Route::patch('/{plan_id}', [PlanController::class, 'UpdatePlan']);
+                Route::patch('/{planId}', [PlanController::class, 'UpdatePlan']);
             });
 
-            Route::delete('/{plan_id}', [PlanController::class, 'DeletePlan']);
+            Route::delete('/{planId}', [PlanController::class, 'DeletePlan']);
             Route::get('/', [PlanController::class, 'GetPlans']);
-            Route::get('/{plan_id}', [PlanController::class, 'GetPlan']);
+            Route::get('/{planId}', [PlanController::class, 'GetPlan']);
         });
 
         Route::prefix('logs')->group(function () {
             Route::get('/', [AdminLogController::class, 'GetAdminLogs']);
-            Route::get('/{log_id}', [AdminLogController::class, 'GetAdminLog']);
+            Route::get('/{logId}', [AdminLogController::class, 'GetAdminLog']);
         });
 
         Route::prefix('user-logs')->group(function () {
             Route::get('/', [UserLogController::class, 'GetUserLogs']);
-            Route::get('/{log_id}', [UserLogController::class, 'GetUserLog']);
+            Route::get('/{logId}', [UserLogController::class, 'GetUserLog']);
         });
     });
 });
