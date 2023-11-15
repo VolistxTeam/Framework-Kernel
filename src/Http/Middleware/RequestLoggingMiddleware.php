@@ -1,5 +1,4 @@
 <?php
-
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
@@ -14,13 +13,29 @@ use Volistx\FrameworkKernel\Facades\Subscriptions;
 
 class RequestLoggingMiddleware
 {
+    /**
+     * Handle an incoming request.
+     *
+     * @param Request $request
+     * @param Closure $next
+     * @return mixed
+     */
     public function handle(Request $request, Closure $next)
     {
+        // Continue processing the request
         return $next($request);
     }
 
+    /**
+     * Perform actions after the response has been sent.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
     public function terminate(Request $request, Response $response): void
     {
+        // Check if a personal token is present and logging is enabled
         if (PersonalTokens::getToken() && PersonalTokens::getToken()->hidden === false) {
             if (PersonalTokens::getToken()->disable_logging === false) {
                 $inputs = [
@@ -31,9 +46,12 @@ class RequestLoggingMiddleware
                     'subscription_id' => Subscriptions::getSubscription()?->id,
                 ];
 
+                // Dispatch UserRequestCompleted event
                 Event::dispatch(new UserRequestCompleted($inputs));
             }
-        } elseif (AccessTokens::getToken()) {
+        }
+        // If an access token is present, log the admin request
+        elseif (AccessTokens::getToken()) {
             $inputs = [
                 'url'             => $request->fullUrl(),
                 'method'          => $request->method(),
@@ -42,6 +60,7 @@ class RequestLoggingMiddleware
                 'access_token_id' => AccessTokens::getToken()?->id,
             ];
 
+            // Dispatch AdminRequestCompleted event
             Event::dispatch(new AdminRequestCompleted($inputs));
         }
     }
