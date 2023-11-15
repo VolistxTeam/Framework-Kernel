@@ -41,7 +41,7 @@ class IPRateLimitValidationRule extends ValidationRuleBase
             if (!$executed) {
                 return [
                     'message' => Messages::E429(),
-                    'code' => 429,
+                    'code'    => 429,
                 ];
             }
         }

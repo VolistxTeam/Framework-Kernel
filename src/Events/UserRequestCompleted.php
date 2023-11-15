@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;

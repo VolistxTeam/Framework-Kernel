@@ -14,16 +14,17 @@ class AdminLogRepository
      * Create a new admin log.
      *
      * @param array $inputs The input data for creating the admin log.
+     *
      * @return Model|Builder The created admin log model or builder instance.
      */
     public function Create(array $inputs): Model|Builder
     {
         return AdminLog::query()->create([
             'access_token_id' => $inputs['access_token_id'],
-            'url' => $inputs['url'],
-            'ip' => $inputs['ip'],
-            'method' => $inputs['method'],
-            'user_agent' => $inputs['user_agent'],
+            'url'             => $inputs['url'],
+            'ip'              => $inputs['ip'],
+            'method'          => $inputs['method'],
+            'user_agent'      => $inputs['user_agent'],
         ]);
     }
 
@@ -31,6 +32,7 @@ class AdminLogRepository
      * Find an admin log by ID.
      *
      * @param string $logId The ID of the admin log to find.
+     *
      * @return Model|null The found admin log model or null if not found.
      */
     public function Find(string $logId): Model|null
@@ -42,8 +44,9 @@ class AdminLogRepository
      * Find all admin logs with pagination support.
      *
      * @param string $search The search query.
-     * @param int $page The page number.
-     * @param int $limit The number of items per page.
+     * @param int    $page   The page number.
+     * @param int    $limit  The number of items per page.
+     *
      * @return LengthAwarePaginator|null The paginated admin logs or null if search query is invalid.
      */
     public function FindAll(string $search, int $page, int $limit): LengthAwarePaginator|null

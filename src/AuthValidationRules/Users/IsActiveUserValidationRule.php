@@ -20,7 +20,7 @@ class IsActiveUserValidationRule extends ValidationRuleBase
         if ($user->isActive === false) {
             return [
                 'message' => Messages::E403(trans('volistx::user:inactive_user')),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 

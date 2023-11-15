@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Listeners;
+
 namespace Volistx\FrameworkKernel\Listeners;
 
 use Volistx\FrameworkKernel\Events\UserRequestCompleted;
@@ -24,6 +25,7 @@ class UserRequestCompletedListener
      * Handle the UserRequestCompleted event.
      *
      * @param UserRequestCompleted $event The UserRequestCompleted event instance.
+     *
      * @return void
      */
     public function handle(UserRequestCompleted $event)

@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\AuthValidationRules\Admins;
 
 use Volistx\FrameworkKernel\AuthValidationRules\Users\ValidationRuleBase;

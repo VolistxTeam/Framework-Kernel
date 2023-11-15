@@ -2,8 +2,6 @@
 
 namespace Volistx\FrameworkKernel\Services\Interfaces;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-
 interface IUserLoggingService
 {
     /**
@@ -28,8 +26,8 @@ interface IUserLoggingService
      * Get all user log entries with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array|null
      */
@@ -41,8 +39,8 @@ interface IUserLoggingService
      * @param string $userId
      * @param string $subscriptionId
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array
      */

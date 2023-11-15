@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -45,6 +46,7 @@ class AccessKeyDeleteCommand extends Command
         // Check if the access key is provided
         if (empty($token)) {
             $this->error('Please specify your access key to delete.');
+
             return;
         }
 
@@ -54,12 +56,13 @@ class AccessKeyDeleteCommand extends Command
         // Check if the access token exists
         if (!$accessToken) {
             $this->error('The specified access key is invalid.');
+
             return;
         }
 
         // Delete the access token
         $this->accessTokenRepository->Delete($accessToken->id);
 
-        $this->info('Your access key is deleted: ' . $token);
+        $this->info('Your access key is deleted: '.$token);
     }
 }

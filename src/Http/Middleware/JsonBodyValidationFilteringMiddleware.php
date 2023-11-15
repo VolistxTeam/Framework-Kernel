@@ -1,9 +1,11 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Facades\Messages;
+
 use function response;
 
 class JsonBodyValidationFilteringMiddleware
@@ -13,6 +15,7 @@ class JsonBodyValidationFilteringMiddleware
      *
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

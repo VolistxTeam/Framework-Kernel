@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
@@ -26,6 +27,7 @@ class UserAuthMiddleware
      *
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

@@ -25,6 +25,7 @@ class ProcessedResponse
             $this->body = json_decode($response->getResponse()->getBody()->getContents(), true);
             $this->statusCode = $response->getResponse()->getStatusCode();
             $this->isError = $this->statusCode !== 200;
+
             return;
         }
 
@@ -33,6 +34,7 @@ class ProcessedResponse
             $this->body = json_decode($response->getBody()->getContents(), true);
             $this->statusCode = $response->getStatusCode();
             $this->isError = $this->statusCode !== 200;
+
             return;
         }
 
