@@ -11,66 +11,73 @@ use Volistx\FrameworkKernel\Models\Plan;
 
 class PlanRepository
 {
+    /**
+     * Create a new plan.
+     *
+     * @param array $inputs [name, tag, description, data, price, tier, custom]
+     *
+     * @return Model|Builder
+     */
     public function Create(array $inputs): Model|Builder
     {
         return Plan::query()->create([
-            'name'        => $inputs['name'],
-            'tag'         => $inputs['tag'],
+            'name' => $inputs['name'],
+            'tag' => $inputs['tag'],
             'description' => $inputs['description'],
-            'data'        => $inputs['data'],
-            'price'       => $inputs['price'],
-            'tier'        => $inputs['tier'],
-            'custom'      => $inputs['custom'],
-            'is_active'   => true,
+            'data' => $inputs['data'],
+            'price' => $inputs['price'],
+            'tier' => $inputs['tier'],
+            'custom' => $inputs['custom'],
+            'is_active' => true,
         ]);
     }
 
-    public function Update($plan_id, array $inputs): ?object
+    /**
+     * Update an existing plan.
+     *
+     * @param string $planId
+     * @param array $inputs [name, tag, description, data, price, tier, custom, is_active]
+     *
+     * @return object|null
+     */
+    public function Update(string $planId, array $inputs): ?object
     {
-        $plan = $this->Find($plan_id);
+        $plan = $this->Find($planId);
 
         if (!$plan) {
             return null;
         }
 
-        $name = $inputs['name'] ?? null;
-        $tag = $inputs['tag'] ?? null;
-        $description = $inputs['description'] ?? null;
-        $data = $inputs['data'] ?? null;
-        $price = $inputs['price'] ?? null;
-        $tier = $inputs['tier'] ?? null;
-        $custom = $inputs['custom'] ?? null;
-        $is_active = $inputs['is_active'] ?? null;
-
-        if ($name !== null) {
-            $plan->name = $name;
+        if (array_key_exists('name', $inputs)) {
+            $plan->name = $inputs['name'];
         }
 
-        if ($tag !== null) {
-            $plan->tag = $tag;
-        }
-        if ($description !== null) {
-            $plan->description = $description;
+        if (array_key_exists('tag', $inputs)) {
+            $plan->tag = $inputs['tag'];
         }
 
-        if ($data !== null) {
-            $plan->data = $data;
+        if (array_key_exists('description', $inputs)) {
+            $plan->description = $inputs['description'];
         }
 
-        if ($price !== null) {
-            $plan->price = $price;
+        if (array_key_exists('data', $inputs)) {
+            $plan->data = $inputs['data'];
         }
 
-        if ($tier !== null) {
-            $plan->tier = $tier;
+        if (array_key_exists('price', $inputs)) {
+            $plan->price = $inputs['price'];
         }
 
-        if ($custom !== null) {
-            $plan->custom = $custom;
+        if (array_key_exists('tier', $inputs)) {
+            $plan->tier = $inputs['tier'];
         }
 
-        if ($is_active !== null) {
-            $plan->is_active = $is_active;
+        if (array_key_exists('custom', $inputs)) {
+            $plan->custom = $inputs['custom'];
+        }
+
+        if (array_key_exists('is_active', $inputs)) {
+            $plan->is_active = $inputs['is_active'];
         }
 
         $plan->save();
@@ -78,14 +85,28 @@ class PlanRepository
         return $plan;
     }
 
-    public function Find($plan_id): ?object
+    /**
+     * Find a plan by ID.
+     *
+     * @param string $planId
+     *
+     * @return object|null
+     */
+    public function Find(string $planId): ?object
     {
-        return Plan::query()->where('id', $plan_id)->first();
+        return Plan::query()->where('id', $planId)->first();
     }
 
-    public function Delete($plan_id): ?bool
+    /**
+     * Delete a plan by ID.
+     *
+     * @param string $planId
+     *
+     * @return bool|null
+     */
+    public function Delete(string $planId): ?bool
     {
-        $toBeDeletedPlan = $this->Find($plan_id);
+        $toBeDeletedPlan = $this->Find($planId);
 
         if (!$toBeDeletedPlan) {
             return null;
@@ -93,16 +114,24 @@ class PlanRepository
 
         try {
             $toBeDeletedPlan->delete();
-
             return true;
         } catch (Exception $ex) {
             return false;
         }
     }
 
-    public function FindAll($search, int $page, int $limit): LengthAwarePaginator|null
+    /**
+     * Find all plans with pagination support.
+     *
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return LengthAwarePaginator|null
+     */
+    public function FindAll(string $search, int $page, int $limit): ?LengthAwarePaginator
     {
-        //handle empty search
+        // Handle empty search
         if ($search === '') {
             $search = 'id:';
         }
@@ -112,7 +141,6 @@ class PlanRepository
         }
 
         $columns = Schema::getColumnListing('plans');
-
         $values = explode(':', $search, 2);
         $columnName = strtolower(trim($values[0]));
 

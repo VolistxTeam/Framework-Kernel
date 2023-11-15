@@ -12,17 +12,32 @@ use Volistx\FrameworkKernel\Models\User;
 
 class UserRepository
 {
+    /**
+     * Create a new user.
+     *
+     * @param array $inputs [user_id]
+     *
+     * @return Model|Builder
+     */
     public function Create(array $inputs): Model|Builder
     {
         return User::query()->create([
-            'id'        => $inputs['user_id'] ?? Uuid::uuid4(),
+            'id' => $inputs['user_id'] ?? Uuid::uuid4(),
             'is_active' => true,
         ]);
     }
 
-    public function Update($user_id, array $inputs): ?object
+    /**
+     * Update an existing user.
+     *
+     * @param string $userId
+     * @param array $inputs [is_active]
+     *
+     * @return object|null
+     */
+    public function Update(string $userId, array $inputs): ?object
     {
-        $user = $this->Find($user_id);
+        $user = $this->Find($userId);
 
         if (!$user) {
             return null;
@@ -37,14 +52,28 @@ class UserRepository
         return $user;
     }
 
-    public function Find($user_id): ?object
+    /**
+     * Find a user by ID.
+     *
+     * @param string $userId
+     *
+     * @return object|null
+     */
+    public function Find(string $userId): ?object
     {
-        return User::query()->where('id', $user_id)->first();
+        return User::query()->where('id', $userId)->first();
     }
 
-    public function Delete($user_id): ?bool
+    /**
+     * Delete a user by ID.
+     *
+     * @param string $userId
+     *
+     * @return bool|null
+     */
+    public function Delete(string $userId): ?bool
     {
-        $toBeDeletedUser = $this->Find($user_id);
+        $toBeDeletedUser = $this->find($userId);
 
         if (!$toBeDeletedUser) {
             return null;
@@ -52,16 +81,24 @@ class UserRepository
 
         try {
             $toBeDeletedUser->delete();
-
             return true;
         } catch (Exception $ex) {
             return false;
         }
     }
 
-    public function FindAll($search, int $page, int $limit): LengthAwarePaginator|null
+    /**
+     * Find all users with pagination support.
+     *
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return LengthAwarePaginator|null
+     */
+    public function FindAll(string $search, int $page, int $limit): LengthAwarePaginator|null
     {
-        //handle empty search
+        // Handle empty search
         if ($search === '') {
             $search = 'id:';
         }
@@ -71,7 +108,6 @@ class UserRepository
         }
 
         $columns = Schema::getColumnListing('users');
-
         $values = explode(':', $search, 2);
         $columnName = strtolower(trim($values[0]));
 

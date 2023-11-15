@@ -12,42 +12,67 @@ use Volistx\FrameworkKernel\Models\Subscription;
 
 class SubscriptionRepository
 {
+    /**
+     * Create a new subscription.
+     *
+     * @param array $inputs [user_id, plan_id, status, activated_at, expires_at]
+     *
+     * @return Model|Builder
+     */
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id'      => $inputs['user_id'],
-            'plan_id'      => $inputs['plan_id'],
-            'status'       => $inputs['status'],
+            'user_id' => $inputs['user_id'],
+            'plan_id' => $inputs['plan_id'],
+            'status' => $inputs['status'],
             'activated_at' => $inputs['activated_at'] ?? Carbon::now(),
-            'expires_at'   => $inputs['expires_at'],
-            'cancels_at'   => null,
+            'expires_at' => $inputs['expires_at'],
+            'cancels_at' => null,
             'cancelled_at' => null,
         ]);
     }
 
-    public function Clone($user_id, $subscription_id, $inputs): Builder|Model|null
+    /**
+     * Clone an existing subscription.
+     *
+     * @param string $userId
+     * @param string $subscriptionId
+     * @param array $inputs [plan_id, status, activated_at, expires_at, expired_at, cancels_at, cancelled_at]
+     *
+     * @return Builder|Model|null
+     */
+    public function Clone(string $userId, string $subscriptionId, array $inputs): Builder|Model|null
     {
-        $subscription = $this->Find($user_id, $subscription_id);
+        $subscription = $this->Find($userId, $subscriptionId);
 
         if (!$subscription) {
             return null;
         }
 
         return Subscription::query()->create([
-            'user_id'      => $user_id,
-            'plan_id'      => $inputs['plan_id'] ?? $subscription->plan_id,
-            'status'       => $inputs['status'] ?? $subscription->status,
+            'user_id' => $userId,
+            'plan_id' => $inputs['plan_id'] ?? $subscription->plan_id,
+            'status' => $inputs['status'] ?? $subscription->status,
             'activated_at' => $inputs['activated_at'] ?? $subscription->activated_at,
-            'expires_at'   => $inputs['expires_at'] ?? $subscription->expires_at,
-            'expired_at'   => $inputs['expired_at'] ?? $subscription->expired_at,
-            'cancels_at'   => $inputs['cancels_at'] ?? $subscription->cancels_at,
+            'expires_at' => $inputs['expires_at'] ?? $subscription->expires_at,
+            'expired_at' => $inputs['expired_at'] ?? $subscription->expired_at,
+            'cancels_at' => $inputs['cancels_at'] ?? $subscription->cancels_at,
             'cancelled_at' => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
         ]);
     }
 
-    public function Update($user_id, $subscription_id, array $inputs): ?object
+    /**
+     * Update an existing subscription.
+     *
+     * @param string $userId
+     * @param string $subscriptionId
+     * @param array $inputs [status, cancels_at, cancelled_at, expires_at, expired_at]
+     *
+     * @return object|null
+     */
+    public function Update(string $userId, string $subscriptionId, array $inputs): ?object
     {
-        $subscription = $this->Find($user_id, $subscription_id);
+        $subscription = $this->Find($userId, $subscriptionId);
 
         if (!$subscription) {
             return null;
@@ -78,33 +103,64 @@ class SubscriptionRepository
         return $subscription;
     }
 
-    public function Find($user_id, $subscription_id): ?object
+    /**
+     * Find a subscription by user ID and subscription ID.
+     *
+     * @param string $userId
+     * @param string $subscriptionId
+     *
+     * @return object|null
+     */
+    public function Find(string $userId, string $subscriptionId): ?object
     {
         return Subscription::with('plan')
-            ->where('id', $subscription_id)
-            ->where('user_id', $user_id)->first();
+            ->where('id', $subscriptionId)
+            ->where('user_id', $userId)
+            ->first();
     }
 
-    public function FindUserActiveSubscription($user_id): Builder|Model|null
+    /**
+     * Find the active subscription for a user.
+     *
+     * @param string $userId
+     *
+     * @return Builder|Model|null
+     */
+    public function FindUserActiveSubscription(string $userId): Builder|Model|null
     {
         return Subscription::with('plan')
-            ->where('user_id', $user_id)
+            ->where('user_id', $userId)
             ->where('status', SubscriptionStatus::ACTIVE)
             ->first();
     }
 
-    public function FindUserInactiveSubscription($user_id): Builder|Model|null
+    /**
+     * Find the inactive subscription with the earliest activation date for a user.
+     *
+     * @param string $userId
+     *
+     * @return Builder|Model|null
+     */
+    public function FindUserInactiveSubscription(string $userId): Builder|Model|null
     {
         return Subscription::with('plan')
-            ->where('user_id', $user_id)
+            ->where('user_id', $userId)
             ->where('status', SubscriptionStatus::INACTIVE)
             ->orderBy('activated_at', 'ASC')
             ->first();
     }
 
-    public function Delete($user_id, $subscription_id): ?bool
+    /**
+     * Delete a subscription by user ID and subscription ID.
+     *
+     * @param string $userId
+     * @param string $subscriptionId
+     *
+     * @return bool|null
+     */
+    public function Delete(string $userId, string $subscriptionId): ?bool
     {
-        $toBeDeletedSub = $this->Find($user_id, $subscription_id);
+        $toBeDeletedSub = $this->Find($userId, $subscriptionId);
 
         if (!$toBeDeletedSub) {
             return null;
@@ -115,9 +171,19 @@ class SubscriptionRepository
         return true;
     }
 
-    public function FindAll($user_id, $search, $page, $limit): LengthAwarePaginator|null
+    /**
+     * Find all subscriptions for a user with pagination support.
+     *
+     * @param string $userId
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return LengthAwarePaginator|null
+     */
+    public function FindAll(string $userId, string $search, int $page, int $limit): LengthAwarePaginator|null
     {
-        //handle empty search
+        // Handle empty search
         if ($search === '') {
             $search = 'id:';
         }
@@ -127,7 +193,6 @@ class SubscriptionRepository
         }
 
         $columns = Schema::getColumnListing('subscriptions');
-
         $values = explode(':', $search, 2);
         $columnName = strtolower(trim($values[0]));
 
@@ -138,7 +203,7 @@ class SubscriptionRepository
         $searchValue = strtolower(trim($values[1]));
 
         return Subscription::query()
-            ->where('user_id', $user_id)
+            ->where('user_id', $userId)
             ->where($values[0], 'LIKE', "%$searchValue%")
             ->paginate($limit, ['*'], 'page', $page);
     }
