@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Volistx\FrameworkKernel\Facades\Messages;
@@ -23,6 +24,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if ($activeSubscription) {
             Subscriptions::setSubscription($activeSubscription);
             Plans::setPlan($activeSubscription->plan);
+
             return true;
         }
 
@@ -32,6 +34,7 @@ class SubscriptionValidationRule extends ValidationRuleBase
         if ($inactiveSubscription) {
             Subscriptions::setSubscription($inactiveSubscription);
             Plans::setPlan($inactiveSubscription->plan);
+
             return true;
         }
 

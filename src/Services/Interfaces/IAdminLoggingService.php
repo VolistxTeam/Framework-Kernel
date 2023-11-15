@@ -2,8 +2,6 @@
 
 namespace Volistx\FrameworkKernel\Services\Interfaces;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-
 interface IAdminLoggingService
 {
     /**
@@ -28,8 +26,8 @@ interface IAdminLoggingService
      * Get all admin log entries with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array|null
      */

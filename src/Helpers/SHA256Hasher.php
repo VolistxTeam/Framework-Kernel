@@ -27,7 +27,8 @@ class SHA256Hasher
     public static function make(string $value, array $options = []): string|false
     {
         $salt = $options['salt'] ?? '';
-        return hash('sha256', $value . $salt);
+
+        return hash('sha256', $value.$salt);
     }
 
     /**
@@ -47,6 +48,6 @@ class SHA256Hasher
             return false;
         }
 
-        return $hashedValue === hash('sha256', $value . $salt);
+        return $hashedValue === hash('sha256', $value.$salt);
     }
 }

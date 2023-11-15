@@ -23,8 +23,9 @@ class UserLogController extends Controller
     /**
      * Get a user log.
      *
-     * @param  Request  $request
-     * @param  string  $logId
+     * @param Request $request
+     * @param string  $logId
+     *
      * @return JsonResponse
      */
     public function getUserLog(Request $request, string $logId): JsonResponse
@@ -57,7 +58,8 @@ class UserLogController extends Controller
     /**
      * Get all user logs.
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function getUserLogs(Request $request): JsonResponse

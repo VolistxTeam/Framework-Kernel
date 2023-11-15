@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
@@ -7,6 +8,7 @@ use Volistx\FrameworkKernel\AuthValidationRules\Admins\IPValidationRule;
 use Volistx\FrameworkKernel\Facades\AccessTokens;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Volistx\FrameworkKernel\Repositories\AccessTokenRepository;
+
 use function response;
 
 class AdminAuthMiddleware
@@ -28,6 +30,7 @@ class AdminAuthMiddleware
      *
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

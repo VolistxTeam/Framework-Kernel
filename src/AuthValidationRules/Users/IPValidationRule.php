@@ -32,7 +32,7 @@ class IPValidationRule extends ValidationRuleBase
             ($token->ip_rule === AccessRule::WHITELIST && !$ipSet->match($clientIp))) {
             return [
                 'message' => Messages::E403(trans('volistx::service.not_allowed_to_access_from_your_ip')),
-                'code' => 403,
+                'code'    => 403,
             ];
         }
 

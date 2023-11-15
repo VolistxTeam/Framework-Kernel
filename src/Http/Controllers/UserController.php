@@ -24,7 +24,8 @@ class UserController extends Controller
     /**
      * Create a new user.
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function createUser(Request $request): JsonResponse
@@ -51,8 +52,9 @@ class UserController extends Controller
     /**
      * Update a user.
      *
-     * @param  Request  $request
-     * @param  string  $userId
+     * @param Request $request
+     * @param string  $userId
+     *
      * @return JsonResponse
      */
     public function updateUser(Request $request, string $userId): JsonResponse
@@ -85,8 +87,9 @@ class UserController extends Controller
     /**
      * Delete a user.
      *
-     * @param  Request  $request
-     * @param  string  $userId
+     * @param Request $request
+     * @param string  $userId
+     *
      * @return JsonResponse
      */
     public function deleteUser(Request $request, string $userId): JsonResponse
@@ -123,8 +126,9 @@ class UserController extends Controller
     /**
      * Get a user.
      *
-     * @param  Request  $request
-     * @param  string  $userId
+     * @param Request $request
+     * @param string  $userId
+     *
      * @return JsonResponse
      */
     public function getUser(Request $request, string $userId): JsonResponse

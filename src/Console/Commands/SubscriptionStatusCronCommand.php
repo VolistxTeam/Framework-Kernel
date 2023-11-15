@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Carbon\Carbon;

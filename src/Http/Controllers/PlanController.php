@@ -53,7 +53,7 @@ class PlanController extends Controller
      * Update a plan.
      *
      * @param Request $request The HTTP request
-     * @param string $planId The plan ID
+     * @param string  $planId  The plan ID
      *
      * @return JsonResponse The JSON response
      */
@@ -88,7 +88,7 @@ class PlanController extends Controller
      * Delete a plan.
      *
      * @param Request $request The HTTP request
-     * @param string $planId The plan ID
+     * @param string  $planId  The plan ID
      *
      * @return JsonResponse The JSON response
      */
@@ -127,7 +127,7 @@ class PlanController extends Controller
      * Get a plan.
      *
      * @param Request $request The HTTP request
-     * @param string $planId The plan ID
+     * @param string  $planId  The plan ID
      *
      * @return JsonResponse The JSON response
      */

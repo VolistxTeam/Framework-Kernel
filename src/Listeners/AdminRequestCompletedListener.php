@@ -23,6 +23,7 @@ class AdminRequestCompletedListener
      * Handle the event.
      *
      * @param AdminRequestCompleted $event
+     *
      * @return void
      */
     public function handle(AdminRequestCompleted $event)

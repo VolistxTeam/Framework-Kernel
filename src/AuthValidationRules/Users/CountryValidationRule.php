@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\AuthValidationRules\Users;
 
 use Volistx\FrameworkKernel\Enums\AccessRule;

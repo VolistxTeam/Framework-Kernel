@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
@@ -18,6 +19,7 @@ class RequestLoggingMiddleware
      *
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -29,8 +31,9 @@ class RequestLoggingMiddleware
     /**
      * Perform actions after the response has been sent.
      *
-     * @param Request $request
+     * @param Request  $request
      * @param Response $response
+     *
      * @return void
      */
     public function terminate(Request $request, Response $response): void

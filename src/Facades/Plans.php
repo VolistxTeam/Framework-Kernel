@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Facade for accessing the Plans service.
  *
- * @method static void setPlan(mixed $plan) Set the current plan.
- * @method static mixed getPlan() Get the current plan.
+ * @method static void  setPlan(mixed $plan) Set the current plan.
+ * @method static mixed getPlan()            Get the current plan.
  */
 class Plans extends Facade
 {
