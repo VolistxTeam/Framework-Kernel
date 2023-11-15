@@ -21,85 +21,138 @@ class LocalUserLoggingService implements IUserLoggingService
         $this->subscriptionRepository = $subscriptionRepository;
     }
 
-    public function CreateUserLog(array $inputs)
+    /**
+     * Create a new user log entry.
+     *
+     * @param array $inputs [log_id, log_data, log_type]
+     *
+     * @return void
+     */
+    public function CreateUserLog(array $inputs): void
     {
         $this->logRepository->Create($inputs);
     }
 
-    public function GetLog($log_id): Model|array
+    /**
+     * Get a user log entry by log ID.
+     *
+     * @param string $logId
+     *
+     * @return mixed
+     */
+    public function GetLog(string $logId): mixed
     {
-        $log = $this->logRepository->FindById($log_id);
+        $log = $this->logRepository->FindById($logId);
 
-        return $log ?? UserLogDTO::fromModel($log)->GetDTO();
+        if ($log === null) {
+            return null;
+        }
+
+        return UserLogDTO::fromModel($log)->getDTO();
     }
 
-    public function GetLogs($search, $page, $limit)
+    /**
+     * Get all user log entries with pagination support.
+     *
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return array|null
+     */
+    public function GetLogs(string $search, int $page, int $limit): array|null
     {
         $logs = $this->logRepository->FindAll($search, $page, $limit);
 
-        if (!$logs === null) {
-            return $logs;
+        if ($logs === null) {
+            return null;
         }
 
         $logDTOs = [];
+
         foreach ($logs->items() as $log) {
-            $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
+            $logDTOs[] = UserLogDTO::fromModel($log)->getDTO();
         }
 
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
     }
 
-    public function GetSubscriptionLogs($user_id, $subscription_id, $search, $page, $limit): LengthAwarePaginator|array|null
+    /**
+     * Get all subscription log entries for a user and subscription with pagination support.
+     *
+     * @param string $userId
+     * @param string $subscriptionId
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function GetSubscriptionLogs(string $userId, string $subscriptionId, string $search, int $page, int $limit): array
     {
-        $logs = $this->logRepository->FindSubscriptionLogs($user_id, $subscription_id, $search, $page, $limit);
+        $logs = $this->logRepository->FindSubscriptionLogs($userId, $subscriptionId, $search, $page, $limit);
 
         if ($logs === null) {
             return [];
         }
 
         $logDTOs = [];
+
         foreach ($logs->items() as $log) {
-            $logDTOs[] = UserLogDTO::fromModel($log)->GetDTO();
+            $logDTOs[] = UserLogDTO::fromModel($log)->getDTO();
         }
 
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
     }
 
-    public function GetSubscriptionLogsCountInPlanDuration($user_id, $subscription_id): int
+    /**
+     * Get the count of subscription log entries for a user and subscription within the plan duration.
+     *
+     * @param string $userId
+     * @param string $subscriptionId
+     *
+     * @return int
+     */
+    public function GetSubscriptionLogsCountInPlanDuration(string $userId, string $subscriptionId): int
     {
-        $subscription = $this->subscriptionRepository->Find($user_id, $subscription_id);
+        $subscription = $this->subscriptionRepository->find($userId, $subscriptionId);
         $planDuration = $subscription->plan->data['duration'];
+        $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $subscription->activated_at);
+        $endDate = $startDate->clone()->addDays($planDuration);
 
-        $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $subscription->activated_at);
-        $end_date = $start_date->clone()->addDays($planDuration);
-
-        while (!Carbon::now()->between($start_date, $end_date)) {
-            $start_date->addDays($planDuration);
-            $end_date->addDays($planDuration);
+        while (!Carbon::now()->between($startDate, $endDate)) {
+            $startDate->addDays($planDuration);
+            $endDate->addDays($planDuration);
         }
 
-        return $this->logRepository->FindSubscriptionLogsCountInPeriod($user_id, $subscription_id, $start_date, $end_date);
+        return $this->logRepository->FindSubscriptionLogsCountInPeriod($userId, $subscriptionId, $startDate, $endDate);
     }
 
-    // This function requires rebuilding. discuss.
-    public function GetSubscriptionUsages($user_id, $subscription_id): array
+    /**
+     * Get the subscription usages for a user and subscription.
+     *
+     * @param string $userId
+     * @param string $subscriptionId
+     *
+     * @return array
+     */
+    public function GetSubscriptionUsages(string $userId, string $subscriptionId): array
     {
-        $daysLogs = $this->logRepository->FindSubscriptionUsages($user_id, $subscription_id);
-
+        $daysLogs = $this->logRepository->FindSubscriptionUsages($userId, $subscriptionId);
         $totalCount = 0;
         $stats = [];
 
@@ -107,18 +160,18 @@ class LocalUserLoggingService implements IUserLoggingService
             $count = count($dayLogs);
             $totalCount += $count;
             $stats[] = [
-                'date'  => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
+                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
                 'count' => $count,
             ];
         }
 
-        $requestsCount = $this->subscriptionRepository->Find($user_id, $subscription_id)->plan->data['requests'];
+        $requestsCount = $this->subscriptionRepository->find($userId, $subscriptionId)->plan->data['requests'];
 
         return [
             'usages' => [
                 'current' => $totalCount,
-                'max'     => (int) $requestsCount,
-                'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
+                'max' => (int)$requestsCount,
+                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
             'details' => $stats,
         ];

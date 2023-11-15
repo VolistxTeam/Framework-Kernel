@@ -18,45 +18,74 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $this->remoteToken = config('volistx.logging.adminLogHttpToken');
     }
 
-    public function CreateAdminLog(array $inputs)
+    /**
+     * Create a new admin log entry.
+     *
+     * @param array $inputs
+     *
+     * @return void
+     */
+    public function CreateAdminLog(array $inputs): void
     {
         $this->client->post($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             'body' => json_encode($inputs),
         ]);
     }
 
-    public function GetAdminLog($log_id)
+    /**
+     * Get an admin log entry by log ID.
+     *
+     * @param string $logId
+     *
+     * @return mixed
+     */
+    public function GetAdminLog(string $logId): mixed
     {
-        $response = $this->client->get("$this->httpBaseUrl/{$log_id}", [
+        $response = $this->client->get("$this->httpBaseUrl/{$logId}", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
         ]);
 
-        return $response->getStatusCode() == 200 ? json_decode($response->getBody()->getContents()) : null;
+        if ($response->getStatusCode() === 200) {
+            return json_decode($response->getBody()->getContents());
+        }
+
+        return null;
     }
 
-    public function GetAdminLogs(string $search, int $page, int $limit)
+    /**
+     * Get all admin log entries with pagination support.
+     *
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return array|null
+     */
+    public function GetAdminLogs(string $search, int $page, int $limit): array|null
     {
-        $response = $this->client->get("$this->httpBaseUrl", [
+        $response = $this->client->get($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
-            [
-                'query' => [
-                    'search' => $search,
-                    'page'   => $page,
-                    'limit'  => $limit,
-                ],
+            'query' => [
+                'search' => $search,
+                'page' => $page,
+                'limit' => $limit,
             ],
         ]);
 
-        return $response->getStatusCode() == 200 ? get_object_vars(json_decode($response->getBody()->getContents())) : null;
+        if ($response->getStatusCode() === 200) {
+            return get_object_vars(json_decode($response->getBody()->getContents()));
+        }
+
+        return null;
     }
 }

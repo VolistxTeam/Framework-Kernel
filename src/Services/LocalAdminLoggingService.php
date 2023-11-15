@@ -15,37 +15,64 @@ class LocalAdminLoggingService implements IAdminLoggingService
         $this->logRepository = $logRepository;
     }
 
-    public function CreateAdminLog(array $inputs)
+    /**
+     * Create a new admin log entry.
+     *
+     * @param array $inputs
+     *
+     * @return void
+     */
+    public function CreateAdminLog(array $inputs): void
     {
         $this->logRepository->Create($inputs);
     }
 
-    public function GetAdminLog($log_id)
+    /**
+     * Get an admin log entry by log ID.
+     *
+     * @param string $logId
+     *
+     * @return mixed
+     */
+    public function GetAdminLog(string $logId): mixed
     {
-        $log = $this->logRepository->Find($log_id);
+        $log = $this->logRepository->Find($logId);
 
-        return $log ?? AdminLogDTO::fromModel($log)->GetDTO();
+        if ($log === null) {
+            return null;
+        }
+
+        return AdminLogDTO::fromModel($log)->getDTO();
     }
 
-    public function GetAdminLogs(string $search, int $page, int $limit)
+    /**
+     * Get all admin log entries with pagination support.
+     *
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return array|null
+     */
+    public function GetAdminLogs(string $search, int $page, int $limit): array|null
     {
         $logs = $this->logRepository->FindAll($search, $page, $limit);
 
-        if (!$logs === null) {
-            return $logs;
+        if ($logs === null) {
+            return null;
         }
 
         $logDTOs = [];
 
         foreach ($logs->items() as $log) {
-            $logDTOs[] = AdminLogDTO::fromModel($log)->GetDTO();
+            $logDTOs[] = AdminLogDTO::fromModel($log)->getDTO();
         }
 
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current'  => $logs->currentPage(),
-                'total'    => $logs->lastPage(),
+                'current' => $logs->currentPage(),
+                'total' => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];

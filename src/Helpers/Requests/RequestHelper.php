@@ -33,6 +33,7 @@ class RequestHelper
             $response = $this->client->request('GET', $url, [
                 'headers' => [
                     'Authorization' => "Bearer {$token}",
+                    'Content-Type' => 'application/json',
                 ],
                 'query' => $query,
             ]);
@@ -57,6 +58,7 @@ class RequestHelper
             $response = $this->client->request('POST', $url, [
                 'headers' => [
                     'Authorization' => "Bearer {$token}",
+                    'Content-Type' => 'application/json',
                 ],
                 'json' => $query,
             ]);
@@ -81,6 +83,7 @@ class RequestHelper
             $response = $this->client->request('PUT', $url, [
                 'headers' => [
                     'Authorization' => "Bearer {$token}",
+                    'Content-Type' => 'application/json',
                 ],
                 'json' => $query,
             ]);
@@ -105,6 +108,7 @@ class RequestHelper
             $response = $this->client->request('PATCH', $url, [
                 'headers' => [
                     'Authorization' => "Bearer {$token}",
+                    'Content-Type' => 'application/json',
                 ],
                 'json' => $query,
             ]);
@@ -128,6 +132,7 @@ class RequestHelper
             $response = $this->client->request('DELETE', $url, [
                 'headers' => [
                     'Authorization' => "Bearer {$token}",
+                    'Content-Type' => 'application/json',
                 ],
             ]);
             return new ProcessedResponse($response);

@@ -2,11 +2,36 @@
 
 namespace Volistx\FrameworkKernel\Services\Interfaces;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
 interface IAdminLoggingService
 {
-    public function CreateAdminLog(array $inputs);
+    /**
+     * Create a new admin log entry.
+     *
+     * @param array $inputs
+     *
+     * @return void
+     */
+    public function CreateAdminLog(array $inputs): void;
 
-    public function GetAdminLog($log_id);
+    /**
+     * Get an admin log entry by log ID.
+     *
+     * @param string $logId
+     *
+     * @return mixed
+     */
+    public function GetAdminLog(string $logId): mixed;
 
-    public function GetAdminLogs(string $search, int $page, int $limit);
+    /**
+     * Get all admin log entries with pagination support.
+     *
+     * @param string $search
+     * @param int $page
+     * @param int $limit
+     *
+     * @return array|null
+     */
+    public function GetAdminLogs(string $search, int $page, int $limit): array|null;
 }
