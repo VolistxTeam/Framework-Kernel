@@ -4,7 +4,7 @@ namespace Volistx\FrameworkKernel\Helpers;
 
 class AccessTokensCenter
 {
-    private mixed $token;
+    private mixed $token = null;
 
     /**
      * Set the access token.

@@ -4,7 +4,7 @@ namespace Volistx\FrameworkKernel\Helpers;
 
 class PersonalTokensCenter
 {
-    private mixed $token;
+    private mixed $token = null;
 
     /**
      * Set the personal token.

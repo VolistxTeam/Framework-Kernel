@@ -12,7 +12,7 @@ use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 
 class SubscriptionCenter
 {
-    private $subscription;
+    private mixed $subscription = null;
     private SubscriptionRepository $subscriptionRepository;
 
     /**

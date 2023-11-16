@@ -4,7 +4,7 @@ namespace Volistx\FrameworkKernel\Helpers;
 
 class PlansCenter
 {
-    private mixed $plan;
+    private mixed $plan = null;
 
     /**
      * Set the plan.
