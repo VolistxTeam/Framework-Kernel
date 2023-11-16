@@ -27,22 +27,22 @@ class UserController extends Controller
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function createUser(Request $request): JsonResponse
+    public function CreateUser(Request $request): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'create')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateCreateValidation($request->all());
+            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation($request->all());
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $newUser = $this->userRepository->create($request->all());
+            $newUser = $this->userRepository->Create($request->all());
 
-            return response()->json(UserDTO::fromModel($newUser)->getDTO(), 201);
+            return response()->json(UserDTO::fromModel($newUser)->GetDTO(), 201);
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
@@ -55,14 +55,14 @@ class UserController extends Controller
      * @param  string  $userId
      * @return JsonResponse
      */
-    public function updateUser(Request $request, string $userId): JsonResponse
+    public function UpdateUser(Request $request, string $userId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'update')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
+            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
                 'user_id' => $userId,
             ]));
 
@@ -70,13 +70,13 @@ class UserController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $updatedUser = $this->userRepository->update($userId, $request->all());
+            $updatedUser = $this->userRepository->Update($userId, $request->all());
 
             if (!$updatedUser) {
                 return response()->json(Messages::E404(), 404);
             }
 
-            return response()->json(UserDTO::fromModel($updatedUser)->getDTO());
+            return response()->json(UserDTO::fromModel($updatedUser)->GetDTO());
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }
@@ -89,14 +89,14 @@ class UserController extends Controller
      * @param  string  $userId
      * @return JsonResponse
      */
-    public function deleteUser(Request $request, string $userId): JsonResponse
+    public function DeleteUser(Request $request, string $userId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'delete')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateDeleteValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation([
                 'user_id' => $userId,
             ]);
 
@@ -104,7 +104,7 @@ class UserController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $result = $this->userRepository->delete($userId);
+            $result = $this->userRepository->Delete($userId);
 
             if ($result === null) {
                 return response()->json(Messages::E404(), 404);
@@ -127,14 +127,14 @@ class UserController extends Controller
      * @param  string  $userId
      * @return JsonResponse
      */
-    public function getUser(Request $request, string $userId): JsonResponse
+    public function GetUser(Request $request, string $userId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateGetValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'user_id' => $userId,
             ]);
 
@@ -142,13 +142,13 @@ class UserController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $user = $this->userRepository->find($userId);
+            $user = $this->userRepository->Find($userId);
 
             if (!$user) {
                 return response()->json(Messages::E404(), 404);
             }
 
-            return response()->json(UserDTO::fromModel($user)->getDTO());
+            return response()->json(UserDTO::fromModel($user)->GetDTO());
         } catch (Exception $ex) {
             return response()->json(Messages::E500(), 500);
         }

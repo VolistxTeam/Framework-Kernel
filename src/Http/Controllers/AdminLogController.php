@@ -40,7 +40,7 @@ class AdminLogController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateGetValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'log_id' => $logId,
             ]);
 
@@ -78,7 +78,7 @@ class AdminLogController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->getModuleValidation($this->module)->generateGetAllValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
                 'page' => $page,
                 'limit' => $limit,
             ]);

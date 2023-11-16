@@ -27,14 +27,14 @@ class UserLogController extends Controller
      * @param  string  $logId
      * @return JsonResponse
      */
-    public function getUserLog(Request $request, string $logId): JsonResponse
+    public function GetUserLog(Request $request, string $logId): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view')) {
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateGetValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'log_id' => $logId,
             ]);
 
@@ -42,7 +42,7 @@ class UserLogController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $log = $this->userLoggingService->getLog($logId);
+            $log = $this->userLoggingService->GetLog($logId);
 
             if (!$log) {
                 return response()->json(Messages::E404(), 404);
@@ -60,7 +60,7 @@ class UserLogController extends Controller
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function getUserLogs(Request $request): JsonResponse
+    public function GetUserLogs(Request $request): JsonResponse
     {
         try {
             if (!Permissions::check(AccessTokens::getToken(), $this->module, 'view-all')) {
@@ -71,7 +71,7 @@ class UserLogController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->getModuleValidation($this->module)->generateGetAllValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
                 'page'  => $page,
                 'limit' => $limit,
             ]);
@@ -80,7 +80,7 @@ class UserLogController extends Controller
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
             }
 
-            $logs = $this->userLoggingService->getLogs($search, $page, $limit);
+            $logs = $this->userLoggingService->GetLogs($search, $page, $limit);
 
             if (!$logs) {
                 return response()->json(Messages::E400(trans('volistx::invalid_search_column')), 400);

@@ -45,7 +45,7 @@ Route::prefix('sys-bin')->group(function () {
                         Route::patch('/{subscriptionId}/cancel', [SubscriptionController::class, 'CancelSubscription']);
                     });
 
-                    Route::patch('/{subscriptionId}/uncancel', [SubscriptionController::class, 'UncancelSubscription']);
+                    Route::patch('/{subscriptionId}/revert-cancel', [SubscriptionController::class, 'RevertCancelSubscription']);
                     Route::delete('/{subscriptionId}', [SubscriptionController::class, 'DeleteSubscription']);
                     Route::get('/', [SubscriptionController::class, 'GetSubscriptions']);
                     Route::get('/{subscriptionId}', [SubscriptionController::class, 'GetSubscription']);

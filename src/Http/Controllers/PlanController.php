@@ -35,7 +35,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateCreateValidation($request->all());
+            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation($request->all());
 
             if ($validator->fails()) {
                 return response()->json(Messages::E400($validator->errors()->first()), 400);
@@ -64,7 +64,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
+            $validator = $this->GetModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
                 'plan_id' => $planId,
             ]));
 
@@ -99,7 +99,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateDeleteValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateDeleteValidation([
                 'plan_id' => $planId,
             ]);
 
@@ -138,7 +138,7 @@ class PlanController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->getModuleValidation($this->module)->generateGetValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetValidation([
                 'plan_id' => $planId,
             ]);
 
@@ -176,7 +176,7 @@ class PlanController extends Controller
             $page = $request->input('page', 1);
             $limit = $request->input('limit', 50);
 
-            $validator = $this->getModuleValidation($this->module)->generateGetAllValidation([
+            $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
                 'page'  => $page,
                 'limit' => $limit,
             ]);
