@@ -3,8 +3,6 @@
 namespace Volistx\FrameworkKernel\Services;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Model;
 use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 use Volistx\FrameworkKernel\Repositories\UserLogRepository;
@@ -55,8 +53,8 @@ class LocalUserLoggingService implements IUserLoggingService
      * Get all user log entries with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array|null
      */
@@ -77,8 +75,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -90,8 +88,8 @@ class LocalUserLoggingService implements IUserLoggingService
      * @param string $userId
      * @param string $subscriptionId
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array
      */
@@ -112,8 +110,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];
@@ -160,7 +158,7 @@ class LocalUserLoggingService implements IUserLoggingService
             $count = count($dayLogs);
             $totalCount += $count;
             $stats[] = [
-                'date' => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
+                'date'  => Carbon::createFromFormat('Y-m-d H:i:s', $dayLogs[0]->created_at)->format('Y-m-d'),
                 'count' => $count,
             ];
         }
@@ -170,8 +168,8 @@ class LocalUserLoggingService implements IUserLoggingService
         return [
             'usages' => [
                 'current' => $totalCount,
-                'max' => (int)$requestsCount,
-                'percent' => $requestsCount ? (float)number_format(($totalCount * 100) / $requestsCount, 2) : null,
+                'max'     => (int) $requestsCount,
+                'percent' => $requestsCount ? (float) number_format(($totalCount * 100) / $requestsCount, 2) : null,
             ],
             'details' => $stats,
         ];

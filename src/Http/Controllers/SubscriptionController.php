@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Http\Controllers;
 
 use Exception;
@@ -28,8 +29,9 @@ class SubscriptionController extends Controller
     /**
      * Create a new subscription.
      *
-     * @param  Request  $request
-     * @param  string  $userId
+     * @param Request $request
+     * @param string  $userId
+     *
      * @return JsonResponse
      */
     public function CreateSubscription(Request $request, string $userId): JsonResponse
@@ -68,9 +70,10 @@ class SubscriptionController extends Controller
      * Mutate a subscription by creating a new one and setting the previous subscription status to MUTATED.
      * USE WITH CAUTION, as it can put the system in an invalid state.
      *
-     * @param  Request  $request
-     * @param  string  $userId
-     * @param  string  $subscriptionId
+     * @param Request $request
+     * @param string  $userId
+     * @param string  $subscriptionId
+     *
      * @return JsonResponse
      */
     public function MutateSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
@@ -106,9 +109,10 @@ class SubscriptionController extends Controller
     /**
      * Delete a subscription.
      *
-     * @param  Request  $request
-     * @param  string  $userId
-     * @param  string  $subscriptionId
+     * @param Request $request
+     * @param string  $userId
+     * @param string  $subscriptionId
+     *
      * @return JsonResponse
      */
     public function DeleteSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
@@ -142,9 +146,10 @@ class SubscriptionController extends Controller
     /**
      * Cancel a subscription.
      *
-     * @param  Request  $request
-     * @param  string  $userId
-     * @param  string  $subscriptionId
+     * @param Request $request
+     * @param string  $userId
+     * @param string  $subscriptionId
+     *
      * @return JsonResponse
      */
     public function CancelSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
@@ -185,9 +190,10 @@ class SubscriptionController extends Controller
     /**
      * Revert Cancel Subscription a subscription if it is not cancelled already.
      *
-     * @param  Request  $request
-     * @param  string  $userId
-     * @param  string  $subscriptionId
+     * @param Request $request
+     * @param string  $userId
+     * @param string  $subscriptionId
+     *
      * @return JsonResponse
      */
     public function RevertCancelSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
@@ -225,9 +231,10 @@ class SubscriptionController extends Controller
     /**
      * Get a subscription.
      *
-     * @param  Request  $request
-     * @param  string  $userId
-     * @param  string  $subscriptionId
+     * @param Request $request
+     * @param string  $userId
+     * @param string  $subscriptionId
+     *
      * @return JsonResponse
      */
     public function GetSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
@@ -261,8 +268,9 @@ class SubscriptionController extends Controller
     /**
      * Get all subscriptions of a user.
      *
-     * @param  Request  $request
-     * @param  string  $userId
+     * @param Request $request
+     * @param string  $userId
+     *
      * @return JsonResponse
      */
     public function GetSubscriptions(Request $request, string $userId): JsonResponse
@@ -313,9 +321,10 @@ class SubscriptionController extends Controller
     /**
      * Get the logs of a subscription.
      *
-     * @param  Request  $request
-     * @param  string  $userId
-     * @param  string  $subscriptionId
+     * @param Request $request
+     * @param string  $userId
+     * @param string  $subscriptionId
+     *
      * @return JsonResponse
      */
     public function GetSubscriptionLogs(Request $request, string $userId, string $subscriptionId): JsonResponse
@@ -351,9 +360,10 @@ class SubscriptionController extends Controller
     /**
      * Get the usages of a subscription.
      *
-     * @param  Request  $request
-     * @param  string  $userId
-     * @param  string  $subscriptionId
+     * @param Request $request
+     * @param string  $userId
+     * @param string  $subscriptionId
+     *
      * @return JsonResponse
      */
     public function GetSubscriptionUsages(Request $request, string $userId, string $subscriptionId): JsonResponse

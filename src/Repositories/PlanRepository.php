@@ -21,14 +21,14 @@ class PlanRepository
     public function Create(array $inputs): Model|Builder
     {
         return Plan::query()->create([
-            'name' => $inputs['name'],
-            'tag' => $inputs['tag'],
+            'name'        => $inputs['name'],
+            'tag'         => $inputs['tag'],
             'description' => $inputs['description'],
-            'data' => $inputs['data'],
-            'price' => $inputs['price'],
-            'tier' => $inputs['tier'],
-            'custom' => $inputs['custom'],
-            'is_active' => true,
+            'data'        => $inputs['data'],
+            'price'       => $inputs['price'],
+            'tier'        => $inputs['tier'],
+            'custom'      => $inputs['custom'],
+            'is_active'   => true,
         ]);
     }
 
@@ -36,7 +36,7 @@ class PlanRepository
      * Update an existing plan.
      *
      * @param string $planId
-     * @param array $inputs [name, tag, description, data, price, tier, custom, is_active]
+     * @param array  $inputs [name, tag, description, data, price, tier, custom, is_active]
      *
      * @return object|null
      */
@@ -114,6 +114,7 @@ class PlanRepository
 
         try {
             $toBeDeletedPlan->delete();
+
             return true;
         } catch (Exception $ex) {
             return false;
@@ -124,8 +125,8 @@ class PlanRepository
      * Find all plans with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return LengthAwarePaginator|null
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -57,6 +58,6 @@ class AccessKeyGenerateCommand extends Command
         ]);
 
         // Display the created access key
-        $this->info('Your access key is created: "' . $saltedKey['key'] . '"');
+        $this->info('Your access key is created: "'.$saltedKey['key'].'"');
     }
 }

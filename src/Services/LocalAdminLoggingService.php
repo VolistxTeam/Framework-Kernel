@@ -49,8 +49,8 @@ class LocalAdminLoggingService implements IAdminLoggingService
      * Get all admin log entries with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array|null
      */
@@ -71,8 +71,8 @@ class LocalAdminLoggingService implements IAdminLoggingService
         return [
             'pagination' => [
                 'per_page' => $logs->perPage(),
-                'current' => $logs->currentPage(),
-                'total' => $logs->lastPage(),
+                'current'  => $logs->currentPage(),
+                'total'    => $logs->lastPage(),
             ],
             'items' => $logDTOs,
         ];

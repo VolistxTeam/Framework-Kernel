@@ -72,8 +72,8 @@ class SubscriptionCenter
     /**
      * Update the expiry status of the subscription.
      *
-     * @param string   $userId       The user ID
-     * @param mixed $subscription The subscription
+     * @param string $userId       The user ID
+     * @param mixed  $subscription The subscription
      *
      * @return bool True if the subscription expiry status was updated, false otherwise
      */
@@ -81,20 +81,22 @@ class SubscriptionCenter
     {
         if ($this->shouldSubscriptionBeExpired($subscription)) {
             $this->subscriptionRepository->update($userId, $subscription->id, [
-                'status' => SubscriptionStatus::EXPIRED,
+                'status'     => SubscriptionStatus::EXPIRED,
                 'expired_at' => Carbon::now(),
             ]);
             dispatch(new SubscriptionExpired($subscription->id, $subscription->user_id));
+
             return true;
         }
+
         return false;
     }
 
     /**
      * Update the cancellation status of the subscription.
      *
-     * @param string   $userId       The user ID
-     * @param mixed $subscription The subscription
+     * @param string $userId       The user ID
+     * @param mixed  $subscription The subscription
      *
      * @return bool True if the subscription cancellation status was updated, false otherwise
      */
@@ -102,12 +104,14 @@ class SubscriptionCenter
     {
         if ($this->shouldSubscriptionBeCancelled($subscription)) {
             $this->subscriptionRepository->update($userId, $subscription->id, [
-                'status' => SubscriptionStatus::CANCELLED,
+                'status'       => SubscriptionStatus::CANCELLED,
                 'cancelled_at' => Carbon::now(),
             ]);
             dispatch(new SubscriptionCancelled($subscription->id, $subscription->user_id));
+
             return true;
         }
+
         return false;
     }
 
@@ -128,8 +132,10 @@ class SubscriptionCenter
             if ($subStatusModified === false) {
                 return $activeSubscription;
             }
+
             return false;
         }
+
         return $activeSubscription;
     }
 
@@ -152,8 +158,10 @@ class SubscriptionCenter
             if ($subStatusModified === false) {
                 return $inactiveSubscription;
             }
+
             return false;
         }
+
         return $inactiveSubscription;
     }
 }

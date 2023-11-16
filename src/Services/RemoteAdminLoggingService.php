@@ -30,7 +30,7 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $this->client->post($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
+                'Content-Type'  => 'application/json',
             ],
             'body' => json_encode($inputs),
         ]);
@@ -48,7 +48,7 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $response = $this->client->get("$this->httpBaseUrl/{$logId}", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
+                'Content-Type'  => 'application/json',
             ],
         ]);
 
@@ -63,8 +63,8 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      * Get all admin log entries with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array|null
      */
@@ -73,12 +73,12 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $response = $this->client->get($this->httpBaseUrl, [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
+                'Content-Type'  => 'application/json',
             ],
             'query' => [
                 'search' => $search,
-                'page' => $page,
-                'limit' => $limit,
+                'page'   => $page,
+                'limit'  => $limit,
             ],
         ]);
 

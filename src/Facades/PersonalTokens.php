@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Facade for accessing the PersonalTokens service.
  *
- * @method static void setToken(mixed $token) Set the personal token.
- * @method static mixed getToken() Get the personal token.
+ * @method static void  setToken(mixed $token) Set the personal token.
+ * @method static mixed getToken()             Get the personal token.
  */
 class PersonalTokens extends Facade
 {

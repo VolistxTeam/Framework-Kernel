@@ -22,7 +22,7 @@ class UserRepository
     public function Create(array $inputs): Model|Builder
     {
         return User::query()->create([
-            'id' => $inputs['user_id'] ?? Uuid::uuid4(),
+            'id'        => $inputs['user_id'] ?? Uuid::uuid4(),
             'is_active' => true,
         ]);
     }
@@ -31,7 +31,7 @@ class UserRepository
      * Update an existing user.
      *
      * @param string $userId
-     * @param array $inputs [is_active]
+     * @param array  $inputs [is_active]
      *
      * @return object|null
      */
@@ -81,6 +81,7 @@ class UserRepository
 
         try {
             $toBeDeletedUser->delete();
+
             return true;
         } catch (Exception $ex) {
             return false;
@@ -91,8 +92,8 @@ class UserRepository
      * Find all users with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return LengthAwarePaginator|null
      */

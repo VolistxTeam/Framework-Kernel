@@ -22,12 +22,12 @@ class SubscriptionRepository
     public function Create(array $inputs): Model|Builder
     {
         return Subscription::query()->create([
-            'user_id' => $inputs['user_id'],
-            'plan_id' => $inputs['plan_id'],
-            'status' => $inputs['status'],
+            'user_id'      => $inputs['user_id'],
+            'plan_id'      => $inputs['plan_id'],
+            'status'       => $inputs['status'],
             'activated_at' => $inputs['activated_at'] ?? Carbon::now(),
-            'expires_at' => $inputs['expires_at'],
-            'cancels_at' => null,
+            'expires_at'   => $inputs['expires_at'],
+            'cancels_at'   => null,
             'cancelled_at' => null,
         ]);
     }
@@ -37,7 +37,7 @@ class SubscriptionRepository
      *
      * @param string $userId
      * @param string $subscriptionId
-     * @param array $inputs [plan_id, status, activated_at, expires_at, expired_at, cancels_at, cancelled_at]
+     * @param array  $inputs         [plan_id, status, activated_at, expires_at, expired_at, cancels_at, cancelled_at]
      *
      * @return Builder|Model|null
      */
@@ -50,13 +50,13 @@ class SubscriptionRepository
         }
 
         return Subscription::query()->create([
-            'user_id' => $userId,
-            'plan_id' => $inputs['plan_id'] ?? $subscription->plan_id,
-            'status' => $inputs['status'] ?? $subscription->status,
+            'user_id'      => $userId,
+            'plan_id'      => $inputs['plan_id'] ?? $subscription->plan_id,
+            'status'       => $inputs['status'] ?? $subscription->status,
             'activated_at' => $inputs['activated_at'] ?? $subscription->activated_at,
-            'expires_at' => $inputs['expires_at'] ?? $subscription->expires_at,
-            'expired_at' => $inputs['expired_at'] ?? $subscription->expired_at,
-            'cancels_at' => $inputs['cancels_at'] ?? $subscription->cancels_at,
+            'expires_at'   => $inputs['expires_at'] ?? $subscription->expires_at,
+            'expired_at'   => $inputs['expired_at'] ?? $subscription->expired_at,
+            'cancels_at'   => $inputs['cancels_at'] ?? $subscription->cancels_at,
             'cancelled_at' => $inputs['cancelled_at'] ?? $subscription->cancelled_at,
         ]);
     }
@@ -66,7 +66,7 @@ class SubscriptionRepository
      *
      * @param string $userId
      * @param string $subscriptionId
-     * @param array $inputs [status, cancels_at, cancelled_at, expires_at, expired_at]
+     * @param array  $inputs         [status, cancels_at, cancelled_at, expires_at, expired_at]
      *
      * @return object|null
      */
@@ -176,8 +176,8 @@ class SubscriptionRepository
      *
      * @param string $userId
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return LengthAwarePaginator|null
      */

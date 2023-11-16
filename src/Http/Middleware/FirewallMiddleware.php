@@ -1,10 +1,12 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\Facades\Messages;
 use Wikimedia\IPSet;
+
 use function config;
 use function response;
 
@@ -15,6 +17,7 @@ class FirewallMiddleware
      *
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
