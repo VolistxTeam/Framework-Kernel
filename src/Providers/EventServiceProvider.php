@@ -7,6 +7,7 @@ use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
 use Volistx\FrameworkKernel\Events\UserRequestCompleted;
 use Volistx\FrameworkKernel\Listeners\AdminRequestCompletedListener;
 use Volistx\FrameworkKernel\Listeners\UserRequestCompletedListener;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,10 +28,12 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         $events = app('events');
-
         foreach ($this->listen as $event => $listeners) {
             foreach ($listeners as $listener) {
-                $events->listen($event, $listener);
+                $listenerExists = $events->hasListeners($event);
+                if (!$listenerExists) {
+                    $events->listen($event, $listener);
+                }
             }
         }
     }
