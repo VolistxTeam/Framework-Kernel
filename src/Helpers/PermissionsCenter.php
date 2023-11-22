@@ -36,16 +36,6 @@ class PermissionsCenter
         'logs:view-all',
     ];
 
-    public array $servicesPermissions;
-
-    /**
-     * PermissionsCenter constructor.
-     */
-    public function __construct()
-    {
-        $this->servicesPermissions = config('volistx.services_permissions');
-    }
-
     /**
      * Checks if a key has the required permissions for a module and operation.
      *
@@ -79,6 +69,6 @@ class PermissionsCenter
      */
     public function getServicesPermissions(): array
     {
-        return $this->servicesPermissions;
+        return config('volistx.services_permissions');
     }
 }
