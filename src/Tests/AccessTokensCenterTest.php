@@ -1,29 +1,34 @@
 <?php
-
-namespace Volistx\FrameworkKernel\Tests;
-
 use PHPUnit\Framework\TestCase;
 use Volistx\FrameworkKernel\Helpers\AccessTokensCenter;
 
 class AccessTokensCenterTest extends TestCase
 {
+    private ?AccessTokensCenter $accessTokenCenter;
+
+    protected function setUp(): void
+    {
+        $this->accessTokenCenter = new AccessTokensCenter();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->accessTokenCenter = null;
+    }
+
     public function testSetToken()
     {
-        $accessTokenCenter = new AccessTokensCenter();
         $token = 'test_token';
+        $this->accessTokenCenter->setToken($token);
 
-        $accessTokenCenter->setToken($token);
-
-        $this->assertEquals($token, $accessTokenCenter->getToken());
+        $this->assertEquals($token, $this->accessTokenCenter->getToken());
     }
 
     public function testGetToken()
     {
-        $accessTokenCenter = new AccessTokensCenter();
         $token = 'test_token';
+        $this->accessTokenCenter->setToken($token);
 
-        $accessTokenCenter->setToken($token);
-
-        $this->assertEquals($token, $accessTokenCenter->getToken());
+        $this->assertEquals($token, $this->accessTokenCenter->getToken());
     }
 }

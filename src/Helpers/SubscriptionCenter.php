@@ -3,9 +3,8 @@
 namespace Volistx\FrameworkKernel\Helpers;
 
 use Carbon\Carbon;
-use Illuminate\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
-use Volistx\FrameworkKernel\Facades\Subscriptions;
 use Volistx\FrameworkKernel\Jobs\SubscriptionCancelled;
 use Volistx\FrameworkKernel\Jobs\SubscriptionExpired;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
@@ -14,13 +13,18 @@ class SubscriptionCenter
 {
     private mixed $subscription = null;
     private SubscriptionRepository $subscriptionRepository;
+    private Dispatcher $eventDispatcher;
 
     /**
      * SubscriptionCenter constructor.
+     *
+     * @param SubscriptionRepository $subscriptionRepository
+     * @param Dispatcher             $eventDispatcher
      */
-    public function __construct()
+    public function __construct(SubscriptionRepository $subscriptionRepository, Dispatcher $eventDispatcher)
     {
-        $this->subscriptionRepository = Container::getInstance()->make(SubscriptionRepository::class);
+        $this->subscriptionRepository = $subscriptionRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -84,7 +88,8 @@ class SubscriptionCenter
                 'status'     => SubscriptionStatus::EXPIRED,
                 'expired_at' => Carbon::now(),
             ]);
-            dispatch(new SubscriptionExpired($subscription->id, $subscription->user_id));
+
+            $this->eventDispatcher->dispatch(new SubscriptionExpired($subscription->id, $subscription->user_id));
 
             return true;
         }
@@ -107,7 +112,8 @@ class SubscriptionCenter
                 'status'       => SubscriptionStatus::CANCELLED,
                 'cancelled_at' => Carbon::now(),
             ]);
-            dispatch(new SubscriptionCancelled($subscription->id, $subscription->user_id));
+
+            $this->eventDispatcher->dispatch(new SubscriptionCancelled($subscription->id, $subscription->user_id));
 
             return true;
         }
@@ -125,9 +131,11 @@ class SubscriptionCenter
     public function processUserActiveSubscriptionsStatus(string $userId): mixed
     {
         $activeSubscription = $this->subscriptionRepository->findUserActiveSubscription($userId);
+
         if ($activeSubscription) {
             $subStatusModified = $this->updateSubscriptionExpiryStatus($userId, $activeSubscription)
                 || $this->updateSubscriptionCancellationStatus($userId, $activeSubscription);
+
             // Current active sub is totally valid, set facades and proceed with next validation rules
             if ($subStatusModified === false) {
                 return $activeSubscription;
@@ -149,12 +157,15 @@ class SubscriptionCenter
     public function processUserInactiveSubscriptionsStatus(string $userId): mixed
     {
         $inactiveSubscription = $this->subscriptionRepository->findUserInactiveSubscription($userId);
+
         if ($inactiveSubscription && Carbon::now()->gte($inactiveSubscription->activated_at)) {
             $this->subscriptionRepository->update($userId, $inactiveSubscription->id, [
                 'status' => SubscriptionStatus::ACTIVE,
             ]);
-            $subStatusModified = Subscriptions::updateSubscriptionExpiryStatus($userId, $inactiveSubscription)
-                || Subscriptions::updateSubscriptionCancellationStatus($userId, $inactiveSubscription);
+
+            $subStatusModified = $this->updateSubscriptionExpiryStatus($userId, $inactiveSubscription)
+                || $this->updateSubscriptionCancellationStatus($userId, $inactiveSubscription);
+
             if ($subStatusModified === false) {
                 return $inactiveSubscription;
             }
