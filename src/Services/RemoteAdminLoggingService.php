@@ -27,7 +27,7 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      */
     public function CreateAdminLog(array $inputs): void
     {
-        $this->client->post($this->httpBaseUrl, [
+        $this->client->post("$this->httpBaseUrl/admins/logs", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type'  => 'application/json',
@@ -45,7 +45,7 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      */
     public function GetAdminLog(string $logId): mixed
     {
-        $response = $this->client->get("$this->httpBaseUrl/{$logId}", [
+        $response = $this->client->get("$this->httpBaseUrl/admins/logs/$logId", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type'  => 'application/json',
@@ -70,7 +70,7 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      */
     public function GetAdminLogs(string $search, int $page, int $limit): array|null
     {
-        $response = $this->client->get($this->httpBaseUrl, [
+        $response = $this->client->get("$this->httpBaseUrl/admins/logs", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
                 'Content-Type'  => 'application/json',
