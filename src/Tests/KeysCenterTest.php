@@ -1,6 +1,6 @@
 <?php
+namespace Volistx\FrameworkKernel\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Volistx\FrameworkKernel\Helpers\KeysCenter;
 
 class KeysCenterTest extends TestCase

@@ -1,5 +1,6 @@
 <?php
-use PHPUnit\Framework\TestCase;
+namespace Volistx\FrameworkKernel\Tests;
+
 use Volistx\FrameworkKernel\Helpers\AccessTokensCenter;
 
 class AccessTokensCenterTest extends TestCase

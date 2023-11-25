@@ -32,7 +32,10 @@ class AccessTokenFactory extends Factory
             'secret'          => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
             'secret_salt'     => $salt,
             'permissions'     => [],
-            'whitelist_range' => [],
+            'ip_rule'         => 0,
+            'ip_range'        => [],
+            'country_rule'         => 0,
+            'country_range'        => [],
             'created_at'      => Carbon::now(),
         ];
     }

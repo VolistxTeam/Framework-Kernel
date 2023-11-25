@@ -1,21 +1,25 @@
 <?php
 
+namespace Volistx\FrameworkKernel\Tests;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
+use Mockery;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use stdClass;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Helpers\HMACCenter;
-use PHPUnit\Framework\TestCase;
 
 class HMACCenterTest extends TestCase
 {
     public function testSign()
     {
         // Arrange
+
         $token = new stdClass();
         $token->hmac_token = 'test_token';
         PersonalTokens::shouldReceive('getToken')->andReturn($token);

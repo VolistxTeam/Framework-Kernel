@@ -5,12 +5,11 @@
 //use Carbon\Carbon;
 //use Illuminate\Database\Eloquent\Collection;
 //use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Foundation\Testing\DatabaseTransactions;
+//use Illuminate\Foundation\Testing\RefreshDatabase;
 //use Illuminate\Support\Str;
-//use PHPUnit\Framework\TestCase;
+//use Volistx\FrameworkKernel\Database\Factories\AccessTokenFactory;
 //use Volistx\FrameworkKernel\Database\Factories\PlanFactory;
 //use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
-//use Volistx\FrameworkKernel\Models\AccessToken;
 //use Volistx\FrameworkKernel\Models\PersonalToken;
 //use Volistx\FrameworkKernel\Models\Plan;
 //use Volistx\FrameworkKernel\Models\Subscription;
@@ -19,9 +18,7 @@
 //
 //class SubscriptionControllerTest extends TestCase
 //{
-//    use DatabaseTransactions;
-//
-//
+//    use RefreshDatabase;
 //    /**
 //     * @test
 //     */
@@ -46,8 +43,7 @@
 //    {
 //        $salt = Str::random(16);
 //
-//        return AccessToken::factory()
-//            ->create(['key'   => substr($key, 0, 32),
+//        return AccessTokenFactory::new()->create(['key'   => substr($key, 0, 32),
 //                'secret'      => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
 //                'secret_salt' => $salt,
 //                'permissions' => ['subscriptions:*'], ]);
@@ -71,7 +67,7 @@
 //            $request = $this->json($verb, $route, $input, [
 //                'Authorization' => "Bearer $key",
 //            ]);
-//            self::assertResponseStatus($permissionResult);
+//            self::assertEquals($request->assertOk(), $request);
 //        }
 //    }
 //
