@@ -19,29 +19,31 @@ class HMACCenterTest extends TestCase
     public function testSign()
     {
         // Arrange
-
+        app()->bind(
+            \Illuminate\Http\Request::class,
+            function () {
+                $mock = Mockery::mock(\Illuminate\Http\Request::class)->makePartial();
+                $mock->shouldReceive('method')->andReturn('GET');
+                return $mock;
+            }
+        );
         $token = new stdClass();
         $token->hmac_token = 'test_token';
         PersonalTokens::shouldReceive('getToken')->andReturn($token);
-        Request::shouldReceive('method')->andReturn('GET');
         URL::shouldReceive('full')->andReturn('http://example.com');
         Carbon::setTestNow(Carbon::create(2022, 1, 1, 0, 0, 0));
-
         $stringUuid = '253e0f90-8842-4731-91dd-0191816e6a28';
         $uuid = Uuid::fromString($stringUuid);
         $factoryMock = Mockery::mock(UuidFactory::class . '[uuid4]', [
             'uuid4' => $uuid,
         ]);
         Uuid::setFactory($factoryMock);
-
         $content = ['key' => 'value'];
         $method = Request::method();
         $url = urlencode(URL::full());
         $nonce = $stringUuid;
         $timestamp = Carbon::now()->timestamp;
-
         $valueToSign = $method . $url . $nonce . $timestamp . json_encode($content);
-
         $expectedSignature = [
             'X-HMAC-Timestamp' => $timestamp,
             'X-HMAC-Content-SHA256' => base64_encode(hash_hmac('sha256', $valueToSign, 'test_token', true)),
@@ -51,7 +53,7 @@ class HMACCenterTest extends TestCase
         // Act
         $signature = HMACCenter::sign($content);
 
-        //Assert
+        // Assert
         $this->assertEquals($expectedSignature, $signature);
     }
 
