@@ -12,13 +12,15 @@ use Volistx\FrameworkKernel\Http\Controllers\PlanController;
 use Volistx\FrameworkKernel\Http\Controllers\SubscriptionController;
 use Volistx\FrameworkKernel\Http\Controllers\UserController;
 use Volistx\FrameworkKernel\Http\Controllers\UserLogController;
+use Volistx\FrameworkKernel\Http\Middleware\AdminAuthMiddleware;
+use Volistx\FrameworkKernel\Http\Middleware\JsonBodyValidationFilteringMiddleware;
 
 Route::prefix('sys-bin')->group(function () {
     Route::middleware(['throttle:100,1'])->group(function () {
         Route::get('ping', function () {
             return response()->json([
                 'status' => 'ok',
-                'time'   => Carbon::now()->toDateTimeString(),
+                'time' => Carbon::now()->toDateTimeString(),
             ]);
         });
 
@@ -27,9 +29,9 @@ Route::prefix('sys-bin')->group(function () {
         });
     });
 
-    Route::prefix('admin')->middleware('auth.admin')->group(function () {
+    Route::prefix('admin')->middleware(AdminAuthMiddleware::class)->group(function () {
         Route::prefix('users')->group(function () {
-            Route::middleware('filter.json')->group(function () {
+            Route::middleware(JsonBodyValidationFilteringMiddleware::class)->group(function () {
                 Route::patch('/{userId}', [UserController::class, 'UpdateUser']);
             });
 
@@ -39,7 +41,7 @@ Route::prefix('sys-bin')->group(function () {
 
             Route::prefix('/{userId}/')->group(function () {
                 Route::prefix('subscriptions')->group(function () {
-                    Route::middleware('filter.json')->group(function () {
+                    Route::middleware(JsonBodyValidationFilteringMiddleware::class)->group(function () {
                         Route::post('/', [SubscriptionController::class, 'CreateSubscription']);
                         Route::post('/{subscriptionId}', [SubscriptionController::class, 'MutateSubscription']);
                         Route::patch('/{subscriptionId}/cancel', [SubscriptionController::class, 'CancelSubscription']);
@@ -54,7 +56,7 @@ Route::prefix('sys-bin')->group(function () {
                 });
 
                 Route::prefix('personal-tokens')->group(function () {
-                    Route::middleware('filter.json')->group(function () {
+                    Route::middleware(JsonBodyValidationFilteringMiddleware::class)->group(function () {
                         Route::post('/', [PersonalTokenController::class, 'CreatePersonalToken']);
                         Route::patch('/{tokenId}', [PersonalTokenController::class, 'UpdatePersonalToken']);
                     });
@@ -69,7 +71,7 @@ Route::prefix('sys-bin')->group(function () {
         });
 
         Route::prefix('plans')->group(function () {
-            Route::middleware('filter.json')->group(function () {
+            Route::middleware(JsonBodyValidationFilteringMiddleware::class)->group(function () {
                 Route::post('/', [PlanController::class, 'CreatePlan']);
                 Route::patch('/{planId}', [PlanController::class, 'UpdatePlan']);
             });
