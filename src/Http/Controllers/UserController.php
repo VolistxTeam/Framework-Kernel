@@ -64,7 +64,7 @@ class UserController extends Controller
                 return response()->json(Messages::E401(), 401);
             }
 
-            $validator = $this->GetModuleValidation($this->module)->generateCreateValidation(array_merge($request->all(), [
+            $validator = $this->GetModuleValidation($this->module)->generateUpdateValidation(array_merge($request->all(), [
                 'user_id' => $userId,
             ]));
 
