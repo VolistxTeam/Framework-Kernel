@@ -26,6 +26,7 @@ class UserLogFactory extends Factory
             'method'     => $this->faker->randomElement(['POST', 'GET', 'PUT', 'DELETE', 'PATCH']),
             'ip'         => $this->faker->ipv4(),
             'user_agent' => $this->faker->userAgent(),
+            'subscription_id' => $this->faker->uuid(),
         ];
     }
 }

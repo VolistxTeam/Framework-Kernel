@@ -31,9 +31,12 @@ class PermissionsCenter
         'plans:view',
         'plans:view-all',
         'plans:logs',
-        'logs:*',
-        'logs:view',
-        'logs:view-all',
+        'user-logs:*',
+        'user-logs:view',
+        'user-logs:view-all',
+        'admin-logs:*',
+        'admin-logs:view',
+        'admin-logs:view-all',
     ];
 
     /**
