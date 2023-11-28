@@ -6,6 +6,13 @@ class PermissionsCenter
 {
     public array $adminPermissions = [
         '*', // Wildcard permission for all
+
+        'user:*',
+        'user:create',
+        'user:update',
+        'user:delete',
+        'user:view',
+
         'subscriptions:*',
         'subscriptions:create',
         'subscriptions:mutate',
@@ -16,6 +23,7 @@ class PermissionsCenter
         'subscriptions:stats',
         'subscriptions:cancel',
         'subscriptions:uncancel',
+
         'personal-tokens:*',
         'personal-tokens:create',
         'personal-tokens:update',
@@ -24,6 +32,7 @@ class PermissionsCenter
         'personal-tokens:view',
         'personal-tokens:view-all',
         'personal-tokens:logs',
+
         'plans:*',
         'plans:create',
         'plans:update',
@@ -31,9 +40,11 @@ class PermissionsCenter
         'plans:view',
         'plans:view-all',
         'plans:logs',
+
         'user-logs:*',
         'user-logs:view',
         'user-logs:view-all',
+
         'admin-logs:*',
         'admin-logs:view',
         'admin-logs:view-all',
