@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Tests;
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -29,9 +30,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         # Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 
@@ -40,5 +41,19 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         return [
             'Volistx\FrameworkKernel\ServiceProvider',
         ];
+    }
+
+    protected function TestPermissions($token, string $key, string $method, string $route, array $permissions, $input = []): void
+    {
+        foreach ($permissions as $permissionName => $permissionResult) {
+            $token->permissions = [$permissionName];
+            $token->save();
+
+            $response = $this->withHeaders([
+                'Authorization' => 'Bearer ' . $key,
+            ])->{$method}($route);
+
+            $response->assertStatus($permissionResult);
+        }
     }
 }

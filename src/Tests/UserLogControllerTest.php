@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Database\Factories\AccessTokenFactory;
-use Volistx\FrameworkKernel\Database\Factories\AdminLogFactory;
 use Volistx\FrameworkKernel\Database\Factories\PlanFactory;
 use Volistx\FrameworkKernel\Database\Factories\SubscriptionFactory;
 use Volistx\FrameworkKernel\Database\Factories\UserFactory;
 use Volistx\FrameworkKernel\Database\Factories\UserLogFactory;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
-use Volistx\FrameworkKernel\Models\AdminLog;
 use Volistx\FrameworkKernel\Models\UserLog;
 use Volistx\FrameworkKernel\Tests\TestCase;
 
@@ -123,19 +121,5 @@ class UserLogControllerTest extends TestCase
         ]);
 
         return $token;
-    }
-
-    private function TestPermissions($token, string $key, string $method, string $route, array $permissions, $input = []): void
-    {
-        foreach ($permissions as $permissionName => $permissionResult) {
-            $token->permissions = [$permissionName];
-            $token->save();
-
-            $response = $this->withHeaders([
-                'Authorization' => 'Bearer ' . $key,
-            ])->{$method}($route);
-
-            $response->assertStatus($permissionResult);
-        }
     }
 }

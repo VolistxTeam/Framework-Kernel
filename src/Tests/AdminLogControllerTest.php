@@ -110,18 +110,4 @@ class AdminLogControllerTest extends TestCase
 
         return $token;
     }
-
-    private function TestPermissions($token, string $key, string $method, string $route, array $permissions, $input = []): void
-    {
-        foreach ($permissions as $permissionName => $permissionResult) {
-            $token->permissions = [$permissionName];
-            $token->save();
-
-            $response = $this->withHeaders([
-                'Authorization' => 'Bearer ' . $key,
-            ])->{$method}($route);
-
-            $response->assertStatus($permissionResult);
-        }
-    }
 }
