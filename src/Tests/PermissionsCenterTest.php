@@ -57,6 +57,13 @@ class PermissionsCenterTest extends TestCase
     {
         $expectedResult = [
             '*', // Wildcard permission for all
+
+            'user:*',
+            'user:create',
+            'user:update',
+            'user:delete',
+            'user:view',
+
             'subscriptions:*',
             'subscriptions:create',
             'subscriptions:mutate',
@@ -67,6 +74,7 @@ class PermissionsCenterTest extends TestCase
             'subscriptions:stats',
             'subscriptions:cancel',
             'subscriptions:uncancel',
+
             'personal-tokens:*',
             'personal-tokens:create',
             'personal-tokens:update',
@@ -75,6 +83,7 @@ class PermissionsCenterTest extends TestCase
             'personal-tokens:view',
             'personal-tokens:view-all',
             'personal-tokens:logs',
+
             'plans:*',
             'plans:create',
             'plans:update',
@@ -82,9 +91,14 @@ class PermissionsCenterTest extends TestCase
             'plans:view',
             'plans:view-all',
             'plans:logs',
-            'logs:*',
-            'logs:view',
-            'logs:view-all',
+
+            'user-logs:*',
+            'user-logs:view',
+            'user-logs:view-all',
+
+            'admin-logs:*',
+            'admin-logs:view',
+            'admin-logs:view-all',
         ];
 
         $permissionsCenter = new PermissionsCenter();

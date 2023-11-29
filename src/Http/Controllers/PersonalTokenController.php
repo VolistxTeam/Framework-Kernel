@@ -305,6 +305,7 @@ class PersonalTokenController extends Controller
             $this->personalTokenRepository->DeleteHiddenTokens($userId);
             $saltedKey = Keys::randomSaltedKey();
             $newPersonalToken = $this->personalTokenRepository->Create([
+                'name'    => 'system_key',
                 'user_id' => $userId,
                 'key' => $saltedKey['key'],
                 'salt' => $saltedKey['salt'],

@@ -51,7 +51,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
             $response = $this->withHeaders([
                 'Authorization' => 'Bearer ' . $key,
-            ])->{$method}($route);
+                'Content-Type: application/json'
+            ])->{$method}($route,$input);
 
             $response->assertStatus($permissionResult);
         }

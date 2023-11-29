@@ -4,6 +4,8 @@ namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Volistx\FrameworkKernel\Enums\AccessRule;
+use Volistx\FrameworkKernel\Enums\RateLimitMode;
 use Volistx\FrameworkKernel\Helpers\KeysCenter;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\PersonalToken;
@@ -28,13 +30,22 @@ class PersonalTokenFactory extends Factory
         $salt = KeysCenter::randomKey(16);
 
         return [
-            'key'             => substr($key, 0, 32),
-            'secret'          => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
-            'secret_salt'     => $salt,
-            'permissions'     => ['*'],
-            'whitelist_range' => ['127.0.0.0'],
-            'created_at'      => Carbon::now(),
-            'activated_at'    => Carbon::now(),
+            'user_id' => $this->faker->uuid(),
+            'name' => $this->faker->name(),
+            'key' => substr($key, 0, 32),
+            'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            'secret_salt' => $salt,
+            'rate_limit_mode' => RateLimitMode::SUBSCRIPTION,
+            'permissions' => ['*'],
+            'ip_rule' => AccessRule::NONE,
+            'ip_range' => [],
+            'country_rule' => AccessRule::NONE,
+            'country_range' => [],
+            'hmac_token' => "whatever",
+            'created_at' => Carbon::now(),
+            'activated_at' => Carbon::now(),
+            'hidden' => false,
+            'disable_logging' => false,
         ];
     }
 }

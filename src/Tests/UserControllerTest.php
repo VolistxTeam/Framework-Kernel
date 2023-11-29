@@ -6,14 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Database\Factories\AccessTokenFactory;
-use Volistx\FrameworkKernel\Database\Factories\PlanFactory;
-use Volistx\FrameworkKernel\Database\Factories\SubscriptionFactory;
 use Volistx\FrameworkKernel\Database\Factories\UserFactory;
-use Volistx\FrameworkKernel\Database\Factories\UserLogFactory;
 use Volistx\FrameworkKernel\DataTransferObjects\UserDTO;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\User;
-use Volistx\FrameworkKernel\Models\UserLog;
 use Volistx\FrameworkKernel\Tests\TestCase;
 
 class UserControllerTest extends TestCase
