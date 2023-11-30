@@ -11,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use stdClass;
+use Symfony\Component\Uid\Ulid;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 use Volistx\FrameworkKernel\Helpers\HMACCenter;
 
@@ -32,7 +33,7 @@ class HMACCenterTest extends TestCase
         PersonalTokens::shouldReceive('getToken')->andReturn($token);
         URL::shouldReceive('full')->andReturn('http://example.com');
         Carbon::setTestNow(Carbon::create(2022, 1, 1, 0, 0, 0));
-        $stringUuid = '253e0f90-8842-4731-91dd-0191816e6a28';
+        $stringUuid = '018c1f6a-332f-9145-6c47-f82692bc0a94';
         $uuid = Uuid::fromString($stringUuid);
         $factoryMock = Mockery::mock(UuidFactory::class . '[uuid4]', [
             'uuid4' => $uuid,
@@ -63,7 +64,7 @@ class HMACCenterTest extends TestCase
         $method = 'GET';
         $url = 'http://example.com';
         $expectedResult = true;
-        $nonce = '253e0f90-8842-4731-91dd-0191816e6a28';
+        $nonce = '018c1f6a-332f-9145-6c47-f82692bc0a94';
         $timestamp = Carbon::now()->timestamp;
         $contentString = json_encode(['key' => 'value']);
         $valueToSign = $method . $url . $nonce . $timestamp . $contentString;

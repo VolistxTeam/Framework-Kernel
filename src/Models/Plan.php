@@ -2,15 +2,17 @@
 
 namespace Volistx\FrameworkKernel\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Volistx\FrameworkKernel\Helpers\UuidForKey;
+use Illuminate\Support\Str;
+use Symfony\Component\Uid\Ulid;
 
 class Plan extends Model
 {
     use HasFactory;
-    use UuidForKey;
+    use HasUlids;
 
     /**
      * Indicates if the model should be timestamped.
@@ -53,5 +55,15 @@ class Plan extends Model
     public function subscriptions(): HasMany
     {
         return $this->HasMany(Subscription::class);
+    }
+
+    public function newUniqueId()
+    {
+        return Str::ulid()->toRfc4122();
+    }
+
+    protected function getUlidAttribute()
+    {
+        return Ulid::fromString($this->attributes['id']);
     }
 }

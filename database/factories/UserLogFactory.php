@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Models\UserLog;
 
 class UserLogFactory extends Factory
@@ -26,7 +27,7 @@ class UserLogFactory extends Factory
             'method'     => $this->faker->randomElement(['POST', 'GET', 'PUT', 'DELETE', 'PATCH']),
             'ip'         => $this->faker->ipv4(),
             'user_agent' => $this->faker->userAgent(),
-            'subscription_id' => $this->faker->uuid(),
+            'subscription_id' => Str::ulid()->toRfc4122(),
         ];
     }
 }

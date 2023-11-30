@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Enums\RateLimitMode;
 use Volistx\FrameworkKernel\Helpers\KeysCenter;
@@ -30,7 +31,7 @@ class PersonalTokenFactory extends Factory
         $salt = KeysCenter::randomKey(16);
 
         return [
-            'user_id' => $this->faker->uuid(),
+            'user_id' => Str::ulid()->toRfc4122(),
             'name' => $this->faker->name(),
             'key' => substr($key, 0, 32),
             'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),

@@ -15,8 +15,8 @@ class CreateUserLogsTable extends Migration
     {
         Schema::enableForeignKeyConstraints();
         Schema::create('user_logs', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('subscription_id')->nullable();
+            $table->ulid('id')->primary();
+            $table->ulid('subscription_id')->nullable();
             $table->string('url');
             $table->string('method');
             $table->ipAddress('ip');

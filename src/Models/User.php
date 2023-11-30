@@ -4,6 +4,8 @@ namespace Volistx\FrameworkKernel\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
+use Symfony\Component\Uid\Ulid;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
 
 class User extends Model
@@ -41,5 +43,15 @@ class User extends Model
     public function personal_tokens(): HasMany
     {
         return $this->HasMany(PersonalTokens::class);
+    }
+
+    public function newUniqueId()
+    {
+        return Str::ulid()->toRfc4122();
+    }
+
+    protected function getUlidAttribute()
+    {
+        return Ulid::fromString($this->attributes['id']);
     }
 }

@@ -2,14 +2,16 @@
 
 namespace Volistx\FrameworkKernel\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Volistx\FrameworkKernel\Helpers\UuidForKey;
+use Illuminate\Support\Str;
+use Symfony\Component\Uid\Ulid;
 
 class UserLog extends Model
 {
     use HasFactory;
-    use UuidForKey;
+    use HasUlids;
 
     /**
      * The name of the "updated at" column.
@@ -35,4 +37,14 @@ class UserLog extends Model
     protected $casts = [
         'created_at' => 'date:Y-m-d H:i:s',
     ];
+
+    public function newUniqueId()
+    {
+        return Str::ulid()->toRfc4122();
+    }
+
+    protected function getUlidAttribute()
+    {
+        return Ulid::fromString($this->attributes['id']);
+    }
 }

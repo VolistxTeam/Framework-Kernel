@@ -1,8 +1,10 @@
 <?php
+namespace Volistx\FrameworkKernel\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 use Volistx\FrameworkKernel\Database\Factories\AccessTokenFactory;
 use Volistx\FrameworkKernel\Database\Factories\PersonalTokenFactory;
 use Volistx\FrameworkKernel\Database\Factories\UserFactory;
@@ -50,6 +52,7 @@ class PersonalTokenControllerTest extends TestCase
      */
     public function CreatePersonalToken(): void
     {
+
         $key = Str::random(64);
         $this->generateAccessToken($key, 1);
         $user = $this->generateUserWithTokens(1);

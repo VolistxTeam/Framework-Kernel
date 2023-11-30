@@ -2,15 +2,17 @@
 
 namespace Volistx\FrameworkKernel\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Symfony\Component\Uid\Ulid;
 use Volistx\FrameworkKernel\Enums\AccessRule;
-use Volistx\FrameworkKernel\Helpers\UuidForKey;
 
 class AccessToken extends Model
 {
     use HasFactory;
-    use UuidForKey;
+    use HasUlids;
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,5 +50,15 @@ class AccessToken extends Model
     public function setCountryRangeAttribute($value)
     {
         $this->attributes['country_range'] = json_encode(array_map('strtoupper', $value));
+    }
+
+    public function newUniqueId()
+    {
+        return Str::ulid()->toRfc4122();
+    }
+
+    protected function getUlidAttribute()
+    {
+        return Ulid::fromString($this->attributes['id']);
     }
 }

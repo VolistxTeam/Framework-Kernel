@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Models\Subscription;
 
@@ -24,8 +25,8 @@ class SubscriptionFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'           => $this->faker->uuid(),
-            'plan_id'           => $this->faker->uuid(),
+            'user_id'           => Str::ulid()->toRfc4122(),
+            'plan_id'           => Str::ulid()->toRfc4122(),
             'activated_at' => Carbon::now(),
             'expires_at'   => Carbon::now()->addHours($this->faker->numberBetween(24, 720)),
             'status' => SubscriptionStatus::ACTIVE,

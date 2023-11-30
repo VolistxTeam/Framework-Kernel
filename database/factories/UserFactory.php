@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Volistx\FrameworkKernel\Models\User;
 
 class UserFactory extends Factory
@@ -22,7 +23,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->uuid(),
+            'id' => Str::ulid()->toRfc4122(),
             'is_active' => true,
         ];
     }
