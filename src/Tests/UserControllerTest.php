@@ -1,5 +1,6 @@
 <?php
 
+namespace Volistx\FrameworkKernel\Tests;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,6 @@ use Volistx\FrameworkKernel\Database\Factories\UserFactory;
 use Volistx\FrameworkKernel\DataTransferObjects\UserDTO;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\User;
-use Volistx\FrameworkKernel\Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {

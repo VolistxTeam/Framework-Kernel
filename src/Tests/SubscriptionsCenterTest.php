@@ -4,7 +4,6 @@ namespace Volistx\FrameworkKernel\Tests;
 use Carbon\Carbon;
 use Illuminate\Contracts\Events\Dispatcher;
 use PHPUnit\Framework\MockObject\MockObject;
-use Volistx\FrameworkKernel\Enums\SubscriptionStatus;
 use Volistx\FrameworkKernel\Helpers\SubscriptionCenter;
 use Volistx\FrameworkKernel\Jobs\SubscriptionCancelled;
 use Volistx\FrameworkKernel\Jobs\SubscriptionExpired;
