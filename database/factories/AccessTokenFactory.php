@@ -28,15 +28,15 @@ class AccessTokenFactory extends Factory
         $salt = KeysCenter::randomKey(16);
 
         return [
-            'key'             => substr($key, 0, 32),
-            'secret'          => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
-            'secret_salt'     => $salt,
-            'permissions'     => [],
-            'ip_rule'         => 0,
-            'ip_range'        => [],
+            'key'                  => substr($key, 0, 32),
+            'secret'               => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            'secret_salt'          => $salt,
+            'permissions'          => [],
+            'ip_rule'              => 0,
+            'ip_range'             => [],
             'country_rule'         => 0,
             'country_range'        => [],
-            'created_at'      => Carbon::now(),
+            'created_at'           => Carbon::now(),
         ];
     }
 }

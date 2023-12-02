@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,8 +27,8 @@ class UserLogControllerTest extends TestCase
         $log = UserLog::query()->first();
 
         $this->TestPermissions($token, $key, 'get', "/sys-bin/admin/user-logs/$log->id", [
-            'user-logs:*' => 200,
-            '' => 401,
+            'user-logs:*'    => 200,
+            ''               => 401,
             'user-logs:view' => 200,
         ]);
     }
@@ -44,7 +43,7 @@ class UserLogControllerTest extends TestCase
         $log = UserLog::query()->first();
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $key,
+            'Authorization' => 'Bearer '.$key,
         ])->get("/sys-bin/admin/user-logs/$log->id");
 
         $response->assertStatus(200);
@@ -59,9 +58,9 @@ class UserLogControllerTest extends TestCase
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 5);
 
-        $this->TestPermissions($token, $key, 'get', "/sys-bin/admin/user-logs", [
-            'user-logs:*' => 200,
-            '' => 401,
+        $this->TestPermissions($token, $key, 'get', '/sys-bin/admin/user-logs', [
+            'user-logs:*'        => 200,
+            ''                   => 401,
             'user-logs:view-all' => 200,
         ]);
     }
@@ -75,8 +74,8 @@ class UserLogControllerTest extends TestCase
         $this->GenerateAccessToken($key, 50);
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $key,
-        ])->get("/sys-bin/admin/user-logs");
+            'Authorization' => 'Bearer '.$key,
+        ])->get('/sys-bin/admin/user-logs');
 
         $response->assertStatus(200);
         self::assertCount(50, json_decode($response->getContent())->items);
@@ -91,8 +90,8 @@ class UserLogControllerTest extends TestCase
         $this->GenerateAccessToken($key, 50);
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $key,
-        ])->get("/sys-bin/admin/user-logs?limit=1");
+            'Authorization' => 'Bearer '.$key,
+        ])->get('/sys-bin/admin/user-logs?limit=1');
 
         $response->assertStatus(200);
         self::assertCount(1, json_decode($response->getContent())->items);
@@ -102,10 +101,10 @@ class UserLogControllerTest extends TestCase
     {
         $salt = Str::random(16);
         $token = AccessTokenFactory::new()
-            ->create(['key' => substr($key, 0, 32),
-                'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            ->create(['key'   => substr($key, 0, 32),
+                'secret'      => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
                 'secret_salt' => $salt,
-                'permissions' => ['user-logs:*'],]);
+                'permissions' => ['user-logs:*'], ]);
 
         $user = UserFactory::new()->create();
 
@@ -113,7 +112,7 @@ class UserLogControllerTest extends TestCase
 
         $subscription = SubscriptionFactory::new()->create([
             'plan_id' => $plan->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         UserLogFactory::new()->count($logsCount)->create([

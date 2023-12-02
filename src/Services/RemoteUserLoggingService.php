@@ -59,8 +59,8 @@ class RemoteUserLoggingService implements IUserLoggingService
      * Get all user log entries with pagination support.
      *
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array|null
      */
@@ -68,8 +68,8 @@ class RemoteUserLoggingService implements IUserLoggingService
     {
         $response = Requests::get($this->httpBaseUrl, $this->remoteToken, [
             'search' => $search,
-            'page' => $page,
-            'limit' => $limit,
+            'page'   => $page,
+            'limit'  => $limit,
         ]);
 
         // Retry the job if the request fails
@@ -86,8 +86,8 @@ class RemoteUserLoggingService implements IUserLoggingService
      * @param string $userId
      * @param string $subscriptionId
      * @param string $search
-     * @param int $page
-     * @param int $limit
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array
      */
@@ -95,8 +95,8 @@ class RemoteUserLoggingService implements IUserLoggingService
     {
         $response = Requests::get("$this->httpBaseUrl/users/$userId/subscriptions/$subscriptionId", $this->remoteToken, [
             'search' => $search,
-            'page' => $page,
-            'limit' => $limit,
+            'page'   => $page,
+            'limit'  => $limit,
         ]);
 
         // Retry the job if the request fails

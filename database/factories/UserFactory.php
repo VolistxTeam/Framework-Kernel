@@ -23,7 +23,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'id' => Str::ulid()->toRfc4122(),
+            'id'        => Str::ulid()->toRfc4122(),
             'is_active' => true,
         ];
     }

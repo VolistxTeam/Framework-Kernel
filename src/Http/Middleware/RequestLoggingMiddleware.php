@@ -44,7 +44,7 @@ class RequestLoggingMiddleware
                 $inputs = [
                     'url'             => $request->fullUrl(),
                     'method'          => $request->method(),
-                    'user_id' => Subscriptions::getSubscription()?->user_id,
+                    'user_id'         => Subscriptions::getSubscription()?->user_id,
                     'ip'              => $request->ip(),
                     'user_agent'      => $request->userAgent() ?? null,
                     'subscription_id' => Subscriptions::getSubscription()?->id,
