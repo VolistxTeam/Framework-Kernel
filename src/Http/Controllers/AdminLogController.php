@@ -29,7 +29,7 @@ class AdminLogController extends Controller
      * Get an admin log.
      *
      * @param Request $request The HTTP request
-     * @param string $logId The log ID
+     * @param string  $logId   The log ID
      *
      * @return JsonResponse The JSON response
      */
@@ -79,7 +79,7 @@ class AdminLogController extends Controller
             $limit = $request->input('limit', 50);
 
             $validator = $this->GetModuleValidation($this->module)->generateGetAllValidation([
-                'page' => $page,
+                'page'  => $page,
                 'limit' => $limit,
             ]);
 

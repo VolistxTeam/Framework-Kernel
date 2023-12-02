@@ -25,15 +25,15 @@ class PlanFactory extends Factory
         $n = $this->faker->numberBetween(1, 50000000);
 
         return [
-            'name'  => "plan$n",
-            'tag' => "$n",
+            'name'        => "plan$n",
+            'tag'         => "$n",
             'description' => "random desc $n",
-            'is_active' => true,
-            'data' =>['requests' => $this->faker->numberBetween(100, 5000)] ,
-            'price' => 10,
-            'custom' => false,
-            'tier' => $n,
-            'created_at'  => Carbon::now()
+            'is_active'   => true,
+            'data'        => ['requests' => $this->faker->numberBetween(100, 5000)],
+            'price'       => 10,
+            'custom'      => false,
+            'tier'        => $n,
+            'created_at'  => Carbon::now(),
         ];
     }
 }

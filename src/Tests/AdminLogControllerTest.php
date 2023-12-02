@@ -25,8 +25,8 @@ class AdminLogControllerTest extends TestCase
         $log = AdminLog::query()->first();
 
         $this->TestPermissions($token, $key, 'get', "/sys-bin/admin/logs/$log->id", [
-            'admin-logs:*' => 200,
-            '' => 401,
+            'admin-logs:*'    => 200,
+            ''                => 401,
             'admin-logs:view' => 200,
         ]);
     }
@@ -41,7 +41,7 @@ class AdminLogControllerTest extends TestCase
         $log = AdminLog::query()->first();
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $key,
+            'Authorization' => 'Bearer '.$key,
         ])->get("/sys-bin/admin/logs/$log->id");
 
         $response->assertStatus(200);
@@ -56,9 +56,9 @@ class AdminLogControllerTest extends TestCase
         $key = Str::random(64);
         $token = $this->GenerateAccessToken($key, 5);
 
-        $this->TestPermissions($token, $key, 'get', "/sys-bin/admin/logs", [
-            'admin-logs:*' => 200,
-            '' => 401,
+        $this->TestPermissions($token, $key, 'get', '/sys-bin/admin/logs', [
+            'admin-logs:*'        => 200,
+            ''                    => 401,
             'admin-logs:view-all' => 200,
         ]);
     }
@@ -72,8 +72,8 @@ class AdminLogControllerTest extends TestCase
         $this->GenerateAccessToken($key, 50);
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $key,
-        ])->get("/sys-bin/admin/logs");
+            'Authorization' => 'Bearer '.$key,
+        ])->get('/sys-bin/admin/logs');
 
         $response->assertStatus(200);
         self::assertCount(50, json_decode($response->getContent())->items);
@@ -88,8 +88,8 @@ class AdminLogControllerTest extends TestCase
         $this->GenerateAccessToken($key, 50);
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $key,
-        ])->get("/sys-bin/admin/logs?limit=1");
+            'Authorization' => 'Bearer '.$key,
+        ])->get('/sys-bin/admin/logs?limit=1');
 
         $response->assertStatus(200);
         self::assertCount(1, json_decode($response->getContent())->items);
@@ -99,10 +99,10 @@ class AdminLogControllerTest extends TestCase
     {
         $salt = Str::random(16);
         $token = AccessTokenFactory::new()
-            ->create(['key' => substr($key, 0, 32),
-                'secret' => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
+            ->create(['key'   => substr($key, 0, 32),
+                'secret'      => SHA256Hasher::make(substr($key, 32), ['salt' => $salt]),
                 'secret_salt' => $salt,
-                'permissions' => ['admin-logs:*'],]);
+                'permissions' => ['admin-logs:*'], ]);
 
         AdminLogFactory::new()->count($logsCount)->create([
             'access_token_id' => $token->id,

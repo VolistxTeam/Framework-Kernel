@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Tests;
 
 use Carbon\Carbon;
@@ -32,7 +33,7 @@ class SubscriptionsCenterTest extends TestCase
 
     public function testShouldSubscriptionBeExpired()
     {
-        $subscription = (object)[
+        $subscription = (object) [
             'expires_at' => Carbon::now()->subDay(),
         ];
 
@@ -43,7 +44,7 @@ class SubscriptionsCenterTest extends TestCase
 
     public function testShouldSubscriptionBeCancelled()
     {
-        $subscription = (object)[
+        $subscription = (object) [
             'cancels_at' => Carbon::now()->subDay(),
         ];
 
@@ -56,9 +57,9 @@ class SubscriptionsCenterTest extends TestCase
     {
         $userId = 'user123';
         $subscriptionId = 'subscription123';
-        $subscription = (object)[
-            'id' => $subscriptionId,
-            'user_id' => $userId,
+        $subscription = (object) [
+            'id'         => $subscriptionId,
+            'user_id'    => $userId,
             'expires_at' => Carbon::now()->subDay(),
         ];
 
@@ -77,9 +78,9 @@ class SubscriptionsCenterTest extends TestCase
     {
         $userId = 'user123';
         $subscriptionId = 'subscription123';
-        $subscription = (object)[
-            'id' => $subscriptionId,
-            'user_id' => $userId,
+        $subscription = (object) [
+            'id'         => $subscriptionId,
+            'user_id'    => $userId,
             'cancels_at' => Carbon::now()->subDay(),
         ];
 
@@ -98,7 +99,7 @@ class SubscriptionsCenterTest extends TestCase
     {
         $userId = 'user123';
         $activeSubscription = new Subscription([
-            'id' => 'subscription123',
+            'id'      => 'subscription123',
             'user_id' => $userId,
         ]);
 
@@ -119,7 +120,7 @@ class SubscriptionsCenterTest extends TestCase
         $userId = 'user123';
         $inactiveSubscriptionId = 'subscription123';
         $inactiveSubscription = new Subscription([
-            'user_id' => $userId,
+            'user_id'      => $userId,
             'activated_at' => Carbon::now()->subDay(),
         ]);
         $inactiveSubscription->id = $inactiveSubscriptionId;
