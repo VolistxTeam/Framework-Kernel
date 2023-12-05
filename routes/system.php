@@ -20,7 +20,7 @@ Route::prefix('sys-bin')->group(function () {
         Route::get('ping', function () {
             return response()->json([
                 'status' => 'ok',
-                'time' => Carbon::now()->toDateTimeString(),
+                'time'   => Carbon::now()->toDateTimeString(),
             ]);
         });
 

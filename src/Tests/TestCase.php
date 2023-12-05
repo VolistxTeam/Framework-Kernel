@@ -1,6 +1,7 @@
 <?php
 
 namespace Volistx\FrameworkKernel\Tests;
+
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     protected function setUp(): void
@@ -18,8 +19,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         parent::setUp();
 
         $this->loadMigrationsFrom([
-            '--path' => realpath(__DIR__ . '/../../database/migrations'),
-            '--realpath' => true
+            '--path'     => realpath(__DIR__.'/../../database/migrations'),
+            '--realpath' => true,
         ]);
 
         $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
@@ -27,12 +28,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        # Setup default database to use sqlite :memory:
+        // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver' => 'sqlite',
+            'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix' => '',
+            'prefix'   => '',
         ]);
     }
 
@@ -50,9 +51,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             $token->save();
 
             $response = $this->withHeaders([
-                'Authorization' => 'Bearer ' . $key,
-                'Content-Type: application/json'
-            ])->{$method}($route,$input);
+                'Authorization' => 'Bearer '.$key,
+                'Content-Type: application/json',
+            ])->{$method}($route, $input);
 
             $response->assertStatus($permissionResult);
         }

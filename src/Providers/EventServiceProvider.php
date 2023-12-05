@@ -7,7 +7,6 @@ use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
 use Volistx\FrameworkKernel\Events\UserRequestCompleted;
 use Volistx\FrameworkKernel\Listeners\AdminRequestCompletedListener;
 use Volistx\FrameworkKernel\Listeners\UserRequestCompletedListener;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {

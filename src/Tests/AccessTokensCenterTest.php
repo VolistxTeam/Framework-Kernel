@@ -1,4 +1,5 @@
 <?php
+
 namespace Volistx\FrameworkKernel\Tests;
 
 use Volistx\FrameworkKernel\Helpers\AccessTokensCenter;
