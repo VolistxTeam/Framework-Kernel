@@ -73,7 +73,7 @@ class PermissionsCenterTest extends TestCase
             'subscriptions:logs',
             'subscriptions:stats',
             'subscriptions:cancel',
-            'subscriptions:uncancel',
+            'subscriptions:revert-cancel',
 
             'personal-tokens:*',
             'personal-tokens:create',

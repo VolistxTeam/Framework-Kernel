@@ -198,11 +198,11 @@ class SubscriptionController extends Controller
      */
     public function RevertCancelSubscription(Request $request, string $userId, string $subscriptionId): JsonResponse
     {
-        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'uncancel')) {
+        if (!Permissions::check(AccessTokens::getToken(), $this->module, 'revert-cancel')) {
             return response()->json(Messages::E401(), 401);
         }
 
-        $validator = $this->GetModuleValidation($this->module)->generateUncancelValidation([
+        $validator = $this->GetModuleValidation($this->module)->generateRevertCancelValidation([
             'user_id'         => $userId,
             'subscription_id' => $subscriptionId,
         ]);
