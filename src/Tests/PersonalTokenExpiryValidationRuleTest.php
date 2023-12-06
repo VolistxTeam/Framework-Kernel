@@ -92,11 +92,6 @@ class PersonalTokenExpiryValidationRuleTest extends TestCase
         ]);
     }
 
-    private function GeneratePlan(array $data): Collection|Model
-    {
-        return PlanFactory::new()->create(['data' => $data]);
-    }
-
     private function GeneratePersonalToken(string $user_id, array $inputs): Collection|Model
     {
         return PersonalTokenFactory::new()->create(array_merge(
