@@ -120,6 +120,7 @@ class UserRepository
 
         return User::query()
             ->where($values[0], 'LIKE', "%$searchValue%")
+            ->orWhereEncrypted($values[0], 'LIKE', "%$searchValue%")
             ->paginate($limit, ['*'], 'page', $page);
     }
 }

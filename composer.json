@@ -24,7 +24,8 @@
     "menarasolutions/geographer": "^0.3.13",
     "paragonie/random-lib": "^2.0",
     "interaction-design-foundation/laravel-geoip": "^3.3",
-    "volistx/validation": "dev-master"
+    "volistx/validation": "dev-master",
+    "elgibor-solution/laravel-database-encryption": "^1.1"
   },
   "require-dev": {
     "mockery/mockery": "^1.5",

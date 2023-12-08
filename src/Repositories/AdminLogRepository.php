@@ -74,6 +74,7 @@ class AdminLogRepository
 
         return AdminLog::query()
             ->where($values[0], 'LIKE', "%$searchValue%")
+            ->orWhereEncrypted  ($values[0], 'LIKE', "%$searchValue%")
             ->orderBy('created_at', 'DESC')
             ->paginate($limit, ['*'], 'page', $page);
     }

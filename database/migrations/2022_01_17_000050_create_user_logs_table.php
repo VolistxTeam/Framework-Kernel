@@ -17,9 +17,9 @@ class CreateUserLogsTable extends Migration
         Schema::create('user_logs', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->ulid('subscription_id')->nullable();
-            $table->string('url');
-            $table->string('method');
-            $table->ipAddress('ip');
+            $table->text('url');
+            $table->text('method');
+            $table->text('ip');
             $table->string('user_agent')->nullable();
             $table->dateTime('created_at');
         });
