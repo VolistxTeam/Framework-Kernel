@@ -4,6 +4,7 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
 use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
@@ -31,7 +32,7 @@ class RequestLoggingMiddleware
     /**
      * Perform actions after the response has been sent.
      *
-     * @param Request  $request
+     * @param Request $request
      * @param Response $response
      *
      * @return void
@@ -42,25 +43,24 @@ class RequestLoggingMiddleware
         if (PersonalTokens::getToken() && PersonalTokens::getToken()->hidden === false) {
             if (PersonalTokens::getToken()->disable_logging === false) {
                 $inputs = [
-                    'url'             => $request->fullUrl(),
-                    'method'          => $request->method(),
-                    'user_id'         => Subscriptions::getSubscription()?->user_id,
-                    'ip'              => $request->ip(),
-                    'user_agent'      => $request->userAgent() ?? null,
+                    'url' => Crypt::encryptString($request->fullUrl()),
+                    'method' => Crypt::encryptString($request->method()),
+                    'ip' => Crypt::encryptString($request->ip()),
+                    'user_id' => Subscriptions::getSubscription()?->user_id,
+                    'user_agent' => $request->userAgent() ?? null,
                     'subscription_id' => Subscriptions::getSubscription()?->id,
                 ];
 
                 // Dispatch UserRequestCompleted event
                 Event::dispatch(new UserRequestCompleted($inputs));
             }
-        }
-        // If an access token is present, log the admin request
+        } // If an access token is present, log the admin request
         elseif (AccessTokens::getToken()) {
             $inputs = [
-                'url'             => $request->fullUrl(),
-                'method'          => $request->method(),
-                'ip'              => $request->ip(),
-                'user_agent'      => $request->userAgent() ?? null,
+                'url' => Crypt::encryptString($request->fullUrl()),
+                'method' => Crypt::encryptString($request->method()),
+                'ip' => Crypt::encryptString($request->ip()),
+                'user_agent' => $request->userAgent() ?? null,
                 'access_token_id' => AccessTokens::getToken()?->id,
             ];
 

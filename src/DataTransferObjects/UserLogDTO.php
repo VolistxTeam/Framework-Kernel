@@ -2,6 +2,8 @@
 
 namespace Volistx\FrameworkKernel\DataTransferObjects;
 
+use Illuminate\Support\Facades\Crypt;
+
 class UserLogDTO extends DataTransferObjectBase
 {
     public string $subscription_id;
@@ -20,13 +22,13 @@ class UserLogDTO extends DataTransferObjectBase
     public function GetDTO(): array
     {
         return [
-            'id'           => $this->id,
+            'id' => $this->id,
             'subscription' => [
                 'id' => $this->subscription_id,
             ],
-            'url'        => $this->url,
-            'ip'         => $this->ip,
-            'method'     => $this->method,
+            'url' => Crypt::decryptString($this->url),
+            'ip' => Crypt::decryptString($this->ip),
+            'method' => Crypt::decryptString($this->method),
             'user_agent' => $this->user_agent,
             'created_at' => $this->created_at,
         ];

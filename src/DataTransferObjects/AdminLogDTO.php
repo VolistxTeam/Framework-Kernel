@@ -2,6 +2,8 @@
 
 namespace Volistx\FrameworkKernel\DataTransferObjects;
 
+use Illuminate\Support\Facades\Crypt;
+
 class AdminLogDTO extends DataTransferObjectBase
 {
     public string $access_token_id;
@@ -24,9 +26,9 @@ class AdminLogDTO extends DataTransferObjectBase
             'access_token' => [
                 'id' => $this->access_token_id,
             ],
-            'url'        => $this->url,
-            'ip'         => $this->ip,
-            'method'     => $this->method,
+            'url' => Crypt::decryptString($this->url),
+            'ip' => Crypt::decryptString($this->ip),
+            'method' => Crypt::decryptString($this->method),
             'user_agent' => $this->user_agent,
             'created_at' => $this->created_at,
         ];
