@@ -3,6 +3,8 @@
 namespace Volistx\FrameworkKernel\Services;
 
 use GuzzleHttp\Client;
+use Volistx\FrameworkKernel\DataTransferObjects\AdminLogDTO;
+use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
 use Volistx\FrameworkKernel\Facades\Requests;
 use Volistx\FrameworkKernel\Repositories\SubscriptionRepository;
 use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
@@ -52,15 +54,15 @@ class RemoteUserLoggingService implements IUserLoggingService
             return null;
         }
 
-        return $response->body;
+        return UserLogDTO::fromModel($response->body)->GetDTO();
     }
 
     /**
      * Get all user log entries with pagination support.
      *
      * @param string $search
-     * @param int    $page
-     * @param int    $limit
+     * @param int $page
+     * @param int $limit
      *
      * @return array|null
      */
@@ -68,8 +70,8 @@ class RemoteUserLoggingService implements IUserLoggingService
     {
         $response = Requests::get($this->httpBaseUrl, $this->remoteToken, [
             'search' => $search,
-            'page'   => $page,
-            'limit'  => $limit,
+            'page' => $page,
+            'limit' => $limit,
         ]);
 
         // Retry the job if the request fails
@@ -77,7 +79,23 @@ class RemoteUserLoggingService implements IUserLoggingService
             return null;
         }
 
-        return get_object_vars($response->body);
+        $logs = get_object_vars($response->body);
+
+
+        $logDTOs = [];
+
+        foreach ($logs['items'] as $log) {
+            $logDTOs[] = UserLogDTO::fromModel($log)->getDTO();
+        }
+
+        return [
+            'pagination' => [
+                'per_page' => $logs['perPage'],
+                'current' => $logs['current'],
+                'total' => $logs['total'],
+            ],
+            'items' => $logDTOs,
+        ];
     }
 
     /**
@@ -86,8 +104,8 @@ class RemoteUserLoggingService implements IUserLoggingService
      * @param string $userId
      * @param string $subscriptionId
      * @param string $search
-     * @param int    $page
-     * @param int    $limit
+     * @param int $page
+     * @param int $limit
      *
      * @return array
      */
@@ -95,8 +113,8 @@ class RemoteUserLoggingService implements IUserLoggingService
     {
         $response = Requests::get("$this->httpBaseUrl/users/$userId/subscriptions/$subscriptionId", $this->remoteToken, [
             'search' => $search,
-            'page'   => $page,
-            'limit'  => $limit,
+            'page' => $page,
+            'limit' => $limit,
         ]);
 
         // Retry the job if the request fails
@@ -104,7 +122,24 @@ class RemoteUserLoggingService implements IUserLoggingService
             return [];
         }
 
-        return get_object_vars($response->body);
+
+        $logs = get_object_vars($response->body);
+
+
+        $logDTOs = [];
+
+        foreach ($logs['items'] as $log) {
+            $logDTOs[] = UserLogDTO::fromModel($log)->getDTO();
+        }
+
+        return [
+            'pagination' => [
+                'per_page' => $logs['perPage'],
+                'current' => $logs['current'],
+                'total' => $logs['total'],
+            ],
+            'items' => $logDTOs,
+        ];
     }
 
     /**

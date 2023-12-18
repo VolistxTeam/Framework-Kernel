@@ -3,6 +3,7 @@
 namespace Volistx\FrameworkKernel\Services;
 
 use GuzzleHttp\Client;
+use Volistx\FrameworkKernel\DataTransferObjects\AdminLogDTO;
 use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 
 class RemoteAdminLoggingService implements IAdminLoggingService
@@ -30,7 +31,7 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $this->client->post("$this->httpBaseUrl/admins/logs", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             'body' => json_encode($inputs),
         ]);
@@ -48,12 +49,12 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $response = $this->client->get("$this->httpBaseUrl/admins/logs/$logId", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
         ]);
 
         if ($response->getStatusCode() === 200) {
-            return json_decode($response->getBody()->getContents());
+            return AdminLogDTO::fromModel(json_decode($response->getBody()->getContents()))->GetDTO();
         }
 
         return null;
@@ -63,8 +64,8 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      * Get all admin log entries with pagination support.
      *
      * @param string $search
-     * @param int    $page
-     * @param int    $limit
+     * @param int $page
+     * @param int $limit
      *
      * @return array|null
      */
@@ -73,17 +74,33 @@ class RemoteAdminLoggingService implements IAdminLoggingService
         $response = $this->client->get("$this->httpBaseUrl/admins/logs", [
             'headers' => [
                 'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             'query' => [
                 'search' => $search,
-                'page'   => $page,
-                'limit'  => $limit,
+                'page' => $page,
+                'limit' => $limit,
             ],
         ]);
 
         if ($response->getStatusCode() === 200) {
-            return get_object_vars(json_decode($response->getBody()->getContents()));
+            $logs = get_object_vars(json_decode($response->getBody()->getContents()));
+
+
+            $logDTOs = [];
+
+            foreach ($logs['items'] as $log) {
+                $logDTOs[] = AdminLogDTO::fromModel($log)->getDTO();
+            }
+
+            return [
+                'pagination' => [
+                    'per_page' => $logs['perPage'],
+                    'current' => $logs['current'],
+                    'total' => $logs['total'],
+                ],
+                'items' => $logDTOs,
+            ];
         }
 
         return null;
