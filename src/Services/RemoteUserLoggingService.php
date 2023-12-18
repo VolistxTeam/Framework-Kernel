@@ -11,13 +11,11 @@ use Volistx\FrameworkKernel\Services\Interfaces\IUserLoggingService;
 
 class RemoteUserLoggingService implements IUserLoggingService
 {
-    private Client $client;
     private string $httpBaseUrl;
     private string $remoteToken;
 
     public function __construct()
     {
-        $this->client = new Client();
         $this->httpBaseUrl = config('volistx.logging.userLogHttpUrl');
         $this->remoteToken = config('volistx.logging.userLogHttpToken');
     }
@@ -68,7 +66,7 @@ class RemoteUserLoggingService implements IUserLoggingService
      */
     public function GetLogs(string $search, int $page, int $limit): ?array
     {
-        $response = Requests::get($this->httpBaseUrl, $this->remoteToken, [
+        $response = Requests::get("$this->httpBaseUrl/users/logs", $this->remoteToken, [
             'search' => $search,
             'page' => $page,
             'limit' => $limit,
@@ -79,20 +77,18 @@ class RemoteUserLoggingService implements IUserLoggingService
             return null;
         }
 
-        $logs = get_object_vars($response->body);
-
+        $logs = $response->body;
 
         $logDTOs = [];
 
         foreach ($logs['items'] as $log) {
             $logDTOs[] = UserLogDTO::fromModel($log)->getDTO();
         }
-
         return [
             'pagination' => [
-                'per_page' => $logs['perPage'],
-                'current' => $logs['current'],
-                'total' => $logs['total'],
+                'per_page' => $logs['pagination']['per_page'],
+                'current' => $logs['pagination']['current'],
+                'total' => $logs['pagination']['total'],
             ],
             'items' => $logDTOs,
         ];

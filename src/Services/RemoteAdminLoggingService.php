@@ -4,17 +4,17 @@ namespace Volistx\FrameworkKernel\Services;
 
 use GuzzleHttp\Client;
 use Volistx\FrameworkKernel\DataTransferObjects\AdminLogDTO;
+use Volistx\FrameworkKernel\DataTransferObjects\UserLogDTO;
+use Volistx\FrameworkKernel\Facades\Requests;
 use Volistx\FrameworkKernel\Services\Interfaces\IAdminLoggingService;
 
 class RemoteAdminLoggingService implements IAdminLoggingService
 {
-    private Client $client;
     private string $httpBaseUrl;
     private string $remoteToken;
 
     public function __construct()
     {
-        $this->client = new Client();
         $this->httpBaseUrl = config('volistx.logging.adminLogHttpUrl');
         $this->remoteToken = config('volistx.logging.adminLogHttpToken');
     }
@@ -28,13 +28,11 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      */
     public function CreateAdminLog(array $inputs): void
     {
-        $this->client->post("$this->httpBaseUrl/admins/logs", [
-            'headers' => [
-                'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
-            ],
-            'body' => json_encode($inputs),
-        ]);
+        Requests::post(
+            "$this->httpBaseUrl/admins/logs",
+            $this->remoteToken,
+            $inputs
+        );
     }
 
     /**
@@ -46,18 +44,14 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      */
     public function GetAdminLog(string $logId): mixed
     {
-        $response = $this->client->get("$this->httpBaseUrl/admins/logs/$logId", [
-            'headers' => [
-                'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
-            ],
-        ]);
+        $response = Requests::get("$this->httpBaseUrl/admins/logs/$logId", $this->remoteToken);
 
-        if ($response->getStatusCode() === 200) {
-            return AdminLogDTO::fromModel(json_decode($response->getBody()->getContents()))->GetDTO();
+        // Retry the job if the request fails
+        if ($response->isError) {
+            return null;
         }
 
-        return null;
+        return AdminLogDTO::fromModel($response->body)->GetDTO();
     }
 
     /**
@@ -71,38 +65,31 @@ class RemoteAdminLoggingService implements IAdminLoggingService
      */
     public function GetAdminLogs(string $search, int $page, int $limit): array|null
     {
-        $response = $this->client->get("$this->httpBaseUrl/admins/logs", [
-            'headers' => [
-                'Authorization' => "Bearer {$this->remoteToken}",
-                'Content-Type' => 'application/json',
-            ],
-            'query' => [
-                'search' => $search,
-                'page' => $page,
-                'limit' => $limit,
-            ],
+        $response = Requests::get("$this->httpBaseUrl/admins/logs", $this->remoteToken, [
+            'search' => $search,
+            'page' => $page,
+            'limit' => $limit,
         ]);
 
-        if ($response->getStatusCode() === 200) {
-            $logs = get_object_vars(json_decode($response->getBody()->getContents()));
-
-
-            $logDTOs = [];
-
-            foreach ($logs['items'] as $log) {
-                $logDTOs[] = AdminLogDTO::fromModel($log)->getDTO();
-            }
-
-            return [
-                'pagination' => [
-                    'per_page' => $logs['perPage'],
-                    'current' => $logs['current'],
-                    'total' => $logs['total'],
-                ],
-                'items' => $logDTOs,
-            ];
+        // Retry the job if the request fails
+        if ($response->isError) {
+            return null;
         }
 
-        return null;
+        $logs = $response->body;
+
+        $logDTOs = [];
+
+        foreach ($logs['items'] as $log) {
+            $logDTOs[] = AdminLogDTO::fromModel($log)->getDTO();
+        }
+        return [
+            'pagination' => [
+                'per_page' => $logs['pagination']['per_page'],
+                'current' => $logs['pagination']['current'],
+                'total' => $logs['pagination']['total'],
+            ],
+            'items' => $logDTOs,
+        ];
     }
 }
