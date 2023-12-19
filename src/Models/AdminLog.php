@@ -13,8 +13,6 @@ class AdminLog extends Model
 {
     use HasFactory;
     use HasUlids;
-    use EncryptedAttribute;
-
     /**
      * The name of the "updated at" column.
      *
@@ -34,10 +32,6 @@ class AdminLog extends Model
         'method',
         'ip',
         'user_agent',
-    ];
-
-    protected $encryptable = [
-        'url', 'method', 'ip'
     ];
 
     protected $casts = [
