@@ -46,7 +46,7 @@ class IsActiveUserValidationRuleTest extends TestCase
         $this->assertEquals(
             [
                 'message' => Messages::E403(trans('volistx::user:inactive_user')),
-                'code' => 403,
+                'code'    => 403,
             ],
             $result
         );
@@ -57,14 +57,14 @@ class IsActiveUserValidationRuleTest extends TestCase
         return SubscriptionFactory::new()->create([
             'user_id' => $user_id,
             'plan_id' => $plan_id,
-            'status' => $status
+            'status'  => $status,
         ]);
     }
 
     private function GenerateUser(bool $is_active): Collection|Model
     {
         return UserFactory::new()->create([
-            'is_active' => $is_active
+            'is_active' => $is_active,
         ]);
     }
 
@@ -75,11 +75,13 @@ class IsActiveUserValidationRuleTest extends TestCase
 
     private function GeneratePersonalToken(string $user_id, array $inputs): Collection|Model
     {
-        return PersonalTokenFactory::new()->create(array_merge(
-                [
-                    'user_id' => $user_id
-                ],
-                $inputs)
+        return PersonalTokenFactory::new()->create(
+            array_merge(
+            [
+                'user_id' => $user_id,
+            ],
+            $inputs
+        )
         );
     }
 }

@@ -22,13 +22,13 @@ class UserLogDTO extends DataTransferObjectBase
     public function GetDTO(): array
     {
         return [
-            'id' => $this->id,
+            'id'           => $this->id,
             'subscription' => [
                 'id' => $this->subscription_id,
             ],
-            'url' => Crypt::decryptString($this->url),
-            'ip' => Crypt::decryptString($this->ip),
-            'method' => Crypt::decryptString($this->method),
+            'url'        => Crypt::decryptString($this->url),
+            'ip'         => Crypt::decryptString($this->ip),
+            'method'     => Crypt::decryptString($this->method),
             'user_agent' => $this->user_agent,
             'created_at' => $this->created_at,
         ];

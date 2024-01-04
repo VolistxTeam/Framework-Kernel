@@ -15,8 +15,8 @@ class CreateAdminLogsTable extends Migration
     {
         Schema::enableForeignKeyConstraints();
         Schema::create('admin_logs', function (Blueprint $table) {
-            $table->ulid('id',36)->primary();
-            $table->ulid('access_token_id',36)->index('log_access_token_id');
+            $table->ulid('id', 36)->primary();
+            $table->ulid('access_token_id', 36)->index('log_access_token_id');
             $table->text('url');
             $table->text('method');
             $table->text('ip');
