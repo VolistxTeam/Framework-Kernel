@@ -35,6 +35,9 @@ class AdminLog extends Model
 
     protected $casts = [
         'created_at' => 'date:Y-m-d H:i:s',
+        'url' => 'encrypted',
+        'method' => 'encrypted',
+        'ip' => 'encrypted'
     ];
 
     public function newUniqueId()

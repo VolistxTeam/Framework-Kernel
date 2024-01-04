@@ -28,6 +28,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
+        $app->make('config')->set('app.key', 'base64:' . base64_encode(\Illuminate\Support\Str::random(32)));
+
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [

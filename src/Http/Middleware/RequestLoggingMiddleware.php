@@ -4,7 +4,6 @@ namespace Volistx\FrameworkKernel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
 use Volistx\FrameworkKernel\Events\AdminRequestCompleted;
@@ -43,9 +42,9 @@ class RequestLoggingMiddleware
         if (PersonalTokens::getToken() && PersonalTokens::getToken()->hidden === false) {
             if (PersonalTokens::getToken()->disable_logging === false) {
                 $inputs = [
-                    'url'             => Crypt::encryptString($request->fullUrl()),
-                    'method'          => Crypt::encryptString($request->method()),
-                    'ip'              => Crypt::encryptString($request->ip()),
+                    'url'             => $request->fullUrl(),
+                    'method'          => $request->method(),
+                    'ip'              => $request->ip(),
                     'user_id'         => Subscriptions::getSubscription()?->user_id,
                     'user_agent'      => $request->userAgent() ?? null,
                     'subscription_id' => Subscriptions::getSubscription()?->id,
@@ -57,9 +56,9 @@ class RequestLoggingMiddleware
         } // If an access token is present, log the admin request
         elseif (AccessTokens::getToken()) {
             $inputs = [
-                'url'             => Crypt::encryptString($request->fullUrl()),
-                'method'          => Crypt::encryptString($request->method()),
-                'ip'              => Crypt::encryptString($request->ip()),
+                'url'             => $request->fullUrl(),
+                'method'          => $request->method(),
+                'ip'              => $request->ip(),
                 'user_agent'      => $request->userAgent() ?? null,
                 'access_token_id' => AccessTokens::getToken()?->id,
             ];
