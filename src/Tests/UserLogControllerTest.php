@@ -13,7 +13,6 @@ use Volistx\FrameworkKernel\Database\Factories\UserFactory;
 use Volistx\FrameworkKernel\Database\Factories\UserLogFactory;
 use Volistx\FrameworkKernel\Helpers\SHA256Hasher;
 use Volistx\FrameworkKernel\Models\UserLog;
-use Volistx\FrameworkKernel\Tests\TestCase;
 
 class UserLogControllerTest extends TestCase
 {
