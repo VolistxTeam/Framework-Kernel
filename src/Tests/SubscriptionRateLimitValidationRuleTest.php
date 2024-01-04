@@ -74,7 +74,7 @@ class SubscriptionRateLimitValidationRuleTest extends TestCase
         $this->assertEquals(
             [
                 'message' => Messages::E429(),
-                'code' => 429,
+                'code'    => 429,
             ],
             $result
         );
@@ -92,11 +92,13 @@ class SubscriptionRateLimitValidationRuleTest extends TestCase
 
     private function generatePersonalToken(string $user_id, array $inputs): Collection|Model
     {
-        return PersonalTokenFactory::new()->create(array_merge(
-                [
-                    'user_id' => $user_id
-                ],
-                $inputs)
+        return PersonalTokenFactory::new()->create(
+            array_merge(
+            [
+                'user_id' => $user_id,
+            ],
+            $inputs
+        )
         );
     }
 }

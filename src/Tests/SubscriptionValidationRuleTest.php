@@ -23,10 +23,11 @@ class SubscriptionValidationRuleTest extends TestCase
         $user = $this->GenerateUser();
         $plan = $this->GeneratePlan(['requests' => 500]);
         $personalToken = $this->generatePersonalToken($user->id, []);
-        $subscription = $this->GenerateSubscription($user->id,
+        $subscription = $this->GenerateSubscription(
+            $user->id,
             [
-                'status' => SubscriptionStatus::ACTIVE,
-                'plan_id' => $plan->id
+                'status'  => SubscriptionStatus::ACTIVE,
+                'plan_id' => $plan->id,
             ]
         );
         PersonalTokens::shouldReceive('getToken')->andReturn($personalToken);
@@ -48,10 +49,11 @@ class SubscriptionValidationRuleTest extends TestCase
         $user = $this->GenerateUser();
         $plan = $this->GeneratePlan(['requests' => 500]);
         $personalToken = $this->generatePersonalToken($user->id, []);
-        $subscription = $this->GenerateSubscription($user->id,
+        $subscription = $this->GenerateSubscription(
+            $user->id,
             [
-                'status' => SubscriptionStatus::INACTIVE,
-                'plan_id' => $plan->id
+                'status'  => SubscriptionStatus::INACTIVE,
+                'plan_id' => $plan->id,
             ]
         );
         PersonalTokens::shouldReceive('getToken')->andReturn($personalToken);
@@ -87,7 +89,7 @@ class SubscriptionValidationRuleTest extends TestCase
         $this->assertEquals(
             [
                 'message' => Messages::E403(trans('volistx::subscription.expired')),
-                'code' => 403,
+                'code'    => 403,
             ],
             $result
         );
@@ -105,21 +107,25 @@ class SubscriptionValidationRuleTest extends TestCase
 
     private function generatePersonalToken(string $user_id, array $inputs): Collection|Model
     {
-        return PersonalTokenFactory::new()->create(array_merge(
-                [
-                    'user_id' => $user_id
-                ],
-                $inputs)
+        return PersonalTokenFactory::new()->create(
+            array_merge(
+            [
+                'user_id' => $user_id,
+            ],
+            $inputs
+        )
         );
     }
 
     private function GenerateSubscription(string $user_id, array $inputs): Collection|Model
     {
-        return SubscriptionFactory::new()->create(array_merge(
-                [
-                    'user_id' => $user_id
-                ],
-                $inputs)
+        return SubscriptionFactory::new()->create(
+            array_merge(
+            [
+                'user_id' => $user_id,
+            ],
+            $inputs
+        )
         );
     }
 }

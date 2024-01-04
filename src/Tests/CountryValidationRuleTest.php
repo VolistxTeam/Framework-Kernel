@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Volistx\FrameworkKernel\AuthValidationRules\Users\CountryValidationRule;
 use Volistx\FrameworkKernel\Database\Factories\PersonalTokenFactory;
-use Volistx\FrameworkKernel\Database\Factories\PlanFactory;
 use Volistx\FrameworkKernel\Database\Factories\UserFactory;
 use Volistx\FrameworkKernel\Enums\AccessRule;
 use Volistx\FrameworkKernel\Facades\PersonalTokens;
@@ -18,7 +17,7 @@ class CountryValidationRuleTest extends TestCase
     {
         $user = $this->GenerateUser();
         $personal_Token = $this->GeneratePersonalToken($user->id, [
-            'country_rule' => AccessRule::NONE
+            'country_rule' => AccessRule::NONE,
         ]);
 
         $requestMock = $this->createMock(Request::class);
@@ -37,12 +36,13 @@ class CountryValidationRuleTest extends TestCase
 
     private function GeneratePersonalToken(string $user_id, array $inputs): Collection|Model
     {
-        return PersonalTokenFactory::new()->create(array_merge(
-                [
-                    'user_id' => $user_id
-                ],
-                $inputs)
+        return PersonalTokenFactory::new()->create(
+            array_merge(
+            [
+                'user_id' => $user_id,
+            ],
+            $inputs
+        )
         );
     }
-
 }

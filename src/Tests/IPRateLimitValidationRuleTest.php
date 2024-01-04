@@ -63,7 +63,6 @@ class IPRateLimitValidationRuleTest extends TestCase
 
         Plans::shouldReceive('getPlan')->andReturn($plan);
 
-
         // Mock the RateLimiter to always return failure
         RateLimiter::shouldReceive('attempt')->andReturn(false);
 
@@ -75,7 +74,7 @@ class IPRateLimitValidationRuleTest extends TestCase
         $this->assertEquals(
             [
                 'message' => Messages::E429(),
-                'code' => 429,
+                'code'    => 429,
             ],
             $result
         );
@@ -93,11 +92,13 @@ class IPRateLimitValidationRuleTest extends TestCase
 
     private function GeneratePersonalToken(string $user_id, array $inputs): Collection|Model
     {
-        return PersonalTokenFactory::new()->create(array_merge(
-                [
-                    'user_id' => $user_id
-                ],
-                $inputs)
+        return PersonalTokenFactory::new()->create(
+            array_merge(
+            [
+                'user_id' => $user_id,
+            ],
+            $inputs
+        )
         );
     }
 }

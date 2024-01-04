@@ -17,7 +17,7 @@ class IsActiveUserValidationRule extends ValidationRuleBase
         $user = Subscriptions::getSubscription()->user;
 
         // If the user is inactive, deny access
-        if (!($user->is_active)) {
+        if (!$user->is_active) {
             return [
                 'message' => Messages::E403(trans('volistx::user:inactive_user')),
                 'code'    => 403,
